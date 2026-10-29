@@ -1,0 +1,7 @@
+// Serves the built app (dist-single) as static files on Cloudflare Workers.
+// Deploy: npm run build:single && npx wrangler deploy
+{
+  "name": "marea-dvipa",
+  "compatibility_date": "2026-10-01",
+  "assets": { "directory": "./dist-single" }
+}

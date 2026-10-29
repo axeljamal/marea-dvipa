@@ -1,5 +1,7 @@
 # Marea Dvīpa
 
+**Live:** https://marea-dvipa.axeltaj.workers.dev
+
 Marea Dvīpa brings the Batik Pattern Studio and the Batik Media Lab together in one installable, offline web app.
 It opens on a **welcome film**, and a bar at the top switches between the welcome and the two rooms:
 
@@ -32,7 +34,12 @@ The app also remembers which reel you were last on.
 - After changing any file, bump `VERSION` in `public/sw.js`. If you add a motif, add it to `MEDIA` there too. Visitors see “A new version is ready → Reload”.
 
 ## Put it online
-Upload the contents of `dist-single/` (or `dist/`) to GitHub Pages, Netlify, Cloudflare Pages or Vercel.
+It runs on Cloudflare Workers as static files (`wrangler.jsonc` serves `dist-single/`):
+```bash
+npm run build:single
+npx wrangler deploy
+```
+Any static host works too: upload the contents of `dist-single/` (or `dist/`) to GitHub Pages, Netlify, Cloudflare Pages or Vercel.
 
 ## Structure
 ```
