@@ -1,0 +1,96 @@
+
+.lab-view img { max-width: 100%; }
+
+/* Layout: a film stage with its transport on the left, the process checklist and an "explore this step" bench on the right; stacks on phones.
+   One deliberate dark look: the Bomba black and gold of the Ntina sketchbook, so the reel and the sketchbook read as one studio. */
+.lab-view {
+  --ink: #0E0C09;      /* Bomba black, the stage ground */
+  --ink-2: #17140F;    /* panels */
+  --line: #2A241B;
+  --line-2: #4A4032;
+  --gold: #E0C27E;     /* Bomba gold, the mark */
+  --gold-2: #C39B65;
+  --paper: #F4EEE3;    /* Ntina paper */
+  --mist: #CFC3A8;
+  --muted: #9A8E7A;
+  --flag: #D9654B;     /* misreadings and failures */
+  --pass: #9FD3B6;
+  --teal: #4FA8BD;
+  --display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --body: 'Karla', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  color-scheme: dark;
+}
+.lab-view { background: var(--ink); color: var(--paper); }
+.lab-view { font-family: var(--body); font-size: 15px; line-height: 1.5; }
+.lab-view .wrap { padding-block: 20px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+.lab-view header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px 24px; }
+.lab-view .eyebrow, .lab-view .label { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold-2); }
+.lab-view .label { color: var(--muted); }
+.lab-view h1 { font-family: var(--display); font-weight: 600; font-size: 46px; line-height: 1; margin: 6px 0 0; text-wrap: balance; }
+.lab-view .reels { display: flex; flex-wrap: wrap; gap: 8px; }
+.lab-view .chip { min-height: 40px; padding: 0 14px; border-radius: 20px; border: 1px solid var(--line-2); background: transparent; color: var(--paper); font: 500 13px var(--body); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+.lab-view .chip:hover:not([disabled]) { border-color: var(--gold); }
+.lab-view .chip[aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+.lab-view .chip[disabled] { opacity: .45; cursor: default; }
+.lab-view .chip small { font: 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.lab-view button:focus-visible, .lab-view input:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.lab-view .main { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 20px; align-items: start; }
+.lab-view .film { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.lab-view .screen { position: relative; border-radius: 6px; overflow: hidden; background: var(--ink); border: 1px solid var(--line); aspect-ratio: 16 / 9; max-width: 100%; }
+.lab-view .screen canvas { display: block; width: 100%; height: 100%; }
+.lab-view .rec-dot { position: absolute; top: 12px; right: 12px; font: 11px var(--mono); color: var(--paper); background: rgba(217,101,75,.9); border-radius: 12px; padding: 3px 10px; }
+.lab-view .transport { display: flex; align-items: center; gap: 12px; }
+.lab-view .round { width: 44px; height: 44px; border-radius: 22px; border: 1px solid var(--gold); background: var(--gold); color: var(--ink); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.lab-view .round.ghost { background: transparent; color: var(--gold); border-color: var(--line-2); }
+.lab-view .round svg { width: 18px; height: 18px; fill: currentColor; }
+.lab-view .scrub { position: relative; flex: 1; min-width: 0; height: 44px; display: flex; align-items: center; }
+.lab-view .scrub input { width: 100%; accent-color: var(--gold); margin: 0; }
+.lab-view .ticks { position: absolute; left: 0; right: 0; top: 6px; height: 6px; pointer-events: none; }
+.lab-view .ticks i { position: absolute; top: 0; width: 1px; height: 6px; background: var(--line-2); }
+.lab-view .time { font: 12px var(--mono); color: var(--mist); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.lab-view .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.lab-view .btn { min-height: 40px; padding: 0 16px; border-radius: 20px; border: 1px solid var(--gold); background: transparent; color: var(--gold); font: 600 13px var(--body); cursor: pointer; }
+.lab-view .btn.solid { background: var(--gold); color: var(--ink); }
+.lab-view .btn[disabled] { opacity: .5; cursor: default; }
+.lab-view .status { font: 12px var(--mono); color: var(--muted); }
+.lab-view .score { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--line); padding-top: 12px; }
+.lab-view .side { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.lab-view .panel { border: 1px solid var(--line); border-radius: 10px; background: var(--ink-2); padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.lab-view .panel h2 { font-family: var(--display); font-weight: 600; font-size: 26px; margin: 0; line-height: 1.1; }
+.lab-view .steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.lab-view .steps button { width: 100%; display: grid; grid-template-columns: 22px 28px minmax(0, 1fr); gap: 8px; align-items: center; text-align: left; background: transparent; border: 0; border-top: 1px solid var(--line); color: var(--mist); padding: 9px 2px; cursor: pointer; font: 14px var(--body); }
+.lab-view .steps li:first-child button { border-top: 0; }
+.lab-view .steps button:hover { color: var(--paper); }
+.lab-view .steps .n { font: 11px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.lab-view .steps .mk { width: 16px; height: 16px; border-radius: 8px; border: 1px solid var(--line-2); display: inline-flex; align-items: center; justify-content: center; }
+.lab-view .steps .done .mk { background: var(--gold-2); border-color: var(--gold-2); }
+.lab-view .steps .done .mk::after { content: ""; width: 7px; height: 4px; border-left: 2px solid var(--ink); border-bottom: 2px solid var(--ink); transform: rotate(-45deg) translate(1px, -1px); }
+.lab-view .steps .now button { color: var(--paper); }
+.lab-view .steps .now .mk { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(224,194,126,.25); }
+.lab-view .steps .ph { font: 10px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--gold-2); display: block; }
+.lab-view .teach { margin: 0; color: var(--mist); font-size: 14px; }
+.lab-view .bench[hidden] { display: none !important; }
+.lab-view .ctl { display: flex; flex-direction: column; gap: 8px; }
+.lab-view .ctl input[type=range] { width: 100%; accent-color: var(--gold); }
+.lab-view .readout { font: 12px var(--mono); color: var(--mist); }
+.lab-view .credit { margin: 0; padding: 10px 14px; border-left: 2px solid var(--gold-2); color: var(--paper); font: italic 16px/1.5 var(--display); }
+.lab-view .note { margin: 0; font-size: 12.5px; color: var(--muted); }
+.lab-view .note a { color: var(--gold); }
+@media (max-width: 1020px) { .lab-view .main { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 460px) { .lab-view h1 { font-size: 36px; } .lab-view .transport { gap: 8px; } }
+
+/* ---- web app additions (install, toast and safe areas now live in the shell) ---- */
+.lab-view .brand { display: flex; align-items: center; gap: 14px; }
+.lab-view .brand img { width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0; }
+.lab-view .appbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.lab-view .screen .fs { position: absolute; top: 10px; left: 10px; width: 40px; height: 40px; border-radius: 20px; border: 1px solid var(--line-2); background: rgba(14,12,9,.7); color: var(--gold); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; opacity: .75; }
+.lab-view .screen .fs:hover, .lab-view .screen .fs:focus-visible { opacity: 1; }
+.lab-view .screen .fs svg { width: 18px; height: 18px; fill: currentColor; }
+.lab-view .screen:fullscreen { border: 0; border-radius: 0; display: flex; align-items: center; justify-content: center; background: #000; aspect-ratio: auto; width: 100vw; height: 100vh; }
+.lab-view .screen:fullscreen canvas { width: auto; height: auto; max-width: 100vw; max-height: 100vh; aspect-ratio: 16 / 9; }
+.lab-view .screen.pseudo-fs { position: fixed; inset: 0; z-index: 50; border: 0; border-radius: 0; background: #000; aspect-ratio: auto; display: flex; align-items: center; justify-content: center; }
+.lab-view .screen.pseudo-fs canvas { width: auto; height: auto; max-width: 100vw; max-height: 100vh; aspect-ratio: 16 / 9; }
+.lab-view .keys { font: 11px var(--mono); color: var(--muted); }
+.lab-view .keys kbd { font: inherit; border: 1px solid var(--line-2); border-radius: 4px; padding: 0 5px; color: var(--mist); }
+@media (hover: none) { .lab-view .keys { display: none; } }

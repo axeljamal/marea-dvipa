@@ -1,0 +1,23 @@
+{
+  "name": "Marea Dvīpa",
+  "short_name": "Marea Dvīpa",
+  "description": "The Pattern Studio and the Media Lab in one app: build batik repeats and Fibonacci flows from the Bali master motifs and the Dua Pulau and Ntina signatures, then watch the reels that show how the Ntina mark and the Bomba Rose were made.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0E0C09",
+  "theme_color": "#0E0C09",
+  "categories": ["design", "education", "entertainment"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Pattern Studio", "url": "./#studio", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Ntina reel", "url": "./#ntina", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Bomba Rose reel", "url": "./#bomba", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

@@ -1,0 +1,44 @@
+/* Marea Dvīpa shell: one top bar over two rooms. Each room keeps its own look (Pattern Studio in the motifs'
+   midnight, Media Lab in Bomba black and gold); the bar takes on the colours of the room you are in. */
+*, *::before, *::after { box-sizing: border-box; }
+[hidden]:not([hidden=until-found i]) { display: none !important; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: var(--nav-h); }
+:root {
+  --nav-h: calc(56px + env(safe-area-inset-top, 0px));
+  --sh-bg: #02213D; --sh-line: #1E4157; --sh-gold: #C39B65; --sh-on-gold: #02213D; --sh-text: #FAF7F2; --sh-muted: #9FB3C2;
+  color-scheme: dark;
+}
+body[data-view="lab"], body[data-view="welcome"] { --sh-bg: #0E0C09; --sh-line: #2A241B; --sh-gold: #E0C27E; --sh-on-gold: #0E0C09; --sh-text: #F4EEE3; --sh-muted: #9A8E7A; }
+html, body { margin: 0; background: var(--sh-bg); color: var(--sh-text); transition: background-color .25s ease; }
+body { font: 15px/1.5 'Karla', 'Helvetica Neue', Arial, sans-serif; min-height: 100vh; min-height: 100dvh; }
+
+.shell-nav { position: sticky; top: 0; z-index: 40; height: var(--nav-h); padding: env(safe-area-inset-top, 0px) max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px));
+  display: flex; align-items: center; gap: 12px 20px; background: var(--sh-bg); border-bottom: 1px solid var(--sh-line); transition: background-color .25s ease, border-color .25s ease; }
+.shell-brand { display: inline-flex; align-items: center; gap: 10px; color: var(--sh-text); text-decoration: none; min-height: 44px; flex-shrink: 0; }
+.shell-brand img { width: 32px; height: 32px; border-radius: 8px; display: block; }
+.shell-name { font: 600 22px/1 'Cormorant Garamond', Georgia, serif; letter-spacing: .01em; white-space: nowrap; }
+.shell-tabs { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--sh-line); border-radius: 22px; margin-left: auto; }
+.shell-tabs button { min-height: 36px; padding: 0 14px; border: 0; border-radius: 18px; background: transparent; color: var(--sh-muted); font: 600 13px 'Karla', sans-serif; cursor: pointer; white-space: nowrap; }
+.shell-tabs button:hover { color: var(--sh-text); }
+.shell-tabs .s { display: none; }
+.shell-tabs button[aria-selected="true"] { background: var(--sh-gold); color: var(--sh-on-gold); }
+.shell-install { min-height: 40px; padding: 0 14px; border-radius: 20px; border: 1px solid var(--sh-gold); background: transparent; color: var(--sh-gold); font: 600 13px 'Karla', sans-serif; cursor: pointer; white-space: nowrap; }
+.shell-nav button:focus-visible, .shell-brand:focus-visible { outline: 2px solid var(--sh-gold); outline-offset: 2px; }
+@media (display-mode: standalone) { .shell-install { display: none; } }
+@media (max-width: 560px) { .shell-name { display: none; } .shell-nav { gap: 10px; } }
+@media (max-width: 480px) { .shell-tabs .l { display: none; } .shell-tabs .s { display: inline; } }
+@media (max-width: 360px) { .shell-tabs button { padding: 0 10px; } }
+
+/* the welcome film takes the whole screen; its own dock leads into the rooms */
+body[data-view="welcome"] .shell-nav { display: none; }
+
+/* the rooms sit under the bar */
+.studio-view, .lab-view { padding-bottom: env(safe-area-inset-bottom, 0px); }
+.studio-view .wrap { min-height: calc(100vh - var(--nav-h)); }
+@media (min-width: 901px) {
+  .studio-view .stage { top: calc(var(--nav-h) + 16px); height: calc(100vh - var(--nav-h) - 32px); }
+}
+
+.toast { position: fixed; left: 50%; bottom: max(16px, env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--sh-bg); border: 1px solid var(--sh-line); color: var(--sh-text); border-radius: 12px; padding: 10px 14px; font: 13px 'Karla', sans-serif; display: flex; gap: 12px; align-items: center; z-index: 60; max-width: calc(100vw - 32px); box-shadow: 0 8px 30px rgba(0,0,0,.5); }
+.toast button { min-height: 36px; padding: 0 14px; border-radius: 18px; border: 1px solid var(--sh-gold); background: transparent; color: var(--sh-gold); font: 600 13px 'Karla', sans-serif; cursor: pointer; }
+@media (prefers-reduced-motion: reduce) { html, body, .shell-nav { transition: none; } }
