@@ -3,5 +3,8 @@
 {
   "name": "marea-dvipa",
   "compatibility_date": "2026-10-01",
-  "assets": { "directory": "./dist-single" }
+  "assets": { "directory": "./dist-single" },
+  // marea-dvipa.uk; the workers.dev address stays on so older links keep working
+  "routes": [{ "pattern": "marea-dvipa.uk", "custom_domain": true }],
+  "workers_dev": true
 }

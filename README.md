@@ -1,6 +1,6 @@
 # Marea Dvīpa
 
-**Live:** https://marea-dvipa.axeltaj.workers.dev
+**Live:** https://marea-dvipa.uk
 
 Marea Dvīpa brings the Batik Pattern Studio and the Batik Media Lab together in one installable, offline web app.
 It opens on a **welcome film**, and a bar at the top switches between the welcome and the two rooms:
