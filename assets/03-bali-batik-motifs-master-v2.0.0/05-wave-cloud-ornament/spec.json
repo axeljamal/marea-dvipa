@@ -1,0 +1,132 @@
+{
+  "id": "wave-cloud-ornament",
+  "title": "Wave / Cloud Ornament",
+  "name_on_sheet": "WAVE / CLOUD ORNAMENT",
+  "edition": "master",
+  "version": "2.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T23:07:35Z",
+  "source_reference": {
+    "file": "_source/original-motif-sheet.png",
+    "sha256": "8a5b9379e6852697940114d69a194563e61dba6fbc6b40879f87a8b9f4c26bff",
+    "region_px": {
+      "x": 61,
+      "y": 508,
+      "w": 301,
+      "h": 254
+    },
+    "reference_files": [
+      "reference/original-crop.png",
+      "reference/comparison.png"
+    ]
+  },
+  "treatment": "Detail-optimised: 8x upscale with light edge recovery, 14-ink palette sampled from the sheet + pearl keylines, light smoothing (\u03c3\u22482.6px), fine curve tracing; cream keylines kept as pearl so the motif is self-contained on any ground.",
+  "master": {
+    "file": "wave-cloud-ornament.svg",
+    "viewBox": [
+      0,
+      0,
+      2339,
+      1953
+    ],
+    "aspect_ratio": 1.1976
+  },
+  "symmetry": "none (directional; mirror only intentionally)",
+  "inks_bottom_to_top": [
+    {
+      "token": "pearl",
+      "hex": "#FAF7F2"
+    },
+    {
+      "token": "ivory",
+      "hex": "#E5DFD4"
+    },
+    {
+      "token": "sand",
+      "hex": "#D2C7B6"
+    },
+    {
+      "token": "light-gold",
+      "hex": "#D1B285"
+    },
+    {
+      "token": "silver-mist",
+      "hex": "#A2AAAA"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#C39B65"
+    },
+    {
+      "token": "antique-gold",
+      "hex": "#A78960"
+    },
+    {
+      "token": "mist-grey",
+      "hex": "#7C8B8D"
+    },
+    {
+      "token": "teal-blue",
+      "hex": "#527582"
+    },
+    {
+      "token": "bronze",
+      "hex": "#756C59"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#3F616F"
+    },
+    {
+      "token": "indigo-slate",
+      "hex": "#2C5063"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#1E4157"
+    },
+    {
+      "token": "deep-navy",
+      "hex": "#0F3049"
+    },
+    {
+      "token": "midnight",
+      "hex": "#02213D"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the listed inks; recolours map whole tokens and ship as a new version.",
+    "Keep layer order; lower layers tuck under upper ones to avoid seams.",
+    "Works on light or dark grounds (pearl keylines are part of the drawing).",
+    "Keep clear space of at least 8% of the motif's width in layouts; repeats follow pattern-layouts/ specs.",
+    "Use the SVG as master; regenerate PNGs from it, never edit PNGs.",
+    "Any change = new version + new hashes; run verify_lock.py."
+  ],
+  "files": {
+    "reference/comparison.png": {
+      "sha256": "2a087676f8fe91c1d3e8c535125eb640d09e61c50e459319869b4ea8aa23c603",
+      "bytes": 991450
+    },
+    "reference/original-crop.png": {
+      "sha256": "45bf47e300d6cced474dd7067c68a019f4d1d523f334f45f62608ea218e57217",
+      "bytes": 104875
+    },
+    "wave-cloud-ornament.preview.png": {
+      "sha256": "21ba573e3364f49405bd361cecd49dca9e1e7923b73cf5be4daf64948a984626",
+      "bytes": 439919
+    },
+    "wave-cloud-ornament.svg": {
+      "sha256": "10c7d33740fc84417aca97e3d9ef71dbf28749e962cc30723896a2e9b96050f9",
+      "bytes": 1000966
+    },
+    "wave-cloud-ornament@2048.png": {
+      "sha256": "64a87e511f0bc633d9499b9f9a60e0d712f651c5890cda1aff9d865cbfb05bf6",
+      "bytes": 977643
+    },
+    "wave-cloud-ornament@512.png": {
+      "sha256": "a9a31c511f8fe80ae87a4b0b3ed0bdf243e9d32d5cdc814fc51e6d57d6d91a58",
+      "bytes": 175924
+    }
+  }
+}

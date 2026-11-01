@@ -1,0 +1,164 @@
+{
+  "collection": "Bali Batik Motifs",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "palette": [
+    {
+      "token": "sand-wash",
+      "hex": "#D9C9B0"
+    },
+    {
+      "token": "stone",
+      "hex": "#C8CCCD"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#B39062"
+    },
+    {
+      "token": "mist-blue",
+      "hex": "#93A8B6"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#46677F"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#163A5A"
+    },
+    {
+      "token": "paper",
+      "hex": "#FFFFFF",
+      "note": "ground; transparent in assets"
+    }
+  ],
+  "assets": [
+    {
+      "id": "barong-mask",
+      "title": "Barong Mask",
+      "folder": "01-barong-mask",
+      "viewBox": [
+        0,
+        0,
+        1276,
+        1518
+      ],
+      "files": {
+        "barong-mask.preview.png": "d496ce2c6584df634ada88a3c0c34d38e2ce4c516c4e7673ab688745d1174c23",
+        "barong-mask.svg": "65df9400772324ee5c84552eb8f88d306f7492180a19fab697d8aeffb29ff25d",
+        "barong-mask@2048.png": "08bd3c607d951823a4824fc68f7c189d3241d3951747b7e19eeb05f20eaaf0df",
+        "barong-mask@512.png": "a353671517c94436703b61f30ca16b20cc3d280b6abaee7876a16780d67de108"
+      },
+      "spec_sha256": "7c2e8392115a55a43936fa593a11f823f4d458ebd6c6a0109c2536128f40a296"
+    },
+    {
+      "id": "sailing-ship",
+      "title": "Sailing Ship on Waves",
+      "folder": "02-sailing-ship",
+      "viewBox": [
+        0,
+        0,
+        1384,
+        1098
+      ],
+      "files": {
+        "sailing-ship.preview.png": "181bf01aaea8b9293de5653e585df4ed0717e6cf780dc29895ca776283d80f6f",
+        "sailing-ship.svg": "237f414c1b8cd32fa581ead6635e67a70647042fdc7e9a8fd5c1e816e49fda13",
+        "sailing-ship@2048.png": "59896c09d1bf28bedc912dc967b733c868309dc94571b44002e517a540cc1c0b",
+        "sailing-ship@512.png": "edf973c1fd9e159a3ae840f69d981fc61eb40b224069e9a9c918aa51d7bdba13"
+      },
+      "spec_sha256": "193f586535a81e7ff782174b8713e846cc7bde3866b112a471573488befae98a"
+    },
+    {
+      "id": "temple-gateway",
+      "title": "Temple Gateway (Candi Bentar)",
+      "folder": "03-temple-gateway",
+      "viewBox": [
+        0,
+        0,
+        2580,
+        1527
+      ],
+      "files": {
+        "temple-gateway.preview.png": "290071493c6b60959e4c5e578b02f316942bc78e5474fe384d065611da8c214b",
+        "temple-gateway.svg": "10e87be9e2214a2de54fcdfde3338fea5ceba7bf48b288e4265fd659b78a6b56",
+        "temple-gateway@2048.png": "12c27f74932259b15a84cb54f4bae737f6950f41e825e91aba7e590aee3de2cf",
+        "temple-gateway@512.png": "6f12599a91784259bceb167af53033e8d376a41fa4991b9134eec51f11c005e5"
+      },
+      "spec_sha256": "e4929260e279555c839b00d1efe545a28d7b4ad3aa3596acb55a4ec86ece9332"
+    },
+    {
+      "id": "damask-medallion",
+      "title": "Damask Medallion",
+      "folder": "04-damask-medallion",
+      "viewBox": [
+        0,
+        0,
+        2460,
+        1424
+      ],
+      "files": {
+        "damask-medallion.preview.png": "84fbe3e86c898cb8c63e2d0b04ad307b8426d2e7db9b6b4aa800c53fcb904ff9",
+        "damask-medallion.svg": "822cf3fe1a7ce1043be89fb98388bfa9d861ec375c6f1647233b2aa635fc7478",
+        "damask-medallion@2048.png": "dd703c19795a640559ab0c33a09a6dff45b45f1449769d2c4ba7f902c88e42f5",
+        "damask-medallion@512.png": "5fd5ab8533e95bf4a00df7e97a3716e246882c6e81778257398597da1873d683"
+      },
+      "spec_sha256": "0c861b168503686019a3bd77b65a9d0fbce3e8c48b19f0686fe2c9f7a8884272"
+    },
+    {
+      "id": "gold-flourish",
+      "title": "Gold Flourish",
+      "folder": "05-gold-flourish",
+      "viewBox": [
+        0,
+        0,
+        632,
+        585
+      ],
+      "files": {
+        "gold-flourish.preview.png": "bf42f4d8d14f8db03d4b7200eda61386e3c31e527ba459bf8f95fb98c98b5a47",
+        "gold-flourish.svg": "d6d7546be08e68101db3d2e4b402c18e605e25b89f7167e53db605281021c360",
+        "gold-flourish@2048.png": "185ad62d133cf8928119e98df8d1d7d4cd2b375a84842e2a419979f156e145dd",
+        "gold-flourish@512.png": "b807958208b252cee79d116ff6a85ff1df572c8776bb410098f9a5cd7261b947"
+      },
+      "spec_sha256": "72f0dd4a6f6b24588e7b1f9534f9bcc499d5dc499c26b35d1a9037a80cb256df"
+    },
+    {
+      "id": "lotus-bud-finial",
+      "title": "Lotus Bud Finial",
+      "folder": "06-lotus-bud-finial",
+      "viewBox": [
+        0,
+        0,
+        478,
+        651
+      ],
+      "files": {
+        "lotus-bud-finial.preview.png": "1c865b7b5130d827f8fc2f57fdf11eb3f10c71f7eff621f78f1cb2b7015545b7",
+        "lotus-bud-finial.svg": "9c01104a704fdf22836e84574202f7b4fb2c7784aea3f622792d6cf0ddc77da5",
+        "lotus-bud-finial@2048.png": "f4d57ca02fd1cc82c819f2e2899bb7985854ee389709bf3c0f9454d67113355d",
+        "lotus-bud-finial@512.png": "59002fc7358d964c088bf6ffc6d527464019af8a48943906ef5d66a7738ac6a6"
+      },
+      "spec_sha256": "47fbd0dd7504882bcec86174ab4e332072ddc34ac1d960518a0f07049b964c4f"
+    },
+    {
+      "id": "gold-lotus",
+      "title": "Gold Lotus",
+      "folder": "07-gold-lotus",
+      "viewBox": [
+        0,
+        0,
+        462,
+        488
+      ],
+      "files": {
+        "gold-lotus.preview.png": "35f7c023bf7fd3615b6830ba7cfb926feb8c175e1f3bdbe9f57c9a2577abd95e",
+        "gold-lotus.svg": "4d203c2b82acf302965c84abed4104c661e7f56c23347f3a7879290303195185",
+        "gold-lotus@2048.png": "ce7529e01d8ae175e2027e56b1fceab766a22a80f22ccab346254a5270527c6f",
+        "gold-lotus@512.png": "207a9bf2c58ec4a49b4ee94deca9b051f7c959dfbfede5a109e4a639917f9fa8"
+      },
+      "spec_sha256": "e2cd09a451adb2b3535e0aa7c2d60186e2f9a6436aa505eded1f8ef3d9d7ae2a"
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "id": "large-floral-ornament",
+  "title": "Large Floral Ornament",
+  "name_on_sheet": "LARGE FLORAL ORNAMENT",
+  "edition": "master",
+  "version": "2.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T23:07:35Z",
+  "source_reference": {
+    "file": "_source/original-motif-sheet.png",
+    "sha256": "8a5b9379e6852697940114d69a194563e61dba6fbc6b40879f87a8b9f4c26bff",
+    "region_px": {
+      "x": 1142,
+      "y": 51,
+      "w": 357,
+      "h": 383
+    },
+    "reference_files": [
+      "reference/original-crop.png",
+      "reference/comparison.png"
+    ]
+  },
+  "treatment": "Detail-optimised: 6x upscale with light edge recovery, 14-ink palette sampled from the sheet + pearl keylines, light smoothing (\u03c3\u22482.0px), fine curve tracing; cream keylines kept as pearl so the motif is self-contained on any ground.",
+  "master": {
+    "file": "large-floral-ornament.svg",
+    "viewBox": [
+      0,
+      0,
+      2088,
+      2232
+    ],
+    "aspect_ratio": 0.9355
+  },
+  "symmetry": "bilateral (mirrored about vertical centre line)",
+  "inks_bottom_to_top": [
+    {
+      "token": "pearl",
+      "hex": "#FAF7F2"
+    },
+    {
+      "token": "ivory",
+      "hex": "#E5DFD4"
+    },
+    {
+      "token": "sand",
+      "hex": "#D2C7B6"
+    },
+    {
+      "token": "light-gold",
+      "hex": "#D1B285"
+    },
+    {
+      "token": "silver-mist",
+      "hex": "#A2AAAA"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#C39B65"
+    },
+    {
+      "token": "antique-gold",
+      "hex": "#A78960"
+    },
+    {
+      "token": "mist-grey",
+      "hex": "#7C8B8D"
+    },
+    {
+      "token": "teal-blue",
+      "hex": "#527582"
+    },
+    {
+      "token": "bronze",
+      "hex": "#756C59"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#3F616F"
+    },
+    {
+      "token": "indigo-slate",
+      "hex": "#2C5063"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#1E4157"
+    },
+    {
+      "token": "deep-navy",
+      "hex": "#0F3049"
+    },
+    {
+      "token": "midnight",
+      "hex": "#02213D"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the listed inks; recolours map whole tokens and ship as a new version.",
+    "Keep layer order; lower layers tuck under upper ones to avoid seams.",
+    "Works on light or dark grounds (pearl keylines are part of the drawing).",
+    "Keep clear space of at least 8% of the motif's width in layouts; repeats follow pattern-layouts/ specs.",
+    "Use the SVG as master; regenerate PNGs from it, never edit PNGs.",
+    "Any change = new version + new hashes; run verify_lock.py."
+  ],
+  "files": {
+    "large-floral-ornament.preview.png": {
+      "sha256": "37de59d2824d5b60a9f18ce50a71181227f57e6cb595fcb1e9ef73028a9529fb",
+      "bytes": 503023
+    },
+    "large-floral-ornament.svg": {
+      "sha256": "dad46e6425d5cd50a63a0b50c531b48e0d477e5676a3fb1e1139f3b4a3e3d6ce",
+      "bytes": 1401317
+    },
+    "large-floral-ornament@2048.png": {
+      "sha256": "561255396004bd8760bbbbea141a2b31f58218c619a862ba9c580165205bc5ce",
+      "bytes": 1118589
+    },
+    "large-floral-ornament@512.png": {
+      "sha256": "674a0b3170aa5ab5b58dccacb2c92cb164ea3ae3188495bf365225252424eb01",
+      "bytes": 194459
+    },
+    "reference/comparison.png": {
+      "sha256": "42495657c331dcb7a4b1f97206735b1ed484794043e563b8fd8daca2822100c5",
+      "bytes": 904822
+    },
+    "reference/original-crop.png": {
+      "sha256": "d8a8f99a547b2b283d88a2c599ad33c54a5158a46b2d5176172f103ff65fc686",
+      "bytes": 184000
+    }
+  }
+}

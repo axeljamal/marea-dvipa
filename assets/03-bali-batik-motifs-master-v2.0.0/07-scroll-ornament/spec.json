@@ -1,0 +1,128 @@
+{
+  "id": "scroll-ornament",
+  "title": "Scroll Ornament",
+  "name_on_sheet": "SCROLL ORNAMENT",
+  "edition": "master",
+  "version": "2.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T23:07:35Z",
+  "source_reference": {
+    "file": "_source/original-motif-sheet.png",
+    "sha256": "8a5b9379e6852697940114d69a194563e61dba6fbc6b40879f87a8b9f4c26bff",
+    "region_px": {
+      "x": 724,
+      "y": 524,
+      "w": 225,
+      "h": 231
+    },
+    "reference_files": [
+      "reference/original-crop.png",
+      "reference/comparison.png"
+    ]
+  },
+  "treatment": "Detail-optimised: 8x upscale with light edge recovery, 14-ink palette sampled from the sheet + pearl keylines, light smoothing (\u03c3\u22482.6px), fine curve tracing; cream keylines kept as pearl so the motif is self-contained on any ground.",
+  "master": {
+    "file": "scroll-ornament.svg",
+    "viewBox": [
+      0,
+      0,
+      1732,
+      1785
+    ],
+    "aspect_ratio": 0.9703
+  },
+  "symmetry": "none (directional; mirror only intentionally)",
+  "inks_bottom_to_top": [
+    {
+      "token": "pearl",
+      "hex": "#FAF7F2"
+    },
+    {
+      "token": "ivory",
+      "hex": "#E5DFD4"
+    },
+    {
+      "token": "sand",
+      "hex": "#D2C7B6"
+    },
+    {
+      "token": "light-gold",
+      "hex": "#D1B285"
+    },
+    {
+      "token": "silver-mist",
+      "hex": "#A2AAAA"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#C39B65"
+    },
+    {
+      "token": "antique-gold",
+      "hex": "#A78960"
+    },
+    {
+      "token": "mist-grey",
+      "hex": "#7C8B8D"
+    },
+    {
+      "token": "teal-blue",
+      "hex": "#527582"
+    },
+    {
+      "token": "bronze",
+      "hex": "#756C59"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#3F616F"
+    },
+    {
+      "token": "indigo-slate",
+      "hex": "#2C5063"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#1E4157"
+    },
+    {
+      "token": "deep-navy",
+      "hex": "#0F3049"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the listed inks; recolours map whole tokens and ship as a new version.",
+    "Keep layer order; lower layers tuck under upper ones to avoid seams.",
+    "Works on light or dark grounds (pearl keylines are part of the drawing).",
+    "Keep clear space of at least 8% of the motif's width in layouts; repeats follow pattern-layouts/ specs.",
+    "Use the SVG as master; regenerate PNGs from it, never edit PNGs.",
+    "Any change = new version + new hashes; run verify_lock.py."
+  ],
+  "files": {
+    "reference/comparison.png": {
+      "sha256": "eec4e3534341190a6d14cf7e34123cfadf6d4772f1af8753d32aea3a7cae3be4",
+      "bytes": 525538
+    },
+    "reference/original-crop.png": {
+      "sha256": "44bef04a2681c75da6c79680df94e06c8955a136003451af7ffe649b51af67da",
+      "bytes": 55608
+    },
+    "scroll-ornament.preview.png": {
+      "sha256": "a6ce59cfe4c0ed812f72f7852c3aff2940f3c48cda063bbe5c9497e41eff2b0e",
+      "bytes": 211540
+    },
+    "scroll-ornament.svg": {
+      "sha256": "eb57e90539c8dba71774099f7a685ecf3017c5183a4780969496b59dc044778e",
+      "bytes": 269790
+    },
+    "scroll-ornament@2048.png": {
+      "sha256": "d18e7b903288b78f91ac8c4aa93128cdbc071c4650dcde2dd91e5c1e3d42ccb3",
+      "bytes": 484872
+    },
+    "scroll-ornament@512.png": {
+      "sha256": "048c4f6157cbca987e55be7acfe901481aa83a02f51048c37c1b4e4ea1bb978a",
+      "bytes": 89287
+    }
+  }
+}

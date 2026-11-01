@@ -52,6 +52,22 @@ src/
 public/       motifs/, isen/, icons/ (the Ntina mark), manifest.webmanifest, sw.js
 ```
 
+## Project material
+The collections, tools and documents behind both rooms live alongside the app (brought over from the project archive on 1 November 2026):
+```
+assets/
+  01-bali-batik-motifs-standard-v1.0.0   Standard edition: 7 motifs, SVG masters, PNGs, specs, SHA-256 lock
+  02-bali-batik-motifs-fine-v1.0.0       Fine edition, with reference crops beside each master
+  03-bali-batik-motifs-master-v2.0.0     Master edition: 10 named motifs, 15 inks, pattern-layouts/ (tiles, swatches, recipe.json, layouts.js)
+  04-dua-pulau-signature-v1.1.0          Dua Pulau signature: 6 motifs, 2 colourways, isen-isen fills, the rebung ribbon, ORIGINS.md
+  05-ntina-system                        The Ntina system as SVG: primary mark, small size, line version, pattern unit, in three inks
+  06-ntina-sketchbook                    Every Ntina exploration from rounds 1 to 4, with CRITIQUE.md and the drawing source
+pipeline/     the scripts that built every edition: tracing, palette, packaging, layout export, signature and Ntina drawing
+skills/       pattern-aesthetics-craft, design-taste, heritage-signature-design, motif-asset-pipeline, batik-pattern-studio
+docs/         every LOCK.md, the Dua Pulau origins, the sketchbook critique and the development log
+```
+The four locked collections each carry `verify_lock.py`; run `python3 verify_lock.py` inside the folder and it prints `ALL LOCKED`. Never edit a locked file in place: a change ships as a new version. The app's own copies of the motifs stay in `public/`.
+
 ## Design partner (Claude)
 Same as the studio: inside a Claude artifact with the `sample` and `downloads` capabilities it uses Claude directly; elsewhere it is off unless you host `server/partner-proxy.mjs` with your own key and build with `VITE_PARTNER_URL`.
 

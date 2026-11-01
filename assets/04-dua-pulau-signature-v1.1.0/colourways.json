@@ -1,0 +1,22 @@
+{
+  "dua-pulau": {
+    "gold": "#C39B65",
+    "gold-light": "#D1B285",
+    "gold-deep": "#A78960",
+    "navy": "#1E4157",
+    "navy-deep": "#02213D",
+    "teal": "#527582",
+    "pearl": "#FAF7F2",
+    "line": "#02213D"
+  },
+  "buya-bomba": {
+    "gold": "#C9A35A",
+    "gold-light": "#E0C27E",
+    "gold-deep": "#9C7A3C",
+    "navy": "#1A1712",
+    "navy-deep": "#0E0C09",
+    "teal": "#6E5A33",
+    "pearl": "#F3E3B5",
+    "line": "#0E0C09"
+  }
+}

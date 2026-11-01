@@ -1,0 +1,114 @@
+{
+  "id": "barong-mask",
+  "edition": "fine",
+  "title": "Barong Mask",
+  "description": "Guardian mask with flame-leaf crown; the hero motif.",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T22:42:34Z",
+  "source_reference": {
+    "file": "original uploaded pattern tile (1254\u00d71254 px)",
+    "sha256": "2d620486f8cbfcfe3f534dcce1c72d087de259902afdc15db309c3a08162f450",
+    "region_px": {
+      "x": 292,
+      "y": 343,
+      "w": 219,
+      "h": 262
+    },
+    "reference_files": [
+      "reference/original-crop.png",
+      "reference/original-crop@8x.png",
+      "reference/comparison.png"
+    ],
+    "standard_edition_counterpart": "bali-batik-motifs/01-barong-mask/barong-mask.svg"
+  },
+  "treatment": "Detail-preserving: 8x upscale, stronger edge recovery, 9-ink tonal palette, light smoothing (\u03c3 2.6), islands kept down to 220 px\u00b2, fine curve tracing. Mirrored motifs averaged with their reflection.",
+  "master": {
+    "file": "barong-mask.svg",
+    "viewBox": [
+      0,
+      0,
+      1702,
+      2037
+    ],
+    "aspect_ratio": 0.8355
+  },
+  "symmetry": "bilateral (mirrored about vertical centre line)",
+  "inks_bottom_to_top": [
+    {
+      "token": "pale-sand",
+      "hex": "#EAE1D2"
+    },
+    {
+      "token": "sand-wash",
+      "hex": "#D9C9B0"
+    },
+    {
+      "token": "stone",
+      "hex": "#C8CCCD"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#B39062"
+    },
+    {
+      "token": "mist-blue",
+      "hex": "#93A8B6"
+    },
+    {
+      "token": "steel-blue",
+      "hex": "#6A8699"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#46677F"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#163A5A"
+    },
+    {
+      "token": "deep-navy",
+      "hex": "#0D2740"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the inks listed; colour changes must map whole tokens, never individual paths.",
+    "Keep layer order; lower layers tuck under upper ones by design to avoid seams.",
+    "Fine edition is for large/hero use (\u2265 300 px or \u2265 8 cm print); below that use the standard edition.",
+    "Keep clear space of at least 8% of the motif's width around it.",
+    "Use the SVG as master; regenerate PNGs from it, never edit PNGs.",
+    "Any change = new version number and new hashes; run verify_lock.py before release."
+  ],
+  "files": {
+    "barong-mask.preview.png": {
+      "sha256": "ed22b78e7cf7313e88355b2f65e22436b969196cada64fca9cf830bbc173eff7",
+      "bytes": 470683
+    },
+    "barong-mask.svg": {
+      "sha256": "48244366b93375f0821f8c99f8f2466d8e37aa108234de54a9707936bf6eb257",
+      "bytes": 793686
+    },
+    "barong-mask@2048.png": {
+      "sha256": "58a42af10991deeb66a55d25be228a13f12bd30cf2849428d04ae8be6ec0133e",
+      "bytes": 985571
+    },
+    "barong-mask@512.png": {
+      "sha256": "ecd058e7fb765530566f4cd5e6b9ef6cf3833b44cc3fd60679aa5fa4961c9e46",
+      "bytes": 201393
+    },
+    "reference/comparison.png": {
+      "sha256": "9c9b19b136f75e7e2d78a1b1fce781c674bbfadb33480dd9a0e7d99dea879328",
+      "bytes": 965142
+    },
+    "reference/original-crop.png": {
+      "sha256": "2d0c12233690688e67060a99c262fcb8d84bb9d8da9aee2440e7192cecc7e41e",
+      "bytes": 92472
+    },
+    "reference/original-crop@8x.png": {
+      "sha256": "85111cfa84d144707f7ecea0b7b3ac0bb27847d212622191680149ec10a06429",
+      "bytes": 2563465
+    }
+  }
+}

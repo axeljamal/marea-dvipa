@@ -1,0 +1,371 @@
+{
+  "collection": "Bali Batik Motifs",
+  "edition": "master",
+  "version": "2.0.0",
+  "status": "LOCKED",
+  "source_images": {
+    "motif_sheet_sha256": "8a5b9379e6852697940114d69a194563e61dba6fbc6b40879f87a8b9f4c26bff",
+    "pattern_layout_sha256": "33033ef52bab90ab6a96b9fa4baacc05dba0ffb615a9cab1d84f68ace776c19e"
+  },
+  "palette": [
+    {
+      "token": "pearl",
+      "hex": "#FAF7F2"
+    },
+    {
+      "token": "ivory",
+      "hex": "#E5DFD4"
+    },
+    {
+      "token": "sand",
+      "hex": "#D2C7B6"
+    },
+    {
+      "token": "light-gold",
+      "hex": "#D1B285"
+    },
+    {
+      "token": "silver-mist",
+      "hex": "#A2AAAA"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#C39B65"
+    },
+    {
+      "token": "antique-gold",
+      "hex": "#A78960"
+    },
+    {
+      "token": "mist-grey",
+      "hex": "#7C8B8D"
+    },
+    {
+      "token": "teal-blue",
+      "hex": "#527582"
+    },
+    {
+      "token": "bronze",
+      "hex": "#756C59"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#3F616F"
+    },
+    {
+      "token": "indigo-slate",
+      "hex": "#2C5063"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#1E4157"
+    },
+    {
+      "token": "deep-navy",
+      "hex": "#0F3049"
+    },
+    {
+      "token": "midnight",
+      "hex": "#02213D"
+    }
+  ],
+  "assets": [
+    {
+      "id": "barong-mask",
+      "title": "Barong Mask",
+      "folder": "01-barong-mask",
+      "viewBox": [
+        0,
+        0,
+        1710,
+        2175
+      ],
+      "source_region_px": {
+        "x": 31,
+        "y": 18,
+        "w": 352,
+        "h": 443
+      },
+      "files": {
+        "barong-mask.preview.png": "eeceae9bf0b94150352c661111de09dc97013daa4e748a604c7525f4ce7459d8",
+        "barong-mask.svg": "f4073a263f5b49f7397c3b8f4c73604144724795de1c5a0b39dda14de342b0f2",
+        "barong-mask@2048.png": "8948f83c65240c75634e78a503bd36ef664170cab3d8a3dfa5232ea24d77189d",
+        "barong-mask@512.png": "bc55885ba8fa742a597d40792a4ff3072d2a6d452ec5c607289fdf92c3631396",
+        "reference/comparison.png": "ec2a9e6fda05c9847b792fd5a985a76457288fbd3325c624638933c968159e07",
+        "reference/original-crop.png": "f52aa0da9452c5146b4befe8e4b8d6600dcd8d67a92231461a14e1982eb6be1c"
+      },
+      "spec_sha256": "25e8a1aa9217a61a921325024342cd72fef7e021b60ddb995813752ffa95a2dc"
+    },
+    {
+      "id": "traditional-boat",
+      "title": "Traditional Boat",
+      "folder": "02-traditional-boat",
+      "viewBox": [
+        0,
+        0,
+        2204,
+        2429
+      ],
+      "source_region_px": {
+        "x": 391,
+        "y": 95,
+        "w": 324,
+        "h": 356
+      },
+      "files": {
+        "reference/comparison.png": "8faebd7a31866a5fc64c21fa9b77e2359a952b61985eaa1dbd9b581d9d5a196a",
+        "reference/original-crop.png": "1dc1c61184ba02d845bc2e258ba655bfc59c39d9bf0816a514c0fa67489b6fb4",
+        "traditional-boat.preview.png": "b5bd8dd474203e48917777947d17c567a85e1d0db98598dd390005865cb96467",
+        "traditional-boat.svg": "824708e80a9f0278f6f2acf0bb398ef2fc6573328f12cf69ef2ffdb963d7a5ed",
+        "traditional-boat@2048.png": "8fb06c9914a177df893622cd5d0f9b46d85d134026a449c79692f63f8481db27",
+        "traditional-boat@512.png": "8926e350c1b0ee759972290696e1c723dbbe468a1e6169db9a7d9504fded50f4"
+      },
+      "spec_sha256": "08d4b0cac07297850fd394d3c40e604b091281a092caa2ff28a73af9b8976f34"
+    },
+    {
+      "id": "split-gate-candi-bentar",
+      "title": "Split Gate (Candi Bentar)",
+      "folder": "03-split-gate-candi-bentar",
+      "viewBox": [
+        0,
+        0,
+        2442,
+        2418
+      ],
+      "source_region_px": {
+        "x": 713,
+        "y": 48,
+        "w": 417,
+        "h": 412
+      },
+      "files": {
+        "reference/comparison.png": "4910569ce8c79aca5a07f288198a5533e7c91160d6d5d68565aa632fd76baa3d",
+        "reference/original-crop.png": "76ecd38c5458b0fa5d7ffe73c6cf1b070218272498155098be077930d1c93793",
+        "split-gate-candi-bentar.preview.png": "f650c99a05620e3aa43acc42ba91d01a3558e3924f0354f8b5fbf2e24d74f287",
+        "split-gate-candi-bentar.svg": "4e5b0c23769cfa8ef405d63f78d662253385447293d19603fbab18e96d5b3542",
+        "split-gate-candi-bentar@2048.png": "bf8c3f8a9949673db33d259def55310d4bd5b02d6f82309ba74a732cbafdd5b3",
+        "split-gate-candi-bentar@512.png": "c4ea379d2ee9fba30fe3061acc0bc560fe690f12a550b620160bf3d08a37ab26"
+      },
+      "spec_sha256": "392891afb9b5275c3c9d67710914f950982aa67d5db62af7e434c1aa082955cd"
+    },
+    {
+      "id": "large-floral-ornament",
+      "title": "Large Floral Ornament",
+      "folder": "04-large-floral-ornament",
+      "viewBox": [
+        0,
+        0,
+        2088,
+        2232
+      ],
+      "source_region_px": {
+        "x": 1142,
+        "y": 51,
+        "w": 357,
+        "h": 383
+      },
+      "files": {
+        "large-floral-ornament.preview.png": "37de59d2824d5b60a9f18ce50a71181227f57e6cb595fcb1e9ef73028a9529fb",
+        "large-floral-ornament.svg": "dad46e6425d5cd50a63a0b50c531b48e0d477e5676a3fb1e1139f3b4a3e3d6ce",
+        "large-floral-ornament@2048.png": "561255396004bd8760bbbbea141a2b31f58218c619a862ba9c580165205bc5ce",
+        "large-floral-ornament@512.png": "674a0b3170aa5ab5b58dccacb2c92cb164ea3ae3188495bf365225252424eb01",
+        "reference/comparison.png": "42495657c331dcb7a4b1f97206735b1ed484794043e563b8fd8daca2822100c5",
+        "reference/original-crop.png": "d8a8f99a547b2b283d88a2c599ad33c54a5158a46b2d5176172f103ff65fc686"
+      },
+      "spec_sha256": "6c4083b0f9bba892773906e51e1db9125721e8655c94288d2020bd327e5200e0"
+    },
+    {
+      "id": "wave-cloud-ornament",
+      "title": "Wave / Cloud Ornament",
+      "folder": "05-wave-cloud-ornament",
+      "viewBox": [
+        0,
+        0,
+        2339,
+        1953
+      ],
+      "source_region_px": {
+        "x": 61,
+        "y": 508,
+        "w": 301,
+        "h": 254
+      },
+      "files": {
+        "reference/comparison.png": "2a087676f8fe91c1d3e8c535125eb640d09e61c50e459319869b4ea8aa23c603",
+        "reference/original-crop.png": "45bf47e300d6cced474dd7067c68a019f4d1d523f334f45f62608ea218e57217",
+        "wave-cloud-ornament.preview.png": "21ba573e3364f49405bd361cecd49dca9e1e7923b73cf5be4daf64948a984626",
+        "wave-cloud-ornament.svg": "10c7d33740fc84417aca97e3d9ef71dbf28749e962cc30723896a2e9b96050f9",
+        "wave-cloud-ornament@2048.png": "64a87e511f0bc633d9499b9f9a60e0d712f651c5890cda1aff9d865cbfb05bf6",
+        "wave-cloud-ornament@512.png": "a9a31c511f8fe80ae87a4b0b3ed0bdf243e9d32d5cdc814fc51e6d57d6d91a58"
+      },
+      "spec_sha256": "4e1a93908e50b8bc9857241c23fcf1a83f0230baa6592624e9e3494666eab277"
+    },
+    {
+      "id": "lotus-floral-motif",
+      "title": "Lotus Floral Motif",
+      "folder": "06-lotus-floral-motif",
+      "viewBox": [
+        0,
+        0,
+        2044,
+        1963
+      ],
+      "source_region_px": {
+        "x": 413,
+        "y": 511,
+        "w": 264,
+        "h": 254
+      },
+      "files": {
+        "lotus-floral-motif.preview.png": "082c18cee9a4655a3798c0e3740c9772c44032df1777f88ea55aa4d63acd48c0",
+        "lotus-floral-motif.svg": "dfa7517a181cf789b92b5737321ff69a1a63c99c194cda51e649ee723fd7e30e",
+        "lotus-floral-motif@2048.png": "863124cf294eba2865cfadd292161899d4d0ade513b7d6bc4ea83f7fd3530769",
+        "lotus-floral-motif@512.png": "2ef23dc80b01a027e957f31cfaeb999baa84b6db8c326f4944f25c10b4b2c2d4",
+        "reference/comparison.png": "37f83ea84d9fd60928f54b9e01d962629345a2d5234ecc37e38f1eaabd246352",
+        "reference/original-crop.png": "5d4c75c806eb97aa46a4b05d816e82e09ba641ec2d62d47bb42977475074327b"
+      },
+      "spec_sha256": "b84d56886c9cdf3260c673036f968ac59b4db7f4052449221e26672b7a9eb4b7"
+    },
+    {
+      "id": "scroll-ornament",
+      "title": "Scroll Ornament",
+      "folder": "07-scroll-ornament",
+      "viewBox": [
+        0,
+        0,
+        1732,
+        1785
+      ],
+      "source_region_px": {
+        "x": 724,
+        "y": 524,
+        "w": 225,
+        "h": 231
+      },
+      "files": {
+        "reference/comparison.png": "eec4e3534341190a6d14cf7e34123cfadf6d4772f1af8753d32aea3a7cae3be4",
+        "reference/original-crop.png": "44bef04a2681c75da6c79680df94e06c8955a136003451af7ffe649b51af67da",
+        "scroll-ornament.preview.png": "a6ce59cfe4c0ed812f72f7852c3aff2940f3c48cda063bbe5c9497e41eff2b0e",
+        "scroll-ornament.svg": "eb57e90539c8dba71774099f7a685ecf3017c5183a4780969496b59dc044778e",
+        "scroll-ornament@2048.png": "d18e7b903288b78f91ac8c4aa93128cdbc071c4650dcde2dd91e5c1e3d42ccb3",
+        "scroll-ornament@512.png": "048c4f6157cbca987e55be7acfe901481aa83a02f51048c37c1b4e4ea1bb978a"
+      },
+      "spec_sha256": "4d6561a26a09ff66baca1f52e17ad1c19240fb95a68b2c85d7b2900fffb7ff67"
+    },
+    {
+      "id": "lotus-flower",
+      "title": "Lotus Flower",
+      "folder": "08-lotus-flower",
+      "viewBox": [
+        0,
+        0,
+        1678,
+        1787
+      ],
+      "source_region_px": {
+        "x": 999,
+        "y": 531,
+        "w": 219,
+        "h": 232
+      },
+      "files": {
+        "lotus-flower.preview.png": "be5386f575a5c80414f044b02023613564e69474c4df5b1ababeedaeb25061df",
+        "lotus-flower.svg": "ad13c5dd59abb71ae7ad632ce95c984e57312dabd67ca94ef7f213ed4afd7404",
+        "lotus-flower@2048.png": "b077030bd51b1e04941d18d8353482fce8ba2b03df28a3ffd606f43180a2b5e0",
+        "lotus-flower@512.png": "4fc9d25bcdc7a8d81216b2b766378ab57ca0626686ee41dc8d7ef90270ac4911",
+        "reference/comparison.png": "0b701ad48ec56f4c9cdbd07cc97f47122545cd096d18296395389c8950af7f5f",
+        "reference/original-crop.png": "304f5b33966d3955913373dac389a563daf62f4728a8ae5af96f27e95eef5f8c"
+      },
+      "spec_sha256": "faaa293cfa9e47abdee7d1836a75748fbadfad76ffe84808cb2077c04de516a0"
+    },
+    {
+      "id": "lotus-bud",
+      "title": "Lotus Bud",
+      "folder": "09-lotus-bud",
+      "viewBox": [
+        0,
+        0,
+        1276,
+        1656
+      ],
+      "source_region_px": {
+        "x": 1279,
+        "y": 543,
+        "w": 169,
+        "h": 216
+      },
+      "files": {
+        "lotus-bud.preview.png": "067ad40b5340d03fa26522d596e18d0278647872764848b87d823cc8094a8c78",
+        "lotus-bud.svg": "83ac64a2ec4acd350f8e36aec59edc6e50750d8d3ad41e20aba558954c90ddce",
+        "lotus-bud@2048.png": "88433cb43a1434fd56a281107de83b06bbe9452d1059d53f6f2b28718b09d7e0",
+        "lotus-bud@512.png": "48f949b2aa7a76de64cdde1bb5172908aacd833ea5e664b15d0aa24926cd442a",
+        "reference/comparison.png": "12d516978337e3dfdc4f355d7b73891dbb1b65d4c63a2757a3826084b957c875",
+        "reference/original-crop.png": "4aa0fa53f600e2a13290e9e136f8bc3af70c19b24f7489607c219c9e4045a7e0"
+      },
+      "spec_sha256": "688ca241e906505ee5705c9859a7ac36ec4f05d7cba97179a055e24c1e0c7b13"
+    },
+    {
+      "id": "border-filler-ornament",
+      "title": "Border / Filler Ornament",
+      "folder": "10-border-filler-ornament",
+      "viewBox": [
+        0,
+        0,
+        6272,
+        827
+      ],
+      "source_region_px": {
+        "x": 240,
+        "y": 816,
+        "w": 1055,
+        "h": 146
+      },
+      "files": {
+        "border-filler-ornament.preview.png": "96ff750b22cada650711d904db16d42e0ad3b7094a0d558173402e23b44a70a7",
+        "border-filler-ornament.svg": "01a547d5e6a53511b485e0fca0acf431fdd927345bb58f6f5bfc9008bc046199",
+        "border-filler-ornament@2048.png": "2c5adac00705b3605e546a7c8a5e4c95325987ec63a8a7c6911e5309fa7e3427",
+        "border-filler-ornament@512.png": "328bc67138229ade9037b373242ab5800934fa50845d08d53ebf07bbc9479121",
+        "reference/comparison.png": "4c291232aec6730e72098ca79e03c7327e46b8226f873393c69f2b2ba594a4a4",
+        "reference/original-crop.png": "01b968e74fb798e8788e4becc64117305cc425493aa629de47bc32e00b0e2c55"
+      },
+      "spec_sha256": "e0c9ae4cd52006284715f99ddd0e84fe6913c31d36195eea7d7a134fc5cb4e87"
+    },
+    {
+      "id": "pattern-layouts",
+      "title": "Pattern layouts",
+      "folder": "pattern-layouts",
+      "files": {
+        "00-reference-panel/temple-column-panel-2x.png": "ad1a6f36ee961ec373ac0027193d27968c1b7b76319153f1308250a272ccc756",
+        "00-reference-panel/temple-column-panel-2x.svg": "4f23a882571ab0d7c27c5dbd9fd30f2275c4f82e992ac5dab5be849ebd9f2448",
+        "00-reference-panel/temple-column-panel-4x.png": "4a87e9e884fdefb67b61a686365e83a67f293ca30e6bf9bddbbe686670849237",
+        "00-reference-panel/temple-column-panel-4x.svg": "9edb550d8aa22efa6ee943a05a4bdadcd380307f36859b0a097c3ccbef9c4208",
+        "01-temple-column/recipe.json": "2f50ce5964bec4889aa4240beaa9215a77c7480fd1fd9508fb5a804962d0391e",
+        "01-temple-column/temple-column-swatch-midnight.png": "a42e9dfda7a62b6ae658d1777e91d086b675ccc7cd658bf1d90b920406a7ba3b",
+        "01-temple-column/temple-column-swatch-pearl.png": "4f46f6f6c49d42e8d2f31eec0f5841e828a12502dc1838f4b43d99eded722528",
+        "01-temple-column/temple-column-tile.svg": "d011b436b25dd0fb5bac105412338f2148e534d50cd8c1e7b68b5f7c85bcd4ac",
+        "01-temple-column/temple-column-tile@2048.png": "c01052b3a658c361ac0439d4c3784b13c857cf296f9e53ca82521c428cbb8131",
+        "02-royal-damask/recipe.json": "b2c3765b13d343f75bd8fe0284a36993780d061a7f050a328b4d8db643395893",
+        "02-royal-damask/royal-damask-swatch-midnight.png": "9e886686a473faa209074b968a9c4a7e61163cc5bf236d2f155df8b336f78f6c",
+        "02-royal-damask/royal-damask-swatch-pearl.png": "fdc52e85be7e3ce08377d7c597e649c3ecf38fe1fd5d981a7518baaf4403c0be",
+        "02-royal-damask/royal-damask-tile.svg": "54907ef4dadd88198269c4da292a64b69bdcfdbb87fb99ed66afa08897d315d4",
+        "02-royal-damask/royal-damask-tile@2048.png": "8084fce92015ed2952f66b4d17af457e856ff5f7430d9cf986977d3e79cf5054",
+        "03-ocean-voyage/ocean-voyage-swatch-midnight.png": "56d248d3bd24895394275139c72aa5db2a11cdf7ea8f736825af29d2e7433b12",
+        "03-ocean-voyage/ocean-voyage-swatch-pearl.png": "cbc272f2c8629a4149ebe68189a2810b059297b7cbe8f0f21cfd855719a96368",
+        "03-ocean-voyage/ocean-voyage-tile.svg": "8e19127cc630caf003dd649326d68188e53f6a2c2dae558510548ee26e0b5685",
+        "03-ocean-voyage/ocean-voyage-tile@2048.png": "9f1fae58ce4f45bbb4434279395c36d6abeb4f23cb09be7130eee0e290c5854a",
+        "03-ocean-voyage/recipe.json": "60e12ed9b9f7ead8b3b22456c6d08fbb491c15615dab2508c8a06607172d5595",
+        "04-lotus-garden/lotus-garden-swatch-midnight.png": "53901c0c5a30a55e69abe3eb004cfe17e6df8dc17beb51d5d4b6645212c686ee",
+        "04-lotus-garden/lotus-garden-swatch-pearl.png": "db5e38eb3270415e70ff91857fd266e5c07023d7b633a06e09fbdf28f9c01b06",
+        "04-lotus-garden/lotus-garden-tile.svg": "3479e9d5ae41d89469f32e4537dae930b58ec345faea0302343702f5d0f08813",
+        "04-lotus-garden/lotus-garden-tile@2048.png": "48d81335cea719de68f839b1bfacd0fa488022cc3f24e9b09e6a33f1b8714c4c",
+        "04-lotus-garden/recipe.json": "76ea65b24d8cf29d0f0d06ba51d59ba119219cf3c1ce1beb00da1bc737118148",
+        "05-temple-frieze/recipe.json": "0b19054c13eaa0d0b630abf7e28afa7c27df80dcaad6642b3a49a346b31aa726",
+        "05-temple-frieze/temple-frieze-swatch-midnight.png": "cd3c8a4f58c6bcfa1cd2606c7a0a913893ef436b50c7c51f5671af4d44b08bdf",
+        "05-temple-frieze/temple-frieze-swatch-pearl.png": "0abfff6222ab3565e8ff9ccbb01ea89345fb63d23216954b33bca1af232446d7",
+        "05-temple-frieze/temple-frieze-tile.svg": "d64cddef6f0de8127cd7dfd5d95a81629e2bccdccf6af1c02b9611427bb363d1",
+        "05-temple-frieze/temple-frieze-tile@2048.png": "7b879605fc8666df7c6a37c45338f75fc31a2e77df859563a10c11d91deff6b6",
+        "layouts.js": "72dfccc75e4d87ab6d5b40fa0dac0f3b147597684b9e8ab0c56d74756c8e8293"
+      }
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "id": "lotus-bud",
+  "title": "Lotus Bud",
+  "name_on_sheet": "LOTUS BUD",
+  "edition": "master",
+  "version": "2.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T23:07:35Z",
+  "source_reference": {
+    "file": "_source/original-motif-sheet.png",
+    "sha256": "8a5b9379e6852697940114d69a194563e61dba6fbc6b40879f87a8b9f4c26bff",
+    "region_px": {
+      "x": 1279,
+      "y": 543,
+      "w": 169,
+      "h": 216
+    },
+    "reference_files": [
+      "reference/original-crop.png",
+      "reference/comparison.png"
+    ]
+  },
+  "treatment": "Detail-optimised: 8x upscale with light edge recovery, 14-ink palette sampled from the sheet + pearl keylines, light smoothing (\u03c3\u22482.6px), fine curve tracing; cream keylines kept as pearl so the motif is self-contained on any ground.",
+  "master": {
+    "file": "lotus-bud.svg",
+    "viewBox": [
+      0,
+      0,
+      1276,
+      1656
+    ],
+    "aspect_ratio": 0.7705
+  },
+  "symmetry": "bilateral (mirrored about vertical centre line)",
+  "inks_bottom_to_top": [
+    {
+      "token": "pearl",
+      "hex": "#FAF7F2"
+    },
+    {
+      "token": "ivory",
+      "hex": "#E5DFD4"
+    },
+    {
+      "token": "sand",
+      "hex": "#D2C7B6"
+    },
+    {
+      "token": "light-gold",
+      "hex": "#D1B285"
+    },
+    {
+      "token": "silver-mist",
+      "hex": "#A2AAAA"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#C39B65"
+    },
+    {
+      "token": "antique-gold",
+      "hex": "#A78960"
+    },
+    {
+      "token": "mist-grey",
+      "hex": "#7C8B8D"
+    },
+    {
+      "token": "teal-blue",
+      "hex": "#527582"
+    },
+    {
+      "token": "bronze",
+      "hex": "#756C59"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#3F616F"
+    },
+    {
+      "token": "indigo-slate",
+      "hex": "#2C5063"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#1E4157"
+    },
+    {
+      "token": "deep-navy",
+      "hex": "#0F3049"
+    },
+    {
+      "token": "midnight",
+      "hex": "#02213D"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the listed inks; recolours map whole tokens and ship as a new version.",
+    "Keep layer order; lower layers tuck under upper ones to avoid seams.",
+    "Works on light or dark grounds (pearl keylines are part of the drawing).",
+    "Keep clear space of at least 8% of the motif's width in layouts; repeats follow pattern-layouts/ specs.",
+    "Use the SVG as master; regenerate PNGs from it, never edit PNGs.",
+    "Any change = new version + new hashes; run verify_lock.py."
+  ],
+  "files": {
+    "lotus-bud.preview.png": {
+      "sha256": "067ad40b5340d03fa26522d596e18d0278647872764848b87d823cc8094a8c78",
+      "bytes": 260962
+    },
+    "lotus-bud.svg": {
+      "sha256": "83ac64a2ec4acd350f8e36aec59edc6e50750d8d3ad41e20aba558954c90ddce",
+      "bytes": 421572
+    },
+    "lotus-bud@2048.png": {
+      "sha256": "88433cb43a1434fd56a281107de83b06bbe9452d1059d53f6f2b28718b09d7e0",
+      "bytes": 570984
+    },
+    "lotus-bud@512.png": {
+      "sha256": "48f949b2aa7a76de64cdde1bb5172908aacd833ea5e664b15d0aa24926cd442a",
+      "bytes": 101830
+    },
+    "reference/comparison.png": {
+      "sha256": "12d516978337e3dfdc4f355d7b73891dbb1b65d4c63a2757a3826084b957c875",
+      "bytes": 615327
+    },
+    "reference/original-crop.png": {
+      "sha256": "4aa0fa53f600e2a13290e9e136f8bc3af70c19b24f7489607c219c9e4045a7e0",
+      "bytes": 51437
+    }
+  }
+}

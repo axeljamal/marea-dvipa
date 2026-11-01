@@ -1,0 +1,209 @@
+{
+  "id": "rebung-ribbon",
+  "title": "Rebung Ribbon",
+  "collection": "Dua Pulau signature",
+  "version": "1.1.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-27T01:48:50Z",
+  "authorship": "Original procedural motif: source/rebung.js draws it along any path; source/make_samples.js renders the locked samples. Same code runs in Batik Pattern Studio.",
+  "kind": "path-following ribbon (not a fixed image)",
+  "api": {
+    "rebungRibbon(points, halfHeight, colourway, phase)": "returns shapes {d, fill, stroke, sw} or {dot, r, fill} for one polyline of [x, y] points",
+    "rebungToSvg(svgElement, shapes)": "draws the shapes into an SVG element (browser)",
+    "rebungToCanvas(ctx2d, shapes)": "draws the shapes onto a canvas",
+    "polyFromPath(svgPathD, step)": "samples any SVG path string into polylines (browser)"
+  },
+  "geometry": {
+    "shoot_spacing": "1.25 x half-height",
+    "rows": "two, offset by half a step, pointing to the spine",
+    "edge_band": "0.16 x half-height",
+    "skip_rule": "no shoots where the curve turns more than 0.75 rad within one shoot width"
+  },
+  "samples": [
+    "rebung-ribbon-golden-arcs--buya-bomba.svg",
+    "rebung-ribbon-golden-arcs--dua-pulau.svg",
+    "rebung-ribbon-golden-spiral--buya-bomba.svg",
+    "rebung-ribbon-golden-spiral--dua-pulau.svg",
+    "rebung-ribbon-straight--buya-bomba.svg",
+    "rebung-ribbon-straight--dua-pulau.svg",
+    "rebung-ribbon-wave--buya-bomba.svg",
+    "rebung-ribbon-wave--dua-pulau.svg"
+  ],
+  "origins": {
+    "inspired_by": "The same inward-facing rebung borders of the Donggala buya bomba, whose framing bands run unbroken along the cloth.",
+    "made_our_own": "A ribbon that is drawn live along any path, straight, diagonal, wave, golden spiral or golden arcs, with every shoot bending to the curve, rows offset by half a step, and a zigzag cecek spine. It skips curves too tight for the band rather than crumpling.",
+    "meaning_honoured": "Power, greatness and triumph, now flowing with the pattern.",
+    "sources": [
+      {
+        "title": "Inayah & Fatimah, Analisis Ikonografi Kain Tenun Donggala Bermotif \"Buya Bomba\", Societies 5(1), 2025",
+        "url": "https://ojs.unm.ac.id/societies/article/view/73950"
+      }
+    ]
+  },
+  "colourways": {
+    "dua-pulau": {
+      "gold": "#C39B65",
+      "gold-light": "#D1B285",
+      "gold-deep": "#A78960",
+      "navy": "#1E4157",
+      "navy-deep": "#02213D",
+      "teal": "#527582",
+      "pearl": "#FAF7F2",
+      "line": "#02213D"
+    },
+    "buya-bomba": {
+      "gold": "#C9A35A",
+      "gold-light": "#E0C27E",
+      "gold-deep": "#9C7A3C",
+      "navy": "#1A1712",
+      "navy-deep": "#0E0C09",
+      "teal": "#6E5A33",
+      "pearl": "#F3E3B5",
+      "line": "#0E0C09"
+    }
+  },
+  "reproduction_rules": [
+    "Credit the origins (see ORIGINS.md) wherever it is published or sold.",
+    "Change the look only in rebung.js, as a new version; never hand-edit the sample SVGs.",
+    "Keep half-height at least 8 px on screen and 3 mm in print so the chevrons stay legible.",
+    "Use the straight 03-rebung-border image for fixed print borders; use the ribbon for flows, curves and diagonals."
+  ],
+  "files": {
+    "rebung-ribbon-golden-arcs--buya-bomba.preview.png": {
+      "sha256": "401cacb6ef1c34de0984492b448c80cbf834fefa5d2ccc7b6c83819748906ff3",
+      "bytes": 270960
+    },
+    "rebung-ribbon-golden-arcs--buya-bomba.svg": {
+      "sha256": "fe6a54343d619bb4c9f6bc061524ae17dd33056e8ec29d2f1b721e7767fb2c31",
+      "bytes": 240621
+    },
+    "rebung-ribbon-golden-arcs--buya-bomba@2048.png": {
+      "sha256": "2433b4c3b141611070693b6430791fa7f557af6ed9d0c213de3fe5e07cc413a9",
+      "bytes": 706722
+    },
+    "rebung-ribbon-golden-arcs--buya-bomba@512.png": {
+      "sha256": "364ac855e8c1de53dfd81c50bcf1e2a557b8634a29115c85cebf4931564018a1",
+      "bytes": 88941
+    },
+    "rebung-ribbon-golden-arcs--dua-pulau.preview.png": {
+      "sha256": "a7d1cc1837fbb1685eb4200524c897b0a2f5e647610b7fd3e6b127ca89421af6",
+      "bytes": 285773
+    },
+    "rebung-ribbon-golden-arcs--dua-pulau.svg": {
+      "sha256": "4791c4012943b2ed1ccf8f9b7c55a1a7de046a891bede30411368b1a09ab75ca",
+      "bytes": 240620
+    },
+    "rebung-ribbon-golden-arcs--dua-pulau@2048.png": {
+      "sha256": "2633cd3895f95796cc4f2eec0ee63c2e4a5a7903135698a4005e6922db7ea205",
+      "bytes": 703000
+    },
+    "rebung-ribbon-golden-arcs--dua-pulau@512.png": {
+      "sha256": "62399e0b670bf9ac6cc951da88e79900c2bed4b06b6b8e8af6f7373dc5ae5f8c",
+      "bytes": 88910
+    },
+    "rebung-ribbon-golden-spiral--buya-bomba.preview.png": {
+      "sha256": "9d2aad3781fc22e2eb04ffc6a53b299549b29eaf931e56a062e1578984450ca8",
+      "bytes": 285219
+    },
+    "rebung-ribbon-golden-spiral--buya-bomba.svg": {
+      "sha256": "dd3ea3f0add66d9af27f74ae2dcdf9825247a1d2291aed6c5eff65f0dc254eb2",
+      "bytes": 126204
+    },
+    "rebung-ribbon-golden-spiral--buya-bomba@2048.png": {
+      "sha256": "dffe38bb65b11b68fb78660dcc428bad4d55d3b030d87ee5491783f0ab9729ef",
+      "bytes": 708368
+    },
+    "rebung-ribbon-golden-spiral--buya-bomba@512.png": {
+      "sha256": "b87522e1a87a56b0e6aabf914e9ce0c626e86ebb177ee0398ad83300362fe291",
+      "bytes": 101271
+    },
+    "rebung-ribbon-golden-spiral--dua-pulau.preview.png": {
+      "sha256": "6bc608e44709ccf096ff9e0e1673521f4d585d023d2bc860885c7501df5db194",
+      "bytes": 309408
+    },
+    "rebung-ribbon-golden-spiral--dua-pulau.svg": {
+      "sha256": "52f34f4027c6109ee8a88d23c8f6b441e78d57cf8aea4516e47225a552744f5a",
+      "bytes": 126203
+    },
+    "rebung-ribbon-golden-spiral--dua-pulau@2048.png": {
+      "sha256": "4e254c64c17a5cf336e5107aba4e6f69128b72ec1fb35629a50b38f4041e44b7",
+      "bytes": 705986
+    },
+    "rebung-ribbon-golden-spiral--dua-pulau@512.png": {
+      "sha256": "71497910b96b8bf02b6566d711eb3509dc09f3a84c27bba14fd722a9d588a6bc",
+      "bytes": 100917
+    },
+    "rebung-ribbon-straight--buya-bomba.preview.png": {
+      "sha256": "1e594d350110813d77a05d6c94eb8b02e7822257690bcbca10e4bca9e27480b4",
+      "bytes": 64142
+    },
+    "rebung-ribbon-straight--buya-bomba.svg": {
+      "sha256": "c1c97970ec9daf7068622d1b9a8feaa7c7049a6bf2fe0300d568fe04bf48e194",
+      "bytes": 65440
+    },
+    "rebung-ribbon-straight--buya-bomba@2048.png": {
+      "sha256": "2c36d45b723cf8d60ce5ae5ed0cb9e5cfbf2e23c1b0aabac54bc408c66a44376",
+      "bytes": 77572
+    },
+    "rebung-ribbon-straight--buya-bomba@512.png": {
+      "sha256": "ba4faad07d6e123e87f252da4320ae569ff0124bc54e59c142b5f47d9800a74a",
+      "bytes": 5865
+    },
+    "rebung-ribbon-straight--dua-pulau.preview.png": {
+      "sha256": "3efd1c97b6dc85b2cc55d7228885e907abb74917b1d14c1c05601c7f7056f4a2",
+      "bytes": 68740
+    },
+    "rebung-ribbon-straight--dua-pulau.svg": {
+      "sha256": "069217f179f5494997d4cd00e9865816116f935c19858d42cbc63a603fa958cb",
+      "bytes": 65439
+    },
+    "rebung-ribbon-straight--dua-pulau@2048.png": {
+      "sha256": "b9f7e2c6ce5b6a85de91dad13fc6d72abdfbf13c43cb84bac56b013e2f006b66",
+      "bytes": 77427
+    },
+    "rebung-ribbon-straight--dua-pulau@512.png": {
+      "sha256": "5a7f2533bd2a6c84b63bc0f1c2efc632a4c485fd89ed769da10d9030eba87015",
+      "bytes": 5850
+    },
+    "rebung-ribbon-wave--buya-bomba.preview.png": {
+      "sha256": "1fd4d43727a8484689882602e5dee3a878b3d3e2bf720077ef9872b6cb9ffd95",
+      "bytes": 155753
+    },
+    "rebung-ribbon-wave--buya-bomba.svg": {
+      "sha256": "7f710ce6a9b35f5a29e76ccc98ddbbdbbf9e119f1800b94ad825059deea6ab27",
+      "bytes": 141148
+    },
+    "rebung-ribbon-wave--buya-bomba@2048.png": {
+      "sha256": "4f07c523f31c67e667a3510ef874add9780a7a035b5fb32d6000c9647c66422a",
+      "bytes": 409209
+    },
+    "rebung-ribbon-wave--buya-bomba@512.png": {
+      "sha256": "3d9e3270f763fe3e3b46049c1f23fdf2134101f0b564080da3c6d6916b029406",
+      "bytes": 51874
+    },
+    "rebung-ribbon-wave--dua-pulau.preview.png": {
+      "sha256": "369e9b08197e78c4929f480a5d6217c7508a160d35b68326f044cdfe92999c49",
+      "bytes": 164163
+    },
+    "rebung-ribbon-wave--dua-pulau.svg": {
+      "sha256": "4abf46964b91f7ac4c38cf5a2be2e420ae844eec330ea0c5988690bdbc78aeee",
+      "bytes": 141147
+    },
+    "rebung-ribbon-wave--dua-pulau@2048.png": {
+      "sha256": "f72519743feb0f0b95cf38ecbf951d44b4e492e9a56b2e2e223feec17676b7f1",
+      "bytes": 407603
+    },
+    "rebung-ribbon-wave--dua-pulau@512.png": {
+      "sha256": "247af1c8d06711ab55b2fcb63bc355ac8c7fc2b90d2365b2a12622c7eea916ec",
+      "bytes": 51967
+    },
+    "source/make_samples.js": {
+      "sha256": "602910e3e15da26e284ef7c1b0600c83abcd6f99b639c747d94d7224df402fbe",
+      "bytes": 2700
+    },
+    "source/rebung.js": {
+      "sha256": "fdb7c90ef502ede7cdc3495835540887fe4f669fe2f6518e9701e9a59804052c",
+      "bytes": 7784
+    }
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "id": "damask-medallion",
+  "edition": "fine",
+  "title": "Damask Medallion",
+  "description": "Central lotus medallion with sweeping wave-scroll arms.",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T22:42:34Z",
+  "source_reference": {
+    "file": "original uploaded pattern tile (1254\u00d71254 px)",
+    "sha256": "2d620486f8cbfcfe3f534dcce1c72d087de259902afdc15db309c3a08162f450",
+    "region_px": {
+      "x": 191,
+      "y": 108,
+      "w": 419,
+      "h": 244
+    },
+    "reference_files": [
+      "reference/original-crop.png",
+      "reference/original-crop@8x.png",
+      "reference/comparison.png"
+    ],
+    "standard_edition_counterpart": "bali-batik-motifs/04-damask-medallion/damask-medallion.svg"
+  },
+  "treatment": "Detail-preserving: 8x upscale, stronger edge recovery, 9-ink tonal palette, light smoothing (\u03c3 2.6), islands kept down to 220 px\u00b2, fine curve tracing. Mirrored motifs averaged with their reflection.",
+  "master": {
+    "file": "damask-medallion.svg",
+    "viewBox": [
+      0,
+      0,
+      3282,
+      1907
+    ],
+    "aspect_ratio": 1.721
+  },
+  "symmetry": "bilateral (mirrored about vertical centre line)",
+  "inks_bottom_to_top": [
+    {
+      "token": "pale-sand",
+      "hex": "#EAE1D2"
+    },
+    {
+      "token": "sand-wash",
+      "hex": "#D9C9B0"
+    },
+    {
+      "token": "stone",
+      "hex": "#C8CCCD"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#B39062"
+    },
+    {
+      "token": "mist-blue",
+      "hex": "#93A8B6"
+    },
+    {
+      "token": "steel-blue",
+      "hex": "#6A8699"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#46677F"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#163A5A"
+    },
+    {
+      "token": "deep-navy",
+      "hex": "#0D2740"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the inks listed; colour changes must map whole tokens, never individual paths.",
+    "Keep layer order; lower layers tuck under upper ones by design to avoid seams.",
+    "Fine edition is for large/hero use (\u2265 300 px or \u2265 8 cm print); below that use the standard edition.",
+    "Keep clear space of at least 8% of the motif's width around it.",
+    "Use the SVG as master; regenerate PNGs from it, never edit PNGs.",
+    "Any change = new version number and new hashes; run verify_lock.py before release."
+  ],
+  "files": {
+    "damask-medallion.preview.png": {
+      "sha256": "14ad1c8e47f963a0e62aba59e3267d2f499e4c4a27f90850b613c4b3042a0d1e",
+      "bytes": 346222
+    },
+    "damask-medallion.svg": {
+      "sha256": "716d7951648c048ea037902a90964b88125e157ef8ca1c3d62ee6bbfc0c33728",
+      "bytes": 1032142
+    },
+    "damask-medallion@2048.png": {
+      "sha256": "8627aaa872a4a7e087e51c39b2a62fd09ea4e505c1d4486ea5da4d6da8648d91",
+      "bytes": 756122
+    },
+    "damask-medallion@512.png": {
+      "sha256": "aa9557f55bacd3c6d2d1da12333d05f9b83471155edbccb948b4c00076034087",
+      "bytes": 139286
+    },
+    "reference/comparison.png": {
+      "sha256": "1e080e61fe72fd573c596a88161a0be81bffb53f250cd2b2a7c2ff7e4d68671b",
+      "bytes": 1601998
+    },
+    "reference/original-crop.png": {
+      "sha256": "3ccc431b290459225bd1530b9e971af9ca8b6fe3001bcbdebcec32c1017b2b83",
+      "bytes": 150953
+    },
+    "reference/original-crop@8x.png": {
+      "sha256": "be63989bf10783e57a8549aaf08537e5601d04db78daa4b9e3fdb06a29084030",
+      "bytes": 4300935
+    }
+  }
+}

@@ -1,0 +1,185 @@
+{
+  "collection": "Dua Pulau signature",
+  "version": "1.1.0",
+  "status": "LOCKED",
+  "colourways": {
+    "dua-pulau": {
+      "gold": "#C39B65",
+      "gold-light": "#D1B285",
+      "gold-deep": "#A78960",
+      "navy": "#1E4157",
+      "navy-deep": "#02213D",
+      "teal": "#527582",
+      "pearl": "#FAF7F2",
+      "line": "#02213D"
+    },
+    "buya-bomba": {
+      "gold": "#C9A35A",
+      "gold-light": "#E0C27E",
+      "gold-deep": "#9C7A3C",
+      "navy": "#1A1712",
+      "navy-deep": "#0E0C09",
+      "teal": "#6E5A33",
+      "pearl": "#F3E3B5",
+      "line": "#0E0C09"
+    }
+  },
+  "assets": [
+    {
+      "id": "bomba-rose",
+      "folder": "01-bomba-rose",
+      "files": {
+        "bomba-rose--buya-bomba.preview.png": "a58f85fe5151b62b19d2ae1763ae65775fc7af47db4c025ec83c8d7afaca2027",
+        "bomba-rose--buya-bomba.svg": "e61c65cc7147968baef93187164139eb643a6af642ee8a32d5cd49ecb4db1fa6",
+        "bomba-rose--buya-bomba@2048.png": "c1d13ea10dae987919c352bb42326feee1f0f54db7374d8bbfc3f170451f7761",
+        "bomba-rose--buya-bomba@512.png": "54c1bc8e0494e0559eeb9b427c8350dad6f02ef9b1d4717b5d9c1a0890cd7a91",
+        "bomba-rose--dua-pulau.preview.png": "3462b3cc3cb43809dadc202c5edfed293dd95df0d8488c8babec50c7d7020d03",
+        "bomba-rose--dua-pulau.svg": "41bee64c78a853e6465852bfc4cda329d0c1fd84a90bd2edc3fb34a6431fc881",
+        "bomba-rose--dua-pulau@2048.png": "ee43e916afa04b81bef781d30199a8ea0172d971816bd9f0710896203dfc9c9c",
+        "bomba-rose--dua-pulau@512.png": "68b864f94d7affc52174dbef5b9a18541489836bb21b6b1593e4bb18b3711980"
+      },
+      "spec_sha256": "d8cd2cbcaed2b5704730bff191aed1cc9703166aecab53dd2c7c727e7ae23a7c"
+    },
+    {
+      "id": "bomba-rosette",
+      "folder": "02-bomba-rosette",
+      "files": {
+        "bomba-rosette--buya-bomba.preview.png": "6f69b43560f22cf0a66ca218b9ee2039d4ded16a131434a0eeb0554bced56b23",
+        "bomba-rosette--buya-bomba.svg": "bf36e850b56a43ef6df26df1370706fb879f55dca0ac34064bec1b700ba01518",
+        "bomba-rosette--buya-bomba@2048.png": "0c9634151bcc38e33e3561960f2ea7202f0412a4cbdf5545c0bead6377691283",
+        "bomba-rosette--buya-bomba@512.png": "029507d8dc0d37407df2710be270ba795aadae449915261df5888da18d181886",
+        "bomba-rosette--dua-pulau.preview.png": "3b3c7bc1de32fe9fe3ae366b6271528b4f70d28586800aad7f3279abef3a2c5f",
+        "bomba-rosette--dua-pulau.svg": "d9a9112a30a7d558efc14b32c5c6cd54512db74bf047fc8c66cee272f7ed0edb",
+        "bomba-rosette--dua-pulau@2048.png": "05de146b8513aee70cf3341900d5d41597f4928500e488849725c640818e37b4",
+        "bomba-rosette--dua-pulau@512.png": "ea2562bab37828fb51b26e626ba738aabe150f324ce8119fb14d3ce72633dbab"
+      },
+      "spec_sha256": "dab68f8780203d84cfa28bc90c0df977ee358ce9e2d17d7bc2718a9b30fc043c"
+    },
+    {
+      "id": "rebung-border",
+      "folder": "03-rebung-border",
+      "files": {
+        "rebung-border--buya-bomba.preview.png": "5aa8a454d33ad60606296161011e977829cb24e29a5d9d0ef426ad8c8c16b94b",
+        "rebung-border--buya-bomba.svg": "e347d3388522faa45fbca5f5b68a6bcae500b1f777790c8a3f765329acfabd47",
+        "rebung-border--buya-bomba@2048.png": "fd1a27921d8f6c488e872471f5dfee7509eeca82d82d442cb36af784d277614b",
+        "rebung-border--buya-bomba@512.png": "102274fd5235a1faf3913de74536c368bede932b1d384a19e7149ee860693f2c",
+        "rebung-border--dua-pulau.preview.png": "cfabb7ff6409995244e8e4cf32574590ad902c0147452437196574db9602fa54",
+        "rebung-border--dua-pulau.svg": "67d542e164561571941eb730b9a1598eb5f1ae85a53ae94616d77a551b4fb65c",
+        "rebung-border--dua-pulau@2048.png": "12badb1e71b9e5d38e923e598a303bf9fd121a571939fac771981d57add85981",
+        "rebung-border--dua-pulau@512.png": "ad8a71638ab10fa6720812ee5be0f932afcafdaa8e61f90dce97b8a9ce74d83e"
+      },
+      "spec_sha256": "aa12e6e0d834d55bda73a67dd55ef1454169c3d0876fa0619075fc25cc0da9d6"
+    },
+    {
+      "id": "ketupat-lattice",
+      "folder": "04-ketupat-lattice",
+      "files": {
+        "ketupat-lattice--buya-bomba.preview.png": "8a865dd5fa78340e50340ddc7f2e9f252f737c87a7eb91a4150ec9ae27c5d5f3",
+        "ketupat-lattice--buya-bomba.svg": "afadebfe08cd9737bdab7f31d1949effa5f4f17002ad4da9b345e298e0d654cf",
+        "ketupat-lattice--buya-bomba@2048.png": "86fe33955324a0bf589aed0e812a7d11a31c665088cc43abfa757d4bce8805f3",
+        "ketupat-lattice--buya-bomba@512.png": "fa12cdab56eff30c36ac3732a845baef1f53caf6b77b1f68357ed72de2aad952",
+        "ketupat-lattice--dua-pulau.preview.png": "1383b8c2849f780babca6c112f522cc7079f8f18452497339223d98ac4c91898",
+        "ketupat-lattice--dua-pulau.svg": "9a01b9d48de3d62c21fd412700f7c48c2e7fec1c754af335d621a379443460d7",
+        "ketupat-lattice--dua-pulau@2048.png": "5e4226e1a4f145ef499199fe5728d4c70d0a742df187c233fb9ba114f3c528a1",
+        "ketupat-lattice--dua-pulau@512.png": "811b996e7ef52f6faa222be341f301a8084776d269e5ecf1a0e53cc7d00e8689"
+      },
+      "spec_sha256": "c95cb1ccb66e32379e9a742a0e569471508e922d11c4033064ec8377d286a4a5"
+    },
+    {
+      "id": "cengkeh-sprig",
+      "folder": "05-cengkeh-sprig",
+      "files": {
+        "cengkeh-sprig--buya-bomba.preview.png": "bedee9420052368c1291d9dbe2aa9666dce13230cabfd1464620fd33521b2ac3",
+        "cengkeh-sprig--buya-bomba.svg": "6ec6733c76c5b1a0f88be5bb03a46c05b1f5ccc6c3a4fa391968401b61150231",
+        "cengkeh-sprig--buya-bomba@2048.png": "1fc640f27aade72b6e59268fc3c2703e7218e0b3bc45349a7b656fb6c51bd0f9",
+        "cengkeh-sprig--buya-bomba@512.png": "b32701acbe92e1eb5f4ecd566eec1a07543a0b44edbe6491d450c5048b0a381f",
+        "cengkeh-sprig--dua-pulau.preview.png": "680f470b6d05c76796c7bddd6348bd7cae4da99946cb3e523d700e0668a1c855",
+        "cengkeh-sprig--dua-pulau.svg": "c6d0b118ed6f750b11043288f530ef89bbc647ed403ff0f7fd160985ad2abe78",
+        "cengkeh-sprig--dua-pulau@2048.png": "c46667cd83638cb29a7da6121f24a71eed8cbef9007b6427c44468e6549f39ca",
+        "cengkeh-sprig--dua-pulau@512.png": "47c5a881cbc9e7ad0e6974ee68480f2cda25fe49c5ccfe1651a5cc44c71fabeb"
+      },
+      "spec_sha256": "78e6fb384e45af51b317045d69edf601aad92332eee97b75a621b753753d6a5b"
+    },
+    {
+      "id": "dua-pulau-medallion",
+      "folder": "06-dua-pulau-medallion",
+      "files": {
+        "dua-pulau-medallion--buya-bomba.preview.png": "8e4c0a3ef69de98388ff2c3f80b3ec6ce8fcc51b27aa5ca6817d87372e48bdb5",
+        "dua-pulau-medallion--buya-bomba.svg": "67bb1a972be3428b1a56997c928e3eeb3f06737a45c50a81ac55b61479f67e95",
+        "dua-pulau-medallion--buya-bomba@2048.png": "49d2f2fc2b3751e16d6f9256f9924016347c76d10997e7d3233c075343932e2f",
+        "dua-pulau-medallion--buya-bomba@512.png": "affefcd83b1ab01ba6d0cd1a2677e93a4680ed8a9fcf9d0eb287f9c081df8614",
+        "dua-pulau-medallion--dua-pulau.preview.png": "e2b8f8a291b03a394cbae15440843aefa5b7afd864c483ef2c128e05bc6498f2",
+        "dua-pulau-medallion--dua-pulau.svg": "91081962d39f8238ea507a52613acee090dfa09430e289b153dbdb5485a3be6d",
+        "dua-pulau-medallion--dua-pulau@2048.png": "fc62fb16e7d5b8e3499999892d8ec1ceb8d423fa564722002e686007cf02fe1b",
+        "dua-pulau-medallion--dua-pulau@512.png": "83732e0744cbbe606905106a34872e3f87867cef8b574350d347e983760f7c2b"
+      },
+      "spec_sha256": "18554a9e733db9c7c578109ea3e37cee2db8839e0a4b8100a0d024e200079eb1"
+    },
+    {
+      "id": "rebung-ribbon",
+      "folder": "07-rebung-ribbon",
+      "files": {
+        "rebung-ribbon-golden-arcs--buya-bomba.preview.png": "401cacb6ef1c34de0984492b448c80cbf834fefa5d2ccc7b6c83819748906ff3",
+        "rebung-ribbon-golden-arcs--buya-bomba.svg": "fe6a54343d619bb4c9f6bc061524ae17dd33056e8ec29d2f1b721e7767fb2c31",
+        "rebung-ribbon-golden-arcs--buya-bomba@2048.png": "2433b4c3b141611070693b6430791fa7f557af6ed9d0c213de3fe5e07cc413a9",
+        "rebung-ribbon-golden-arcs--buya-bomba@512.png": "364ac855e8c1de53dfd81c50bcf1e2a557b8634a29115c85cebf4931564018a1",
+        "rebung-ribbon-golden-arcs--dua-pulau.preview.png": "a7d1cc1837fbb1685eb4200524c897b0a2f5e647610b7fd3e6b127ca89421af6",
+        "rebung-ribbon-golden-arcs--dua-pulau.svg": "4791c4012943b2ed1ccf8f9b7c55a1a7de046a891bede30411368b1a09ab75ca",
+        "rebung-ribbon-golden-arcs--dua-pulau@2048.png": "2633cd3895f95796cc4f2eec0ee63c2e4a5a7903135698a4005e6922db7ea205",
+        "rebung-ribbon-golden-arcs--dua-pulau@512.png": "62399e0b670bf9ac6cc951da88e79900c2bed4b06b6b8e8af6f7373dc5ae5f8c",
+        "rebung-ribbon-golden-spiral--buya-bomba.preview.png": "9d2aad3781fc22e2eb04ffc6a53b299549b29eaf931e56a062e1578984450ca8",
+        "rebung-ribbon-golden-spiral--buya-bomba.svg": "dd3ea3f0add66d9af27f74ae2dcdf9825247a1d2291aed6c5eff65f0dc254eb2",
+        "rebung-ribbon-golden-spiral--buya-bomba@2048.png": "dffe38bb65b11b68fb78660dcc428bad4d55d3b030d87ee5491783f0ab9729ef",
+        "rebung-ribbon-golden-spiral--buya-bomba@512.png": "b87522e1a87a56b0e6aabf914e9ce0c626e86ebb177ee0398ad83300362fe291",
+        "rebung-ribbon-golden-spiral--dua-pulau.preview.png": "6bc608e44709ccf096ff9e0e1673521f4d585d023d2bc860885c7501df5db194",
+        "rebung-ribbon-golden-spiral--dua-pulau.svg": "52f34f4027c6109ee8a88d23c8f6b441e78d57cf8aea4516e47225a552744f5a",
+        "rebung-ribbon-golden-spiral--dua-pulau@2048.png": "4e254c64c17a5cf336e5107aba4e6f69128b72ec1fb35629a50b38f4041e44b7",
+        "rebung-ribbon-golden-spiral--dua-pulau@512.png": "71497910b96b8bf02b6566d711eb3509dc09f3a84c27bba14fd722a9d588a6bc",
+        "rebung-ribbon-straight--buya-bomba.preview.png": "1e594d350110813d77a05d6c94eb8b02e7822257690bcbca10e4bca9e27480b4",
+        "rebung-ribbon-straight--buya-bomba.svg": "c1c97970ec9daf7068622d1b9a8feaa7c7049a6bf2fe0300d568fe04bf48e194",
+        "rebung-ribbon-straight--buya-bomba@2048.png": "2c36d45b723cf8d60ce5ae5ed0cb9e5cfbf2e23c1b0aabac54bc408c66a44376",
+        "rebung-ribbon-straight--buya-bomba@512.png": "ba4faad07d6e123e87f252da4320ae569ff0124bc54e59c142b5f47d9800a74a",
+        "rebung-ribbon-straight--dua-pulau.preview.png": "3efd1c97b6dc85b2cc55d7228885e907abb74917b1d14c1c05601c7f7056f4a2",
+        "rebung-ribbon-straight--dua-pulau.svg": "069217f179f5494997d4cd00e9865816116f935c19858d42cbc63a603fa958cb",
+        "rebung-ribbon-straight--dua-pulau@2048.png": "b9f7e2c6ce5b6a85de91dad13fc6d72abdfbf13c43cb84bac56b013e2f006b66",
+        "rebung-ribbon-straight--dua-pulau@512.png": "5a7f2533bd2a6c84b63bc0f1c2efc632a4c485fd89ed769da10d9030eba87015",
+        "rebung-ribbon-wave--buya-bomba.preview.png": "1fd4d43727a8484689882602e5dee3a878b3d3e2bf720077ef9872b6cb9ffd95",
+        "rebung-ribbon-wave--buya-bomba.svg": "7f710ce6a9b35f5a29e76ccc98ddbbdbbf9e119f1800b94ad825059deea6ab27",
+        "rebung-ribbon-wave--buya-bomba@2048.png": "4f07c523f31c67e667a3510ef874add9780a7a035b5fb32d6000c9647c66422a",
+        "rebung-ribbon-wave--buya-bomba@512.png": "3d9e3270f763fe3e3b46049c1f23fdf2134101f0b564080da3c6d6916b029406",
+        "rebung-ribbon-wave--dua-pulau.preview.png": "369e9b08197e78c4929f480a5d6217c7508a160d35b68326f044cdfe92999c49",
+        "rebung-ribbon-wave--dua-pulau.svg": "4abf46964b91f7ac4c38cf5a2be2e420ae844eec330ea0c5988690bdbc78aeee",
+        "rebung-ribbon-wave--dua-pulau@2048.png": "f72519743feb0f0b95cf38ecbf951d44b4e492e9a56b2e2e223feec17676b7f1",
+        "rebung-ribbon-wave--dua-pulau@512.png": "247af1c8d06711ab55b2fcb63bc355ac8c7fc2b90d2365b2a12622c7eea916ec",
+        "source/make_samples.js": "602910e3e15da26e284ef7c1b0600c83abcd6f99b639c747d94d7224df402fbe",
+        "source/rebung.js": "fdb7c90ef502ede7cdc3495835540887fe4f669fe2f6518e9701e9a59804052c"
+      },
+      "spec_sha256": "68f21c537e27c14f250750f6bc00c15a6cfeabdd67317aca55b72df1e6d85835"
+    },
+    {
+      "id": "isen-isen",
+      "folder": "isen-isen",
+      "files": {
+        "isen-cecek--buya-bomba.svg": "d891f10ae721b22d217525412a3135cc845d93b776b0e1edd042d2e46579e794",
+        "isen-cecek--dua-pulau.svg": "5dfffd488f3f8991e2c2ea24209cc5ccca38eedba1414a30c30bcc48a4fd6b81",
+        "isen-sero--buya-bomba.svg": "73ff04c491febbffb298fb0fd726494a21cb826ca84179d83d2f0153a5540769",
+        "isen-sero--dua-pulau.svg": "f8f467084f885268be43ca1da41d81e2f871c0a6d69b8db744179177083edc3e",
+        "isen-zigzag--buya-bomba.svg": "a11e8a2431a1d7ee6d872639e1f2681628b31d2cdbb6ac57536abe315597f799",
+        "isen-zigzag--dua-pulau.svg": "b688bcfed7c02c6a3d567302737fe669e501caa4b71f725fb9963ebcb931f6a7"
+      }
+    },
+    {
+      "id": "_source",
+      "folder": "_source",
+      "files": {
+        "draw.py": "bdc35075fefe0e4778d69ab065312ca460a950673c709f0c14de34ac67d8abe3",
+        "finalize.py": "de252b66dd9f1f9bcef282409410158265f3a8bf8deef55a85f5259b54e127da",
+        "origins.json": "8540ec29a81265155ce20640db483c92f1056ca23c5486213fecec57a0f0bd8d",
+        "package.py": "8684c881d7de6de505ad8aea3606f08b59194a0dae4740dfa1af5c4f7f99601a",
+        "render_sig.js": "bbc601ca38194d8a6fa3f90cf511a94d8eb1675c47de0c1fb84a5a8518821a02",
+        "sources.json": "332f107a45e0c3f5110b40e7b48fcd6b191bdf0869eba6cc8b568af118ac6fe9"
+      }
+    }
+  ],
+  "origins_sha256": "2b0ce305b94564fe5c251b87a655c7293285be236215e8a236e30843cf96bf57"
+}

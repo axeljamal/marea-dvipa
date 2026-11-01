@@ -1,0 +1,60 @@
+{
+  "title": "Temple Frieze",
+  "note": "Border band over alternating barong and temple gates: a stripe for hems and edges.",
+  "tile_units": {
+    "w": 900,
+    "h": 400
+  },
+  "unit_px_at_master": 4,
+  "defaults": {
+    "scale": 1,
+    "spacing": 1,
+    "hero": "barong-mask",
+    "crown": "large-floral-ornament",
+    "mirror": false
+  },
+  "items": [
+    {
+      "motif": "border-filler-ornament",
+      "cx": 0,
+      "cy": 0,
+      "width": 840,
+      "flip": false
+    },
+    {
+      "motif": "lotus-bud",
+      "cx": 450,
+      "cy": 0,
+      "width": 44,
+      "flip": false
+    },
+    {
+      "motif": "barong-mask",
+      "cx": 0,
+      "cy": 210,
+      "width": 130,
+      "flip": false
+    },
+    {
+      "motif": "split-gate-candi-bentar",
+      "cx": 450,
+      "cy": 210,
+      "width": 170,
+      "flip": false
+    },
+    {
+      "motif": "lotus-flower",
+      "cx": 225,
+      "cy": 220,
+      "width": 58,
+      "flip": false
+    },
+    {
+      "motif": "lotus-flower",
+      "cx": 675,
+      "cy": 220,
+      "width": 58,
+      "flip": false
+    }
+  ]
+}

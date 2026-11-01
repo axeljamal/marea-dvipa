@@ -1,0 +1,132 @@
+{
+  "id": "border-filler-ornament",
+  "title": "Border / Filler Ornament",
+  "name_on_sheet": "BORDER / FILLER ORNAMENT",
+  "edition": "master",
+  "version": "2.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T23:07:35Z",
+  "source_reference": {
+    "file": "_source/original-motif-sheet.png",
+    "sha256": "8a5b9379e6852697940114d69a194563e61dba6fbc6b40879f87a8b9f4c26bff",
+    "region_px": {
+      "x": 240,
+      "y": 816,
+      "w": 1055,
+      "h": 146
+    },
+    "reference_files": [
+      "reference/original-crop.png",
+      "reference/comparison.png"
+    ]
+  },
+  "treatment": "Detail-optimised: 6x upscale with light edge recovery, 14-ink palette sampled from the sheet + pearl keylines, light smoothing (\u03c3\u22482.0px), fine curve tracing; cream keylines kept as pearl so the motif is self-contained on any ground.",
+  "master": {
+    "file": "border-filler-ornament.svg",
+    "viewBox": [
+      0,
+      0,
+      6272,
+      827
+    ],
+    "aspect_ratio": 7.584
+  },
+  "symmetry": "bilateral (mirrored about vertical centre line)",
+  "inks_bottom_to_top": [
+    {
+      "token": "pearl",
+      "hex": "#FAF7F2"
+    },
+    {
+      "token": "ivory",
+      "hex": "#E5DFD4"
+    },
+    {
+      "token": "sand",
+      "hex": "#D2C7B6"
+    },
+    {
+      "token": "light-gold",
+      "hex": "#D1B285"
+    },
+    {
+      "token": "silver-mist",
+      "hex": "#A2AAAA"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#C39B65"
+    },
+    {
+      "token": "antique-gold",
+      "hex": "#A78960"
+    },
+    {
+      "token": "mist-grey",
+      "hex": "#7C8B8D"
+    },
+    {
+      "token": "teal-blue",
+      "hex": "#527582"
+    },
+    {
+      "token": "bronze",
+      "hex": "#756C59"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#3F616F"
+    },
+    {
+      "token": "indigo-slate",
+      "hex": "#2C5063"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#1E4157"
+    },
+    {
+      "token": "deep-navy",
+      "hex": "#0F3049"
+    },
+    {
+      "token": "midnight",
+      "hex": "#02213D"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the listed inks; recolours map whole tokens and ship as a new version.",
+    "Keep layer order; lower layers tuck under upper ones to avoid seams.",
+    "Works on light or dark grounds (pearl keylines are part of the drawing).",
+    "Keep clear space of at least 8% of the motif's width in layouts; repeats follow pattern-layouts/ specs.",
+    "Use the SVG as master; regenerate PNGs from it, never edit PNGs.",
+    "Any change = new version + new hashes; run verify_lock.py."
+  ],
+  "files": {
+    "border-filler-ornament.preview.png": {
+      "sha256": "96ff750b22cada650711d904db16d42e0ad3b7094a0d558173402e23b44a70a7",
+      "bytes": 129402
+    },
+    "border-filler-ornament.svg": {
+      "sha256": "01a547d5e6a53511b485e0fca0acf431fdd927345bb58f6f5bfc9008bc046199",
+      "bytes": 1463354
+    },
+    "border-filler-ornament@2048.png": {
+      "sha256": "2c5adac00705b3605e546a7c8a5e4c95325987ec63a8a7c6911e5309fa7e3427",
+      "bytes": 322787
+    },
+    "border-filler-ornament@512.png": {
+      "sha256": "328bc67138229ade9037b373242ab5800934fa50845d08d53ebf07bbc9479121",
+      "bytes": 46799
+    },
+    "reference/comparison.png": {
+      "sha256": "4c291232aec6730e72098ca79e03c7327e46b8226f873393c69f2b2ba594a4a4",
+      "bytes": 530550
+    },
+    "reference/original-crop.png": {
+      "sha256": "01b968e74fb798e8788e4becc64117305cc425493aa629de47bc32e00b0e2c55",
+      "bytes": 178331
+    }
+  }
+}

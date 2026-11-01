@@ -1,0 +1,74 @@
+{
+  "title": "Royal Damask",
+  "note": "Half-drop damask: barong and floral crown alternate, lotus fillers on the diagonals.",
+  "tile_units": {
+    "w": 380,
+    "h": 460
+  },
+  "unit_px_at_master": 4,
+  "defaults": {
+    "scale": 1,
+    "spacing": 1,
+    "hero": "barong-mask",
+    "crown": "large-floral-ornament",
+    "mirror": false
+  },
+  "items": [
+    {
+      "motif": "barong-mask",
+      "cx": 0,
+      "cy": 0,
+      "width": 150,
+      "flip": false
+    },
+    {
+      "motif": "large-floral-ornament",
+      "cx": 190,
+      "cy": 230,
+      "width": 176,
+      "flip": false
+    },
+    {
+      "motif": "lotus-bud",
+      "cx": 190,
+      "cy": 10,
+      "width": 38,
+      "flip": false
+    },
+    {
+      "motif": "lotus-bud",
+      "cx": 0,
+      "cy": 240,
+      "width": 38,
+      "flip": false
+    },
+    {
+      "motif": "lotus-flower",
+      "cx": 95,
+      "cy": 118,
+      "width": 54,
+      "flip": false
+    },
+    {
+      "motif": "lotus-flower",
+      "cx": 285,
+      "cy": 348,
+      "width": 54,
+      "flip": false
+    },
+    {
+      "motif": "scroll-ornament",
+      "cx": 285,
+      "cy": 112,
+      "width": 56,
+      "flip": false
+    },
+    {
+      "motif": "scroll-ornament",
+      "cx": 95,
+      "cy": 342,
+      "width": 56,
+      "flip": true
+    }
+  ]
+}

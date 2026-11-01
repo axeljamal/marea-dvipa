@@ -1,0 +1,114 @@
+{
+  "id": "sailing-ship",
+  "edition": "fine",
+  "title": "Sailing Ship on Waves",
+  "description": "Two-masted perahu riding curling waves.",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T22:42:34Z",
+  "source_reference": {
+    "file": "original uploaded pattern tile (1254\u00d71254 px)",
+    "sha256": "2d620486f8cbfcfe3f534dcce1c72d087de259902afdc15db309c3a08162f450",
+    "region_px": {
+      "x": 20,
+      "y": 395,
+      "w": 237,
+      "h": 189
+    },
+    "reference_files": [
+      "reference/original-crop.png",
+      "reference/original-crop@8x.png",
+      "reference/comparison.png"
+    ],
+    "standard_edition_counterpart": "bali-batik-motifs/02-sailing-ship/sailing-ship.svg"
+  },
+  "treatment": "Detail-preserving: 8x upscale, stronger edge recovery, 9-ink tonal palette, light smoothing (\u03c3 2.6), islands kept down to 220 px\u00b2, fine curve tracing. Mirrored motifs averaged with their reflection.",
+  "master": {
+    "file": "sailing-ship.svg",
+    "viewBox": [
+      0,
+      0,
+      1850,
+      1468
+    ],
+    "aspect_ratio": 1.2602
+  },
+  "symmetry": "none (directional \u2014 do not mirror unless intentional)",
+  "inks_bottom_to_top": [
+    {
+      "token": "pale-sand",
+      "hex": "#EAE1D2"
+    },
+    {
+      "token": "sand-wash",
+      "hex": "#D9C9B0"
+    },
+    {
+      "token": "stone",
+      "hex": "#C8CCCD"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#B39062"
+    },
+    {
+      "token": "mist-blue",
+      "hex": "#93A8B6"
+    },
+    {
+      "token": "steel-blue",
+      "hex": "#6A8699"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#46677F"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#163A5A"
+    },
+    {
+      "token": "deep-navy",
+      "hex": "#0D2740"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the inks listed; colour changes must map whole tokens, never individual paths.",
+    "Keep layer order; lower layers tuck under upper ones by design to avoid seams.",
+    "Fine edition is for large/hero use (\u2265 300 px or \u2265 8 cm print); below that use the standard edition.",
+    "Keep clear space of at least 8% of the motif's width around it.",
+    "Use the SVG as master; regenerate PNGs from it, never edit PNGs.",
+    "Any change = new version number and new hashes; run verify_lock.py before release."
+  ],
+  "files": {
+    "reference/comparison.png": {
+      "sha256": "571ba8f6d35a2a44f8ffde95128f3311f85c6710cabb7ad16cf946823368ff34",
+      "bytes": 931800
+    },
+    "reference/original-crop.png": {
+      "sha256": "cced19738c98629d2c0158be87665da6d28df97ff6fe114ce1a9c338ed9ca780",
+      "bytes": 59692
+    },
+    "reference/original-crop@8x.png": {
+      "sha256": "7f15f86663335b8ab5ba15d7c6ce8339e881d45dd52b89733e5c85f78871e28b",
+      "bytes": 1644318
+    },
+    "sailing-ship.preview.png": {
+      "sha256": "d8ea1e0e4c6f3d9d243f612e9a761db74d2a8c2b6164cbc054eb0cbc5165f812",
+      "bytes": 329728
+    },
+    "sailing-ship.svg": {
+      "sha256": "f0db2b79728edfb24a87f27fd614e35a01372d420e47c70c186c8d80acd29af5",
+      "bytes": 418119
+    },
+    "sailing-ship@2048.png": {
+      "sha256": "2c1fa1f2cdf1d2b0a2d9a5c6b1f2f29f480486e9b9072f48376c79a72f75b8a8",
+      "bytes": 702481
+    },
+    "sailing-ship@512.png": {
+      "sha256": "91cc18d57b96625fd8c5c2409dfe1ee36132270567919a77781e830bdfa48ec2",
+      "bytes": 138760
+    }
+  }
+}

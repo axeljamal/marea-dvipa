@@ -1,0 +1,132 @@
+{
+  "id": "split-gate-candi-bentar",
+  "title": "Split Gate (Candi Bentar)",
+  "name_on_sheet": "SPLIT GATE (CANDI BENTAR)",
+  "edition": "master",
+  "version": "2.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T23:07:35Z",
+  "source_reference": {
+    "file": "_source/original-motif-sheet.png",
+    "sha256": "8a5b9379e6852697940114d69a194563e61dba6fbc6b40879f87a8b9f4c26bff",
+    "region_px": {
+      "x": 713,
+      "y": 48,
+      "w": 417,
+      "h": 412
+    },
+    "reference_files": [
+      "reference/original-crop.png",
+      "reference/comparison.png"
+    ]
+  },
+  "treatment": "Detail-optimised: 6x upscale with light edge recovery, 14-ink palette sampled from the sheet + pearl keylines, light smoothing (\u03c3\u22482.0px), fine curve tracing; cream keylines kept as pearl so the motif is self-contained on any ground.",
+  "master": {
+    "file": "split-gate-candi-bentar.svg",
+    "viewBox": [
+      0,
+      0,
+      2442,
+      2418
+    ],
+    "aspect_ratio": 1.0099
+  },
+  "symmetry": "bilateral (mirrored about vertical centre line)",
+  "inks_bottom_to_top": [
+    {
+      "token": "pearl",
+      "hex": "#FAF7F2"
+    },
+    {
+      "token": "ivory",
+      "hex": "#E5DFD4"
+    },
+    {
+      "token": "sand",
+      "hex": "#D2C7B6"
+    },
+    {
+      "token": "light-gold",
+      "hex": "#D1B285"
+    },
+    {
+      "token": "silver-mist",
+      "hex": "#A2AAAA"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#C39B65"
+    },
+    {
+      "token": "antique-gold",
+      "hex": "#A78960"
+    },
+    {
+      "token": "mist-grey",
+      "hex": "#7C8B8D"
+    },
+    {
+      "token": "teal-blue",
+      "hex": "#527582"
+    },
+    {
+      "token": "bronze",
+      "hex": "#756C59"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#3F616F"
+    },
+    {
+      "token": "indigo-slate",
+      "hex": "#2C5063"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#1E4157"
+    },
+    {
+      "token": "deep-navy",
+      "hex": "#0F3049"
+    },
+    {
+      "token": "midnight",
+      "hex": "#02213D"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the listed inks; recolours map whole tokens and ship as a new version.",
+    "Keep layer order; lower layers tuck under upper ones to avoid seams.",
+    "Works on light or dark grounds (pearl keylines are part of the drawing).",
+    "Keep clear space of at least 8% of the motif's width in layouts; repeats follow pattern-layouts/ specs.",
+    "Use the SVG as master; regenerate PNGs from it, never edit PNGs.",
+    "Any change = new version + new hashes; run verify_lock.py."
+  ],
+  "files": {
+    "reference/comparison.png": {
+      "sha256": "4910569ce8c79aca5a07f288198a5533e7c91160d6d5d68565aa632fd76baa3d",
+      "bytes": 1017690
+    },
+    "reference/original-crop.png": {
+      "sha256": "76ecd38c5458b0fa5d7ffe73c6cf1b070218272498155098be077930d1c93793",
+      "bytes": 232040
+    },
+    "split-gate-candi-bentar.preview.png": {
+      "sha256": "f650c99a05620e3aa43acc42ba91d01a3558e3924f0354f8b5fbf2e24d74f287",
+      "bytes": 627683
+    },
+    "split-gate-candi-bentar.svg": {
+      "sha256": "4e5b0c23769cfa8ef405d63f78d662253385447293d19603fbab18e96d5b3542",
+      "bytes": 2258320
+    },
+    "split-gate-candi-bentar@2048.png": {
+      "sha256": "bf8c3f8a9949673db33d259def55310d4bd5b02d6f82309ba74a732cbafdd5b3",
+      "bytes": 1393722
+    },
+    "split-gate-candi-bentar@512.png": {
+      "sha256": "c4ea379d2ee9fba30fe3061acc0bc560fe690f12a550b620160bf3d08a37ab26",
+      "bytes": 250854
+    }
+  }
+}

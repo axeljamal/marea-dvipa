@@ -1,0 +1,72 @@
+{
+  "id": "damask-medallion",
+  "title": "Damask Medallion",
+  "description": "Central lotus medallion with sweeping wave-scroll arms.",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T22:31:31Z",
+  "source": "Extracted from the supplied Balinese pattern tile; cleaned, upscaled 6x, quantised to the locked palette and vector-traced.",
+  "master": {
+    "file": "damask-medallion.svg",
+    "viewBox": [
+      0,
+      0,
+      2460,
+      1424
+    ],
+    "aspect_ratio": 1.7275
+  },
+  "symmetry": "bilateral (mirrored about vertical centre line)",
+  "inks_bottom_to_top": [
+    {
+      "token": "sand-wash",
+      "hex": "#D9C9B0"
+    },
+    {
+      "token": "stone",
+      "hex": "#C8CCCD"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#B39062"
+    },
+    {
+      "token": "mist-blue",
+      "hex": "#93A8B6"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#46677F"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#163A5A"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the inks listed; colour changes must map whole tokens (e.g. a two-tone variant), never individual paths.",
+    "Keep layer order; layers overlap slightly underneath each other by design to avoid seams.",
+    "Keep clear space of at least 8% of the motif's width around it in layouts.",
+    "Use the SVG as the master; regenerate PNGs from it rather than editing PNGs.",
+    "Any change = new version number and new hashes; run verify_lock.py before release."
+  ],
+  "files": {
+    "damask-medallion.preview.png": {
+      "sha256": "84fbe3e86c898cb8c63e2d0b04ad307b8426d2e7db9b6b4aa800c53fcb904ff9",
+      "bytes": 199620
+    },
+    "damask-medallion.svg": {
+      "sha256": "822cf3fe1a7ce1043be89fb98388bfa9d861ec375c6f1647233b2aa635fc7478",
+      "bytes": 272589
+    },
+    "damask-medallion@2048.png": {
+      "sha256": "dd703c19795a640559ab0c33a09a6dff45b45f1449769d2c4ba7f902c88e42f5",
+      "bytes": 421814
+    },
+    "damask-medallion@512.png": {
+      "sha256": "5fd5ab8533e95bf4a00df7e97a3716e246882c6e81778257398597da1873d683",
+      "bytes": 88437
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "id": "gold-lotus",
+  "edition": "fine",
+  "title": "Gold Lotus",
+  "description": "Standalone gold lotus bloom (also used at the gateway apex).",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T22:42:34Z",
+  "source_reference": {
+    "file": "original uploaded pattern tile (1254\u00d71254 px)",
+    "sha256": "2d620486f8cbfcfe3f534dcce1c72d087de259902afdc15db309c3a08162f450",
+    "region_px": {
+      "x": 626,
+      "y": 235,
+      "w": 82,
+      "h": 85
+    },
+    "reference_files": [
+      "reference/original-crop.png",
+      "reference/original-crop@8x.png",
+      "reference/comparison.png"
+    ],
+    "standard_edition_counterpart": "bali-batik-motifs/07-gold-lotus/gold-lotus.svg"
+  },
+  "treatment": "Detail-preserving: 8x upscale, stronger edge recovery, 9-ink tonal palette, light smoothing (\u03c3 2.6), islands kept down to 220 px\u00b2, fine curve tracing. Mirrored motifs averaged with their reflection.",
+  "master": {
+    "file": "gold-lotus.svg",
+    "viewBox": [
+      0,
+      0,
+      622,
+      655
+    ],
+    "aspect_ratio": 0.9496
+  },
+  "symmetry": "bilateral (mirrored about vertical centre line)",
+  "inks_bottom_to_top": [
+    {
+      "token": "pale-sand",
+      "hex": "#EAE1D2"
+    },
+    {
+      "token": "sand-wash",
+      "hex": "#D9C9B0"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#B39062"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the inks listed; colour changes must map whole tokens, never individual paths.",
+    "Keep layer order; lower layers tuck under upper ones by design to avoid seams.",
+    "Fine edition is for large/hero use (\u2265 300 px or \u2265 8 cm print); below that use the standard edition.",
+    "Keep clear space of at least 8% of the motif's width around it.",
+    "Use the SVG as master; regenerate PNGs from it, never edit PNGs.",
+    "Any change = new version number and new hashes; run verify_lock.py before release."
+  ],
+  "files": {
+    "gold-lotus.preview.png": {
+      "sha256": "febda9c02b68c83a1147ae13caffdce6e38e5146176e9cb0ba68724ea0cc3fbe",
+      "bytes": 133021
+    },
+    "gold-lotus.svg": {
+      "sha256": "e49841cb49994d8c21321cbb7f1114021a40b647a616b9d3e5cfdf10773f083b",
+      "bytes": 39776
+    },
+    "gold-lotus@2048.png": {
+      "sha256": "462a6a6102c36ebfd79620945053a025b245914a0d319e419934921da7e99fb7",
+      "bytes": 309263
+    },
+    "gold-lotus@512.png": {
+      "sha256": "1d641502586582c905315347d6346e10390721956a4c2c15ae58859996e135f7",
+      "bytes": 57090
+    },
+    "reference/comparison.png": {
+      "sha256": "422b458edcc2fdd0f796c193e86a03325f4cc6c7aca81bf7cd87da651fad284e",
+      "bytes": 388829
+    },
+    "reference/original-crop.png": {
+      "sha256": "477a3abae421450b3c4bbae598b9d447668a1a2e468f35fa084379991bcf069e",
+      "bytes": 8317
+    },
+    "reference/original-crop@8x.png": {
+      "sha256": "b7299e0d648b270bb82a4fb08964a1bcf339bdc70a615e1b6673d3bcc04e357c",
+      "bytes": 212376
+    }
+  }
+}

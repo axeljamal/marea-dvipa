@@ -1,0 +1,60 @@
+{
+  "title": "Ocean Voyage",
+  "note": "Directional rows of perahu and cloud-waves, lotus between the swells.",
+  "tile_units": {
+    "w": 440,
+    "h": 380
+  },
+  "unit_px_at_master": 4,
+  "defaults": {
+    "scale": 1,
+    "spacing": 1,
+    "hero": "barong-mask",
+    "crown": "large-floral-ornament",
+    "mirror": false
+  },
+  "items": [
+    {
+      "motif": "traditional-boat",
+      "cx": 0,
+      "cy": 0,
+      "width": 170,
+      "flip": false
+    },
+    {
+      "motif": "wave-cloud-ornament",
+      "cx": 220,
+      "cy": 20,
+      "width": 130,
+      "flip": false
+    },
+    {
+      "motif": "lotus-floral-motif",
+      "cx": 110,
+      "cy": 190,
+      "width": 96,
+      "flip": false
+    },
+    {
+      "motif": "lotus-bud",
+      "cx": 330,
+      "cy": 190,
+      "width": 40,
+      "flip": false
+    },
+    {
+      "motif": "scroll-ornament",
+      "cx": 330,
+      "cy": 110,
+      "width": 46,
+      "flip": false
+    },
+    {
+      "motif": "lotus-flower",
+      "cx": 0,
+      "cy": 190,
+      "width": 40,
+      "flip": false
+    }
+  ]
+}

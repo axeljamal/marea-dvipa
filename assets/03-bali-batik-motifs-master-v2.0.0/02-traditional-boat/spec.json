@@ -1,0 +1,132 @@
+{
+  "id": "traditional-boat",
+  "title": "Traditional Boat",
+  "name_on_sheet": "TRADITIONAL BOAT",
+  "edition": "master",
+  "version": "2.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T23:07:35Z",
+  "source_reference": {
+    "file": "_source/original-motif-sheet.png",
+    "sha256": "8a5b9379e6852697940114d69a194563e61dba6fbc6b40879f87a8b9f4c26bff",
+    "region_px": {
+      "x": 391,
+      "y": 95,
+      "w": 324,
+      "h": 356
+    },
+    "reference_files": [
+      "reference/original-crop.png",
+      "reference/comparison.png"
+    ]
+  },
+  "treatment": "Detail-optimised: 7x upscale with light edge recovery, 14-ink palette sampled from the sheet + pearl keylines, light smoothing (\u03c3\u22482.3px), fine curve tracing; cream keylines kept as pearl so the motif is self-contained on any ground.",
+  "master": {
+    "file": "traditional-boat.svg",
+    "viewBox": [
+      0,
+      0,
+      2204,
+      2429
+    ],
+    "aspect_ratio": 0.9074
+  },
+  "symmetry": "none (directional; mirror only intentionally)",
+  "inks_bottom_to_top": [
+    {
+      "token": "pearl",
+      "hex": "#FAF7F2"
+    },
+    {
+      "token": "ivory",
+      "hex": "#E5DFD4"
+    },
+    {
+      "token": "sand",
+      "hex": "#D2C7B6"
+    },
+    {
+      "token": "light-gold",
+      "hex": "#D1B285"
+    },
+    {
+      "token": "silver-mist",
+      "hex": "#A2AAAA"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#C39B65"
+    },
+    {
+      "token": "antique-gold",
+      "hex": "#A78960"
+    },
+    {
+      "token": "mist-grey",
+      "hex": "#7C8B8D"
+    },
+    {
+      "token": "teal-blue",
+      "hex": "#527582"
+    },
+    {
+      "token": "bronze",
+      "hex": "#756C59"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#3F616F"
+    },
+    {
+      "token": "indigo-slate",
+      "hex": "#2C5063"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#1E4157"
+    },
+    {
+      "token": "deep-navy",
+      "hex": "#0F3049"
+    },
+    {
+      "token": "midnight",
+      "hex": "#02213D"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the listed inks; recolours map whole tokens and ship as a new version.",
+    "Keep layer order; lower layers tuck under upper ones to avoid seams.",
+    "Works on light or dark grounds (pearl keylines are part of the drawing).",
+    "Keep clear space of at least 8% of the motif's width in layouts; repeats follow pattern-layouts/ specs.",
+    "Use the SVG as master; regenerate PNGs from it, never edit PNGs.",
+    "Any change = new version + new hashes; run verify_lock.py."
+  ],
+  "files": {
+    "reference/comparison.png": {
+      "sha256": "8faebd7a31866a5fc64c21fa9b77e2359a952b61985eaa1dbd9b581d9d5a196a",
+      "bytes": 780894
+    },
+    "reference/original-crop.png": {
+      "sha256": "1dc1c61184ba02d845bc2e258ba655bfc59c39d9bf0816a514c0fa67489b6fb4",
+      "bytes": 141964
+    },
+    "traditional-boat.preview.png": {
+      "sha256": "b5bd8dd474203e48917777947d17c567a85e1d0db98598dd390005865cb96467",
+      "bytes": 478208
+    },
+    "traditional-boat.svg": {
+      "sha256": "824708e80a9f0278f6f2acf0bb398ef2fc6573328f12cf69ef2ffdb963d7a5ed",
+      "bytes": 1285949
+    },
+    "traditional-boat@2048.png": {
+      "sha256": "8fb06c9914a177df893622cd5d0f9b46d85d134026a449c79692f63f8481db27",
+      "bytes": 1083615
+    },
+    "traditional-boat@512.png": {
+      "sha256": "8926e350c1b0ee759972290696e1c723dbbe468a1e6169db9a7d9504fded50f4",
+      "bytes": 189390
+    }
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "id": "barong-mask",
+  "title": "Barong Mask",
+  "name_on_sheet": "BARONG MASK",
+  "edition": "master",
+  "version": "2.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T23:07:35Z",
+  "source_reference": {
+    "file": "_source/original-motif-sheet.png",
+    "sha256": "8a5b9379e6852697940114d69a194563e61dba6fbc6b40879f87a8b9f4c26bff",
+    "region_px": {
+      "x": 31,
+      "y": 18,
+      "w": 352,
+      "h": 443
+    },
+    "reference_files": [
+      "reference/original-crop.png",
+      "reference/comparison.png"
+    ]
+  },
+  "treatment": "Detail-optimised: 5x upscale with light edge recovery, 14-ink palette sampled from the sheet + pearl keylines, light smoothing (\u03c3\u22481.7px), fine curve tracing; cream keylines kept as pearl so the motif is self-contained on any ground.",
+  "master": {
+    "file": "barong-mask.svg",
+    "viewBox": [
+      0,
+      0,
+      1710,
+      2175
+    ],
+    "aspect_ratio": 0.7862
+  },
+  "symmetry": "bilateral (mirrored about vertical centre line)",
+  "inks_bottom_to_top": [
+    {
+      "token": "pearl",
+      "hex": "#FAF7F2"
+    },
+    {
+      "token": "ivory",
+      "hex": "#E5DFD4"
+    },
+    {
+      "token": "sand",
+      "hex": "#D2C7B6"
+    },
+    {
+      "token": "light-gold",
+      "hex": "#D1B285"
+    },
+    {
+      "token": "silver-mist",
+      "hex": "#A2AAAA"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#C39B65"
+    },
+    {
+      "token": "antique-gold",
+      "hex": "#A78960"
+    },
+    {
+      "token": "mist-grey",
+      "hex": "#7C8B8D"
+    },
+    {
+      "token": "teal-blue",
+      "hex": "#527582"
+    },
+    {
+      "token": "bronze",
+      "hex": "#756C59"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#3F616F"
+    },
+    {
+      "token": "indigo-slate",
+      "hex": "#2C5063"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#1E4157"
+    },
+    {
+      "token": "deep-navy",
+      "hex": "#0F3049"
+    },
+    {
+      "token": "midnight",
+      "hex": "#02213D"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the listed inks; recolours map whole tokens and ship as a new version.",
+    "Keep layer order; lower layers tuck under upper ones to avoid seams.",
+    "Works on light or dark grounds (pearl keylines are part of the drawing).",
+    "Keep clear space of at least 8% of the motif's width in layouts; repeats follow pattern-layouts/ specs.",
+    "Use the SVG as master; regenerate PNGs from it, never edit PNGs.",
+    "Any change = new version + new hashes; run verify_lock.py."
+  ],
+  "files": {
+    "barong-mask.preview.png": {
+      "sha256": "eeceae9bf0b94150352c661111de09dc97013daa4e748a604c7525f4ce7459d8",
+      "bytes": 638091
+    },
+    "barong-mask.svg": {
+      "sha256": "f4073a263f5b49f7397c3b8f4c73604144724795de1c5a0b39dda14de342b0f2",
+      "bytes": 2345180
+    },
+    "barong-mask@2048.png": {
+      "sha256": "8948f83c65240c75634e78a503bd36ef664170cab3d8a3dfa5232ea24d77189d",
+      "bytes": 1410261
+    },
+    "barong-mask@512.png": {
+      "sha256": "bc55885ba8fa742a597d40792a4ff3072d2a6d452ec5c607289fdf92c3631396",
+      "bytes": 240329
+    },
+    "reference/comparison.png": {
+      "sha256": "ec2a9e6fda05c9847b792fd5a985a76457288fbd3325c624638933c968159e07",
+      "bytes": 1028443
+    },
+    "reference/original-crop.png": {
+      "sha256": "f52aa0da9452c5146b4befe8e4b8d6600dcd8d67a92231461a14e1982eb6be1c",
+      "bytes": 251381
+    }
+  }
+}

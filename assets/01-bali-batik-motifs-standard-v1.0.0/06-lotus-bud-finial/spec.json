@@ -1,0 +1,72 @@
+{
+  "id": "lotus-bud-finial",
+  "title": "Lotus Bud Finial",
+  "description": "Small navy lotus bud with gold tips; spacer/finial.",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T22:31:31Z",
+  "source": "Extracted from the supplied Balinese pattern tile; cleaned, upscaled 6x, quantised to the locked palette and vector-traced.",
+  "master": {
+    "file": "lotus-bud-finial.svg",
+    "viewBox": [
+      0,
+      0,
+      478,
+      651
+    ],
+    "aspect_ratio": 0.7343
+  },
+  "symmetry": "bilateral (mirrored about vertical centre line)",
+  "inks_bottom_to_top": [
+    {
+      "token": "sand-wash",
+      "hex": "#D9C9B0"
+    },
+    {
+      "token": "stone",
+      "hex": "#C8CCCD"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#B39062"
+    },
+    {
+      "token": "mist-blue",
+      "hex": "#93A8B6"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#46677F"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#163A5A"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the inks listed; colour changes must map whole tokens (e.g. a two-tone variant), never individual paths.",
+    "Keep layer order; layers overlap slightly underneath each other by design to avoid seams.",
+    "Keep clear space of at least 8% of the motif's width around it in layouts.",
+    "Use the SVG as the master; regenerate PNGs from it rather than editing PNGs.",
+    "Any change = new version number and new hashes; run verify_lock.py before release."
+  ],
+  "files": {
+    "lotus-bud-finial.preview.png": {
+      "sha256": "1c865b7b5130d827f8fc2f57fdf11eb3f10c71f7eff621f78f1cb2b7015545b7",
+      "bytes": 106620
+    },
+    "lotus-bud-finial.svg": {
+      "sha256": "9c01104a704fdf22836e84574202f7b4fb2c7784aea3f622792d6cf0ddc77da5",
+      "bytes": 32487
+    },
+    "lotus-bud-finial@2048.png": {
+      "sha256": "f4d57ca02fd1cc82c819f2e2899bb7985854ee389709bf3c0f9454d67113355d",
+      "bytes": 239320
+    },
+    "lotus-bud-finial@512.png": {
+      "sha256": "59002fc7358d964c088bf6ffc6d527464019af8a48943906ef5d66a7738ac6a6",
+      "bytes": 44239
+    }
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "id": "lotus-bud-finial",
+  "edition": "fine",
+  "title": "Lotus Bud Finial",
+  "description": "Small navy lotus bud with gold tips; spacer/finial.",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T22:42:34Z",
+  "source_reference": {
+    "file": "original uploaded pattern tile (1254\u00d71254 px)",
+    "sha256": "2d620486f8cbfcfe3f534dcce1c72d087de259902afdc15db309c3a08162f450",
+    "region_px": {
+      "x": 92,
+      "y": 128,
+      "w": 86,
+      "h": 114
+    },
+    "reference_files": [
+      "reference/original-crop.png",
+      "reference/original-crop@8x.png",
+      "reference/comparison.png"
+    ],
+    "standard_edition_counterpart": "bali-batik-motifs/06-lotus-bud-finial/lotus-bud-finial.svg"
+  },
+  "treatment": "Detail-preserving: 8x upscale, stronger edge recovery, 9-ink tonal palette, light smoothing (\u03c3 2.6), islands kept down to 220 px\u00b2, fine curve tracing. Mirrored motifs averaged with their reflection.",
+  "master": {
+    "file": "lotus-bud-finial.svg",
+    "viewBox": [
+      0,
+      0,
+      648,
+      874
+    ],
+    "aspect_ratio": 0.7414
+  },
+  "symmetry": "bilateral (mirrored about vertical centre line)",
+  "inks_bottom_to_top": [
+    {
+      "token": "pale-sand",
+      "hex": "#EAE1D2"
+    },
+    {
+      "token": "sand-wash",
+      "hex": "#D9C9B0"
+    },
+    {
+      "token": "stone",
+      "hex": "#C8CCCD"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#B39062"
+    },
+    {
+      "token": "mist-blue",
+      "hex": "#93A8B6"
+    },
+    {
+      "token": "steel-blue",
+      "hex": "#6A8699"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#46677F"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#163A5A"
+    },
+    {
+      "token": "deep-navy",
+      "hex": "#0D2740"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the inks listed; colour changes must map whole tokens, never individual paths.",
+    "Keep layer order; lower layers tuck under upper ones by design to avoid seams.",
+    "Fine edition is for large/hero use (\u2265 300 px or \u2265 8 cm print); below that use the standard edition.",
+    "Keep clear space of at least 8% of the motif's width around it.",
+    "Use the SVG as master; regenerate PNGs from it, never edit PNGs.",
+    "Any change = new version number and new hashes; run verify_lock.py before release."
+  ],
+  "files": {
+    "lotus-bud-finial.preview.png": {
+      "sha256": "2c56f51886f8209856b38f48c1b1aa27a81a7b98d0f75064938e1f39ccc99809",
+      "bytes": 175427
+    },
+    "lotus-bud-finial.svg": {
+      "sha256": "8fe94f99ce436835d14e1f00375f57671e0d66ee1deac0cd86092e95e6878333",
+      "bytes": 106393
+    },
+    "lotus-bud-finial@2048.png": {
+      "sha256": "7d8c6aeafede0a903aa67b829ab44172f2c2d7123a5e86f60a803631fe6cbc63",
+      "bytes": 378311
+    },
+    "lotus-bud-finial@512.png": {
+      "sha256": "23fe0462e69418d29d3ed1585edf33eab7baeee91decb241d7f0038efc9d1d73",
+      "bytes": 73919
+    },
+    "reference/comparison.png": {
+      "sha256": "fb6471e5df93661ebfb6e9407b75da214b840e42bc76d291133ee085118d6889",
+      "bytes": 454248
+    },
+    "reference/original-crop.png": {
+      "sha256": "2d8999955ca900974bef491695c480b77376881f709c66ccdf023221615d8217",
+      "bytes": 12669
+    },
+    "reference/original-crop@8x.png": {
+      "sha256": "802be51d1a37c9f695be7519b34791e8e438440d6b837befc9fa41bda27fb0c4",
+      "bytes": 358822
+    }
+  }
+}

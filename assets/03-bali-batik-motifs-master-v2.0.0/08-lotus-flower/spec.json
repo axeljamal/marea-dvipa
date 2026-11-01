@@ -1,0 +1,128 @@
+{
+  "id": "lotus-flower",
+  "title": "Lotus Flower",
+  "name_on_sheet": "LOTUS FLOWER",
+  "edition": "master",
+  "version": "2.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T23:07:35Z",
+  "source_reference": {
+    "file": "_source/original-motif-sheet.png",
+    "sha256": "8a5b9379e6852697940114d69a194563e61dba6fbc6b40879f87a8b9f4c26bff",
+    "region_px": {
+      "x": 999,
+      "y": 531,
+      "w": 219,
+      "h": 232
+    },
+    "reference_files": [
+      "reference/original-crop.png",
+      "reference/comparison.png"
+    ]
+  },
+  "treatment": "Detail-optimised: 8x upscale with light edge recovery, 14-ink palette sampled from the sheet + pearl keylines, light smoothing (\u03c3\u22482.6px), fine curve tracing; cream keylines kept as pearl so the motif is self-contained on any ground.",
+  "master": {
+    "file": "lotus-flower.svg",
+    "viewBox": [
+      0,
+      0,
+      1678,
+      1787
+    ],
+    "aspect_ratio": 0.939
+  },
+  "symmetry": "bilateral (mirrored about vertical centre line)",
+  "inks_bottom_to_top": [
+    {
+      "token": "pearl",
+      "hex": "#FAF7F2"
+    },
+    {
+      "token": "ivory",
+      "hex": "#E5DFD4"
+    },
+    {
+      "token": "sand",
+      "hex": "#D2C7B6"
+    },
+    {
+      "token": "light-gold",
+      "hex": "#D1B285"
+    },
+    {
+      "token": "silver-mist",
+      "hex": "#A2AAAA"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#C39B65"
+    },
+    {
+      "token": "antique-gold",
+      "hex": "#A78960"
+    },
+    {
+      "token": "mist-grey",
+      "hex": "#7C8B8D"
+    },
+    {
+      "token": "bronze",
+      "hex": "#756C59"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#3F616F"
+    },
+    {
+      "token": "indigo-slate",
+      "hex": "#2C5063"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#1E4157"
+    },
+    {
+      "token": "deep-navy",
+      "hex": "#0F3049"
+    },
+    {
+      "token": "midnight",
+      "hex": "#02213D"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the listed inks; recolours map whole tokens and ship as a new version.",
+    "Keep layer order; lower layers tuck under upper ones to avoid seams.",
+    "Works on light or dark grounds (pearl keylines are part of the drawing).",
+    "Keep clear space of at least 8% of the motif's width in layouts; repeats follow pattern-layouts/ specs.",
+    "Use the SVG as master; regenerate PNGs from it, never edit PNGs.",
+    "Any change = new version + new hashes; run verify_lock.py."
+  ],
+  "files": {
+    "lotus-flower.preview.png": {
+      "sha256": "be5386f575a5c80414f044b02023613564e69474c4df5b1ababeedaeb25061df",
+      "bytes": 230940
+    },
+    "lotus-flower.svg": {
+      "sha256": "ad13c5dd59abb71ae7ad632ce95c984e57312dabd67ca94ef7f213ed4afd7404",
+      "bytes": 343407
+    },
+    "lotus-flower@2048.png": {
+      "sha256": "b077030bd51b1e04941d18d8353482fce8ba2b03df28a3ffd606f43180a2b5e0",
+      "bytes": 510436
+    },
+    "lotus-flower@512.png": {
+      "sha256": "4fc9d25bcdc7a8d81216b2b766378ab57ca0626686ee41dc8d7ef90270ac4911",
+      "bytes": 96486
+    },
+    "reference/comparison.png": {
+      "sha256": "0b701ad48ec56f4c9cdbd07cc97f47122545cd096d18296395389c8950af7f5f",
+      "bytes": 595601
+    },
+    "reference/original-crop.png": {
+      "sha256": "304f5b33966d3955913373dac389a563daf62f4728a8ae5af96f27e95eef5f8c",
+      "bytes": 62196
+    }
+  }
+}

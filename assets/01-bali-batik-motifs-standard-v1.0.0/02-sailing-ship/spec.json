@@ -1,0 +1,72 @@
+{
+  "id": "sailing-ship",
+  "title": "Sailing Ship on Waves",
+  "description": "Two-masted perahu riding curling waves.",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T22:31:31Z",
+  "source": "Extracted from the supplied Balinese pattern tile; cleaned, upscaled 6x, quantised to the locked palette and vector-traced.",
+  "master": {
+    "file": "sailing-ship.svg",
+    "viewBox": [
+      0,
+      0,
+      1384,
+      1098
+    ],
+    "aspect_ratio": 1.2605
+  },
+  "symmetry": "none (directional \u2014 do not mirror unless intentional)",
+  "inks_bottom_to_top": [
+    {
+      "token": "sand-wash",
+      "hex": "#D9C9B0"
+    },
+    {
+      "token": "stone",
+      "hex": "#C8CCCD"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#B39062"
+    },
+    {
+      "token": "mist-blue",
+      "hex": "#93A8B6"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#46677F"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#163A5A"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the inks listed; colour changes must map whole tokens (e.g. a two-tone variant), never individual paths.",
+    "Keep layer order; layers overlap slightly underneath each other by design to avoid seams.",
+    "Keep clear space of at least 8% of the motif's width around it in layouts.",
+    "Use the SVG as the master; regenerate PNGs from it rather than editing PNGs.",
+    "Any change = new version number and new hashes; run verify_lock.py before release."
+  ],
+  "files": {
+    "sailing-ship.preview.png": {
+      "sha256": "181bf01aaea8b9293de5653e585df4ed0717e6cf780dc29895ca776283d80f6f",
+      "bytes": 171690
+    },
+    "sailing-ship.svg": {
+      "sha256": "237f414c1b8cd32fa581ead6635e67a70647042fdc7e9a8fd5c1e816e49fda13",
+      "bytes": 104553
+    },
+    "sailing-ship@2048.png": {
+      "sha256": "59896c09d1bf28bedc912dc967b733c868309dc94571b44002e517a540cc1c0b",
+      "bytes": 370455
+    },
+    "sailing-ship@512.png": {
+      "sha256": "edf973c1fd9e159a3ae840f69d981fc61eb40b224069e9a9c918aa51d7bdba13",
+      "bytes": 73246
+    }
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "bomba-rose": {
+    "inspired_by": "Mawar bomba, the rose of the Donggala buya bomba sarong (Kaili people, Central Sulawesi), drawn from above with one stem and three leaves.",
+    "made_our_own": "Petal rings in Fibonacci counts (13\u00b78\u00b75\u00b73) turned by the golden angle; two-tone brushed petals with cecek veins; a golden-spiral heart; Bali teal and navy leaves.",
+    "meaning_honoured": "In the buya bomba tradition the rose speaks of pure love for family, kingdom and God.",
+    "sources": [
+      "inayah-2025",
+      "detik-2022"
+    ]
+  },
+  "bomba-rosette": {
+    "inspired_by": "The same mawar bomba, as the open flower that gives Bomba its name ('bomba' is Kaili for flower).",
+    "made_our_own": "Five Fibonacci petal rings (21\u00b713\u00b78\u00b75\u00b73): a pure phyllotaxis flower that tiles as a placement or a repeat.",
+    "meaning_honoured": "Openness and togetherness, the meanings Palu people give the name Bomba.",
+    "sources": [
+      "iwarebatik-cs",
+      "detik-2022"
+    ]
+  },
+  "rebung-border": {
+    "inspired_by": "Rebung (bamboo-shoot) borders of buya bomba, pointing inward, with the zigzag and dotted framing bands.",
+    "made_our_own": "Two facing rows meeting at a gold zigzag spine with pearl cecek; sheaths drawn as nested chevrons; seamless horizontally.",
+    "meaning_honoured": "In the cloth's iconography, inward-facing rebung stand for power, greatness and triumph.",
+    "sources": [
+      "inayah-2025"
+    ]
+  },
+  "ketupat-lattice": {
+    "inspired_by": "Belah ketupat (diamond) patterns in the head panel of buya bomba, known in Bugis as cobo'.",
+    "made_our_own": "A seamless three-tone nested-diamond lattice with pearl cecek crosses at the joins.",
+    "meaning_honoured": "Courage in proposing marriage and the wisdom of rulers and elders.",
+    "sources": [
+      "inayah-2025"
+    ]
+  },
+  "cengkeh-sprig": {
+    "inspired_by": "Cengkeh (clove) motifs of Palu batik, honouring Tolitoli's clove harvest.",
+    "made_our_own": "A fan of five clove buds (a Fibonacci number) on curving stalks with one navy and one teal leaf.",
+    "meaning_honoured": "Healing and wishes for the wearer's health and well-being.",
+    "sources": [
+      "detik-2022",
+      "antara-2011"
+    ]
+  },
+  "dua-pulau-medallion": {
+    "inspired_by": "The meeting of two islands: Bomba's rose and rebung from Central Sulawesi, with the lotus-petal and keyline language of the Balinese master motifs.",
+    "made_our_own": "Our emblem: a Bomba rose heart, 13 rebung rays, a ring of 55 cecek dots and 21 outer leaves. Every count is a Fibonacci number.",
+    "meaning_honoured": "Recognition of both origins in one mark.",
+    "sources": [
+      "inayah-2025",
+      "iwarebatik-cs"
+    ]
+  },
+  "isen-cecek": {
+    "inspired_by": "Cecek, the dotted isen-isen fill of hand-drawn batik made with the canting, and the dotted framing bands of buya bomba.",
+    "made_our_own": "A gently jittered staggered dot field that wraps seamlessly.",
+    "meaning_honoured": "The patience of hand-drawn batik.",
+    "sources": [
+      "canting",
+      "isen-lasem",
+      "inayah-2025"
+    ]
+  },
+  "isen-zigzag": {
+    "inspired_by": "The zigzag lines that frame the central field of buya bomba.",
+    "made_our_own": "Rows of zigzag with a periodic hand tremor, seamless in both directions.",
+    "meaning_honoured": "The cloth's own framing language, used as texture.",
+    "sources": [
+      "inayah-2025"
+    ]
+  },
+  "isen-sero": {
+    "inspired_by": "Sero tangga, the Palu batik motif of the coastal fish trap, and sawut line fills.",
+    "made_our_own": "Alternating blocks of fine parallel strokes, like woven trap panels.",
+    "meaning_honoured": "Hard work that pays off; the lives of coastal fishing communities.",
+    "sources": [
+      "detik-2022"
+    ]
+  },
+  "rebung-ribbon": {
+    "inspired_by": "The same inward-facing rebung borders of the Donggala buya bomba, whose framing bands run unbroken along the cloth.",
+    "made_our_own": "A ribbon that is drawn live along any path, straight, diagonal, wave, golden spiral or golden arcs, with every shoot bending to the curve, rows offset by half a step, and a zigzag cecek spine. It skips curves too tight for the band rather than crumpling.",
+    "meaning_honoured": "Power, greatness and triumph, now flowing with the pattern.",
+    "sources": [
+      "inayah-2025"
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "id": "barong-mask",
+  "title": "Barong Mask",
+  "description": "Guardian mask with flame-leaf crown; the hero motif.",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T22:31:31Z",
+  "source": "Extracted from the supplied Balinese pattern tile; cleaned, upscaled 6x, quantised to the locked palette and vector-traced.",
+  "master": {
+    "file": "barong-mask.svg",
+    "viewBox": [
+      0,
+      0,
+      1276,
+      1518
+    ],
+    "aspect_ratio": 0.8406
+  },
+  "symmetry": "bilateral (mirrored about vertical centre line)",
+  "inks_bottom_to_top": [
+    {
+      "token": "sand-wash",
+      "hex": "#D9C9B0"
+    },
+    {
+      "token": "stone",
+      "hex": "#C8CCCD"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#B39062"
+    },
+    {
+      "token": "mist-blue",
+      "hex": "#93A8B6"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#46677F"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#163A5A"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the inks listed; colour changes must map whole tokens (e.g. a two-tone variant), never individual paths.",
+    "Keep layer order; layers overlap slightly underneath each other by design to avoid seams.",
+    "Keep clear space of at least 8% of the motif's width around it in layouts.",
+    "Use the SVG as the master; regenerate PNGs from it rather than editing PNGs.",
+    "Any change = new version number and new hashes; run verify_lock.py before release."
+  ],
+  "files": {
+    "barong-mask.preview.png": {
+      "sha256": "d496ce2c6584df634ada88a3c0c34d38e2ce4c516c4e7673ab688745d1174c23",
+      "bytes": 289576
+    },
+    "barong-mask.svg": {
+      "sha256": "65df9400772324ee5c84552eb8f88d306f7492180a19fab697d8aeffb29ff25d",
+      "bytes": 248992
+    },
+    "barong-mask@2048.png": {
+      "sha256": "08bd3c607d951823a4824fc68f7c189d3241d3951747b7e19eeb05f20eaaf0df",
+      "bytes": 602214
+    },
+    "barong-mask@512.png": {
+      "sha256": "a353671517c94436703b61f30ca16b20cc3d280b6abaee7876a16780d67de108",
+      "bytes": 125318
+    }
+  }
+}

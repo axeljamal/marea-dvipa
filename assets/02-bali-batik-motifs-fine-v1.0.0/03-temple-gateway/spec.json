@@ -1,0 +1,114 @@
+{
+  "id": "temple-gateway",
+  "edition": "fine",
+  "title": "Temple Gateway (Candi Bentar)",
+  "description": "Split gate pair joined by a garland, gold lotus at the apex.",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T22:42:34Z",
+  "source_reference": {
+    "file": "original uploaded pattern tile (1254\u00d71254 px)",
+    "sha256": "2d620486f8cbfcfe3f534dcce1c72d087de259902afdc15db309c3a08162f450",
+    "region_px": {
+      "x": 449,
+      "y": 189,
+      "w": 436,
+      "h": 261
+    },
+    "reference_files": [
+      "reference/original-crop.png",
+      "reference/original-crop@8x.png",
+      "reference/comparison.png"
+    ],
+    "standard_edition_counterpart": "bali-batik-motifs/03-temple-gateway/temple-gateway.svg"
+  },
+  "treatment": "Detail-preserving: 8x upscale, stronger edge recovery, 9-ink tonal palette, light smoothing (\u03c3 2.6), islands kept down to 220 px\u00b2, fine curve tracing. Mirrored motifs averaged with their reflection.",
+  "master": {
+    "file": "temple-gateway.svg",
+    "viewBox": [
+      0,
+      0,
+      3444,
+      2040
+    ],
+    "aspect_ratio": 1.6882
+  },
+  "symmetry": "bilateral (mirrored about vertical centre line)",
+  "inks_bottom_to_top": [
+    {
+      "token": "pale-sand",
+      "hex": "#EAE1D2"
+    },
+    {
+      "token": "sand-wash",
+      "hex": "#D9C9B0"
+    },
+    {
+      "token": "stone",
+      "hex": "#C8CCCD"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#B39062"
+    },
+    {
+      "token": "mist-blue",
+      "hex": "#93A8B6"
+    },
+    {
+      "token": "steel-blue",
+      "hex": "#6A8699"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#46677F"
+    },
+    {
+      "token": "navy-ink",
+      "hex": "#163A5A"
+    },
+    {
+      "token": "deep-navy",
+      "hex": "#0D2740"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the inks listed; colour changes must map whole tokens, never individual paths.",
+    "Keep layer order; lower layers tuck under upper ones by design to avoid seams.",
+    "Fine edition is for large/hero use (\u2265 300 px or \u2265 8 cm print); below that use the standard edition.",
+    "Keep clear space of at least 8% of the motif's width around it.",
+    "Use the SVG as master; regenerate PNGs from it, never edit PNGs.",
+    "Any change = new version number and new hashes; run verify_lock.py before release."
+  ],
+  "files": {
+    "reference/comparison.png": {
+      "sha256": "0478438af34c09313aada1c5f2406169d9c3cff0b371bac033b42c8046c353cb",
+      "bytes": 1432078
+    },
+    "reference/original-crop.png": {
+      "sha256": "1b5850cc98f89a81bfb835e653fee830b77f6b4b13250daacf8a233cdf80aaa7",
+      "bytes": 161541
+    },
+    "reference/original-crop@8x.png": {
+      "sha256": "a6f87ce4fd135e64b80f56d0caf5fec4d3f3552bd459ebecd231e5a81118f672",
+      "bytes": 4555589
+    },
+    "temple-gateway.preview.png": {
+      "sha256": "67158b438c63d1adea703d9796e10c770b7a031c84fabfa6c90dbb0f6dc88fbe",
+      "bytes": 302344
+    },
+    "temple-gateway.svg": {
+      "sha256": "841fc62171d884cb3a85f2c6bbf2e8bc454849a9fd11dadc68f023ce48fb9461",
+      "bytes": 906549
+    },
+    "temple-gateway@2048.png": {
+      "sha256": "0b20041b4a59d2aa94fdcd8416595b61a4f770a06b0cf30cc036b2e4395e5a99",
+      "bytes": 657061
+    },
+    "temple-gateway@512.png": {
+      "sha256": "49b0e416c60129a29cc56cf46803603cd4af55fa327d5c246aae344d8f9c2e76",
+      "bytes": 123853
+    }
+  }
+}

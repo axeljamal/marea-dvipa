@@ -1,0 +1,68 @@
+{
+  "id": "gold-flourish",
+  "title": "Gold Flourish",
+  "description": "Small gold scroll sprig with a teal blossom; filler/accent.",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_at": "2026-10-26T22:31:31Z",
+  "source": "Extracted from the supplied Balinese pattern tile; cleaned, upscaled 6x, quantised to the locked palette and vector-traced.",
+  "master": {
+    "file": "gold-flourish.svg",
+    "viewBox": [
+      0,
+      0,
+      632,
+      585
+    ],
+    "aspect_ratio": 1.0803
+  },
+  "symmetry": "none (directional \u2014 do not mirror unless intentional)",
+  "inks_bottom_to_top": [
+    {
+      "token": "sand-wash",
+      "hex": "#D9C9B0"
+    },
+    {
+      "token": "stone",
+      "hex": "#C8CCCD"
+    },
+    {
+      "token": "temple-gold",
+      "hex": "#B39062"
+    },
+    {
+      "token": "mist-blue",
+      "hex": "#93A8B6"
+    },
+    {
+      "token": "harbour-blue",
+      "hex": "#46677F"
+    }
+  ],
+  "reproduction_rules": [
+    "Scale proportionally only; never stretch or skew.",
+    "Use only the inks listed; colour changes must map whole tokens (e.g. a two-tone variant), never individual paths.",
+    "Keep layer order; layers overlap slightly underneath each other by design to avoid seams.",
+    "Keep clear space of at least 8% of the motif's width around it in layouts.",
+    "Use the SVG as the master; regenerate PNGs from it rather than editing PNGs.",
+    "Any change = new version number and new hashes; run verify_lock.py before release."
+  ],
+  "files": {
+    "gold-flourish.preview.png": {
+      "sha256": "bf42f4d8d14f8db03d4b7200eda61386e3c31e527ba459bf8f95fb98c98b5a47",
+      "bytes": 102305
+    },
+    "gold-flourish.svg": {
+      "sha256": "d6d7546be08e68101db3d2e4b402c18e605e25b89f7167e53db605281021c360",
+      "bytes": 23288
+    },
+    "gold-flourish@2048.png": {
+      "sha256": "185ad62d133cf8928119e98df8d1d7d4cd2b375a84842e2a419979f156e145dd",
+      "bytes": 239555
+    },
+    "gold-flourish@512.png": {
+      "sha256": "b807958208b252cee79d116ff6a85ff1df572c8776bb410098f9a5cd7261b947",
+      "bytes": 41946
+    }
+  }
+}

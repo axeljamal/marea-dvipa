@@ -1,0 +1,102 @@
+{
+  "title": "Temple Column",
+  "note": "The reference panel: floral crown over barong, flanked by temple gates sailing on waves.",
+  "tile_units": {
+    "w": 450,
+    "h": 390
+  },
+  "unit_px_at_master": 4,
+  "defaults": {
+    "scale": 1,
+    "spacing": 1,
+    "hero": "barong-mask",
+    "crown": "large-floral-ornament",
+    "mirror": false
+  },
+  "items": [
+    {
+      "motif": "wave-cloud-ornament",
+      "cx": -112,
+      "cy": 62,
+      "width": 96,
+      "flip": true
+    },
+    {
+      "motif": "wave-cloud-ornament",
+      "cx": 112,
+      "cy": 62,
+      "width": 96,
+      "flip": false
+    },
+    {
+      "motif": "large-floral-ornament",
+      "cx": 0,
+      "cy": 72,
+      "width": 168,
+      "flip": false
+    },
+    {
+      "motif": "barong-mask",
+      "cx": 0,
+      "cy": 268,
+      "width": 148,
+      "flip": false
+    },
+    {
+      "motif": "scroll-ornament",
+      "cx": -92,
+      "cy": 350,
+      "width": 58,
+      "flip": true
+    },
+    {
+      "motif": "scroll-ornament",
+      "cx": 92,
+      "cy": 350,
+      "width": 58,
+      "flip": false
+    },
+    {
+      "motif": "wave-cloud-ornament",
+      "cx": 133,
+      "cy": 182,
+      "width": 92,
+      "flip": true
+    },
+    {
+      "motif": "wave-cloud-ornament",
+      "cx": 317,
+      "cy": 182,
+      "width": 92,
+      "flip": false
+    },
+    {
+      "motif": "split-gate-candi-bentar",
+      "cx": 225,
+      "cy": 128,
+      "width": 176,
+      "flip": false
+    },
+    {
+      "motif": "lotus-floral-motif",
+      "cx": 225,
+      "cy": 70,
+      "width": 30,
+      "flip": false
+    },
+    {
+      "motif": "lotus-bud",
+      "cx": 225,
+      "cy": 4,
+      "width": 34,
+      "flip": false
+    },
+    {
+      "motif": "traditional-boat",
+      "cx": 225,
+      "cy": 292,
+      "width": 150,
+      "flip": false
+    }
+  ]
+}

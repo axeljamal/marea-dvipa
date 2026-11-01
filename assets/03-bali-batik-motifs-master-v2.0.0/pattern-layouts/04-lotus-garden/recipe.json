@@ -1,0 +1,74 @@
+{
+  "title": "Lotus Garden",
+  "note": "Diamond all-over of lotus blooms, buds and gold scrolls; quiet ground pattern.",
+  "tile_units": {
+    "w": 300,
+    "h": 300
+  },
+  "unit_px_at_master": 4,
+  "defaults": {
+    "scale": 1,
+    "spacing": 1,
+    "hero": "barong-mask",
+    "crown": "large-floral-ornament",
+    "mirror": false
+  },
+  "items": [
+    {
+      "motif": "lotus-floral-motif",
+      "cx": 0,
+      "cy": 0,
+      "width": 124,
+      "flip": false
+    },
+    {
+      "motif": "lotus-flower",
+      "cx": 150,
+      "cy": 150,
+      "width": 92,
+      "flip": false
+    },
+    {
+      "motif": "lotus-bud",
+      "cx": 150,
+      "cy": 0,
+      "width": 38,
+      "flip": false
+    },
+    {
+      "motif": "lotus-bud",
+      "cx": 0,
+      "cy": 150,
+      "width": 38,
+      "flip": false
+    },
+    {
+      "motif": "scroll-ornament",
+      "cx": 75,
+      "cy": 78,
+      "width": 52,
+      "flip": false
+    },
+    {
+      "motif": "scroll-ornament",
+      "cx": 225,
+      "cy": 78,
+      "width": 52,
+      "flip": true
+    },
+    {
+      "motif": "scroll-ornament",
+      "cx": 75,
+      "cy": 228,
+      "width": 52,
+      "flip": true
+    },
+    {
+      "motif": "scroll-ornament",
+      "cx": 225,
+      "cy": 228,
+      "width": 52,
+      "flip": false
+    }
+  ]
+}
