@@ -28,7 +28,12 @@ export const PATTERNS = [
     sub: 'Petal rings of 13, 8, 5 and 3', music: 'Bunga Kaili · 138 bpm', reelName: 'the Bomba Rose reel',
     eyebrow: 'Media Lab · make the Bomba Rose', head: 'Fibonacci petal rings: 13, 8, 5, 3.',
     hint: 'Drag the rose to spin it. Tap a ring to hear its petals, the heart for a gong, or any kettle and gong around it.', hear: 'Hear the rings' },
+  // reel-only patterns: the stage plays their reel in full, with the ticker
+  { id: 'marea', name: 'Marea Dvīpa', reelOnly: true, reel: 'marea', score: 'marea', thumb: 'logo/mark-night.png',
+    sub: 'The mark, drawn by its own gamelan', music: 'Marea · gong kebyar · 112 bpm', reelName: 'the Marea Dvīpa reel', eyebrow: 'Media Lab · the Marea Dvīpa reel', head: 'A pavilion by the sea.', hint: '', hear: '' },
 ];
+const IMAGE_PATTERN = { id: 'image', name: 'Your picture', reelOnly: true, reel: 'image', score: 'image', thumb: '',
+  sub: 'Played left to right by the ensemble', music: 'Kakula ensemble · 106.7 bpm', reelName: 'your picture', eyebrow: 'Media Lab · your picture', head: 'A picture, played left to right.', hint: '', hear: '' };
 const NEXT = [
   { id: 'rebung', name: 'Rebung border', sub: 'Reel in the making', img: 'motifs/rebung-border--buya.png' },
   { id: 'ketupat', name: 'Ketupat lattice', sub: 'Reel in the making', img: 'motifs/ketupat-lattice--buya.png' },
@@ -68,15 +73,21 @@ export function createStage(lab, root) {
   // ---------- the pattern tiles ----------
   const tiles = root.querySelector('#patterns');
   const thumbs = [];
+  function makeTile(pat) {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'tile'; b.dataset.id = pat.id;
+    const art = pat.reelOnly ? '<img alt="">' : '<canvas aria-hidden="true"></canvas>';
+    b.innerHTML = '<span class="t-art">' + art + '</span><span class="t-name"></span><span class="t-sub"></span><span class="t-go">' + (pat.reelOnly ? 'Play it on the stage' : 'Make it on the stage') + '</span>';
+    b.querySelector('.t-name').textContent = pat.name; b.querySelector('.t-sub').textContent = pat.sub + ' · ' + pat.music;
+    b.setAttribute('aria-label', pat.name + ': ' + pat.sub + '. Opens the stage, with sound.');
+    if (pat.reelOnly) b.querySelector('img').src = pat.thumb;
+    b.addEventListener('click', () => open(pat.id));
+    return b;
+  }
   if (tiles) {
     PATTERNS.forEach((pat) => {
-      const b = document.createElement('button'); b.type = 'button'; b.className = 'tile'; b.dataset.id = pat.id;
-      b.innerHTML = '<span class="t-art"><canvas aria-hidden="true"></canvas></span><span class="t-name"></span><span class="t-sub"></span><span class="t-go">Make it on the stage</span>';
-      b.querySelector('.t-name').textContent = pat.name; b.querySelector('.t-sub').textContent = pat.sub + ' · ' + pat.music;
-      b.setAttribute('aria-label', pat.name + ': ' + pat.sub + '. Opens the stage, with sound.');
-      tiles.appendChild(b);
+      const b = makeTile(pat); tiles.appendChild(b);
+      if (pat.reelOnly) return;
       const th = { cv: b.querySelector('canvas'), pat, raf: 0, t0: 0 }; thumbs.push(th);
-      b.addEventListener('click', () => open(pat.id));
       const preview = () => {
         if (reduceMotion) return;
         cancelAnimationFrame(th.raf); th.t0 = performance.now();
@@ -96,6 +107,16 @@ export function createStage(lab, root) {
     const drawAll = () => thumbs.forEach((th) => { if (!th.raf) drawThumb(th.cv, lab, th.pat, 1); });
     requestAnimationFrame(drawAll);
     if (window.ResizeObserver) new ResizeObserver(drawAll).observe(tiles); else window.addEventListener('resize', drawAll);
+  }
+  // a loaded picture gets its own tile (before the "next" ones) and its own entry on the stage
+  function imageReady(info) {
+    IMAGE_PATTERN.thumb = info.url; IMAGE_PATTERN.sub = info.name;
+    if (PATTERNS.indexOf(IMAGE_PATTERN) < 0) PATTERNS.push(IMAGE_PATTERN);
+    if (tiles) {
+      const old = tiles.querySelector('.tile[data-id="image"]'); const b = makeTile(IMAGE_PATTERN);
+      if (old) old.replaceWith(b); else { const next = tiles.querySelector('.tile.next'); if (next) tiles.insertBefore(b, next); else tiles.appendChild(b); }
+    }
+    if (st.open) renderPanel();
   }
 
   // ---------- the stage ----------
@@ -180,15 +201,15 @@ export function createStage(lab, root) {
   }
   function renderPanel() {
     const pat = st.pat, K = st.K, reel = st.mode === 'reel';
-    el.dataset.mode = st.mode;
+    el.dataset.mode = st.mode; el.dataset.only = pat.reelOnly ? 'reel' : '';
     q('.ls-eyebrow').textContent = reel ? 'Media Lab · ' + pat.reelName : pat.eyebrow;
-    q('.ls-head').textContent = reel ? 'How the ' + pat.name + ' was made.' : pat.head;
+    q('.ls-head').textContent = reel ? (pat.reelOnly ? pat.head : 'How the ' + pat.name + ' was made.') : pat.head;
     q('.ls-hint').textContent = reel ? REEL_HINT : pat.hint;
     hearBtn.textContent = pat.hear;
     reelBtn.textContent = reel ? 'Open in the Lab' : 'Play the full reel';
-    pills(q('.ls-pats'), PATTERNS.map((p) => [p.id, p.name]), (v) => v === pat.id, (v) => { const p = PATTERNS.find((x) => x.id === v); if (p !== st.pat) { if (st.mode === 'reel') playReel(p); else start(p); } });
+    pills(q('.ls-pats'), PATTERNS.map((p) => [p.id, p.name]), (v) => v === pat.id, (v) => { const p = PATTERNS.find((x) => x.id === v); if (p !== st.pat) { if (st.mode === 'reel' || p.reelOnly) playReel(p); else start(p); } });
     pills(q('.ls-show'), [['make', 'The making'], ['reel', 'Full reel']], (v) => v === st.mode, (v) => setMode(v), 'Show');
-    pills(q('.ls-turn'), K.turn.options, (v) => st.R[K.turn.key] === v, (v) => { st.R[K.turn.key] = v; renderPanel(); }, K.turn.label);
+    if (K) pills(q('.ls-turn'), K.turn.options, (v) => st.R[K.turn.key] === v, (v) => { st.R[K.turn.key] = v; renderPanel(); }, K.turn.label); else q('.ls-turn').innerHTML = '';
   }
   function syncPlayIcon() {
     let key;
@@ -226,14 +247,14 @@ export function createStage(lab, root) {
   function playReel(pat) {
     st.gen++;
     if (st.clip) lab.stopClip(); st.clip = false;
-    st.mode = 'reel'; st.pat = pat; st.K = KINDS[pat.kind]; if (!st.R || el.dataset.kind !== pat.kind) st.R = st.K.create(); el.dataset.kind = pat.kind;
+    st.mode = 'reel'; st.pat = pat; st.K = KINDS[pat.kind] || null; if (st.K && (!st.R || el.dataset.kind !== pat.kind)) st.R = st.K.create(); if (!st.K) st.R = null; el.dataset.kind = pat.kind || '';
     st.finished = false; st.motif = null; st.icon = ''; st.sceneId = null;
     lab.setStageOpen(true, false);
     lab.playReel(pat.reel, st.sound ? pat.score : null);
     renderPanel(); syncPlayIcon(); tickerClear();
   }
   function setMode(mode) {
-    if (mode === st.mode) return;
+    if (mode === st.mode || (mode === 'make' && st.pat.reelOnly)) return;
     if (mode === 'reel') playReel(st.pat); else { lab.setReelPlaying(false); start(st.pat); }
   }
   function open(id) {
@@ -241,7 +262,7 @@ export function createStage(lab, root) {
     const pat = PATTERNS.find((p) => p.id === id) || PATTERNS[0];
     const wasOpen = st.open;
     if (!wasOpen) { st.open = true; el.hidden = false; document.body.classList.add('lab-stage-open'); lab.setStageOpen(true, false); setSound(true); }
-    start(pat);
+    if (pat.reelOnly) playReel(pat); else start(pat);
     if (!wasOpen) {
       st.last = 0; cancelAnimationFrame(st.raf); st.raf = requestAnimationFrame(loop);
       try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); }
@@ -373,9 +394,9 @@ export function createStage(lab, root) {
     else if (k === 'ArrowRight' || k === 'ArrowLeft') {
       e.preventDefault();
       if (st.mode === 'reel') lab.stepReel(k === 'ArrowRight' ? 1 : -1);
-      else { const i = PATTERNS.indexOf(st.pat); start(PATTERNS[(i + (k === 'ArrowRight' ? 1 : PATTERNS.length - 1)) % PATTERNS.length]); }
+      else { const i = PATTERNS.indexOf(st.pat), p = PATTERNS[(i + (k === 'ArrowRight' ? 1 : PATTERNS.length - 1)) % PATTERNS.length]; if (p.reelOnly) playReel(p); else start(p); }
     }
   });
 
-  return { open, close, isOpen: () => st.open };
+  return { open, close, isOpen: () => st.open, imageReady };
 }

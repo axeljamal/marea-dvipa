@@ -209,3 +209,18 @@ body.lab-stage-open { overflow: hidden; }
   .lab-view .ls-tick .b { font-size: 15px; }
 }
 @media (prefers-reduced-motion: reduce) { .lab-view .ls-tick { transition: none; } }
+
+/* ---- your picture: the file button beside the reels, and the screen as a drop zone ---- */
+.lab-view .chip-file { position: relative; cursor: pointer; }
+.lab-view .chip-file input { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+.lab-view .chip-file:focus-within { outline: 2px solid var(--gold); outline-offset: 2px; }
+.lab-view .screen.drop { outline: 2px dashed var(--gold); outline-offset: -8px; }
+.lab-view .screen.drop::after { content: "Drop a PNG or JPG to hear it"; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font: 600 16px var(--body); color: var(--ink); background: var(--gold); border-radius: 20px; padding: 8px 16px; pointer-events: none; }
+.lab-view .lab-stage[data-only="reel"] .ls-show { display: none; }
+
+/* light mode: paper chrome around the dark film; the stage stays a dark room */
+html[data-theme="light"] .lab-view { --ink: #F4EEE3; --ink-2: #FBF8F1; --line: #E2D9C8; --line-2: #C9BDA6; --gold: #8A6B3A; --gold-2: #A8884F; --paper: #1D1A14; --mist: #4A4336; --muted: #6B6256; color-scheme: light; }
+html[data-theme="light"] .lab-view .screen { background: #0E0C09; border-color: #C9BDA6; }
+html[data-theme="light"] .lab-view .chip[aria-pressed="true"], html[data-theme="light"] .lab-view .btn.solid, html[data-theme="light"] .lab-view .round { color: #FAF7F2; }
+html[data-theme="light"] .lab-view .tile .t-art { background: #0E0C09; }
+.lab-view .lab-stage { --ink: #0E0C09; --ink-2: #17140F; --line: #2A241B; --line-2: #4A4032; --gold: #E0C27E; --gold-2: #C39B65; --paper: #F4EEE3; --mist: #CFC3A8; --muted: #9A8E7A; color-scheme: dark; }

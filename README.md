@@ -49,7 +49,8 @@ src/
   App.jsx     the Pattern Studio, with engine/ data/ lib/ components/ hooks/ as before
   styles.css  the studio's styles, scoped to .studio-view
   lab/        lab.js (the Media Lab, now startLab(), which also lends the welcome its instruments and the Bomba Rose clip), markup.js (its page), LabView.jsx, lab.css (scoped to .lab-view)
-public/       motifs/, isen/, icons/ (the Ntina mark), manifest.webmanifest, sw.js
+  lab/        also stage.js (the stage: a pattern made in the centre with its score, or a full reel with the ticker) and markStage.js (the Ntina mark drawn live)
+public/       motifs/, isen/, icons/ (the Marea Dvīpa mark), logo/ (the mark’s layers, day and night sets, layout.json), manifest.webmanifest, sw.js
 ```
 
 ## Project material
@@ -67,6 +68,11 @@ skills/       pattern-aesthetics-craft, design-taste, heritage-signature-design,
 docs/         every LOCK.md, the Dua Pulau origins, the sketchbook critique and the development log
 ```
 The four locked collections each carry `verify_lock.py`; run `python3 verify_lock.py` inside the folder and it prints `ALL LOCKED`. Never edit a locked file in place: a change ships as a new version. The app's own copies of the motifs stay in `public/`.
+
+## The mark, and your picture
+The Marea Dvīpa mark is a bandstand pavilion between candi bentar gates, with palms, frangipani, the pier, the sea and the mountains. Its layers live in `public/logo` (a day set for light grounds, a night set for dark ones; `layout.json` places them as fractions of a square). The Media Lab’s third reel draws the mark layer by layer, each moving with the ensemble of whichever score plays.
+
+"Hear your picture" in the Media Lab takes a PNG or JPG and composes a score from it: 128 columns over 16 bars, the brightest row of each column picking one of the seven kettles, dark masses ringing the gongs, edges driving the drum. The picture becomes a reel (and a stage tile), can be recorded as video, and never leaves the browser.
 
 ## Design partner (Claude)
 Same as the studio: inside a Claude artifact with the `sample` and `downloads` capabilities it uses Claude directly; elsewhere it is off unless you host `server/partner-proxy.mjs` with your own key and build with `VITE_PARTNER_URL`.

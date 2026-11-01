@@ -1,7 +1,7 @@
 // Marea Dvīpa service worker. On install it caches the page, its script and styles, the icons, every motif and
 // every isen fill, so both rooms work offline. Google Fonts are cached the first time they load.
-// Bump VERSION whenever you change a file, and add any new motif to MEDIA.
-const VERSION = 'marea-dvipa-v4';
+// Bump VERSION whenever you change a file, and add any new motif or logo layer to MEDIA.
+const VERSION = 'marea-dvipa-v5';
 const FONTS = 'marea-dvipa-fonts';
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "icons/apple-touch-icon.png", "icons/favicon-32.png"];
 const MEDIA = [
@@ -38,7 +38,26 @@ const MEDIA = [
   "isen/isen-sero--buya.svg",
   "isen/isen-sero.svg",
   "isen/isen-zigzag--buya.svg",
-  "isen/isen-zigzag.svg"
+  "isen/isen-zigzag.svg",
+  "logo/mark-night.png",
+  "logo/logo-night.png",
+  "logo/night/mountains.png",
+  "logo/night/gate-left.png",
+  "logo/night/gate-right.png",
+  "logo/night/palm-left.png",
+  "logo/night/palm-right.png",
+  "logo/night/pier.png",
+  "logo/night/railing.png",
+  "logo/night/pebbles.png",
+  "logo/night/pavilion.png",
+  "logo/night/flower-left.png",
+  "logo/night/flower-right.png",
+  "logo/night/wave-left.png",
+  "logo/night/wave-right.png",
+  "logo/night/bird-a.png",
+  "logo/night/bird-b.png",
+  "logo/night/bird-c.png",
+  "logo/night/wordmark.png"
 ];
 
 // The single-file build ships app.js and app.css; the Vite build ships hashed files under assets/.
