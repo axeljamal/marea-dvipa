@@ -8,11 +8,17 @@ import { Welcome } from '../welcome/Welcome';
 import { usePwa } from './pwa';
 
 const VIEWS = [
-  { id: 'welcome', label: 'Welcome', short: 'Welcome', title: 'Marea Dvīpa', theme: '#0E0C09' },
-  { id: 'studio', label: 'Pattern Studio', short: 'Studio', title: 'Pattern Studio · Marea Dvīpa', theme: '#02213D' },
-  { id: 'lab', label: 'Media Lab', short: 'Lab', title: 'Media Lab · Marea Dvīpa', theme: '#0E0C09' },
+  { id: 'welcome', label: 'Welcome', short: 'Welcome', title: 'Marea Dvīpa', theme: '#0E0C09', light: '#FAF7F2' },
+  { id: 'studio', label: 'Pattern Studio', short: 'Studio', title: 'Pattern Studio · Marea Dvīpa', theme: '#02213D', light: '#FAF7F2' },
+  { id: 'lab', label: 'Media Lab', short: 'Lab', title: 'Media Lab · Marea Dvīpa', theme: '#0E0C09', light: '#F4EEE3' },
 ];
-const LAB_HASHES = ['lab', 'ntina', 'bomba'];
+// dark or light: the saved choice, else the phone's or the system's setting
+const THEME_KEY = 'marea-theme';
+const systemTheme = () => (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+const initialTheme = () => { try { const t = localStorage.getItem(THEME_KEY); if (t === 'light' || t === 'dark') return t; } catch (e) { /* fine */ } return systemTheme(); };
+const Sun = <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="2" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>;
+const Moon = <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /></svg>;
+const LAB_HASHES = ['lab', 'ntina', 'bomba', 'marea'];
 
 function viewFromHash() {
   const h = (typeof location !== 'undefined' ? location.hash : '').slice(1);
@@ -25,19 +31,28 @@ const initialView = () => viewFromHash() || 'welcome';
 
 export default function Shell() {
   const [view, setView] = useState(initialView);
+  const [theme, setTheme] = useState(initialTheme);
   const labApi = useRef(null);
+  useEffect(() => { // follow the system until a choice is made
+    if (!window.matchMedia) return undefined;
+    const mq = window.matchMedia('(prefers-color-scheme: light)'), on = () => { try { if (localStorage.getItem(THEME_KEY)) return; } catch (e) { /* fine */ } setTheme(mq.matches ? 'light' : 'dark'); };
+    if (mq.addEventListener) mq.addEventListener('change', on); else mq.addListener(on);
+    return () => { if (mq.removeEventListener) mq.removeEventListener('change', on); else mq.removeListener(on); };
+  }, []);
+  function pickTheme(t) { setTheme(t); try { localStorage.setItem(THEME_KEY, t); } catch (e) { /* fine */ } }
   const { canInstall, install } = usePwa();
 
   useEffect(() => {
     const v = VIEWS.find((x) => x.id === view);
     document.body.dataset.view = view;
+    document.documentElement.dataset.theme = theme;
     document.title = v.title;
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', v.theme);
+    if (meta) meta.setAttribute('content', theme === 'light' ? v.light : v.theme);
     const h = location.hash.slice(1);
     const want = view !== 'lab' ? view : (LAB_HASHES.indexOf(h) >= 0 ? h : 'lab');
     if (h !== want) { try { history.replaceState(null, '', '#' + want); } catch (e) { /* fine */ } }
-  }, [view]);
+  }, [view, theme]);
 
   useEffect(() => {
     const onHash = () => { const v = viewFromHash(); if (v) setView(v); };
@@ -72,10 +87,11 @@ export default function Shell() {
               tabIndex={view === v.id ? 0 : -1} onClick={() => pick(v.id)}><span className="l">{v.label}</span><span className="s">{v.short}</span></button>
           ))}
         </div>
+        <button className="shell-theme" type="button" onClick={() => pickTheme(theme === 'light' ? 'dark' : 'light')} aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'} title={theme === 'light' ? 'Dark mode' : 'Light mode'}>{theme === 'light' ? Moon : Sun}</button>
         {canInstall && <button className="shell-install" type="button" onClick={install}>Install app</button>}
       </nav>
       <div id="view-welcome" role="tabpanel" aria-labelledby="tab-welcome" hidden={view !== 'welcome'}>
-        <Welcome active={view === 'welcome'} getLab={() => labApi.current} onGo={pick} />
+        <Welcome active={view === 'welcome'} theme={theme} getLab={() => labApi.current} onGo={pick} />
       </div>
       <div id="view-studio" role="tabpanel" aria-labelledby="tab-studio" className="studio-view" hidden={view !== 'studio'}>
         <StudioApp />

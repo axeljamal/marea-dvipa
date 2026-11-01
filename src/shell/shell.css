@@ -9,6 +9,13 @@ html { -webkit-text-size-adjust: 100%; scroll-padding-top: var(--nav-h); }
   color-scheme: dark;
 }
 body[data-view="lab"], body[data-view="welcome"] { --sh-bg: #0E0C09; --sh-line: #2A241B; --sh-gold: #E0C27E; --sh-on-gold: #0E0C09; --sh-text: #F4EEE3; --sh-muted: #9A8E7A; }
+/* light mode: pearl and paper grounds, a deeper gold that still reads on them */
+html[data-theme="light"] { color-scheme: light; }
+html[data-theme="light"] body { --sh-bg: #FAF7F2; --sh-line: #DCD3C4; --sh-gold: #8A6B3A; --sh-on-gold: #FAF7F2; --sh-text: #1D1A14; --sh-muted: #6B6256; }
+html[data-theme="light"] body[data-view="lab"] { --sh-bg: #F4EEE3; --sh-line: #E2D9C8; }
+.shell-theme { width: 40px; height: 40px; border-radius: 20px; border: 1px solid var(--sh-line); background: transparent; color: var(--sh-muted); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+.shell-theme:hover { color: var(--sh-text); border-color: var(--sh-gold); }
+.shell-theme svg { width: 18px; height: 18px; }
 html, body { margin: 0; background: var(--sh-bg); color: var(--sh-text); transition: background-color .25s ease; }
 body { font: 15px/1.5 'Karla', 'Helvetica Neue', Arial, sans-serif; min-height: 100vh; min-height: 100dvh; }
 
