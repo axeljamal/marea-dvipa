@@ -13,10 +13,12 @@ const look = (p) => ({ ...DEFAULTS, ...p });
 const gname = (h) => nameOf(GROUNDS, h) || h;
 
 export const CLIP = { reel: 'bomba', scene: 'b-rings', score: 'bomba', bars: 16 };
+// the mark's reel, whole, with its own gamelan: 40 bars at 112 bpm
+export const MARK = { reel: 'marea', scene: 'm-title', through: 'm-mark', score: 'marea', secs: 40 * 240 / 112 };
 
 export function buildTimeline(motifCount = 34) {
   const acts = [
-    { id: 'title', label: 'Welcome', bars: 3 },
+    { id: 'mark', label: 'The mark', bars: MARK.secs / BAR }, // the mark builds itself to its own gamelan
     { id: 'motifs', label: 'Motif by motif', bars: 7 },
     { id: 'repeats', label: 'Repeats', bars: 8 },
     { id: 'albers', label: 'Albers grounds', bars: 10 },
@@ -29,13 +31,13 @@ export function buildTimeline(motifCount = 34) {
   const total = at, A = Object.fromEntries(acts.map((a) => [a.id, a])), beats = [];
   const add = (t, view, sound) => beats.push({ t, view, sound });
 
-  // 1 · Title: the Ntina mark over a drifting Ntina stream on Bomba black
-  add(A.title.start, {
-    act: 'title', overlay: 'title', dim: true, reveal: null, alb: null,
-    look: look({ layout: 'ntina-stream', ground: '#0E0C09', texture: 'cecek', sigInk: 'buya-bomba', scale: 0.8 }),
+  // 1 · The mark: the living logo builds itself to Marea, its own gamelan, over a drifting Ntina stream on Bomba black
+  add(A.mark.start, {
+    act: 'mark', overlay: 'title', dim: true, reveal: null, alb: null,
+    look: look({ layout: 'dua-pulau-sarong', ground: '#0E0C09', texture: 'cecek', sigInk: 'buya-bomba', lines: 'gold', scale: 0.9, seed: 2026 }), // the Dua Pulau signature, the sarong it was drawn for
     caption: null,
-  }, [{ k: 'gong', n: 0, v: 0.5, at: 0.05 }, ...[0, 2, 4, 5].map((n, i) => ({ k: 'kettle', n, v: 0.4, at: BAR + i * E8 }))]);
-  add(A.title.start + 2 * BAR, {}, [{ k: 'gong', n: 1, v: 0.35 }]);
+  }, null);
+  beats[beats.length - 1].clip = 'mark';
 
   // 2 · Motif by motif: Fibonacci Bloom, each motif lands on a kakula note
   const m0 = A.motifs.start;
@@ -100,7 +102,7 @@ export function buildTimeline(motifCount = 34) {
     act: 'lab', overlay: 'clip', alb: null, reveal: null, dim: true,
     caption: { eyebrow: 'Media Lab · Bomba Rose reel', head: 'Grow the petal rings', body: 'Rings of 13, 8, 5 and 3 petals, each turned by the golden angle, scored for Bunga Kaili, an original piece for a synthesized Kaili ensemble.', small: true },
   }, null);
-  beats[beats.length - 1].clip = true;
+  beats[beats.length - 1].clip = 'lab';
 
   // 7 · End: the way in
   add(A.end.start, {
@@ -109,5 +111,5 @@ export function buildTimeline(motifCount = 34) {
   }, [{ k: 'gong', n: 0, v: 0.5 }, ...[6, 4, 2, 0].map((n, i) => ({ k: 'kettle', n, v: 0.36, at: BEAT * (i + 1) })), { k: 'gong', n: 1, v: 0.3, at: BAR * 2 }]);
 
   beats.sort((a, b) => a.t - b.t);
-  return { acts, beats, total, clipAct: A.lab };
+  return { acts, beats, total, clipAct: A.lab, markAct: A.mark };
 }

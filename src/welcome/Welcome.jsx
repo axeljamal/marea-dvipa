@@ -8,8 +8,9 @@ import { GROUNDS, LINE_HEX } from '../data/catalog';
 import { nameOf } from '../lib/color';
 import { compute, geometryKey, srcOf, texSrc, ribbonMarkup } from '../lib/compute';
 import { useElementSize } from '../hooks/useElementSize';
-import { buildTimeline, CLIP } from './timeline';
+import { buildTimeline, MARK } from './timeline';
 import { createRose, drawRoseStage, roseDown, roseMove, roseUp, hearAll } from './roseStage';
+import { LiveLogo } from './LiveLogo';
 
 const TL = buildTimeline();
 const reduceMotion = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -82,7 +83,7 @@ function Scene({ view, size, sceneRef }) {
           const hidden = view.reveal != null && it.rank >= view.reveal;
           return (
             <div key={it.key} className={'w-m' + (hidden ? ' hide' : '')} style={box(it)} data-m={it.m} data-rank={it.rank}>
-              <img src={srcOf(it.m, lk)} alt="" draggable="false" />
+              <span className="w-mi"><img src={srcOf(it.m, lk)} alt="" draggable="false" /></span>
             </div>
           );
         })}
@@ -119,11 +120,16 @@ const Icon = {
   show: <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>,
 };
 
-export function Welcome({ active, getLab, onGo }) {
+// on a light ground the film's Bomba black turns to pearl, the signature ink to its light version, and the mark wears its day set
+const LIGHT_GROUND = '#FAF7F2';
+function themed(look, theme) { if (!look || theme !== 'light' || look.ground !== '#0E0C09') return look; return { ...look, ground: LIGHT_GROUND, sigInk: look.sigInk === 'buya-bomba' ? 'dua-pulau' : look.sigInk }; }
+
+export function Welcome({ active, theme, getLab, onGo }) {
   const stageRef = useRef(null), sceneRef = useRef(null), clipRef = useRef(null), canvasRef = useRef(null);
   const barRef = useRef(null), timeRef = useRef(null), tickRef = useRef(null);
   const size = useElementSize(stageRef);
   const [view, setView] = useState(() => viewAt(0));
+  const ZERO7 = [0, 0, 0, 0, 0, 0, 0];
   const [playing, setPlaying] = useState(false);
   const [sound, setSound] = useState(false);
   const [dock, setDock] = useState(true);
@@ -131,6 +137,11 @@ export function Welcome({ active, getLab, onGo }) {
   const [ticks, setTicks] = useState([]);
   const [ctaGone, setCtaGone] = useState(false);
   const T = useRef({ t: 0, next: 0, last: 0, clip: false, playing: false, sound: false });
+  const holdRef = useRef(false); // the film waits while you play with the living mark
+  const LV = useRef(null), nameRef = useRef(false); // what the living mark builds from while the mark's reel plays
+  const MKref = useRef([0, 0, 0, 0, 0, 0, 0, 0, 0]), viewRef = useRef(null); // smoothed levels for the dancing page; the view, for the loop
+  const [nameOn, setNameOn] = useState(false);
+  const liveLogo = () => LV.current;
   const P = useRef({ tx: 0, ty: 0, rx: 0, ry: 0, down: null, moved: false, lastPointer: 0, tilt: null });
   const K = useRef({ items: [], id: 0 }); // the ticker's running captions
   const RS = useRef(createRose()); // the Media Lab chapter's rose: spin, flashes, sparks
@@ -139,34 +150,42 @@ export function Welcome({ active, getLab, onGo }) {
   const lab = () => (getLab ? getLab() : null);
   const fire = (b) => {
     if (b.view) setView((v) => ({ ...v, ...b.view }));
-    if (b.sound && T.current.sound) { const l = lab(); if (l) l.strike(b.sound); }
-    if (b.clip) startClip(0);
+    if (b.sound && T.current.sound && !T.current.clip) { const l = lab(); if (l) l.strike(b.sound); } // the film's own beats sound only when the song is not leading
   };
-  function startClip(offset) {
+  // Marea, the mark's own gamelan, is the film's soundtrack: the Media Lab plays its reel as a clip. On the first pass (the mark act)
+  // the film follows the reel's clock while the living mark builds itself; after that the song simply goes round again underneath the
+  // rooms, and everything on the page moves to it. Sound off: the clip still runs silently, so the motion keeps time.
+  function startSong(offset) {
     const l = lab(); if (!l) return;
-    const ok = l.startClip({ ...CLIP, offset, noDraw: true, sound: T.current.sound, onEnd: (finished) => {
-      T.current.clip = false;
-      if (finished) T.current.t = Math.max(T.current.t, TL.clipAct.start + TL.clipAct.dur);
+    const S = T.current, first = offset < TL.markAct.dur - 0.01 && S.t < TL.markAct.start + TL.markAct.dur - 0.01;
+    const ok = l.startClip({ ...MARK, offset, noDraw: true, sound: S.sound, onEnd: (finished) => {
+      const wasFirst = S.clipFirst; S.clip = false; S.clipAct = null; S.clipFirst = false;
+      if (finished) { if (wasFirst) S.t = Math.max(S.t, TL.markAct.start + TL.markAct.dur); if (S.playing) startSong(0); }
     } });
-    T.current.clip = !!ok;
+    S.clip = !!ok; S.clipFirst = !!ok && first; S.clipAct = ok && first ? TL.markAct : null;
   }
-  function stopClip() { const l = lab(); if (T.current.clip && l) l.stopClip(); T.current.clip = false; }
+  // the Bomba Rose chapter grows its rings on the film's own clock now, to the same song
+  const BAR138 = (60 / 138) * 4;
+  function roseAt(t) {
+    const d = TL.clipAct.dur, lt = Math.max(0, Math.min(d, t - TL.clipAct.start)), b4 = BAR138 * 4, ramp = (x, a, b) => Math.max(0, Math.min(1, (x - a) / (b - a)));
+    return { kind: 'rose', rings: [13, 8, 5, 3], prog: [0, 1, 2, 3].map((k) => ramp(lt, k * b4 + 0.05, (k + 1) * b4 - 0.3)), heart: ramp(lt, d - 2.5, d - 1), ring: Math.min(3, Math.floor(lt / b4)), lt, dur: d, bar: lt / BAR138 };
+  }
+  const ALL = Object.freeze({ mountains: 1, 'gate-left': 1, 'gate-right': 1, 'palm-left': 1, 'palm-right': 1, pier: 1, railing: 1, pebbles: 1, pavilion: 1, 'flower-left': 1, 'flower-right': 1, 'wave-left': 1, 'wave-right': 1, 'bird-a': 1, 'bird-b': 1, 'bird-c': 1, wordmark: 1 });
+  function stopClip() { const l = lab(); if (T.current.clip && l) l.stopClip(); T.current.clip = false; T.current.clipAct = null; T.current.clipFirst = false; }
   function seek(t) {
     stopClip();
     const S = T.current; S.t = Math.max(0, Math.min(TL.total - 0.01, t)); S.next = nextIndex(S.t);
     K.current.items = []; setTicks([]);
     setView(viewAt(S.t));
-    const c = TL.clipAct;
-    if (S.playing && S.t >= c.start && S.t < c.start + c.dur) startClip(S.t - c.start);
+    if (S.playing) startSong(S.t % MARK.secs);
   }
   function play(on) {
     const S = T.current; S.playing = on; setPlaying(on);
     const l = lab();
     if (!on) { if (S.clip && l) l.pauseClip(); return; }
     S.last = 0;
-    const c = TL.clipAct;
     if (S.clip && l) l.resumeClip();
-    else if (S.t >= c.start && S.t < c.start + c.dur) startClip(S.t - c.start);
+    else startSong(S.t % MARK.secs);
   }
   function setSoundOn(on) {
     const S = T.current, l = lab();
@@ -214,12 +233,12 @@ export function Welcome({ active, getLab, onGo }) {
     let raf = 0;
     const loop = (now) => {
       const S = T.current;
-      const dt = S.last ? Math.min(0.25, (now - S.last) / 1000) : 0;
+      const dt = S.last ? Math.min(0.25, (now - S.last) / 1000) : 0, adv = holdRef.current && !T.current.clip ? 0 : dt;
       if (S.playing) {
         const l = lab(), el = S.clip && l ? l.clipElapsed() : null;
-        S.t = el != null ? TL.clipAct.start + el : S.t + dt;
+        S.t = el != null && S.clipAct ? S.clipAct.start + el : S.t + adv; // the mark act rides the reel's clock; afterwards the film keeps its own
         while (S.next < TL.beats.length && TL.beats[S.next].t <= S.t) fire(TL.beats[S.next++]);
-        if (S.t >= TL.total) { stopClip(); S.t = 0; S.next = 0; }
+        if (S.t >= TL.total) { stopClip(); S.t = 0; S.next = 0; startSong(0); }
       }
       S.last = now;
       if (barRef.current) barRef.current.style.width = (S.t / TL.total) * 100 + '%';
@@ -252,14 +271,28 @@ export function Welcome({ active, getLab, onGo }) {
       }
 
       // the Media Lab chapter: only the rose being made, centred, with the ensemble lit by the score
-      const cv = canvasRef.current, l = lab(), m = S.clip && l ? l.clipMotif() : null;
-      if (cv && m) {
-        const r = cv.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+      const cv = canvasRef.current, l = lab(), m = S.clip && l ? l.clipMotif() : null, lv = S.clip && l ? l.levels() : null;
+      // the mark's reel: on the first pass the living logo builds from the reel's reveal; after that it is whole and moves to the song; the name arrives with the wordmark
+      LV.current = S.clip ? (S.clipFirst && m && m.kind === 'logo' ? { R: m.R, ghost: m.ghost, breath: m.breath, lv } : { R: ALL, ghost: 0, breath: true, lv }) : null;
+      const wantName = S.clipFirst && m && m.kind === 'logo' ? m.R.wordmark > 0 : S.t > 1;
+      if (wantName !== nameRef.current) { nameRef.current = wantName; setNameOn(wantName); }
+      // the page dances: every motif on its own kettle, the flow lines on the drum, the isen ground on the gongs; a slow sway when the song is quiet
+      const MK = MKref.current, kettle = lv ? lv.kettle : ZERO7, gong = lv ? lv.gong : [0, 0];
+      for (let i = 0; i < 7; i++) MK[i] += (kettle[i] - MK[i]) * 0.3; MK[7] += ((lv ? lv.drum : 0) - MK[7]) * 0.3; MK[8] += (Math.max(gong[0], gong[1]) - MK[8]) * 0.2;
+      const sc = sceneRef.current;
+      if (sc && !reduceMotion) {
+        const ms = sc.querySelectorAll('.w-m:not(.hide):not(.gone) .w-mi');
+        for (let i = 0; i < ms.length; i++) { const rank = Number(ms[i].parentNode.dataset.rank) || 0, k = MK[rank % 7], sway = Math.sin(now / 900 + rank * 1.7) * 1.5; ms[i].style.transform = 'translateY(' + (sway - k * 8).toFixed(1) + 'px) scale(' + (1 + k * 0.07).toFixed(3) + ')'; }
+        const ln = sc.querySelector('.w-lines'); if (ln) ln.style.opacity = (0.72 + MK[7] * 0.28).toFixed(2);
+        const tx = sc.querySelector('.w-texture'); if (tx) tx.style.opacity = (0.4 + MK[8] * 0.3).toFixed(2);
+      }
+      if (cv && viewRef.current.overlay === 'clip' && l) {
+        const rm = roseAt(S.t), r = cv.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
         const W = Math.round(r.width * dpr), H = Math.round(r.height * dpr);
         if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
-        RS.current.m = m;
-        drawRoseStage(cv.getContext('2d'), W, H, dpr, RS.current, m, l.levels(), l, now, dt);
-      }
+        RS.current.m = rm;
+        drawRoseStage(cv.getContext('2d'), W, H, dpr, RS.current, rm, lv, l, now, dt);
+      } else RS.current.m = null;
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
@@ -298,9 +331,13 @@ export function Welcome({ active, getLab, onGo }) {
   }, [active]);
 
   // pointer: hover tilts, drag turns further, a tap on a motif rings it, a tap elsewhere shows or hides the dock
-  const inClip = () => view.overlay === 'clip' && T.current.clip && RS.current.m;
+  viewRef.current = view;
+  const inClip = () => view.overlay === 'clip' && RS.current.m;
   const local = (e) => { const r = canvasRef.current.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
   const ring = (evs) => { const l = lab(); if (evs && evs.length && T.current.sound && l) l.strike(evs); };
+  // the living mark: each part rings the lab's instruments when touched; with sound off, the offer to play with sound returns
+  const onLogoTap = (name, label, evs, e) => { ring(evs); if (!T.current.sound) setCtaGone(false); setTapped({ name: label, x: e.clientX, y: e.clientY, id: Date.now() }); };
+  const onLogoHold = (on) => { holdRef.current = on; };
   const onPointerMove = (e) => {
     if (RS.current.drag) { const [x, y] = local(e); roseMove(RS.current, x, y); P.current.moved = true; return; }
     const r = stageRef.current.getBoundingClientRect(), Pp = P.current, k = Pp.down ? 2.2 : 1;
@@ -323,7 +360,7 @@ export function Welcome({ active, getLab, onGo }) {
   };
   function onStageClick(e) {
     if (P.current.moved) { P.current.moved = false; return; }
-    if (e.target.closest('button, a, .w-dock, .w-rose-ui')) return;
+    if (e.target.closest('button, a, .w-dock, .w-rose-ui, .w-live')) return;
     if (inClip()) { const [x, y] = local(e); const evs = roseUp(RS.current, x, y, RS.current.m); if (evs) { ring(evs); return; } } // kettles and gongs
     const m = e.target.closest('.w-m');
     if (m && !m.classList.contains('hide') && !m.classList.contains('gone')) {
@@ -341,7 +378,8 @@ export function Welcome({ active, getLab, onGo }) {
   useEffect(() => { if (!tapped) return undefined; const tm = setTimeout(() => setTapped(null), 1400); return () => clearTimeout(tm); }, [tapped]);
 
   const actIdx = Math.max(0, TL.acts.findIndex((a) => a.id === view.act));
-  const groundHex = view.look ? view.look.ground : '#0E0C09';
+  const lookT = themed(view.look, theme), viewT = lookT === view.look ? view : { ...view, look: lookT };
+  const groundHex = lookT ? lookT.ground : (theme === 'light' ? LIGHT_GROUND : '#0E0C09');
   const veil = view.overlay === 'clip' ? 1 : view.dim ? 0.66 : 0;
   const stageBox = stageRef.current ? stageRef.current.getBoundingClientRect() : { left: 0, top: 0 };
 
@@ -352,17 +390,19 @@ export function Welcome({ active, getLab, onGo }) {
         onPointerMove={onPointerMove} onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}
         onPointerLeave={() => { P.current.lastPointer = 0; P.current.down = null; }} onClick={onStageClick}>
         <div className="w-3d">
-          <Scene view={view} size={size} sceneRef={sceneRef} />
+          <Scene view={viewT} size={size} sceneRef={sceneRef} />
         </div>
         <div className="w-veil" style={{ opacity: veil }} />
+        <div className={'w-live ' + (view.overlay === 'title' ? 'hero' : view.overlay === 'end' ? 'end' : 'corner')}>
+          <LiveLogo set={theme === 'light' ? 'day' : 'night'} live={liveLogo} onTap={onLogoTap} onHold={onLogoHold} />
+        </div>
         <div className="w-3d w-clip-wrap" aria-hidden="true">
           <div className="w-clip-plane" ref={clipRef}><canvas ref={canvasRef} className="w-clip" /></div>
         </div>
         <p className="sr" aria-live="polite">{cap ? cap.head + '. ' + (cap.body || '') : ''}</p>
 
         {view.overlay === 'title' && (
-          <div className="w-title">
-            <img src="motifs/ntina-mark--gold.png" alt="" />
+          <div className={'w-title' + (nameOn ? ' named' : '')}>
             <div className="w-eyebrow">Batik Pattern Studio · Batik Media Lab</div>
             <h1>Marea Dvīpa</h1>
           </div>
