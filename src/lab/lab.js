@@ -1,6 +1,8 @@
 // Batik Media Lab, carried over from the standalone web app. It now runs inside the combined Marea Dvīpa shell:
 // startLab() is called once the lab markup is in the page; hooks.isActive() tells it whether the Media Lab view is showing,
 // so its keys, drawing loop and autoplay stay quiet while you are in the Pattern Studio.
+import { createStage } from './stage';
+
 export function startLab(hooks) {
   hooks = hooks || {};
   var isActive = hooks.isActive || function () { return true; };
@@ -92,6 +94,36 @@ export function startLab(hooks) {
     var s = markSprite(p, px); g.save(); g.imageSmoothingEnabled = false; g.drawImage(s, cx - size / 2, cy - size / 2, size, size); g.restore();
   }
 
+  // the mark drawn live for the stage, part by part: body 0..1 (the oval growing), seeds 0..21 (the last one still landing),
+  // horn 0..1 (the U sweeping up from the bottom), stem 0..1 (the slot opening to the edge); rot turns the seed head and ang is
+  // the turn between seeds. Drawn through a scratch canvas so the opening and the stem stay see-through over any ground.
+  var scratch = {};
+  function drawMark(c, cx, cy, s, o) {
+    o = Object.assign({ body: 1, seeds: 21, horn: 1, stem: 1, open: 1, rot: 0, ang: GA, color: C.gold }, o);
+    var k = s / 1024, w = Math.max(2, Math.ceil(740 * k)), h = Math.max(2, Math.ceil(1320 * k)), key = w + 'x' + h;
+    if (!scratch[key]) { if (Object.keys(scratch).length > 4) scratch = {}; scratch[key] = document.createElement('canvas'); scratch[key].width = w; scratch[key].height = h; }
+    var sc = scratch[key], x = sc.getContext('2d');
+    x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, w, h);
+    x.scale(k, k); x.translate(-142, 315); // the mark's 1024-space (x 142..882, y -315..1005) fills the scratch; the seed head sits at (370, 933) k
+    x.fillStyle = x.strokeStyle = o.color;
+    if (o.horn > 0) { x.save(); var hk = Math.PI / 2 * Math.min(1, o.horn); x.beginPath(); x.moveTo(512, 0); x.arc(512, 0, 900, Math.PI / 2 - hk, Math.PI / 2 + hk); x.closePath(); x.clip(); hornU(x); x.restore(); }
+    if (o.body > 0) {
+      var b = Math.min(1, o.body), hy = 618, R = 130 * o.open * b;
+      x.save(); x.translate(512, 668); x.scale(b, b); x.translate(-512, -668); bodyPath(x); x.fill(); x.restore();
+      x.globalCompositeOperation = 'destination-out';
+      if (R > 1) { x.beginPath(); x.arc(512, hy, R, 0, Math.PI * 2); x.fill(); }
+      if (o.stem > 0) { var st = Math.min(1, o.stem), top = hy + R - 8, bot = top + (1000 - top) * st; x.beginPath(); x.moveTo(484, top); x.lineTo(540, top); x.lineTo(540 + 3 * st, bot); x.lineTo(484 - 3 * st, bot); x.closePath(); x.fill(); }
+      x.globalCompositeOperation = 'source-over';
+      var n = Math.min(21, Math.ceil(o.seeds - 1e-6)), rr0 = R * .82;
+      for (var i = 0; i < n; i++) {
+        var grow = Math.min(1, o.seeds - i), pop = grow < 1 ? eo(grow) * (1 + .4 * Math.sin(grow * Math.PI)) : 1;
+        var r = rr0 * Math.sqrt((i + .6) / 21), a = i * o.ang + o.rot;
+        x.beginPath(); x.arc(512 + Math.cos(a) * r, hy + Math.sin(a) * r, (5 + 10 * r / Math.max(1, R)) * pop * Math.max(.4, o.open), 0, Math.PI * 2); x.fill();
+      }
+    }
+    c.drawImage(sc, cx - 370 * k, cy - 933 * k, w, h);
+  }
+
   // ---------- redrawn sketchbook explorations ----------
   function oldSprite(id, px) {
     return sprite('old' + id, px, function (x) {
@@ -152,6 +184,7 @@ export function startLab(hooks) {
   // chapter caption: eyebrow, headline, body; lines rise in, then fade before the cut
   function caption(sc, lt, d, opt) {
     opt = opt || {};
+    if (stageDraw) { g.translate((opt.w || 470) <= 520 ? -280 : 0, 0); return; } // the stage runs the words as a ticker; a picture that sat beside a caption column moves to the centre
     var x = opt.x || 72, y = opt.y || 150, w = opt.w || 470, out = 1 - ramp(lt, d - .45, d);
     var a1 = eo(ramp(lt, .1, .7)) * out, a2 = eo(ramp(lt, .35, 1.1)) * out, a3 = eo(ramp(lt, .7, 1.6)) * out;
     text(sc.eyebrow.toUpperCase(), x, y + (1 - a1) * 10, '500 13px ' + F.mono, C.gold2, a1);
@@ -1491,9 +1524,18 @@ export function startLab(hooks) {
   }
   function tick(now) {
     var dt = last ? Math.min(.1, (now - last) / 1000) : 0; last = now;
-    if (playing) { if (audioLive()) t = (SND.ctx.currentTime - SND.anchor) * SND.rate; else t += dt * SND.rate; if (t >= TOTAL) { t = TOTAL; if (!recording) setPlaying(false); } ui(); schedule(); }
+    if (playing) {
+      if (audioLive()) { // the score's clock is the reel's clock, so picture and sound cannot drift apart
+        if (holdT) { newBus(); resyncs++; holdT = 0; } // the audio is back: re-anchor the score at the picture's time
+        else t = (SND.ctx.currentTime - SND.anchor) * SND.rate;
+      } else if (SND.kind !== 'off' && SND.bus && SND.ctx && SND.ctx.state !== 'running') { // the score is on but the output has gone quiet (background, interruption): hold the picture and ask for it back
+        if (!holdT) { holdT = now; try { var pr = SND.ctx.resume(); if (pr && pr.catch) pr.catch(function () {}); } catch (e) { /* fine */ } }
+        if (now - holdT >= 1500) t += dt * SND.rate; // not coming back: carry on silently rather than freeze
+      } else t += dt * SND.rate;
+      if (t >= TOTAL) { t = TOTAL; if (!recording) setPlaying(false); } ui(); schedule();
+    }
     if (clip && t >= clip.end) endClip(true);
-    if (isActive() || recording || (clip && !clip.noDraw)) frame(Math.min(t, TOTAL - .001)); // nothing to draw while the Pattern Studio is showing
+    if ((isActive() && (!stageOpen || stageMirror)) || recording || (clip && !clip.noDraw)) frame(Math.min(t, TOTAL - .001)); // nothing to draw while the Pattern Studio is showing
     requestAnimationFrame(tick);
   }
 
@@ -1639,7 +1681,7 @@ export function startLab(hooks) {
   $('next').addEventListener('click', function () { var i = sceneAt(t); if (i < SCENES.length - 1) seek(starts[i + 1] + .01); });
   $('explore').addEventListener('click', openBench);
   $('benchClose').addEventListener('click', function () { closeBench(); setPlaying(true); });
-  document.addEventListener('keydown', function (e) { if (!isActive()) return; if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return; if (e.key === ' ' && e.target === document.body) { e.preventDefault(); setPlaying(!playing); } });
+  document.addEventListener('keydown', function (e) { if (!isActive() || stageOpen) return; if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return; if (e.key === ' ' && e.target === document.body) { e.preventDefault(); setPlaying(!playing); } });
   renderTicks();
 
   indexScore(); renderScores(); $('scoreNote').textContent = SCORE_NOTE.off;
@@ -1670,7 +1712,7 @@ export function startLab(hooks) {
   $('fullscreen').addEventListener('click', toggleFs);
   cv.addEventListener('dblclick', toggleFs);
   document.addEventListener('keydown', function (e) {
-    if (!isActive()) return;
+    if (!isActive() || stageOpen) return;
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.metaKey || e.ctrlKey || e.altKey) return;
     var k = e.key;
     if (k === 'ArrowRight') { e.preventDefault(); $('next').click(); }
@@ -1685,7 +1727,7 @@ export function startLab(hooks) {
   document.addEventListener('visibilitychange', function () { if (document.hidden && playing && !recording) setPlaying(false); });
 
   // ---------- the welcome film: the lab's own instruments, and a clip of a reel with its score ----------
-  var clip = null, wBus = null;
+  var clip = null, wBus = null, stage = null, stageOpen = false, stageMirror = false, stageDraw = false, holdT = 0, resyncs = 0;
   function welcomeBus() {
     var c = SND.ctx; if (!c) return null;
     if (!wBus) { wBus = c.createGain(); wBus.gain.value = .62; wBus.connect(SND.master); var send = c.createGain(); send.gain.value = .3; wBus.connect(send); send.connect(SND.wet); }
@@ -1705,7 +1747,9 @@ export function startLab(hooks) {
     var prev = { prevReel: reelId(), prevKind: SND.kind, prevT: t };
     setPlaying(false);
     if (REEL_DEFS[o.reel] !== CUR) switchReel(o.reel, true);
-    var i = SCENES.findIndex(function (s) { return s.id === o.scene; }), s0 = starts[Math.max(0, i)], dur = o.dur || SCENES[Math.max(0, i)].dur;
+    var i = Math.max(0, SCENES.findIndex(function (s) { return s.id === o.scene; })), s0 = starts[i];
+    var j = o.through ? SCENES.findIndex(function (s) { return s.id === o.through; }) : -1;
+    var dur = o.dur || (j >= i ? starts[j] + SCENES[j].dur - s0 : SCENES[i].dur);
     setScore(o.sound ? o.score : 'off');
     clip = Object.assign(prev, { start: s0, end: s0 + dur, dur: dur, onEnd: o.onEnd, score: o.score, scene: SCENES[Math.max(0, i)], noDraw: !!o.noDraw });
     seek(s0 + .01 + (o.offset || 0)); setPlaying(true);
@@ -1713,7 +1757,7 @@ export function startLab(hooks) {
   }
 
   // ---------- the shell switches views: pause when you leave, play once on the first visit ----------
-  return {
+  var api = {
     canvas: cv,
     unlock: function () { return !!unlockAudio(); },
     audioRunning: function () { return !!(SND.ctx && SND.ctx.state === 'running'); },
@@ -1729,9 +1773,57 @@ export function startLab(hooks) {
     clipElapsed: function () { return clip ? t - clip.start : null; },
     // the motif being made in the clip, as the reel's own scene builds it (petal rings: ring by ring, then the heart)
     clipMotif: function () {
-      if (!clip) return null; var lt = clamp(t - clip.start, 0, clip.dur), d = clip.dur;
+      if (!clip) return null; var lt = clamp(t - clip.start, 0, clip.dur), d = clip.dur, sc = SCENES[sceneAt(t)];
+      if (clip.scene.id === 'seeds') { // the Ntina mark across the seeds and horns scenes, on the score's own grid: the body first, a seed on every eighth, the U over a bar, the stem over two beats
+        var BT = 60 / CUR.bpm(), E8 = BT / 2, BR = BT * 4, s0 = clip.start;
+        var grid = function (abs, unit) { return Math.ceil((abs - 1e-6) / unit) * unit - s0; }; // the first grid line at or after a reel time, in clip seconds
+        var T0 = grid(s0 + .8, E8), TH = grid(s0 + 12.5, BR), TS = grid(s0 + 16, BR);
+        var body = eo(ramp(lt, 0, Math.max(.5, T0 - .1))), seeds = clamp((lt - T0) / E8, 0, 21), horn = ease(ramp(lt, TH, TH + BR)), stem = ease(ramp(lt, TS, TS + BT * 2));
+        var phase = lt < T0 + 21 * E8 ? 'seeds' : lt < TH ? 'hold' : lt < TH + BR ? 'horn' : lt < TS + BT * 2 ? 'stem' : 'done';
+        return { kind: 'mark', body: body, seeds: seeds, horn: horn, stem: stem, phase: phase, lt: lt, dur: d, scene: sc.step || '' };
+      }
       var prog = [0, 1, 2, 3].map(function (k) { return ramp(lt, k * bars(4) + .05, (k + 1) * bars(4) - .3); });
-      return { rings: [13, 8, 5, 3], prog: prog, heart: ramp(lt, d - 2.5, d - 1), ring: Math.min(3, Math.floor(lt / bars(4))), lt: lt, dur: d, bar: lt / BAR_B };
+      return { kind: 'rose', rings: [13, 8, 5, 3], prog: prog, heart: ramp(lt, d - 2.5, d - 1), ring: Math.min(3, Math.floor(lt / bars(4))), lt: lt, dur: d, bar: lt / BAR_B };
+    },
+    clipScene: function () { if (!clip) return null; var sc = SCENES[sceneAt(t)]; return { id: sc.id, eyebrow: sc.eyebrow || '', head: sc.head || '', body: sc.body || '', step: sc.step || '', phase: sc.phase || '' }; },
+    clipPlaying: function () { return !!(clip && playing); },
+    drawMark: function (c, cx, cy, s, o) { drawMark(c, cx, cy, s, o); },
+    // the stage: a pattern made in the centre of the screen (stage.js); it borrows the reel and its score
+    openStage: function (id) { if (stage) stage.open(id); },
+    setStageOpen: function (on, mirror) { stageOpen = !!on; stageMirror = !!(on && mirror); }, // mirror: the stage shows this canvas, so keep drawing it
+    // the stage plays the whole reel with its score; the stage mirrors the lab's canvas, so picture, score and the lab's own player are one clock
+    playReel: function (reel, score) {
+      if (clip) endClip(false);
+      if (REEL_DEFS[reel]) switchReel(reel);
+      setScore(score && SCORES.some(function (s) { return s[0] === score; }) ? score : 'off');
+      if (SND.kind !== 'off') unlockAudio();
+      setPlaying(true);
+    },
+    reelState: function () { var i = sceneAt(t), sc = SCENES[i]; return { t: t, total: TOTAL, playing: playing, ended: t >= TOTAL - .01, id: sc.id, step: sc.step || '', phase: sc.phase || '', eyebrow: sc.eyebrow || '', head: sc.head || '', body: sc.body || '', number: sc.step ? SCENES.filter(function (s) { return s.step; }).indexOf(sc) + 1 : 0, steps: SCENES.filter(function (s) { return s.step; }).length }; },
+    seekReel: function (nt) { seek(nt); },
+    // the current scene's picture drawn on the stage's canvas in a w × h box (the reel's 1280 × 720 stage, scaled), without the frame's
+    // chrome or caption column: the lab's drawing helpers all draw into g, so g is pointed at the stage for the length of one scene draw
+    drawReelScene: function (c, x, y, w, h) {
+      var old = g, i = sceneAt(Math.min(t, TOTAL - .001)), sc = SCENES[i], s = w / W;
+      g = c; stageDraw = true;
+      try {
+        c.save(); c.beginPath(); c.rect(x, y, w, h); c.clip(); c.setTransform(s, 0, 0, s, x, y); c.globalAlpha = 1;
+        sc.draw(Math.min(t, TOTAL - .001) - starts[i], sc.dur);
+      } catch (e) { /* a scene that cannot draw here leaves the stage empty rather than breaking it */ }
+      c.restore(); g = old; stageDraw = false;
+    },
+    stepReel: function (d) { $(d > 0 ? 'next' : 'prev').click(); },
+    setReelPlaying: function (on) { if (on && SND.kind !== 'off') unlockAudio(); setPlaying(on); },
+    setReelSound: function (on, score) { if (on) unlockAudio(); setScore(on && score && SCORES.some(function (s) { return s[0] === score; }) ? score : 'off'); },
+    // are picture and sound on one clock right now? live: the score's clock drives the picture; held: waiting for the audio to come back
+    sync: function () { var live = !!audioLive(); return { live: live, held: !!holdT, sound: SND.kind !== 'off', drift: live ? Math.abs(t - (SND.ctx.currentTime - SND.anchor) * SND.rate) : 0, fixes: resyncs }; },
+    selectReel: function (id) { if (REEL_DEFS[id]) switchReel(id); },
+    watchReel: function (reel, sceneId, score) { // leave the stage for the reel itself, from the scene that made the pattern
+      if (clip) endClip(false);
+      if (REEL_DEFS[reel]) switchReel(reel);
+      if (score && SCORES.some(function (s) { return s[0] === score; })) setScore(score);
+      seek(sceneStart(sceneId) + .01); setPlaying(true);
+      try { screenEl.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' }); } catch (e) {}
     },
     drawRose: function (c, cx, cy, s, o) { drawRose(c, cx, cy, s, o); },
     // how brightly each instrument is sounding right now, for drawing the ensemble
@@ -1745,9 +1837,12 @@ export function startLab(hooks) {
       if (fontsLoaded && !autoplayed && !reduce) { autoplayed = true; setPlaying(true); }
     },
     deactivate: function () {
+      if (stage) stage.close();
       if (isFs()) toggleFs();
       if (playing && !recording) setPlaying(false);
     },
     isRecording: function () { return recording; }
   };
+  stage = createStage(api, cv.closest('.lab-view'));
+  return api;
 }
