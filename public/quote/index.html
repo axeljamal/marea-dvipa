@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Build a quote for a Marea Dvīpa website: choose a package, add features and send it to the studio.">
+<meta name="theme-color" content="#02213D">
+<link rel="icon" href="/icons/favicon-32.png" sizes="32x32" type="image/png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Marea Dvīpa Quote Builder</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!-- Integration: set this to a Worker route that stores the JSON quote. Leave empty to use copy-and-send only. -->
+<meta name="md-quote-endpoint" content="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Karla:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a five-step form in the studio's midnight/pearl/gold, with a running quote that stays beside it on desktop and docks to the bottom on a phone. */
+:root{
+  --bg:#02213D; --bg-2:#0B2B47; --bg-3:#0F3250; --line:#1E4157; --line-2:#3F616F;
+  --fg:#FAF7F2; --fg-2:#C9D3DA; --muted:#9FB3C2;
+  --gold:#C39B65; --gold-2:#D1B285; --on-gold:#02213D; --gold-soft:rgba(195,155,101,.14);
+  --good:#9FD3B6; --bad:#E8A08A;
+  --show-day:none; --show-night:block;
+  --display:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --body:"Karla","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --r:10px; --r-sm:6px; --r-pill:20px;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#FAF7F2; --bg-2:#F1ECE4; --bg-3:#EAE3D6; --line:#DCD3C4; --line-2:#B9AE9A;
+    --fg:#0F2234; --fg-2:#2F3F4C; --muted:#5C6B76;
+    --gold:#8A6B3A; --gold-2:#A8884F; --on-gold:#FAF7F2; --gold-soft:rgba(138,107,58,.12);
+    --good:#2F7F5A; --bad:#B8472F; --show-day:block; --show-night:none; color-scheme:light;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#FAF7F2; --bg-2:#F1ECE4; --bg-3:#EAE3D6; --line:#DCD3C4; --line-2:#B9AE9A;
+  --fg:#0F2234; --fg-2:#2F3F4C; --muted:#5C6B76;
+  --gold:#8A6B3A; --gold-2:#A8884F; --on-gold:#FAF7F2; --gold-soft:rgba(138,107,58,.12);
+  --good:#2F7F5A; --bad:#B8472F; --show-day:block; --show-night:none; color-scheme:light;
+}
+*{box-sizing:border-box}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 var(--body);-webkit-font-smoothing:antialiased;position:relative}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+body::after{content:"";position:fixed;inset:0;background:url(isen-cecek.svg) 0 0/240px 240px repeat;opacity:.07;pointer-events:none;z-index:0}
+a{color:var(--gold-2)}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.1;margin:0;text-wrap:balance}
+h1{font-size:clamp(2.2rem,5.5vw,3.6rem)} h2{font-size:clamp(1.6rem,3vw,2.1rem)} h3{font-size:1.25rem}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.lede{font-size:1.1rem;color:var(--fg-2);max-width:60ch}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.quiet{color:var(--muted)} .note{font-size:.85rem;color:var(--muted)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:var(--r-sm)}
+.skip{position:absolute;left:16px;top:-48px;background:var(--gold);color:var(--on-gold);padding:8px 12px;border-radius:var(--r-sm);z-index:30}
+.skip:focus{top:calc(env(safe-area-inset-top,0px) + 8px)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar-in{height:56px;display:flex;align-items:center;gap:14px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));max-width:1200px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px}
+.brand img{height:36px;width:36px;object-fit:contain}
+.mark-day{display:var(--show-day)} .mark-night{display:var(--show-night)}
+.brand .name{font-family:var(--display);font-size:1.3rem;font-weight:600;white-space:nowrap}
+.brand .sub{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:none}
+@media (min-width:720px){.brand .sub{display:block}}
+.theme{margin-left:auto;border:1px solid var(--line);background:var(--bg-2);border-radius:50%;width:36px;height:36px;display:grid;place-items:center;padding:0}
+.theme svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6}
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+.hero{padding-block:44px 28px;display:grid;gap:16px}
+.layout{display:grid;gap:24px;grid-template-columns:1fr;align-items:start}
+@media (min-width:980px){.layout{grid-template-columns:1fr 340px}.wrap{padding-bottom:60px}}
+.steps{display:grid;gap:28px;min-width:0}
+fieldset{border:1px solid var(--line);border-radius:var(--r);background:var(--bg-2);padding:22px;margin:0;display:grid;gap:16px;min-width:0}
+legend{padding:0 8px;margin-left:-8px}
+legend .eyebrow{display:block;margin-bottom:4px}
+legend h2{font-size:1.5rem}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+label.f{display:grid;gap:6px;font-size:.9rem;color:var(--fg-2);min-width:0}
+label.f span.l{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+input[type=text],input[type=email],input[type=tel],input[type=url],input[type=number],select,textarea{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line-2);border-radius:var(--r-sm);padding:10px 12px;width:100%;min-width:0}
+textarea{min-height:96px;resize:vertical}
+input:invalid:not(:placeholder-shown){border-color:var(--bad)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.chip span{display:inline-block;border:1px solid var(--line-2);background:var(--bg);border-radius:var(--r-pill);padding:6px 14px;font-size:.9rem;color:var(--fg-2)}
+.chip input:checked+span{background:var(--gold);border-color:var(--gold);color:var(--on-gold)}
+.chip input:focus-visible+span{outline:2px solid var(--gold);outline-offset:2px}
+.pkgs{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.pkg{position:relative;display:grid;gap:10px;border:1px solid var(--line-2);border-radius:var(--r);padding:18px;background:var(--bg);cursor:pointer;align-content:start}
+.pkg input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.pkg:has(:checked){border-color:var(--gold);background:linear-gradient(180deg,var(--gold-soft),transparent 70%),var(--bg)}
+.pkg:has(:focus-visible){outline:2px solid var(--gold);outline-offset:2px}
+.pkg .price{font-family:var(--display);font-size:2rem;line-height:1;color:var(--gold)}
+.pkg .for{font-style:italic;font-family:var(--display);font-size:1.05rem;color:var(--fg)}
+.pkg ul{margin:0;padding-left:18px;color:var(--fg-2);font-size:.9rem;display:grid;gap:4px}
+.pkg .pick{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.pkg:has(:checked) .pick{color:var(--gold)}
+.feat{display:grid;gap:8px}
+.feat label{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;border:1px solid var(--line);border-radius:var(--r);background:var(--bg);padding:12px 14px;cursor:pointer}
+.feat input{margin-top:4px;width:16px;height:16px;accent-color:var(--gold)}
+.feat .t{font-weight:600}
+.feat .d{font-size:.88rem;color:var(--fg-2)}
+.feat .p{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--fg)}
+.feat .p small{display:block;font-size:.7rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;text-align:right}
+.feat label:has(:checked){border-color:var(--gold)}
+.feat label.inc{border-style:dashed;cursor:default}
+.feat label.inc .p{color:var(--good)}
+.feat .qty{display:inline-flex;align-items:center;gap:6px;margin-top:6px;font-size:.85rem;color:var(--muted)}
+.feat .qty input{width:60px;padding:4px 8px;margin:0}
+.radios{display:grid;gap:8px}
+.radios label{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:var(--r);background:var(--bg);padding:12px 14px;cursor:pointer}
+.radios input{margin-top:4px;accent-color:var(--gold)}
+.radios label:has(:checked){border-color:var(--gold)}
+.radios .t{font-weight:600} .radios .d{font-size:.88rem;color:var(--fg-2)}
+.radios .p{margin-left:auto;font-family:var(--mono);white-space:nowrap}
+/* quote panel */
+.quote{position:sticky;top:calc(56px + env(safe-area-inset-top,0px) + 16px);border:1px solid var(--gold);border-radius:var(--r);background:linear-gradient(180deg,var(--gold-soft),transparent 60%),var(--bg-2);padding:20px;display:grid;gap:14px}
+.quote h3{display:flex;justify-content:space-between;align-items:baseline}
+.quote .ref{font-family:var(--mono);font-size:.72rem;color:var(--muted);letter-spacing:.08em}
+.lines{display:grid;gap:6px;font-size:.9rem}
+.lines div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-bottom:6px}
+.lines div:last-child{border-bottom:0}
+.lines .n{color:var(--fg-2);min-width:0}
+.lines .v{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.lines .inc .v{color:var(--good)}
+.total{display:grid;gap:4px;border-top:1px solid var(--line-2);padding-top:12px}
+.total .big{font-family:var(--display);font-size:2.4rem;line-height:1;color:var(--gold)}
+.total .mo{font-family:var(--mono);color:var(--fg-2);font-size:.95rem}
+.btn{border:1px solid var(--gold);background:var(--gold);color:var(--on-gold);border-radius:var(--r-sm);padding:12px 18px;font-weight:600;width:100%}
+.btn.ghost{background:transparent;color:var(--fg)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.ok{border:1px solid var(--good);border-radius:var(--r);padding:12px 14px;color:var(--fg-2);font-size:.9rem;background:var(--bg)}
+.warn{border:1px solid var(--line-2);border-radius:var(--r);padding:12px 14px;color:var(--fg-2);font-size:.9rem;background:var(--bg)}
+pre.sum{white-space:pre-wrap;font:.8rem/1.5 var(--mono);background:var(--bg);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px;max-height:260px;overflow:auto;margin:0;color:var(--fg-2)}
+.dock{display:none}
+@media (max-width:979px){
+  .quote{position:static}
+  .dock{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:15;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-top:1px solid var(--gold);padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));align-items:center;gap:14px}
+  .dock .big{font-family:var(--display);font-size:1.6rem;color:var(--gold);line-height:1}
+  .dock .mo{font-family:var(--mono);font-size:.8rem;color:var(--fg-2)}
+  .dock a{margin-left:auto;background:var(--gold);color:var(--on-gold);text-decoration:none;border-radius:var(--r-sm);padding:10px 14px;font-weight:600;white-space:nowrap}
+}
+footer{position:relative;z-index:1;border-top:1px solid var(--line);padding-block:24px;color:var(--muted);font-size:.85rem}
+footer .in{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+</style>
+
+<a class="skip" href="#form">Skip to the form</a>
+<header class="bar"><div class="bar-in">
+  <div class="brand"><img class="mark-night" src="mark-night.png" alt="Marea Dvīpa pavilion mark"><img class="mark-day" src="mark-day.png" alt="Marea Dvīpa pavilion mark"><div><div class="name">Marea Dvīpa</div><div class="sub">Website guidance &amp; design · quote builder</div></div></div>
+  <button class="theme" id="themeBtn" type="button" aria-label="Switch between light and dark"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg></button>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <span class="eyebrow">Build your quote · prices as of November 2026</span>
+    <h1>Tell us about the house. Pick the level. See the price as you go.</h1>
+    <p class="lede">Choose a package, add the features that fit your business and send the quote to us. Nothing is charged here; we reply within two working days with a confirmed proposal and a start date.</p>
+  </section>
+
+  <div class="layout">
+  <form id="form" class="steps" novalidate>
+    <fieldset>
+      <legend><span class="eyebrow">Step 1</span><h2>About you and the property</h2></legend>
+      <div class="grid g2">
+        <label class="f"><span class="l">Your name *</span><input type="text" id="name" name="name" required autocomplete="name" placeholder="Jo Smith"></label>
+        <label class="f"><span class="l">Business or property *</span><input type="text" id="business" name="business" required autocomplete="organization" placeholder="The Beam House"></label>
+        <label class="f"><span class="l">Email *</span><input type="email" id="email" name="email" required autocomplete="email" placeholder="jo@example.com"></label>
+        <label class="f"><span class="l">Phone</span><input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="07…"></label>
+        <label class="f"><span class="l">Current website</span><input type="url" id="site" name="site" placeholder="https://" inputmode="url"></label>
+        <label class="f"><span class="l">Type of business</span><select id="kind" name="kind"><option>Holiday let or cottage</option><option>Guesthouse or B&amp;B</option><option>Small hotel</option><option>Café, restaurant or bar</option><option>Studio, shop or workshop</option><option>Other local business</option></select></label>
+      </div>
+      <div class="grid g2">
+        <div class="f"><span class="l" style="font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Where you are listed today</span>
+          <div class="chips" id="platforms">
+            <label class="chip"><input type="checkbox" name="platform" value="Airbnb"><span>Airbnb</span></label>
+            <label class="chip"><input type="checkbox" name="platform" value="Booking.com"><span>Booking.com</span></label>
+            <label class="chip"><input type="checkbox" name="platform" value="Vrbo"><span>Vrbo</span></label>
+            <label class="chip"><input type="checkbox" name="platform" value="Sykes"><span>Sykes</span></label>
+            <label class="chip"><input type="checkbox" name="platform" value="Plum Guide"><span>Plum Guide</span></label>
+            <label class="chip"><input type="checkbox" name="platform" value="Own site only"><span>Own site only</span></label>
+          </div></div>
+        <div class="f"><span class="l" style="font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">What matters most</span>
+          <div class="chips" id="goals">
+            <label class="chip"><input type="checkbox" name="goal" value="More direct bookings"><span>More direct bookings</span></label>
+            <label class="chip"><input type="checkbox" name="goal" value="Faster site"><span>Faster site</span></label>
+            <label class="chip"><input type="checkbox" name="goal" value="Accessibility"><span>Accessibility</span></label>
+            <label class="chip"><input type="checkbox" name="goal" value="New look"><span>New look</span></label>
+            <label class="chip"><input type="checkbox" name="goal" value="Fewer repeat questions"><span>Fewer repeat questions</span></label>
+            <label class="chip"><input type="checkbox" name="goal" value="Found on Google"><span>Found on Google</span></label>
+          </div></div>
+      </div>
+      <div class="grid g2">
+        <label class="f"><span class="l">Photos you already have</span><select id="photos" name="photos"><option>Good set of 15 or more</option><option>A few, mixed quality</option><option>None yet</option></select></label>
+        <label class="f"><span class="l">Yearly booking income, roughly (optional)</span><input type="number" id="revenue" name="revenue" min="0" step="1000" placeholder="40000" inputmode="numeric"></label>
+        <label class="f"><span class="l">When would you like to start</span><select id="when" name="when"><option>As soon as possible</option><option>Within a month</option><option>Within three months</option><option>Just exploring</option></select></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span class="eyebrow">Step 2</span><h2>Choose the level of service</h2></legend>
+      <div class="pkgs" id="pkgs"></div>
+      <label id="creditWrap" style="display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:var(--r);background:var(--bg);padding:12px 14px;cursor:pointer"><input type="checkbox" id="auditCredit" style="margin-top:4px;accent-color:var(--gold)"><span><span style="font-weight:600">We audited your site in the last 60 days</span><br><span style="font-size:.88rem;color:var(--fg-2)">Takes the £450 Audit fee off this build. We check the date against our records.</span></span><span style="margin-left:auto;font-family:var(--mono);white-space:nowrap">−£450</span></label>
+      <p class="note">Each package includes everything in the one before it. Start with the Audit and its £450 is credited in full against a Direct-booking or Signature site started within 60 days. Prices are in GBP and one-off unless marked monthly. The final proposal confirms VAT treatment.</p>
+    </fieldset>
+
+    <fieldset>
+      <legend><span class="eyebrow">Step 3</span><h2>Add features</h2></legend>
+      <p class="quiet" style="font-size:.95rem">Items marked <span style="color:var(--good)">Included</span> come with the package you chose. Tick anything else you want added.</p>
+      <div class="feat" id="feats"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend><span class="eyebrow">Step 4</span><h2>Care after launch</h2></legend>
+      <div class="radios" id="care"></div>
+      <p class="note">Care is billed monthly from go-live and can be cancelled with a month's notice. Without a care plan, hosting and the domain are handed to you with written instructions.</p>
+    </fieldset>
+
+    <fieldset>
+      <legend><span class="eyebrow">Step 5</span><h2>Payment and notes</h2></legend>
+      <div class="radios" id="pay"></div>
+      <label class="f"><span class="l">Anything we should know</span><textarea id="notes" name="notes" placeholder="The hot tub is the thing guests come for. We already have a logo. Our busiest months are…"></textarea></label>
+      <label class="radios" style="display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:var(--r);background:var(--bg);padding:12px 14px;cursor:pointer"><input type="checkbox" id="consent" required style="margin-top:4px;accent-color:var(--gold)"><span class="d">Marea Dvīpa may use these details to prepare and send a proposal. We do not share them and we delete them if you decide not to go ahead. *</span></label>
+    </fieldset>
+  </form>
+
+  <aside class="quote" aria-live="polite" aria-labelledby="qh">
+    <h3 id="qh">Your quote <span class="ref" id="qref"></span></h3>
+    <div class="lines" id="lines"></div>
+    <div class="total">
+      <span class="eyebrow">One-off total</span>
+      <div class="big" id="total">£0</div>
+      <div class="mo" id="monthly"></div>
+      <p class="note" id="payback"></p>
+    </div>
+    <button class="btn" id="send" type="button">Send quote to Marea Dvīpa</button>
+    <div id="result"></div>
+    <div style="display:grid;gap:8px">
+      <button class="btn ghost" id="copy" type="button">Copy quote as text</button>
+      <button class="btn ghost" id="save" type="button" hidden>Save quote as a file</button>
+    </div>
+    <pre class="sum" id="summary" hidden></pre>
+    <p class="note">Sending shares the details above with Marea Dvīpa only. You can also copy the text and paste it into your message to us.</p>
+  </aside>
+  </div>
+</main>
+<div class="dock" aria-hidden="true"><div><div class="big" id="dockTotal">£0</div><div class="mo" id="dockMo"></div></div><a href="#qh">See quote</a></div>
+<footer><div class="in">Marea Dvīpa · <a href="/web/">Read the website guide</a> · <a href="/">Pattern Studio</a> · Prices valid for 60 days from the date on your quote.</div></footer>
+
+<script>
+(function(){
+'use strict';
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const gbp=n=>'£'+Math.round(n).toLocaleString('en-GB');
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+/* theme */
+const root=document.documentElement;
+$('#themeBtn').addEventListener('click',()=>{const dark=root.getAttribute('data-theme')==='dark'||(!root.getAttribute('data-theme')&&!matchMedia('(prefers-color-scheme: light)').matches);root.setAttribute('data-theme',dark?'light':'dark')});
+
+/* ---- price list (client-facing) ---- */
+const PKGS=[
+ {id:'audit',n:'Audit',price:450,forw:'For owners who already have a site and a developer',items:['Checklist run on your site and one competitor','Gap table with the fixes ranked','45-minute walkthrough call','Written one-page plan','Credited in full against a build started within 60 days']},
+ {id:'direct',n:'Direct-booking site',price:2400,forw:'For most guesthouses and holiday lets',items:['Everything in Audit','Fast, accessible single-page site with your photos','Live calendar with prices and a hold-dates form','Perks strip, structured data, consent banner','Hosting, domain and go-live set up']},
+ {id:'signature',n:'Signature site',price:4800,forw:'For properties with character that compete on experience',items:['Everything in Direct-booking','House film and interactive tour','Offers band, gift vouchers, newsletter','AI guest assistant that knows the house','Two rounds of content polish']}
+];
+/* inc: which packages include it */
+const FEATS=[
+ {id:'perks',n:'Why-book-direct perks strip',d:'Three concrete reasons to book with you, placed under the booking bar.',price:220,inc:['direct','signature']},
+ {id:'payments',n:'Online booking payments',d:'Stripe connected to the calendar and hold-dates form; test booking made and refunded.',price:280,inc:['direct','signature']},
+ {id:'sync',n:'Calendar sync with Airbnb, Booking.com and Vrbo',d:'iCal sync both ways, so a platform booking blocks your direct calendar and a direct booking blocks the platforms.',price:250,inc:['direct','signature']},
+ {id:'reviews',n:'Platform reviews on your site',d:'Your Airbnb or Booking.com score and count shown on the page, linked to the source.',price:200,inc:['signature']},
+ {id:'offers',n:'Offers band',d:'Named deals (midweek, workcation, full week, gap nights) with a find-dates button.',price:350,inc:['signature']},
+ {id:'vouchers',n:'Gift vouchers',d:'Amount chips and a purchase flow through Stripe.',price:450,inc:['signature']},
+ {id:'newsletter',n:'Newsletter signup',d:'Consent, double opt-in and wiring to your mailing tool.',price:250,inc:['signature']},
+ {id:'instagram',n:'Instagram grid',d:'Six-tile grid linking to your account.',price:150,inc:['direct','signature']},
+ {id:'film',n:'House film from your photos',d:'A 20 to 30 second captioned film rendered from your photographs.',price:600,inc:['signature']},
+ {id:'shoot',n:'On-site photo and film half-day',d:'A photographer at the property for half a day; edited stills and clips delivered.',price:850,inc:[]},
+ {id:'tour',n:'Interactive tour',d:'Tappable floor plan, hotspots, object stories and a guided walk.',price:900,inc:['signature']},
+ {id:'assistant',n:'AI guest assistant',d:'Answers from your house guide and can check availability and select dates.',price:950,inc:['signature']},
+ {id:'lang',n:'Second language',d:'A translated copy of the page, checked by a native speaker.',price:500,inc:[],qty:{label:'languages',min:1,max:4}},
+ {id:'polish',n:'Content polish round',d:'A round of edits to photos, copy and prices after you review the draft.',price:300,inc:[],qty:{label:'rounds',min:1,max:4},note:'Signature includes two rounds'},
+ {id:'statement',n:'Accessibility statement',d:'A dated statement of the standard aimed for, with a contact for problems.',price:150,inc:['direct','signature']},
+ {id:'training',n:'Owner training session',d:'One hour showing you how to change prices, dates, offers and photos.',price:180,inc:['signature']}
+];
+const CARE=[
+ {id:'none',n:'No care plan',d:'Hosting and domain handed over with written instructions.',price:0},
+ {id:'host',n:'Hosting and domain',d:'Fast hosting, HTTPS, backups and the domain renewal handled.',price:35},
+ {id:'care',n:'Hosting plus care',d:'Hosting, plus up to two hours of changes a month and a quarterly re-run of the audit.',price:95}
+];
+const PAY=[
+ {id:'half',n:'Half to start, half at go-live',d:'The most common choice.',extra:0},
+ {id:'thirds',n:'Three equal instalments',d:'At start, at first published stage, at go-live.',extra:0},
+ {id:'full',n:'Pay in full at start',d:'Takes 5% off the one-off total.',extra:-0.05}
+];
+
+/* ---- state ---- */
+let st=store.get('md-quote',{pkg:'direct',feats:{},qty:{},care:'host',pay:'half',credit:false});
+const AUDIT_CREDIT=450;
+if(!PKGS.some(p=>p.id===st.pkg))st.pkg='direct';
+const ref=store.get('md-quote-ref',null)||(()=>{const d=new Date();const r='MD-'+String(d.getFullYear()).slice(2)+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'-'+Math.random().toString(36).slice(2,6).toUpperCase();store.set('md-quote-ref',r);return r})();
+$('#qref').textContent=ref;
+
+function renderPkgs(){
+  $('#creditWrap').hidden=st.pkg==='audit';$('#auditCredit').checked=!!st.credit;
+  $('#pkgs').innerHTML=PKGS.map(p=>`<label class="pkg"><input type="radio" name="pkg" value="${p.id}" ${st.pkg===p.id?'checked':''}><span class="pick">${st.pkg===p.id?'Selected':'Select'}</span><h3>${esc(p.n)}</h3><div class="price">${gbp(p.price)}</div><p class="for">${esc(p.forw)}</p><ul>${p.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul></label>`).join('');
+}
+function renderFeats(){
+  $('#feats').innerHTML=FEATS.map(f=>{
+    const inc=f.inc.includes(st.pkg);const on=inc||!!st.feats[f.id];const q=st.qty[f.id]||(f.qty?f.qty.min:1);
+    const qtyHtml=f.qty&&!inc?`<span class="qty">${esc(f.qty.label)} <input type="number" data-qty="${f.id}" id="qty-${f.id}" min="${f.qty.min}" max="${f.qty.max}" value="${q}" ${on?'':'disabled'} aria-label="Number of ${esc(f.qty.label)}"></span>`:'';
+    const priceHtml=inc?`<span class="p">Included</span>`:`<span class="p">${gbp(f.price)}${f.qty?`<small>per ${esc(f.qty.label.replace(/s$/,''))}</small>`:''}</span>`;
+    return `<label class="${inc?'inc':''}"><input type="checkbox" data-feat="${f.id}" id="feat-${f.id}" ${on?'checked':''} ${inc?'disabled':''}><span><span class="t">${esc(f.n)}</span><br><span class="d">${esc(f.d)}${f.note&&!inc?' <em>('+esc(f.note)+')</em>':''}</span>${qtyHtml}</span>${priceHtml}</label>`;
+  }).join('');
+}
+function renderRadios(el,items,key,fmt){
+  el.innerHTML=items.map(i=>`<label><input type="radio" name="${key}" value="${i.id}" ${st[key]===i.id?'checked':''}><span><span class="t">${esc(i.n)}</span><br><span class="d">${esc(i.d)}</span></span><span class="p">${fmt(i)}</span></label>`).join('');
+}
+function calc(){
+  const pkg=PKGS.find(p=>p.id===st.pkg);
+  const lines=[{n:pkg.n+' package',v:pkg.price}];
+  let oneoff=pkg.price;
+  FEATS.forEach(f=>{
+    const inc=f.inc.includes(st.pkg);
+    if(inc){lines.push({n:f.n,v:0,inc:true});return}
+    if(st.feats[f.id]){const q=f.qty?Math.min(f.qty.max,Math.max(f.qty.min,+st.qty[f.id]||f.qty.min)):1;const v=f.price*q;oneoff+=v;lines.push({n:f.n+(q>1?' × '+q:''),v})}
+  });
+  const credit=st.credit&&st.pkg!=='audit'?-AUDIT_CREDIT:0;
+  if(credit){oneoff+=credit;lines.push({n:'Audit credited (within 60 days)',v:credit})}
+  const pay=PAY.find(p=>p.id===st.pay);
+  const discount=Math.round(oneoff*pay.extra);
+  if(discount)lines.push({n:'Paid in full at start',v:discount});
+  const care=CARE.find(c=>c.id===st.care);
+  return {pkg,lines,oneoff:oneoff+discount,monthly:care.price,care,pay,credit};
+}
+function renderQuote(){
+  const q=calc();
+  $('#lines').innerHTML=q.lines.map(l=>`<div class="${l.inc?'inc':''}"><span class="n">${esc(l.n)}</span><span class="v">${l.inc?'Included':gbp(l.v)}</span></div>`).join('');
+  $('#total').textContent=gbp(q.oneoff);$('#dockTotal').textContent=gbp(q.oneoff);
+  const mo=q.monthly?`+ ${gbp(q.monthly)} a month, ${q.care.n.toLowerCase()}`:'No monthly care plan';
+  $('#monthly').textContent=mo;$('#dockMo').textContent=q.monthly?`+ ${gbp(q.monthly)}/month`:'';
+  const rev=+($('#revenue')&&$('#revenue').value)||0;const firstYear=q.oneoff+q.monthly*12;
+  $('#payback').textContent=rev>0?`Pays for itself in about ${Math.max(1,Math.round(firstYear/(rev*0.3*0.15)*12))} months if 30% of your bookings move direct from a platform charging 15%. Enter a different income above to see your own figure.`:'Add your yearly booking income in step 1 to see how quickly this pays for itself against platform commission.';
+}
+function renderAll(){renderPkgs();renderFeats();renderRadios($('#care'),CARE,'care',i=>i.price?gbp(i.price)+'/mo':'£0');renderRadios($('#pay'),PAY,'pay',i=>i.extra?Math.round(i.extra*100)+'%':'');renderQuote()}
+renderAll();
+
+/* ---- events ---- */
+$('#pkgs').addEventListener('change',e=>{if(e.target.name==='pkg'){st.pkg=e.target.value;save();renderPkgs();renderFeats();renderQuote()}});
+$('#feats').addEventListener('change',e=>{
+  if(e.target.dataset.feat){st.feats[e.target.dataset.feat]=e.target.checked;save();renderFeats();renderQuote()}
+  if(e.target.dataset.qty){st.qty[e.target.dataset.qty]=+e.target.value;save();renderQuote()}
+});
+$('#care').addEventListener('change',e=>{st.care=e.target.value;save();renderQuote()});
+$('#auditCredit').addEventListener('change',e=>{st.credit=e.target.checked;save();renderQuote()});
+$('#pay').addEventListener('change',e=>{st.pay=e.target.value;save();renderQuote()});
+function save(){store.set('md-quote',st)}
+/* remember the text fields too */
+const FIELDS=['name','business','email','phone','site','kind','photos','revenue','when','notes'];
+const saved=store.get('md-quote-fields',{});FIELDS.forEach(id=>{if(saved[id]!=null)$('#'+id).value=saved[id]});
+(store.get('md-quote-chips',[])).forEach(v=>{const i=$$('input[name=platform],input[name=goal]').find(x=>x.value===v);if(i)i.checked=true});
+$('#form').addEventListener('input',e=>{const o={};FIELDS.forEach(id=>o[id]=$('#'+id).value);store.set('md-quote-fields',o);store.set('md-quote-chips',$$('input[name=platform]:checked,input[name=goal]:checked').map(i=>i.value));if(e.target.id==='revenue')renderQuote()});
+renderQuote();
+
+/* ---- quote object and text ---- */
+function quoteData(){
+  const q=calc();
+  const vals=id=>$('#'+id).value.trim();
+  return {
+    ref,createdAt:new Date().toISOString(),
+    client:{name:vals('name'),business:vals('business'),email:vals('email'),phone:vals('phone'),site:vals('site'),kind:vals('kind'),photos:vals('photos'),start:vals('when'),
+      platforms:$$('input[name=platform]:checked').map(i=>i.value),goals:$$('input[name=goal]:checked').map(i=>i.value),revenue:vals('revenue'),notes:vals('notes')},
+    package:q.pkg.id,
+    features:q.lines.filter(l=>!l.inc&&l.n!==q.pkg.n+' package'&&l.v>0).map(l=>({name:l.n,price:l.v})),
+    included:q.lines.filter(l=>l.inc).map(l=>l.n),
+    care:q.care.id,payment:q.pay.id,
+    auditCredit:q.credit,
+    totals:{oneOff:q.oneoff,monthly:q.monthly,discount:q.lines.find(l=>l.n==='Paid in full at start')?.v||0}
+  };
+}
+function quoteText(d){
+  const L=[];
+  L.push(`Marea Dvīpa quote request ${d.ref}`);L.push(`Date: ${new Date(d.createdAt).toLocaleDateString('en-GB')}`);L.push('');
+  L.push(`Name: ${d.client.name}`);L.push(`Business: ${d.client.business}`);L.push(`Email: ${d.client.email}`);if(d.client.phone)L.push(`Phone: ${d.client.phone}`);if(d.client.site)L.push(`Current site: ${d.client.site}`);
+  L.push(`Type: ${d.client.kind}`);L.push(`Listed on: ${d.client.platforms.join(', ')||'not stated'}`);L.push(`Goals: ${d.client.goals.join(', ')||'not stated'}`);L.push(`Photos: ${d.client.photos}`);L.push(`Start: ${d.client.start}`);L.push('');
+  const pkg=PKGS.find(p=>p.id===d.package);L.push(`Package: ${pkg.n} ${gbp(pkg.price)}`);
+  if(d.included.length)L.push(`Included: ${d.included.join(', ')}`);
+  if(d.features.length){L.push('Added features:');d.features.forEach(f=>L.push(`  ${f.name} ${gbp(f.price)}`))}
+  if(d.auditCredit)L.push(`Audit credited (within 60 days): ${gbp(d.auditCredit)}`);
+  if(d.totals.discount)L.push(`Paid in full at start: ${gbp(d.totals.discount)}`);
+  L.push(`Care: ${CARE.find(c=>c.id===d.care).n}${d.totals.monthly?' '+gbp(d.totals.monthly)+' a month':''}`);
+  L.push(`Payment: ${PAY.find(p=>p.id===d.payment).n}`);L.push('');
+  L.push(`One-off total: ${gbp(d.totals.oneOff)}`);if(d.totals.monthly)L.push(`Monthly: ${gbp(d.totals.monthly)}`);
+  if(d.client.notes){L.push('');L.push('Notes:');L.push(d.client.notes)}
+  return L.join('\n');
+}
+function validate(){
+  const form=$('#form');const bad=[];
+  ['name','business','email'].forEach(id=>{const el=$('#'+id);if(!el.checkValidity()||!el.value.trim())bad.push(el)});
+  if(!$('#consent').checked)bad.push($('#consent'));
+  if(bad.length){bad[0].focus();bad[0].scrollIntoView({block:'center'});$('#result').innerHTML=`<div class="warn">Please fill in your name, business and a valid email, and tick the consent box, then send again.</div>`;return false}
+  return true;
+}
+
+/* ---- capabilities ---- */
+let db=null,downloads=null,uid=null;
+const useCap=n=>window.claude&&typeof window.claude.use==='function'?window.claude.use(n).catch(()=>null):Promise.resolve(null);
+useCap('db').then(x=>{db=x});
+useCap('user').then(async u=>{if(u){try{uid=await u.id()}catch(e){uid=null}}});
+useCap('downloads').then(x=>{downloads=x;if(x)$('#save').hidden=false});
+
+$('#send').addEventListener('click',async()=>{
+  if(!validate())return;
+  const d=quoteData();const txt=quoteText(d);
+  $('#summary').textContent=txt;$('#summary').hidden=false;
+  const btn=$('#send');btn.disabled=true;btn.textContent='Sending…';
+  let sent=false;
+  if(db&&uid){try{const mine=db.doc('quotes/'+uid);await mine.set({...d,submittedBy:uid});await mine.collection('items').doc(d.ref+'-'+Date.now().toString(36)).set(d);sent=true}catch(e){sent=false}}
+  /* Integration hook for the Marea Dvīpa site: add <meta name="md-quote-endpoint" content="https://…/api/quotes"> and the quote is POSTed there as JSON when the artifact store is not available. */
+  const endpoint=document.querySelector('meta[name="md-quote-endpoint"]')?.content;
+  if(!sent&&endpoint){try{const r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});sent=r.ok}catch(e){sent=false}}
+  btn.disabled=false;btn.textContent='Send quote to Marea Dvīpa';
+  if(sent){$('#result').innerHTML=`<div class="ok"><b>Sent.</b> Your reference is <span class="mono">${esc(d.ref)}</span>. We reply within two working days. A copy of the quote is below for your records.</div>`}
+  else{$('#result').innerHTML=`<div class="warn"><b>Almost there.</b> This page could not deliver the quote directly from your account, so copy the text below and paste it into your reply to Marea Dvīpa. Your reference is <span class="mono">${esc(d.ref)}</span>.</div>`}
+});
+$('#copy').addEventListener('click',async()=>{
+  const txt=quoteText(quoteData());$('#summary').textContent=txt;$('#summary').hidden=false;
+  try{await navigator.clipboard.writeText(txt);$('#copy').textContent='Copied';setTimeout(()=>$('#copy').textContent='Copy quote as text',1600)}
+  catch(e){const r=document.createRange();r.selectNodeContents($('#summary'));const s=getSelection();s.removeAllRanges();s.addRange(r);$('#copy').textContent='Select and copy the text below';setTimeout(()=>$('#copy').textContent='Copy quote as text',2500)}
+});
+$('#save').addEventListener('click',async()=>{
+  if(!downloads)return;const d=quoteData();
+  try{await downloads.save({filename:`${d.ref}-marea-dvipa-quote.txt`,data:quoteText(d)})}catch(e){}
+});
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Marea Dvīpa guide to direct-booking websites for small hospitality businesses, with a platform fee analysis.">
+<meta name="theme-color" content="#02213D">
+<link rel="icon" href="/icons/favicon-32.png" sizes="32x32" type="image/png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Marea Dvīpa Website Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Karla:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one midnight page, two "rooms" (Guide, Platforms) switched by the top bar like the studio app; gold accents, pearl text, batik dot ground. */
+:root{
+  --bg:#02213D; --bg-2:#0B2B47; --bg-3:#0F3250; --line:#1E4157; --line-2:#3F616F;
+  --fg:#FAF7F2; --fg-2:#C9D3DA; --muted:#9FB3C2;
+  --gold:#C39B65; --gold-2:#D1B285; --on-gold:#02213D; --gold-soft:rgba(195,155,101,.14);
+  --good:#9FD3B6; --warn:#D1B285; --bad:#E8A08A; --teal:#4FA8BD;
+  --bar:#3F616F; --bar-text:#C9D3DA;
+  --show-day:none; --show-night:block;
+  --display:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --body:"Karla","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --r:10px; --r-sm:6px; --r-pill:20px; --nav-h:56px;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#FAF7F2; --bg-2:#F1ECE4; --bg-3:#EAE3D6; --line:#DCD3C4; --line-2:#B9AE9A;
+    --fg:#0F2234; --fg-2:#2F3F4C; --muted:#5C6B76;
+    --gold:#8A6B3A; --gold-2:#A8884F; --on-gold:#FAF7F2; --gold-soft:rgba(138,107,58,.12);
+    --good:#2F7F5A; --warn:#8A6B3A; --bad:#B8472F; --teal:#2E7F93;
+    --bar:#B9AE9A; --bar-text:#2F3F4C;
+    --show-day:block; --show-night:none;
+    color-scheme:light;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#FAF7F2; --bg-2:#F1ECE4; --bg-3:#EAE3D6; --line:#DCD3C4; --line-2:#B9AE9A;
+  --fg:#0F2234; --fg-2:#2F3F4C; --muted:#5C6B76;
+  --gold:#8A6B3A; --gold-2:#A8884F; --on-gold:#FAF7F2; --gold-soft:rgba(138,107,58,.12);
+  --good:#2F7F5A; --warn:#8A6B3A; --bad:#B8472F; --teal:#2E7F93;
+  --bar:#B9AE9A; --bar-text:#2F3F4C;
+  --show-day:block; --show-night:none;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto} *{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 var(--body);-webkit-font-smoothing:antialiased;position:relative;min-height:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+body::after{content:"";position:fixed;inset:0;background:url(isen-cecek.svg) 0 0/240px 240px repeat;opacity:.07;pointer-events:none;z-index:0}
+a{color:var(--gold-2);text-decoration-color:var(--line-2);text-underline-offset:3px}
+a:hover{color:var(--gold)}
+h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.1;margin:0;text-wrap:balance;letter-spacing:.005em}
+h1{font-size:clamp(2.4rem,6vw,4.2rem)}
+h2{font-size:clamp(1.8rem,3.6vw,2.6rem)}
+h3{font-size:1.45rem}
+h4{font-size:1.15rem}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.lede{font-size:1.15rem;color:var(--fg-2);max-width:62ch}
+.mono,.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:var(--r-sm)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.skip{position:absolute;left:16px;top:-48px;background:var(--gold);color:var(--on-gold);padding:8px 12px;border-radius:var(--r-sm);z-index:30}
+.skip:focus{top:calc(env(safe-area-inset-top,0px) + 8px)}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar-in{height:var(--nav-h);display:flex;align-items:center;gap:14px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));max-width:1200px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand img{height:36px;width:36px;object-fit:contain}
+.mark-day{display:var(--show-day)} .mark-night{display:var(--show-night)}
+.brand .name{font-family:var(--display);font-size:1.3rem;font-weight:600;white-space:nowrap}
+.brand .sub{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:none}
+@media (min-width:720px){.brand .sub{display:block}}
+.rooms{margin-left:auto;display:flex;gap:4px;background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r-pill);padding:3px}
+.rooms a{color:var(--fg-2);text-decoration:none;padding:6px 14px;border-radius:var(--r-pill);font-weight:500;font-size:.92rem}
+.rooms a[aria-current="page"]{background:var(--gold);color:var(--on-gold)}
+.theme{border:1px solid var(--line);background:var(--bg-2);border-radius:50%;width:36px;height:36px;display:grid;place-items:center;padding:0}
+.theme svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6}
+
+/* page */
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 80px}
+.view[hidden]{display:none}
+section{padding-block:48px;border-top:1px solid var(--line)}
+section:first-of-type{border-top:0}
+.sec-head{display:grid;gap:10px;margin-bottom:26px;max-width:72ch}
+.hero{padding-block:56px 40px;display:grid;gap:28px;grid-template-columns:1fr;align-items:center}
+@media (min-width:900px){.hero{grid-template-columns:1.2fr .8fr}}
+.hero-art{justify-self:center;position:relative;width:min(100%,360px)}
+.hero-art img{width:100%;height:auto;display:block;filter:drop-shadow(0 12px 30px rgba(0,0,0,.25))}
+.hero-art .ring{position:absolute;inset:-6%;border:1px solid var(--line-2);border-radius:50%;opacity:.5}
+.contents{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.contents a{font-size:.85rem;text-decoration:none;color:var(--fg-2);border:1px solid var(--line);border-radius:var(--r-pill);padding:5px 12px;background:var(--bg-2)}
+.contents a:hover{border-color:var(--gold);color:var(--fg)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.card{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);padding:20px;min-width:0;display:grid;gap:10px;align-content:start}
+.card h3,.card h4{color:var(--fg)}
+.card p,.card li{color:var(--fg-2)}
+.card.gold{border-color:var(--gold);background:linear-gradient(180deg,var(--gold-soft),transparent 70%),var(--bg-2)}
+.badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line-2);border-radius:var(--r-pill);padding:3px 9px;color:var(--fg-2);white-space:nowrap}
+.badge.off{border-color:var(--good);color:var(--good)}
+.badge.third{border-color:var(--warn);color:var(--warn)}
+.badge.na{border-color:var(--bad);color:var(--bad)}
+.badge.gold{border-color:var(--gold);color:var(--gold)}
+ul.clean{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+ul.clean li{padding-left:18px;position:relative}
+ul.clean li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--gold)}
+ol.steps{list-style:none;padding:0;margin:0;display:grid;gap:6px;counter-reset:s}
+ol.steps li{counter-increment:s;border:1px solid var(--line);border-radius:var(--r);background:var(--bg-2)}
+ol.steps button{width:100%;text-align:left;background:none;border:0;padding:14px 16px;display:flex;gap:14px;align-items:baseline}
+ol.steps button::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);color:var(--gold);font-size:.85rem;min-width:2ch}
+ol.steps .t{font-weight:600}
+ol.steps .d{padding:0 16px 14px 46px;color:var(--fg-2)}
+ol.steps li:not(.open) .d{display:none}
+ol.steps li.open{border-color:var(--gold)}
+
+/* tables */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--bg-2)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.93rem}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--bg-3)}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td b{color:var(--fg)}
+.pf{font-weight:600;white-space:nowrap}
+.pf.pass{color:var(--good)} .pf.fail{color:var(--bad)} .pf.na{color:var(--muted)}
+.pf::before{display:inline-block;width:1.1em;font-family:var(--mono)}
+.pf.pass::before{content:"✓"} .pf.fail::before{content:"✕"} .pf.na::before{content:"–"}
+
+/* controls */
+.seg{display:inline-flex;border:1px solid var(--line-2);border-radius:var(--r-pill);overflow:hidden;background:var(--bg)}
+.seg button{border:0;background:none;padding:5px 12px;font-size:.82rem;color:var(--fg-2)}
+.seg button[aria-pressed="true"]{background:var(--gold);color:var(--on-gold)}
+.seg button+button{border-left:1px solid var(--line)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line-2);background:var(--bg-2);border-radius:var(--r-pill);padding:6px 14px;font-size:.88rem;color:var(--fg-2)}
+.chip[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:var(--on-gold)}
+select,input[type=number]{font:inherit;color:var(--fg);background:var(--bg-2);border:1px solid var(--line-2);border-radius:var(--r-sm);padding:8px 10px}
+input[type=range]{width:100%;accent-color:var(--gold)}
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:14px}
+.score{font-family:var(--display);font-size:2rem;line-height:1;color:var(--gold)}
+.score small{font-family:var(--mono);font-size:.75rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-left:8px}
+.meter{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--gold);width:0;transition:width .3s}
+.check{display:grid;gap:8px}
+.check label{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--bg-2);cursor:pointer}
+.check input{margin-top:4px;accent-color:var(--gold);width:16px;height:16px;flex:none}
+.check label:has(:checked){border-color:var(--gold)}
+.check label:has(:checked) span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line-2)}
+
+/* stats */
+.stats{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.stat{border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;background:var(--bg-2);min-width:0}
+.stat .v{font-family:var(--display);font-size:2.1rem;line-height:1;color:var(--gold)}
+.stat .l{font-size:.82rem;color:var(--muted);margin-top:6px}
+
+/* charts */
+.chart{border:1px solid var(--line);border-radius:var(--r);background:var(--bg-2);padding:16px 16px 10px;min-width:0;position:relative}
+.chart h4{font-family:var(--body);font-size:1rem;font-weight:600}
+.chart .cap{font-size:.8rem;color:var(--muted);margin-top:8px}
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.chart text{font-family:var(--body);fill:var(--fg-2);font-size:12px}
+.chart text.val{font-family:var(--mono);font-variant-numeric:tabular-nums;fill:var(--fg)}
+.chart text.ax{fill:var(--muted);font-size:11px;font-family:var(--mono)}
+.chart .grid line{stroke:var(--line);stroke-width:1}
+.chart .axis{stroke:var(--line-2)}
+.chart .mark{fill:var(--bar)}
+.chart .mark.hi{fill:var(--gold)}
+.chart .hit{fill:transparent;cursor:default}
+.tip{position:absolute;pointer-events:none;background:var(--fg);color:var(--bg);font-size:.8rem;padding:8px 10px;border-radius:var(--r-sm);max-width:260px;box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:5;opacity:0;transition:opacity .12s}
+.tip b{display:block;font-family:var(--mono);font-size:.78rem;margin-bottom:2px}
+.tip.on{opacity:1}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.8rem;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:-1px;margin-right:6px;background:var(--bar)}
+.legend i.hi{background:var(--gold)}
+
+/* platform tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tabs button{border:1px solid var(--line-2);background:var(--bg-2);border-radius:var(--r-pill);padding:7px 14px;font-size:.9rem;color:var(--fg-2)}
+.tabs button[aria-selected="true"]{background:var(--gold);border-color:var(--gold);color:var(--on-gold)}
+.panel{display:grid;gap:14px}
+.kv{display:grid;grid-template-columns:140px 1fr;gap:6px 14px;font-size:.95rem}
+.kv dt{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.kv dd{margin:0;color:var(--fg-2)}
+@media (max-width:560px){.kv{grid-template-columns:1fr}}
+.calc{display:grid;gap:18px;grid-template-columns:1fr}
+@media (min-width:960px){.calc{grid-template-columns:320px 1fr}}
+.calc .in{display:grid;gap:14px;align-content:start}
+.price{font-family:var(--display);font-size:2.6rem;line-height:1;color:var(--gold)}
+.note{font-size:.85rem;color:var(--muted)}
+.matrix td:not(:first-child){text-align:center}
+footer{position:relative;z-index:1;border-top:1px solid var(--line);padding-block:28px;color:var(--muted);font-size:.85rem}
+footer .in{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between}
+.quiet{color:var(--muted)}
+.two{columns:2;column-gap:28px}
+@media (max-width:760px){.two{columns:1}}
+.pkg{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.pkg .card{position:relative;padding-top:26px}
+.pkg .tier{position:absolute;top:-11px;left:16px}
+.pkg .for{font-style:italic;font-family:var(--display);font-size:1.1rem;color:var(--fg)}
+.cmp{display:grid;gap:10px}
+.cmp .row{display:grid;grid-template-columns:120px 1fr 1fr;gap:10px;align-items:start;border-bottom:1px solid var(--line);padding:10px 0;font-size:.93rem}
+.cmp .row:last-child{border-bottom:0}
+.cmp .row>span:first-child{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.cmp .row .b{color:var(--fg)}
+.cmp .row .a{color:var(--muted)}
+.cmp .hd span{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+@media (max-width:620px){.cmp .row{grid-template-columns:1fr}}
+</style>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="bar">
+  <div class="bar-in">
+    <div class="brand">
+      <img class="mark-night" src="mark-night.png" alt="Marea Dvīpa pavilion mark">
+      <img class="mark-day" src="mark-day.png" alt="Marea Dvīpa pavilion mark">
+      <div><div class="name">Marea Dvīpa</div><div class="sub">Website guidance &amp; design</div></div>
+    </div>
+    <nav class="rooms" aria-label="Rooms">
+      <a href="#guide" id="tab-guide">Guide</a>
+      <a href="#platforms" id="tab-platforms">Platforms</a>
+    </nav>
+    <button class="theme" id="themeBtn" type="button" aria-label="Switch between light and dark" title="Theme">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+
+<!-- ============ GUIDE ============ -->
+<div class="view" id="view-guide">
+  <section class="hero">
+    <div style="display:grid;gap:18px">
+      <span class="eyebrow">Business website guide · as of 7 November 2026</span>
+      <h1>The guest should book with the house, not with the platform.</h1>
+      <p class="lede">A guidance and design offer for guesthouses, holiday lets and small local businesses: an audit of what their site does today, a plan, and a fast, accessible direct-booking site built to a proven baseline. Everything here comes from one real build, The Beam House, and one benchmark teardown.</p>
+      <div class="contents" aria-label="Guide contents">
+        <a href="/quote/" style="border-color:var(--gold);color:var(--gold)">Get a quote</a><a href="#g-offer">Offer</a><a href="#g-why">Why it matters</a><a href="#g-audit">Audit checklist</a><a href="#g-bench">Benchmark</a><a href="#g-base">Baseline</a><a href="#g-design">Design</a><a href="#g-features">Features</a><a href="#g-case">Case study</a><a href="#g-pkg">Packages</a><a href="#g-golive">Go-live</a><a href="#g-measure">Measuring</a>
+      </div>
+    </div>
+    <div class="hero-art"><div class="ring"></div><img class="mark-night" src="mark-night.png" alt=""><img class="mark-day" src="mark-day.png" alt=""></div>
+  </section>
+
+  <section id="g-offer">
+    <div class="sec-head"><span class="eyebrow">01 · The offer</span><h2>Three parts, bought together or separately</h2>
+    <p class="lede">Most small-business sites were built on a page builder years ago, load slowly and hand the guest to a third-party booking engine at the moment that matters.</p></div>
+    <div class="grid g3">
+      <div class="card"><span class="badge gold">Audit</span><h3>See the gaps</h3><p>We run the same checklist on your current site and on one competitor you admire, and give you a gap table with the fixes ranked.</p></div>
+      <div class="card"><span class="badge gold">Guidance</span><h3>A written plan</h3><p>Structure, photography, copy, booking flow, legal and accessibility basics, and which conversion features are worth adding for your business.</p></div>
+      <div class="card gold"><span class="badge gold">Design &amp; build</span><h3>The site itself</h3><p>A fast, accessible single-page or small multi-page site built to our baseline, with your brand colours and photographs, and an optional AI guest assistant.</p></div>
+    </div>
+  </section>
+
+  <section id="g-why">
+    <div class="sec-head"><span class="eyebrow">02 · Why it matters</span><h2>Four things decide whether a visitor books here or drifts back</h2>
+    <p class="lede">A direct booking is the only one where the owner keeps the whole price, owns the guest relationship and can offer perks the platforms cannot.</p></div>
+    <div class="grid g2">
+      <div class="card"><h4>Price and availability on the page</h4><p>If the guest must leave your site to learn what a week costs, many never come back. Nightly rate, minimum stay and free dates inline remove the biggest reason to leave.</p></div>
+      <div class="card"><h4>A reason to book direct</h4><p>A visible strip of perks, a discount, late checkout, a welcome extra, gives the guest permission to skip the platform.</p></div>
+      <div class="card"><h4>Speed and trust</h4><p>Heavy page-builder sites load slowly on a phone on a train. A light page with good photography, real reviews and clear contact details reads as a well-run house.</p></div>
+      <div class="card"><h4>Accessibility and the law</h4><p>UK businesses have a duty under the Equality Act 2010 to make reasonable adjustments, and that includes websites. Alt text, keyboard navigation and labelled forms also help every guest, and search engines read the same signals.</p></div>
+    </div>
+  </section>
+
+  <section id="g-audit">
+    <div class="sec-head"><span class="eyebrow">03 · The audit checklist</span><h2>Fourteen checks, read from the raw HTML</h2>
+    <p class="lede">Facts rather than opinions. Pick a preset to see how a real site scores, or score your own and the page remembers it on this device.</p></div>
+    <div class="toolbar">
+      <label for="auditPreset" class="quiet">Site</label>
+      <select id="auditPreset">
+        <option value="guesthouse">GuestHouse No.124 Brighton (measured 7 Nov 2026)</option>
+        <option value="beam">The Beam House, our baseline</option>
+        <option value="own">Score your own site</option>
+      </select>
+      <div class="score" id="auditScore" style="margin-left:auto">0<small>of 14 pass</small></div>
+    </div>
+    <div class="meter" style="margin-bottom:14px"><i id="auditMeter"></i></div>
+    <div class="tbl"><table id="auditTable"><thead><tr><th>Check</th><th>What we measure</th><th>Pass looks like</th><th>Result</th></tr></thead><tbody></tbody></table></div>
+    <p class="note" style="margin-top:12px">We present the result to the owner as a table of gaps plus numbered options, so they can choose how far to go.</p>
+  </section>
+
+  <section id="g-bench">
+    <div class="sec-head"><span class="eyebrow">04 · Benchmark teardown</span><h2>No.124 by GuestHouse, Brighton</h2>
+    <p class="lede">A polished, well-marketed WordPress site with the Breakdance builder, audited on 7 November 2026. The marketing layer is excellent and the engineering layer is neglected. That is the gap we sell into.</p></div>
+    <div class="stats" style="margin-bottom:22px">
+      <div class="stat"><div class="v">644<span style="font-size:1rem"> KB</span></div><div class="l">HTML on the property page</div></div>
+      <div class="stat"><div class="v">44</div><div class="l">scripts</div></div>
+      <div class="stat"><div class="v">62</div><div class="l">stylesheets</div></div>
+      <div class="stat"><div class="v">44<span style="font-size:1rem">/69</span></div><div class="l">images without alt text</div></div>
+      <div class="stat"><div class="v">~16</div><div class="l">unlabelled form fields</div></div>
+      <div class="stat"><div class="v">0</div><div class="l">prices shown on the page</div></div>
+    </div>
+    <div class="grid g2">
+      <div class="card"><h4>Worth copying</h4><ul class="clean">
+        <li>Full-bleed hero slideshow of 11 photos with a slow fade, and a photo carousel beside every feature section.</li>
+        <li>A three-perk direct-booking strip (discount, noon checkout, spa offer) above the booking form.</li>
+        <li>Offers, gifts and events pages, newsletter signup, Instagram feed and one short film.</li>
+        <li>Rich structured data: HotelRoom, Review with AggregateRating, FAQPage, BreadcrumbList, Organization, Place.</li>
+        <li>A guest chat widget on every page.</li></ul></div>
+      <div class="card"><h4>Where it falls short</h4><ul class="clean">
+        <li>Hero slides are CSS backgrounds, so screen readers get nothing from the photography.</li>
+        <li>No skip link, no reduced-motion support, no dark mode, no accessibility statement.</li>
+        <li>Booking hands off to be.synxis.com with no price or availability on the page.</li>
+        <li>No map, no guest guide, no currency switch.</li>
+        <li><span class="mono">lang="en-US"</span> on a UK site.</li></ul></div>
+    </div>
+    <p class="note" style="margin-top:14px">Source: <a href="https://guesthousehotels.co.uk/no-124-kingsroad-brighton/">guesthousehotels.co.uk</a>. The same property's platform listing is compared in the Platforms room.</p>
+  </section>
+
+  <section id="g-base">
+    <div class="sec-head"><span class="eyebrow">05 · Our baseline</span><h2>What every site we build includes</h2>
+    <p class="lede">One HTML file, no framework, no page builder. It loads fast, is easy to host anywhere and needs no plugin updates.</p></div>
+    <div class="grid g3">
+      <div class="card"><h4>Structure and performance</h4><ul class="clean"><li>Single page with anchored sections and a mobile bottom tab bar; safe-area insets for notched phones.</li><li>Native scroll-snap carousels and a crossfade hero with a pause button, no carousel library.</li><li>Photos converted to JPEG at a maximum of 1800 px with location and camera metadata stripped.</li></ul></div>
+      <div class="card"><h4>Accessibility</h4><ul class="clean"><li>Skip link, landmarks, labelled forms, visible focus, reduced motion respected.</li><li>Keyboard calendar grid with arrow, Page Up and Page Down navigation.</li><li>Light and dark theme from one set of colour tokens, following the system with a manual switch.</li><li>Alt text on every photograph; hero photos are real images, not backgrounds.</li></ul></div>
+      <div class="card"><h4>Booking</h4><ul class="clean"><li>Live calendar with nightly rates, minimum stay, seasonal and midweek pricing and single gap nights priced inline.</li><li>Hold-dates dialog with validation, a currency switch and a three-perk strip under the quick-book bar.</li></ul></div>
+      <div class="card"><h4>Search and trust</h4><ul class="clean"><li>JSON-LD: VacationRental or LodgingBusiness, Reviews, FAQPage, Organization, Place.</li><li>Real reviews, a map, directions and a self-serve guest guide.</li></ul></div>
+      <div class="card"><h4>Privacy</h4><ul class="clean"><li>Non-modal consent card with Allow all, Essentials only and per-category toggles, reopenable from the footer.</li><li>Analytics and pixels load only after consent.</li></ul></div>
+    </div>
+  </section>
+
+  <section id="g-design">
+    <div class="sec-head"><span class="eyebrow">06 · Design principles</span><h2>It should feel like the place, not like a template</h2></div>
+    <div class="grid g3">
+      <div class="card"><h4>Photography leads</h4><p>One full-bleed hero rotating through the best photos, then a carousel beside each section. Put the thing guests come for first: for The Beam House that is the hot tub.</p></div>
+      <div class="card"><h4>Restrained corners</h4><p>Cards, frames and dialogs at 10 px; buttons, chips and inputs at 6 px. No pill buttons unless the brand already uses them. Circles only for true dots.</p>
+        <div style="display:flex;gap:10px;align-items:center;margin-top:4px"><span style="width:44px;height:30px;border:1px solid var(--gold);border-radius:10px"></span><span style="width:60px;height:26px;border:1px solid var(--gold);border-radius:6px"></span><span style="width:14px;height:14px;border-radius:50%;background:var(--gold)"></span></div></div>
+      <div class="card"><h4>One palette, two themes</h4><p>Every colour is a token with a light and a dark value, checked for contrast. Try the sun button in the bar.</p>
+        <div style="display:flex;gap:6px;margin-top:4px"><span style="flex:1;height:22px;border-radius:6px;background:var(--bg)"></span><span style="flex:1;height:22px;border-radius:6px;background:var(--bg-3)"></span><span style="flex:1;height:22px;border-radius:6px;background:var(--gold)"></span><span style="flex:1;height:22px;border-radius:6px;background:var(--fg)"></span></div></div>
+      <div class="card"><h4>Type that reads</h4><p>A warm serif or humanist sans for headings, a plain sans for body, nothing below 16 px on a phone.</p></div>
+      <div class="card"><h4>Motion that can be stopped</h4><p>Slideshows and films have a pause control and respect the visitor's reduced-motion setting.</p></div>
+      <div class="card"><h4>Nothing hidden behind a hover</h4><p>Prices, perks and contact details are visible on first load, on a phone, without scrolling past a wall of marketing.</p></div>
+    </div>
+    <p class="note" style="margin-top:14px">We offer each client three theme directions at the mock stage, as with Hearth, Sea Salt and Lantern for The Beam House, and build the one they pick.</p>
+  </section>
+
+  <section id="g-features">
+    <div class="sec-head"><span class="eyebrow">07 · Features menu</span><h2>Add-ons we have built and can reuse</h2>
+    <p class="lede">Each is chosen for a reason, not added because a competitor has it. Filter by what it is for.</p></div>
+    <div class="chips" id="featFilters" role="group" aria-label="Filter features" style="margin-bottom:16px"></div>
+    <div class="grid g3" id="featGrid"></div>
+  </section>
+
+  <section id="g-case">
+    <div class="sec-head"><span class="eyebrow">08 · Case study</span><h2>The Beam House</h2>
+    <p class="lede">A holiday let with a hot tub, ten rooms and a story behind most of its objects. Built in stages during November 2026, each stage a published version the owner could open on a phone.</p></div>
+    <div class="grid g3" style="margin-bottom:22px">
+      <a class="card" href="https://claude.ai/artifact/CAVZE1R5UFRxjgBfd2VU4A" style="text-decoration:none"><span class="badge">Stage 1</span><h4>Original mock</h4><p>Three theme directions: Hearth, Sea Salt, Lantern.</p></a>
+      <a class="card gold" href="https://claude.ai/artifact/7FQvk8xqbTHMU8QFNkqM9T" style="text-decoration:none"><span class="badge gold">Current build</span><h4>Direct-booking site</h4><p>Responsive, accessible, carousels, booking calendar, tour, film and the "Ask the house" assistant.</p></a>
+      <a class="card" href="https://guesthousehotels.co.uk/no-124-kingsroad-brighton/" style="text-decoration:none"><span class="badge">Benchmark</span><h4>No.124 by GuestHouse</h4><p>The site it was measured against.</p></a>
+    </div>
+    <div class="card"><div class="cmp">
+      <div class="row hd"><span>Area</span><span>Mock</span><span>Build</span></div>
+      <div class="row"><span>Photography</span><span class="a">Stock placeholders</span><span class="b">18 owner photos, hot tub first, a film of 11 clips at 28.5 s</span></div>
+      <div class="row"><span>Booking</span><span class="a">Enquiry form</span><span class="b">Live calendar, seasonal and midweek rates, gap nights, hold-dates dialog</span></div>
+      <div class="row"><span>Accessibility</span><span class="a">Basic</span><span class="b">Skip link, keyboard calendar, labelled forms, reduced motion, light and dark</span></div>
+      <div class="row"><span>Conversion</span><span class="a">None</span><span class="b">Perks strip, offers band, vouchers, newsletter, Instagram grid</span></div>
+      <div class="row"><span>Discovery</span><span class="a">None</span><span class="b">Structured data for the property, three reviews and six FAQs</span></div>
+      <div class="row"><span>Engagement</span><span class="a">Static tour</span><span class="b">Floor-plan tour with 30 object stories, guided walk, progress, assistant hand-off</span></div>
+      <div class="row"><span>Privacy</span><span class="a">None</span><span class="b">Consent card gating analytics and pixels</span></div>
+    </div></div>
+    <p class="note" style="margin-top:14px">Two things remain placeholders until the owner confirms them: the object stories for the newest rooms, and the town in the address. We show clients this list too, because it is how invented detail stays off a real site.</p>
+  </section>
+
+  <section id="g-pkg">
+    <div class="sec-head"><span class="eyebrow">09 · Packages, process and timeline</span><h2>Three packages, each building on the last</h2>
+    <p class="lede">Start with the Audit and its fee is credited in full against a Direct-booking or Signature site started within 60 days, so the first step is never wasted.</p></div>
+    <div class="pkg" style="margin-bottom:28px">
+      <div class="card"><span class="badge tier">Audit</span><p class="for">For owners who already have a site and a developer</p><ul class="clean"><li>Checklist on the client's site and one competitor</li><li>Gap table and ranked fixes</li><li>A 45-minute walkthrough</li><li>Credited in full against a build started within 60 days</li></ul></div>
+      <div class="card gold"><span class="badge gold tier">Direct-booking site</span><p class="for">For most guesthouses and holiday lets</p><ul class="clean"><li>Everything in Audit</li><li>Full baseline build with the client's photos</li><li>Perks strip, structured data, consent, hosting set up</li></ul></div>
+      <div class="card"><span class="badge tier">Signature site</span><p class="for">For properties with character that compete on experience</p><ul class="clean"><li>Everything in Direct-booking</li><li>House film, interactive tour, offers and vouchers</li><li>AI guest assistant, two rounds of content polish</li></ul></div>
+    </div>
+    <div class="card gold" style="margin-bottom:28px;grid-template-columns:1fr auto;align-items:center;gap:16px">
+      <div><h4>Build your own quote</h4><p>Pick the level, add features, choose care and payment, and send it to us. Prices update as you go.</p></div>
+      <a href="/quote/" style="background:var(--gold);color:var(--on-gold);text-decoration:none;border-radius:var(--r-sm);padding:12px 18px;font-weight:600;white-space:nowrap">Open the quote builder</a>
+    </div>
+    <h3 style="margin-bottom:12px">How a build runs</h3>
+    <ol class="steps" id="steps"></ol>
+    <p class="note" style="margin-top:14px">A Direct-booking site takes about two weeks of elapsed time once photos arrive; a Signature site about four. The longest wait is nearly always the owner's photos and sign-off, so step 3 starts on the discovery call.</p>
+  </section>
+
+  <section id="g-golive">
+    <div class="sec-head"><span class="eyebrow">10 · Go-live checklist</span><h2>Finished means connected to real accounts</h2>
+    <p class="lede">These turned out to be placeholders on The Beam House and will be on every site. Tick them off; the page remembers on this device.</p></div>
+    <div class="toolbar"><div class="score" id="goScore">0<small>of 12 done</small></div><button class="chip" id="goReset" type="button" style="margin-left:auto">Reset</button></div>
+    <div class="check" id="goList"></div>
+  </section>
+
+  <section id="g-measure">
+    <div class="sec-head"><span class="eyebrow">11 · Measuring success</span><h2>Move bookings from the platforms to the owner's page</h2>
+    <p class="lede">Tracked from the analytics that load after consent and from the owner's booking records, reviewed at the thirty-day check and then quarterly.</p></div>
+    <div class="tbl"><table><thead><tr><th>Measure</th><th>Where it comes from</th><th>What we want to see</th></tr></thead><tbody>
+      <tr><td><b>Direct bookings as a share of all bookings</b></td><td>Owner's booking records</td><td>Rising quarter on quarter</td></tr>
+      <tr><td><b>Calendar interactions per visit</b></td><td>Page analytics</td><td>Guests checking dates rather than leaving to a platform</td></tr>
+      <tr><td><b>Hold-dates and enquiry submissions</b></td><td>Page analytics and the owner's inbox</td><td>Steady, with fewer repeat questions</td></tr>
+      <tr><td><b>Assistant questions answered without a human</b></td><td>Assistant log</td><td>The owner's phone rings less</td></tr>
+      <tr><td><b>Newsletter signups and voucher sales</b></td><td>Mailing tool and Stripe</td><td>Any, then growing</td></tr>
+      <tr><td><b>Page weight and accessibility checks</b></td><td>Re-run of the audit</td><td>No regression after content changes</td></tr>
+    </tbody></table></div>
+    <p class="note" style="margin-top:14px">If a measure is not moving, the fix is usually one of three things: the price is not on the page, the perks are not real, or the photos no longer match the house.</p>
+  </section>
+</div>
+
+<!-- ============ PLATFORMS ============ -->
+<div class="view" id="view-platforms" hidden>
+  <section class="hero">
+    <div style="display:grid;gap:18px">
+      <span class="eyebrow">Platform analysis · Brighton listings · 7 November 2026</span>
+      <h1>Of every £1,000 a guest pays for the stay, the owner keeps £750 to £1,000.</h1>
+      <p class="lede">How Airbnb, Booking.com, Vrbo, Sykes Cottages and Plum Guide present a property, what they charge, and where an owner's own site can beat them. Compared on Brighton listings so the result sits beside the GuestHouse teardown.</p>
+      <div class="contents" aria-label="Platform contents">
+        <a href="#p-fees">Fees</a><a href="#p-calc">Calculator</a><a href="#p-anatomy">Listing anatomy</a><a href="#p-tech">Technical audit</a><a href="#p-parity">Parity checklist</a><a href="#p-edge">Owner's edge</a><a href="#p-changes">What changes</a><a href="#p-sources">Sources</a>
+      </div>
+    </div>
+    <div class="hero-art"><div class="ring"></div><img class="mark-night" src="mark-night.png" alt=""><img class="mark-day" src="mark-day.png" alt=""></div>
+  </section>
+
+  <section id="p-calc">
+    <div class="sec-head"><span class="eyebrow">01 · Calculator</span><h2>What the owner keeps, and what the guest pays</h2>
+    <p class="lede">Set the accommodation price for a stay. Each channel shows the owner's payout after platform fees and the total the guest is charged. Hover a point for the fee basis.</p></div>
+    <div class="calc">
+      <div class="card in">
+        <label for="priceRange" class="eyebrow">Accommodation price for the stay</label>
+        <div class="price" id="priceOut">£1,000</div>
+        <input type="range" id="priceRange" min="200" max="5000" step="50" value="1000" aria-label="Accommodation price">
+        <div style="display:flex;gap:8px;align-items:center"><label for="priceNum" class="quiet">or type</label><input type="number" id="priceNum" min="100" max="20000" step="10" value="1000" style="width:120px" aria-label="Accommodation price in pounds"></div>
+        <div class="seg" role="group" aria-label="Show"><button type="button" data-mode="owner" aria-pressed="true">Owner keeps</button><button type="button" data-mode="guest" aria-pressed="false">Guest pays</button></div>
+        <p class="note" id="calcNote"></p>
+      </div>
+      <div class="chart" id="calcChart"><h4 id="calcTitle"></h4><svg id="calcSvg" viewBox="0 0 720 420" role="img" aria-labelledby="calcTitle"></svg><div class="legend"><span><i class="hi"></i>Own website</span><span><i></i>Platform channel</span><span class="quiet">Bars show the range where the rate varies</span></div><div class="cap">Computed from the fee table below. Official pages for Airbnb, Plum Guide and the pre-October Vrbo rate; third-party guides for the rest.</div><div class="tip" id="calcTip"></div></div>
+    </div>
+  </section>
+
+  <section id="p-fees">
+    <div class="sec-head"><span class="eyebrow">02 · What each platform takes</span><h2>Published where we could, third-party where we had to</h2>
+    <p class="lede">Airbnb and Plum Guide publish their fees. Booking.com, Vrbo and Sykes Cottages block automated reading of their owner pages, so those rows rely on third-party guides and are marked.</p></div>
+    <div class="tbl"><table><thead><tr><th>Platform</th><th>Owner pays</th><th>Guest pays on top</th><th>Notes</th><th>Source</th></tr></thead><tbody>
+      <tr><td><b>Airbnb</b></td><td>3% (split fee), or 15.5% typical and 14% to 16% range under the host-only fee, mandatory for most hosts including traditional hospitality</td><td>14.1% to 16.5% of the subtotal under the split fee</td><td>Fee deducted from the payout</td><td><span class="badge off">Official</span> <a href="https://www.airbnb.co.uk/help/article/1857">Airbnb help</a></td></tr>
+      <tr><td><b>Booking.com</b></td><td>15% headline in the UK; 17% to 22% in practice once Preferred Partner (2 to 3 points), Genius discounts (10% to 20%, funded by the property) and payment processing (1.1% to 3.1%) are counted</td><td>No separate guest fee</td><td>Official commission page returned 403; daily payouts 24 hours after checkout per join.booking.com</td><td><span class="badge third">Third-party</span> <a href="https://www.guesty.com/blog/how-much-does-booking-com-charge-hosts">Guesty</a>, <a href="https://www.holidayfox.com/en/partners/guides/cost-guides/booking-com-commission-breakdown-2026">HolidayFox</a> (a competitor)</td></tr>
+      <tr><td><b>Vrbo</b></td><td>5% commission plus 3% payment processing on the official host page; moving to 12% including processing for bookings from 29 October 2026, 12% to 15% by region; annual subscription closed to new hosts</td><td>About 11% to 14%, reported, not disclosed by Vrbo</td><td>Official help article was down when read</td><td><span class="badge off">Official</span> <a href="https://host.vrbo.com/en-gb">host.vrbo.com</a> · <span class="badge third">Third-party</span> <a href="https://hello.pricelabs.co/vrbo-host-fees/">PriceLabs</a></td></tr>
+      <tr><td><b>Sykes Cottages</b></td><td>20% to 25% on standard agreements; 28% to 32% fully managed; Sykes sets the headline price on most agreements and owners typically do not receive guest email addresses</td><td>Booking fee to the guest, amount not confirmed</td><td>Official owner pages returned empty responses</td><td><span class="badge third">Third-party</span> <a href="https://www.holidayfox.com/en/partners/guides/cost-guides/sykes-cottages-cost-breakdown-2026">HolidayFox</a> (a competitor)</td></tr>
+      <tr><td><b>Plum Guide</b></td><td>3% host plus 12% guest, or 16.5% host-only; one-time onboarding fee of £300 taken from the first payout</td><td>12% under the shared structure, nothing under host-only</td><td>The public become-a-host page mentions only the 3%</td><td><span class="badge off">Official</span> <a href="https://help.plumguide.com/en/articles/4684372-plum-guide-fees">Plum Guide help</a></td></tr>
+      <tr><td><b>Own website</b></td><td>Card processing only</td><td>Nothing</td><td>The owner also keeps the guest's email and the repeat booking</td><td></td></tr>
+    </tbody></table></div>
+    <p class="note" style="margin-top:14px">Two things matter more than the headline rate. First, the guest-side fee: on Airbnb's split structure a £1,000 stay costs the guest about £1,150, so a direct price of £1,000 is already cheaper for the guest while paying the owner more. Second, who owns the guest: Sykes keeps the email address, Booking.com and Airbnb relay messages, and only the owner's site hands it over in full.</p>
+  </section>
+
+  <section id="p-anatomy">
+    <div class="sec-head"><span class="eyebrow">03 · Listing page anatomy</span><h2>Photos first, a rating beside the name, a price card that follows you</h2>
+    <p class="lede">All five platforms sell a property the same way. The differences are in who the badge comes from and how much of the house the guest is allowed to see.</p></div>
+    <div class="tabs" id="anatTabs" role="tablist"></div>
+    <div class="card panel" id="anatPanel" role="tabpanel"></div>
+    <p class="note" style="margin-top:14px">The platforms spend their trust budget on themselves: Superhost, Rare find, Home Critic. The property gets one photo mosaic, one paragraph and whatever the review count says. Nothing tells the guest about the brass bed, the owner, or why the house exists, which is exactly the ground an owner's own site can take.</p>
+  </section>
+
+  <section id="p-tech">
+    <div class="sec-head"><span class="eyebrow">04 · Technical audit</span><h2>Heavy pages, partly accessible</h2>
+    <p class="lede">Airbnb is the only readable page with a skip link; only Airbnb and Plum Guide respect reduced motion; none offers a dark theme. Counts come from the HTML the server sends, so image counts understate what a guest sees and script counts are a lower bound.</p></div>
+    <div class="grid g2" style="margin-bottom:16px">
+      <div class="chart" id="kbChart"><h4>HTML sent for one listing page, KB</h4><svg id="kbSvg" viewBox="0 0 560 230" role="img" aria-label="HTML size per listing page in kilobytes"></svg><div class="cap">Lighter is better. The GuestHouse row is the hotel's own site from the Guide room, for comparison.</div><div class="tip" id="kbTip"></div></div>
+      <div class="chart" id="jsChart"><h4>Script tags in the page</h4><svg id="jsSvg" viewBox="0 0 560 230" role="img" aria-label="Script tags per listing page"></svg><div class="cap">Fewer is better. Sykes is the lightest and has the richest structured data.</div><div class="tip" id="jsTip"></div></div>
+    </div>
+    <div class="tbl"><table class="matrix"><thead><tr><th>Page</th><th>Images without alt</th><th>Skip link</th><th>Reduced motion</th><th>Dark mode</th><th>lang</th><th>Structured data</th></tr></thead><tbody id="matrixBody"></tbody></table></div>
+    <p class="note" style="margin-top:14px">Our baseline is one HTML file with no framework and no builder, every photo with alt text, a skip link, reduced-motion and dark-theme support and en-GB, so a client site built to it beats every row on each column.</p>
+  </section>
+
+  <section id="p-parity">
+    <div class="sec-head"><span class="eyebrow">05 · Parity checklist</span><h2>Eight questions a listing always answers</h2>
+    <p class="lede">Guests trust a platform listing because it answers the same eight questions in the same order every time. An owner's site that skips any of them sends the guest back to the platform to check. Score a site here.</p></div>
+    <div class="toolbar"><div class="score" id="parScore">0<small>of 8 answered</small></div><button class="chip" id="parReset" type="button" style="margin-left:auto">Reset</button></div>
+    <div class="check" id="parList"></div>
+  </section>
+
+  <section id="p-edge">
+    <div class="sec-head"><span class="eyebrow">06 · The owner's edge</span><h2>What a listing never will do</h2>
+    <p class="lede">A platform page is a template shared with millions of other properties, ranked by an algorithm the owner cannot see, with the guest's contact details withheld.</p></div>
+    <div class="grid g3">
+      <div class="card gold"><h4>Cheaper for the guest at the same income</h4><p>On Airbnb's split fee a £1,000 stay costs the guest about £1,150. The direct site can charge £1,050, undercut the platform by £100 and still pay the owner £80 more. The perks strip should say this in plain numbers.</p></div>
+      <div class="card"><h4>The guest's email and the repeat booking</h4><p>Sykes keeps the address; Airbnb and Booking.com relay messages through their own systems. Only the direct booking gives the owner the relationship.</p></div>
+      <div class="card"><h4>The whole story</h4><p>Interactive tour, object stories, a film, the owner's voice. The platform allows one paragraph and a photo grid.</p></div>
+      <div class="card"><h4>Pricing rules the owner controls</h4><p>Midweek rates, gap nights, long-stay discounts and vouchers, set by the owner rather than by a Genius or Rare-find programme funded from the owner's margin.</p></div>
+      <div class="card"><h4>An assistant that knows the house</h4><p>The platform chatbots know the platform. Ours knows the hot tub temperature, the parking and the walk to the station, and can select the dates.</p></div>
+      <div class="card"><h4>Speed, accessibility and no ranking</h4><p>One file instead of 30 to 110 scripts, alt text on every photo, a skip link, dark mode. Found on the house's own name and never pushed down a list by a competitor paying for placement.</p></div>
+    </div>
+    <p class="note" style="margin-top:14px">The platforms remain the best place to be discovered. The owner's site is where the discovered guest should land, and where the second stay is booked.</p>
+  </section>
+
+  <section id="p-changes">
+    <div class="sec-head"><span class="eyebrow">07 · What this changes in our guidance</span><h2>Five changes to the Guide and the packages</h2></div>
+    <ol class="steps" id="changes"></ol>
+    <p class="note" style="margin-top:14px">One open question for the owner conversation: keep the property on all platforms at a higher price, so the listing itself advertises the direct saving, or list on one platform only for discovery. Both work; the choice depends on how full the calendar already is.</p>
+  </section>
+
+  <section id="p-sources">
+    <div class="sec-head"><span class="eyebrow">08 · Sources</span><h2>Pages opened on 7 November 2026</h2>
+    <p class="lede">HolidayFox sells a competing direct-booking service and PriceLabs sells pricing software, so their figures carry a commercial interest.</p></div>
+    <div class="grid g2">
+      <div class="card"><h4><span class="badge off">Official</span> Platform pages read</h4><ul class="clean"><li><a href="https://www.airbnb.co.uk/help/article/1857">Airbnb host and guest service fees</a></li><li><a href="https://host.vrbo.com/en-gb">Vrbo host landing page</a></li><li><a href="https://help.plumguide.com/en/articles/4684372-plum-guide-fees">Plum Guide fees</a> and <a href="https://www.plumguide.com/become-a-host">become a host</a></li><li><a href="https://join.booking.com/">join.booking.com</a>, payout timing only</li></ul></div>
+      <div class="card"><h4>Listing pages audited</h4><ul class="clean"><li><a href="https://www.airbnb.co.uk/rooms/8280138">Airbnb: The Brighton Parlour with Hot Tub</a></li><li><a href="https://www.vrbo.com/6915239ha">Vrbo: Garden Apartment with Private Hot Tub</a></li><li><a href="https://www.sykescottages.co.uk/cottage/Sussex-Lyelands-Fm/Charltons-Hollow-Cabin-1179389.html">Sykes: Charltons Hollow Cabin</a></li><li><a href="https://www.plumguide.com/homes/75414/palm-trees-pebbles">Plum Guide: Palm Trees and Pebbles</a></li></ul></div>
+      <div class="card"><h4><span class="badge third">Third-party</span> Used where official pages were blocked</h4><ul class="clean"><li><a href="https://www.guesty.com/blog/how-much-does-booking-com-charge-hosts">Guesty on Booking.com fees</a></li><li><a href="https://www.holidayfox.com/en/partners/guides/cost-guides/booking-com-commission-breakdown-2026">HolidayFox on Booking.com</a> and <a href="https://www.holidayfox.com/en/partners/guides/cost-guides/sykes-cottages-cost-breakdown-2026">on Sykes Cottages</a></li><li><a href="https://hello.pricelabs.co/vrbo-host-fees/">PriceLabs on Vrbo host fees</a></li></ul></div>
+      <div class="card"><h4><span class="badge na">Could not be read</span></h4><ul class="clean"><li>Booking.com property page and partner commission pages: JavaScript challenge or 403 to every automated request</li><li>Sykes Cottages owner pages: empty responses</li><li>Vrbo help centre: maintenance page</li></ul></div>
+    </div>
+  </section>
+</div>
+</main>
+<footer><div class="in"><span>Marea Dvīpa · website guidance and design · <a href="/">Pattern Studio</a> · <a href="/quote/">Build a quote</a></span><span>Figures as of 7 November 2026. Re-check platform fees before each proposal.</span></div></footer>
+
+<script>
+(function(){
+'use strict';
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const gbp=n=>'£'+Math.round(n).toLocaleString('en-GB');
+
+/* theme */
+const root=document.documentElement;
+$('#themeBtn').addEventListener('click',()=>{
+  const dark=root.getAttribute('data-theme')==='dark'||(!root.getAttribute('data-theme')&&!matchMedia('(prefers-color-scheme: light)').matches);
+  root.setAttribute('data-theme',dark?'light':'dark');
+});
+
+/* rooms via hash */
+const views={guide:$('#view-guide'),platforms:$('#view-platforms')};
+function route(){
+  let h=(location.hash||'#guide').slice(1);
+  let room=h.startsWith('p-')||h==='platforms'?'platforms':'guide';
+  for(const k in views){views[k].hidden=k!==room;$('#tab-'+k).setAttribute('aria-current',k===room?'page':'false')}
+  if(h!=='guide'&&h!=='platforms'){const el=document.getElementById(h);if(el)requestAnimationFrame(()=>el.scrollIntoView({block:'start'}))}
+  else window.scrollTo({top:0});
+}
+addEventListener('hashchange',route);route();
+
+/* ---------- Guide: audit scorer ---------- */
+const AUDIT=[
+ ['Page weight','HTML size, number of scripts and stylesheets','One page, a handful of scripts, no builder bloat'],
+ ['Image alt text','Images with and without alt; hero images set as CSS backgrounds','Every meaningful image has alt; hero photos are real img elements'],
+ ['Skip link and landmarks','Skip-to-content link, header, main, nav, footer','Present and working with the keyboard'],
+ ['Forms','Inputs without a label','Every field labelled, errors announced'],
+ ['Motion and theme','Reduced-motion support, dark mode','Both respected via the visitor’s system setting'],
+ ['Accessibility statement','Page or section stating the standard aimed for','Present and dated'],
+ ['Language','The lang attribute matches the audience','en-GB on a UK site'],
+ ['Structured data','JSON-LD types present','LodgingBusiness or VacationRental, Review, FAQPage, Breadcrumb, Organization, Place'],
+ ['Booking hand-off','Where the guest goes to book','Dates, price and availability on the page; payment only at the end'],
+ ['On-page pricing','Nightly rate, minimum stay, gap nights visible','Yes, with the rules explained inline'],
+ ['Reasons to book direct','Perks strip near the booking form','Three concrete perks'],
+ ['Guest self-service','Guide to the house, map, directions, FAQs','Available before and after booking'],
+ ['Consent','Cookie banner that blocks nothing essential and offers a real choice','Non-modal, per-category, reopenable'],
+ ['Photography','Hero slideshow, carousel per section, lightbox, a short film','Present, with captions and pause controls']
+];
+const PRESETS={
+ guesthouse:[0,0,0,0,0,0,0,1,0,0,1,0,1,1],
+ beam:[1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+ own:store.get('md-audit-own',Array(14).fill(null))
+};
+let preset='guesthouse';
+const auditBody=$('#auditTable tbody');
+function renderAudit(){
+  const vals=PRESETS[preset];
+  auditBody.innerHTML=AUDIT.map((r,i)=>{
+    const v=vals[i];
+    const ctrl=preset==='own'
+      ?`<div class="seg" role="group" aria-label="${esc(r[0])} result"><button type="button" data-i="${i}" data-v="1" aria-pressed="${v===1}">Pass</button><button type="button" data-i="${i}" data-v="0" aria-pressed="${v===0}">Finding</button></div>`
+      :`<span class="pf ${v===1?'pass':'fail'}">${v===1?'Pass':'Finding'}</span>`;
+    return `<tr><td><b>${esc(r[0])}</b></td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${ctrl}</td></tr>`;
+  }).join('');
+  const n=vals.filter(v=>v===1).length;
+  $('#auditScore').innerHTML=`${n}<small>of 14 pass</small>`;
+  $('#auditMeter').style.width=(n/14*100)+'%';
+}
+$('#auditPreset').addEventListener('change',e=>{preset=e.target.value;renderAudit()});
+auditBody.addEventListener('click',e=>{
+  const b=e.target.closest('button[data-i]');if(!b||preset!=='own')return;
+  const i=+b.dataset.i,v=+b.dataset.v;PRESETS.own[i]=PRESETS.own[i]===v?null:v;store.set('md-audit-own',PRESETS.own);renderAudit();
+});
+renderAudit();
+
+/* ---------- Guide: features ---------- */
+const FEATURES=[
+ {n:'Perks strip',t:['conversion','always'],d:'Three concrete reasons to book direct, under the booking bar.',w:'Always, if the owner can honour three perks.',s:'The perks'},
+ {n:'Offers band',t:['conversion'],d:'Named deals (midweek, workcation, full week, gap nights) with a “find dates” button that loads the next matching stay.',w:'There is seasonal slack to fill.',s:'Pricing rules'},
+ {n:'Gift vouchers',t:['conversion'],d:'Amount chips and a purchase dialog.',w:'Repeat guests and gifting are common.',s:'Stripe account'},
+ {n:'Newsletter',t:['conversion'],d:'Signup card with consent and double opt-in.',w:'The owner will actually send something.',s:'Mailing tool account'},
+ {n:'Instagram grid',t:['engagement'],d:'Six-tile grid linking to the account.',w:'The account is active.',s:'The handle'},
+ {n:'House film',t:['engagement','always'],d:'A 20 to 30 second film with captions, rendered from the owner’s photos if none exists.',w:'Always; it lifts the page.',s:'Photos or footage'},
+ {n:'Lightbox and carousels',t:['engagement','always'],d:'Tap any photo to see it large; swipe through sections.',w:'Always.',s:'15 to 25 good photos'},
+ {n:'Interactive tour',t:['engagement'],d:'Tappable floor plan, zoom to hotspots, object stories, a guided walk, progress tracking.',w:'The house has character and objects with stories.',s:'Verified stories per object'},
+ {n:'AI guest assistant',t:['engagement','conversion'],d:'Answers from a house knowledge base and can check availability and select dates. Falls back to keyword search when the model is unavailable.',w:'The owner gets repetitive questions.',s:'FAQs, house rules, local tips'},
+ {n:'Structured data',t:['discovery','always'],d:'Schema for the property, reviews and FAQs.',w:'Always.',s:'Real reviews and FAQs'},
+ {n:'Consent banner',t:['discovery','always'],d:'Per-category consent that gates analytics and pixels.',w:'Always when analytics or ads are used.',s:'Which tools they use'},
+ {n:'Second language',t:['discovery'],d:'A translated copy of the page.',w:'A clear share of guests are from one other country.',s:'Translations checked by a native speaker'}
+];
+const FILTERS=[['all','All'],['always','Always include'],['conversion','Conversion'],['engagement','Engagement'],['discovery','Discovery']];
+let feat='all';
+function renderFeat(){
+  $('#featFilters').innerHTML=FILTERS.map(f=>`<button type="button" class="chip" data-f="${f[0]}" aria-pressed="${f[0]===feat}">${f[1]}</button>`).join('');
+  $('#featGrid').innerHTML=FEATURES.filter(f=>feat==='all'||f.t.includes(feat)).map(f=>`<div class="card"><div style="display:flex;gap:6px;flex-wrap:wrap">${f.t.filter(t=>t!=='always').map(t=>`<span class="badge">${t}</span>`).join('')}${f.t.includes('always')?'<span class="badge gold">always</span>':''}</div><h4>${esc(f.n)}</h4><p>${esc(f.d)}</p><dl class="kv"><dt>Use when</dt><dd>${esc(f.w)}</dd><dt>Owner supplies</dt><dd>${esc(f.s)}</dd></dl></div>`).join('');
+}
+$('#featFilters').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(b){feat=b.dataset.f;renderFeat()}});
+renderFeat();
+
+/* ---------- Guide: steps ---------- */
+const STEPS=[
+ ['Discovery call','What guests ask most, what the owner wants to be known for, which competitor they admire, which tools they already pay for.'],
+ ['Audit and plan','The gap table and a one-page plan with the chosen features. The owner signs this off.'],
+ ['Photos and copy','The owner sends 15 to 25 photos and answers a short questionnaire; we convert, strip metadata and write first-draft copy.'],
+ ['Three theme mocks','The owner picks one direction.'],
+ ['Build in published stages','Each stage is a link the owner opens on a phone and comments on; nothing waits for a big reveal.'],
+ ['Owner verification','Every fact, price, story and address is checked by the owner before go-live.'],
+ ['Connect and launch','Domain, booking payments, mailing tool, analytics and Instagram handle are connected, then the site goes live.'],
+ ['Thirty-day check','We review the first month’s enquiries and fix what guests stumbled on.']
+];
+function stepList(el,items,openFirst){
+  el.innerHTML=items.map((s,i)=>`<li class="${openFirst&&i===0?'open':''}"><button type="button" aria-expanded="${openFirst&&i===0}"><span class="t">${esc(s[0])}</span></button><div class="d">${s[1]}</div></li>`).join('');
+  el.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const li=b.parentElement;const o=li.classList.toggle('open');b.setAttribute('aria-expanded',o)});
+}
+stepList($('#steps'),STEPS,true);
+
+/* ---------- Guide: go-live ---------- */
+const GOLIVE=['Domain pointed at the host, HTTPS on, the old site redirected page by page','Booking payments and hold-dates connected to Stripe, test booking made and refunded','Gift vouchers connected to Stripe, with a real voucher code format','Newsletter signup connected to the mailing tool, double opt-in email checked','Instagram handle set and the grid pointed at real posts','Analytics and any ad pixel loaded through the consent hook only, verified with consent refused and granted','Every object story, price, perk and FAQ confirmed by the owner in writing','Full postal address and map pin confirmed; structured data updated to match','Accessibility statement published with a contact for problems','Site checked on a phone in a dark theme, with the keyboard only, and with a screen reader','Owner shown how to update prices, dates and offers','Thirty-day check booked'];
+function checklist(listEl,scoreEl,resetEl,items,key,word){
+  let st=store.get(key,Array(items.length).fill(false));
+  function draw(){
+    listEl.innerHTML=items.map((t,i)=>`<label><input type="checkbox" id="${key}-${i}" data-i="${i}" ${st[i]?'checked':''}><span>${esc(t)}</span></label>`).join('');
+    const n=st.filter(Boolean).length;scoreEl.innerHTML=`${n}<small>of ${items.length} ${word}</small>`;
+  }
+  listEl.addEventListener('change',e=>{const i=+e.target.dataset.i;st[i]=e.target.checked;store.set(key,st);const n=st.filter(Boolean).length;scoreEl.innerHTML=`${n}<small>of ${items.length} ${word}</small>`});
+  resetEl.addEventListener('click',()=>{st=Array(items.length).fill(false);store.set(key,st);draw()});
+  draw();
+}
+checklist($('#goList'),$('#goScore'),$('#goReset'),GOLIVE,'md-golive','done');
+
+/* ---------- Platforms: data ---------- */
+const CHANNELS=[
+ {n:'Own website',lo:0,hi:0,g:[0,0],basis:'Card processing only; the owner keeps the guest’s email too.',src:'',own:true},
+ {n:'Airbnb, split fee',lo:.03,hi:.03,g:[.141,.165],basis:'3% host fee; the guest pays 14.1% to 16.5% on top.',src:'Official'},
+ {n:'Plum Guide, shared fee',lo:.03,hi:.03,g:[.12,.12],basis:'3% host fee; the guest pays 12% on top. £300 onboarding fee once.',src:'Official'},
+ {n:'Vrbo, to 28 Oct 2026',lo:.08,hi:.08,g:[.11,.14],basis:'5% commission plus 3% payment processing. Guest fee reported at 11% to 14%.',src:'Official rate; guest fee third-party'},
+ {n:'Vrbo, from 29 Oct 2026',lo:.12,hi:.15,g:[.11,.14],basis:'12% to 15% including processing, by region. Guest fee reported at 11% to 14%.',src:'Third-party (PriceLabs)'},
+ {n:'Airbnb, host-only fee',lo:.14,hi:.16,g:[0,0],basis:'14% to 16%, typically 15.5%; no guest fee.',src:'Official'},
+ {n:'Plum Guide, host-only',lo:.165,hi:.165,g:[0,0],basis:'16.5%; no guest fee.',src:'Official'},
+ {n:'Booking.com',lo:.15,hi:.22,g:[0,0],basis:'15% headline; 17% to 22% in practice with Preferred Partner, Genius and payment processing. No separate guest fee.',src:'Third-party (Guesty, HolidayFox)'},
+ {n:'Sykes Cottages',lo:.20,hi:.25,g:[0,0],basis:'20% to 25% on standard agreements; 28% to 32% fully managed. Guest booking fee not confirmed.',src:'Third-party (HolidayFox)'}
+];
+let price=1000, mode='owner';
+const NS='http://www.w3.org/2000/svg';
+function el(tag,attrs,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;return e}
+function tipFor(chartEl,tipEl){
+  chartEl.addEventListener('mousemove',e=>{const h=e.target.closest('[data-tip]');if(!h){tipEl.classList.remove('on');return}tipEl.innerHTML=h.dataset.tip;tipEl.classList.add('on');const r=chartEl.getBoundingClientRect();let x=e.clientX-r.left+14,y=e.clientY-r.top+14;if(x+tipEl.offsetWidth>r.width-8)x=e.clientX-r.left-tipEl.offsetWidth-14;tipEl.style.left=x+'px';tipEl.style.top=y+'px'});
+  chartEl.addEventListener('mouseleave',()=>tipEl.classList.remove('on'));
+  chartEl.addEventListener('focusin',e=>{const h=e.target.closest('[data-tip]');if(h){tipEl.innerHTML=h.dataset.tip;tipEl.classList.add('on');tipEl.style.left='16px';tipEl.style.top='40px'}});
+  chartEl.addEventListener('focusout',()=>tipEl.classList.remove('on'));
+}
+function niceTicks(min,max,n){const span=max-min,raw=span/n,p=Math.pow(10,Math.floor(Math.log10(raw)));const s=[1,2,2.5,5,10].map(m=>m*p).find(m=>span/m<=n)||10*p;const t=[];for(let v=Math.ceil(min/s)*s;v<=max+1e-9;v+=s)t.push(Math.round(v));return t}
+function renderCalc(){
+  const svg=$('#calcSvg');svg.innerHTML='';
+  $('#priceOut').textContent=gbp(price);
+  const rows=CHANNELS.map(c=>{
+    const keepLo=price*(1-c.hi),keepHi=price*(1-c.lo);
+    const payLo=price*(1+c.g[0]),payHi=price*(1+c.g[1]);
+    return mode==='owner'?{...c,lo2:keepLo,hi2:keepHi,label:'kept'}:{...c,lo2:payLo,hi2:payHi,label:'paid'};
+  });
+  rows.sort((a,b)=>(b.lo2+b.hi2)-(a.lo2+a.hi2));
+  const W=720,L=200,R=700,rowH=36,T=28;
+  const H=T+rows.length*rowH+40;svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  const min=Math.min(...rows.map(r=>r.lo2)),max=Math.max(...rows.map(r=>r.hi2));
+  const pad=(max-min)*0.12||price*0.05;const d0=Math.max(0,min-pad),d1=max+pad;
+  const X=v=>L+(v-d0)/(d1-d0)*(R-L);
+  const g=el('g',{class:'grid'});const ticks=niceTicks(d0,d1,5);
+  const yA=T+rows.length*rowH;
+  ticks.forEach(t=>{g.appendChild(el('line',{x1:X(t),x2:X(t),y1:T-10,y2:yA}));svg.appendChild(el('text',{x:X(t),y:yA+18,'text-anchor':'middle',class:'ax'},gbp(t)))});
+  svg.appendChild(g);
+  svg.appendChild(el('line',{x1:L,x2:R,y1:yA,y2:yA,class:'axis'}));
+  rows.forEach((r,i)=>{
+    const y=T+i*rowH+rowH/2;const hi=r.own?' hi':'';
+    const grp=el('g',{tabindex:'0','data-tip':`<b>${esc(r.n)}</b>${mode==='owner'?'Owner keeps':'Guest pays'} ${r.lo2===r.hi2?gbp(r.lo2):gbp(r.lo2)+' to '+gbp(r.hi2)} on ${gbp(price)}.<br>${esc(r.basis)}${r.src?'<br><i>Source: '+esc(r.src)+'</i>':''}`});
+    grp.appendChild(el('text',{x:16,y:y+4,style:r.own?'font-weight:600;fill:var(--fg)':''},r.n));
+    grp.appendChild(el('rect',{x:L-4,y:y-rowH/2,width:R-L+8,height:rowH,class:'hit'}));
+    if(r.hi2>r.lo2){grp.appendChild(el('line',{x1:X(r.lo2),x2:X(r.hi2),y1:y,y2:y,stroke:r.own?'var(--gold)':'var(--bar)','stroke-width':'8','stroke-linecap':'round','stroke-opacity':'.55'}))}
+    grp.appendChild(el('circle',{cx:X((r.lo2+r.hi2)/2),cy:y,r:'6',class:'mark'+hi}));
+    grp.appendChild(el('text',{x:X((r.lo2+r.hi2)/2),y:y-11,'text-anchor':'middle',class:'val'},r.lo2===r.hi2?gbp(r.lo2):gbp(r.lo2)+' to '+gbp(r.hi2)));
+    svg.appendChild(grp);
+  });
+  const keeps=CHANNELS.filter(c=>!c.own).map(c=>price*(1-c.hi));
+  const worst=Math.min(...keeps);
+  $('#calcTitle').textContent=mode==='owner'?`On a ${gbp(price)} stay the owner keeps ${gbp(worst)} to ${gbp(price)}, by channel`:`On a ${gbp(price)} stay the guest is charged ${gbp(price)} to ${gbp(price*1.165)}, by channel`;
+  $('#calcNote').textContent=mode==='owner'?`A direct price of ${gbp(price*1.05)} undercuts the Airbnb split-fee total of about ${gbp(price*1.15)} and still pays the owner ${gbp(price*0.05+price*0.03)} more than the 3% split fee leaves.`:`Where the guest pays a service fee on top, the owner’s direct price can sit above the platform’s nightly rate and still be the cheaper total for the guest.`;
+}
+$('#priceRange').addEventListener('input',e=>{price=+e.target.value;$('#priceNum').value=price;renderCalc()});
+$('#priceNum').addEventListener('change',e=>{const v=Math.max(100,Math.min(20000,+e.target.value||1000));price=v;e.target.value=v;$('#priceRange').value=Math.min(5000,Math.max(200,v));renderCalc()});
+$$('.seg [data-mode]').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;$$('.seg [data-mode]').forEach(x=>x.setAttribute('aria-pressed',x===b));renderCalc()}));
+tipFor($('#calcChart'),$('#calcTip'));
+renderCalc();
+
+/* ---------- Platforms: anatomy ---------- */
+const ANAT=[
+ {n:'Airbnb',page:['The Brighton Parlour with Hot Tub','https://www.airbnb.co.uk/rooms/8280138'],trust:'Superhost badge; 4.58 from 60 reviews in structured data; host profile; a listing video.',price:'Nightly price with a date picker in a card that stays on screen; total shown before payment.',support:'Map with approximate location; in-app messaging; page offered in 96 language and region variants.',read:'Read in full'},
+ {n:'Booking.com',page:['No.124 by GuestHouse','https://www.booking.com/hotel/gb/no-124-by-guesthouse-brighton.html'],trust:'Search snippet shows a 9.6 review score; the page itself could not be read.',price:'Not read.',support:'Not read.',read:'Not readable: the server returned a JavaScript challenge page to every automated request'},
+ {n:'Vrbo',page:['Garden Apartment with Private Hot Tub','https://www.vrbo.com/6915239ha'],trust:'“Rare find” nudge; breadcrumb structured data only, no review or price schema.',price:'Price and dates handled in script; 15 labelled form fields for the booking widget.',support:'Map; 22 language variants; cookie consent.',read:'Read in full'},
+ {n:'Sykes Cottages',page:['Charltons Hollow Cabin','https://www.sykescottages.co.uk/cottage/Sussex-Lyelands-Fm/Charltons-Hollow-Cabin-1179389.html'],trust:'4.7 from 15 reviews in structured data; Hot Tub and Pet Friendly badges; full VacationRental, Organization and TravelAgency schema.',price:'Weekly price with a low deposit (£100 shown); Sykes sets the headline price.',support:'LiveChat widget; no map in the page markup.',read:'Read in full'},
+ {n:'Plum Guide',page:['Palm Trees and Pebbles','https://www.plumguide.com/homes/75414/palm-trees-pebbles'],trust:'“Home Critic” vetting and “Matchmaker” concierge positioning; no structured data at all.',price:'Price shown in the page; 11 photos.',support:'LiveChat widget; sign-in via Google and Facebook.',read:'Read in full'}
+];
+let anat=0;
+function renderAnat(){
+  $('#anatTabs').innerHTML=ANAT.map((a,i)=>`<button type="button" role="tab" data-i="${i}" aria-selected="${i===anat}">${esc(a.n)}</button>`).join('');
+  const a=ANAT[anat];
+  $('#anatPanel').innerHTML=`<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><h3>${esc(a.n)}</h3><span class="badge ${a.read==='Read in full'?'off':'na'}">${a.read==='Read in full'?'Read in full':'Not readable'}</span></div><p class="quiet">Page read: <a href="${a.page[1]}">${esc(a.page[0])}</a>${a.read!=='Read in full'?'. '+esc(a.read)+'.':''}</p><dl class="kv"><dt>Trust signals</dt><dd>${esc(a.trust)}</dd><dt>Pricing and booking</dt><dd>${esc(a.price)}</dd><dt>Support and extras</dt><dd>${esc(a.support)}</dd></dl>`;
+}
+$('#anatTabs').addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(b){anat=+b.dataset.i;renderAnat()}});
+renderAnat();
+
+/* ---------- Platforms: tech audit ---------- */
+const TECH=[
+ {n:'Airbnb listing',kb:590,js:64,css:1,img:7,noalt:'1 (6 decorative)',skip:1,rm:1,dark:0,lang:'en-GB',sd:'VacationRental, Product, AggregateRating'},
+ {n:'Vrbo listing',kb:857,js:110,css:5,img:9,noalt:'0',skip:0,rm:0,dark:0,lang:'en',sd:'BreadcrumbList only'},
+ {n:'Sykes listing',kb:397,js:12,css:3,img:43,noalt:'0',skip:0,rm:0,dark:0,lang:'en',sd:'VacationRental, AggregateRating, Organization, TravelAgency, PostalAddress and more'},
+ {n:'Plum Guide listing',kb:307,js:30,css:1,img:12,noalt:'0',skip:0,rm:1,dark:0,lang:'en',sd:'None'},
+ {n:'GuestHouse own site',kb:644,js:44,css:62,img:69,noalt:'44',skip:0,rm:0,dark:0,lang:'en-US',sd:'HotelRoom, Review, FAQPage, Breadcrumb, Organization, Place'}
+];
+function barChart(svgId,key,unit,best){
+  const svg=$(svgId);svg.innerHTML='';
+  const rows=[...TECH].sort((a,b)=>a[key]-b[key]);
+  const W=560,L=150,R=540,rowH=36,T=10,yA=T+rows.length*rowH;
+  svg.setAttribute('viewBox',`0 0 ${W} ${yA+34}`);
+  const max=Math.max(...rows.map(r=>r[key]));const ticks=niceTicks(0,max*1.05,5);
+  const X=v=>L+v/(ticks.at(-1))*(R-L);
+  const g=el('g',{class:'grid'});ticks.forEach(t=>{g.appendChild(el('line',{x1:X(t),x2:X(t),y1:T,y2:yA}));svg.appendChild(el('text',{x:X(t),y:yA+18,'text-anchor':'middle',class:'ax'},t.toLocaleString('en-GB')))});svg.appendChild(g);
+  svg.appendChild(el('line',{x1:L,x2:L,y1:T,y2:yA,class:'axis'}));
+  rows.forEach((r,i)=>{
+    const y=T+i*rowH+8,h=rowH-16,hi=i===0?' hi':'';
+    const grp=el('g',{tabindex:'0','data-tip':`<b>${esc(r.n)}</b>${r[key].toLocaleString('en-GB')} ${unit}${i===0?' · '+best:''}`});
+    grp.appendChild(el('text',{x:L-10,y:y+h/2+4,'text-anchor':'end',style:i===0?'fill:var(--fg)':''},r.n));
+    grp.appendChild(el('rect',{x:L,y:y,width:Math.max(2,X(r[key])-L),height:h,rx:'3',class:'mark'+hi}));
+    grp.appendChild(el('text',{x:X(r[key])+8,y:y+h/2+4,class:'val'},r[key].toLocaleString('en-GB')));
+    grp.appendChild(el('rect',{x:0,y:y-8,width:W,height:rowH,class:'hit'}));
+    svg.appendChild(grp);
+  });
+}
+barChart('#kbSvg','kb','KB of HTML','lightest page');
+barChart('#jsSvg','js','script tags','fewest scripts');
+tipFor($('#kbChart'),$('#kbTip'));tipFor($('#jsChart'),$('#jsTip'));
+const pf=(v,yes,no)=>`<span class="pf ${v?'pass':'fail'}">${v?yes:no}</span>`;
+$('#matrixBody').innerHTML=TECH.map(r=>`<tr><td><b>${esc(r.n)}</b></td><td class="num">${esc(r.noalt)}</td><td>${pf(r.skip,'Yes','No')}</td><td>${pf(r.rm,'Yes','No')}</td><td>${pf(r.dark,'Yes','No')}</td><td><span class="pf ${r.lang==='en-GB'?'pass':'fail'}">${esc(r.lang)}</span></td><td style="text-align:left">${esc(r.sd)}</td></tr>`).join('')+`<tr><td><b>Booking.com listing</b></td><td colspan="6"><span class="pf na">Not readable: JavaScript challenge to every automated request</span></td></tr>`;
+
+/* ---------- Platforms: parity ---------- */
+const PARITY=['Rating and review count beside the name, with the same figures in structured data','Price for the dates, then the total before any payment detail','Live availability, never “enquire for dates”','Cancellation terms in one line near the price','A map and distances: approximate pin before booking, exact address after','Who is on the other end: host name, photo, response time','Protected payment through a known brand such as Stripe','Flawless on a phone, in the guest’s language'];
+checklist($('#parList'),$('#parScore'),$('#parReset'),PARITY,'md-parity','answered');
+
+/* ---------- Platforms: changes ---------- */
+const CHANGES=[
+ ['Add the eight-point parity checklist to the audit','Scored separately from the technical checklist. A client site can be fast and accessible and still lose to Airbnb because it has no review count at the top.'],
+ ['Quantify the perks strip','“Book direct and save the platform service fee” with the pound figure for the chosen dates, computed from the calendar, replaces vague “best price guaranteed” wording.'],
+ ['Import the platform reviews','Show the Airbnb or Booking.com aggregate and count on the direct site with a link to the source, and ask guests for the direct review after each stay so the owner’s own count grows.'],
+ ['Make the post-stay email part of every package','The platforms withhold the guest’s address, so the direct site’s newsletter signup and the owner’s own confirmation emails are the only route to a repeat booking. Wire the mailing tool at go-live, not later.'],
+ ['Re-check fees twice a year','Vrbo moved from 8% to 12% on 29 October 2026 and Airbnb is moving hosts onto the host-only fee. The fee table and calculator carry an as-of date and should be refreshed before each client proposal.']
+];
+stepList($('#changes'),CHANGES,true);
+})();
+</script>
+
+</body>
+</html>

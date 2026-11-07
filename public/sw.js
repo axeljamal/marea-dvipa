@@ -1,7 +1,7 @@
 // Marea Dvīpa service worker. On install it caches the page, its script and styles, the icons, every motif and
 // every isen fill, so both rooms work offline. Google Fonts are cached the first time they load.
 // Bump VERSION whenever you change a file, and add any new motif or logo layer to MEDIA.
-const VERSION = 'marea-dvipa-v5';
+const VERSION = 'marea-dvipa-v6';
 const FONTS = 'marea-dvipa-fonts';
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "icons/apple-touch-icon.png", "icons/favicon-32.png"];
 const MEDIA = [
@@ -92,6 +92,8 @@ self.addEventListener('fetch', (e) => {
     return;
   }
   if (url.origin !== self.location.origin) return;
+  // Static pages beside the app (/web/ guide, /quote/ form, /proposals/): plain network, never cached as the app shell.
+  if (/^\/(web|quote|proposals)(\/|$)/.test(url.pathname)) return;
   if (req.mode === 'navigate') { // the page: network first so updates arrive, cache when offline
     e.respondWith(fetch(req).then((res) => { const copy = res.clone(); caches.open(VERSION).then((c) => c.put('index.html', copy)); return res; })
       .catch(() => caches.match('index.html', { ignoreSearch: true })));
