@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Beam House · Owner view</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1c1814">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,300&family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one long scroll on desktop with a sticky header; on phones a fixed bottom tab bar turns the same sections into app screens.
+   Colours are sampled from the house itself: lime plaster, oak beam, kilim rust, brass, dusk-blue window. */
+:root{
+  --bg:#f3ece0; --bg2:#e9dfcf; --card:#fbf7f0; --ink:#1c1814; --muted:#5f5347;
+  --accent:#a3452b; --accent-soft:#f1dccf; --on-accent:#ffffff; --brass:#8a6426; --line:#d5c7b1; --line-strong:#b8a689;
+  --ok:#2f6b3a; --ok-soft:#dfead9; --err:#9a2f1f; --err-soft:#f4dcd6;
+  --c-direct:#b5553a; --c-ota:#2f7fb0;
+  --hero-grad:linear-gradient(180deg,rgba(28,24,20,.12) 0%,rgba(28,24,20,.42) 55%,rgba(28,24,20,.82) 100%);
+  --shadow:0 18px 44px rgba(28,24,20,.16);
+  --font-d:'Fraunces',Georgia,'Times New Roman',serif; --font-b:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif; --mono:'DM Mono',ui-monospace,Menlo,monospace;
+  --radius:10px; --r-sm:6px; --r-btn:6px; --max:1120px; --gutter-l:max(16px,env(safe-area-inset-left,0px)); --gutter-r:max(16px,env(safe-area-inset-right,0px));
+  --header-h:64px; --tabbar-h:64px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17140f; --bg2:#1f1b15; --card:#262019; --ink:#f1e8d8; --muted:#b5a690;
+    --accent:#e0a35a; --accent-soft:#3a2d1c; --on-accent:#1c1814; --brass:#d8b06a; --line:#3a3328; --line-strong:#5a4f3d;
+    --ok:#8fcf9a; --ok-soft:#1f2e22; --err:#f0a08f; --err-soft:#3a1f1a;
+    --c-direct:#d4783e; --c-ota:#4b9cd3;
+    --hero-grad:linear-gradient(180deg,rgba(23,20,15,.1) 0%,rgba(23,20,15,.5) 55%,rgba(23,20,15,.92) 100%);
+    --shadow:0 18px 44px rgba(0,0,0,.45);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17140f; --bg2:#1f1b15; --card:#262019; --ink:#f1e8d8; --muted:#b5a690;
+  --accent:#e0a35a; --accent-soft:#3a2d1c; --on-accent:#1c1814; --brass:#d8b06a; --line:#3a3328; --line-strong:#5a4f3d;
+  --ok:#8fcf9a; --ok-soft:#1f2e22; --err:#f0a08f; --err-soft:#3a1f1a;
+  --c-direct:#d4783e; --c-ota:#4b9cd3;
+  --hero-grad:linear-gradient(180deg,rgba(23,20,15,.1) 0%,rgba(23,20,15,.5) 55%,rgba(23,20,15,.92) 100%);
+  --shadow:0 18px 44px rgba(0,0,0,.45);
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--font-b);font-size:1rem;background:var(--bg);color:var(--ink);line-height:1.55;padding-bottom:calc(var(--tabbar-h) + env(safe-area-inset-bottom,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+@media (min-width:900px){body{padding-bottom:0}}
+img{display:block;max-width:100%;height:auto}
+h1,h2,h3,.serif{font-family:var(--font-d);font-weight:500;letter-spacing:-.01em;line-height:1.12;margin:0;text-wrap:balance}
+h2{font-size:clamp(1.7rem,3.4vw,2.5rem)} h3{font-size:1.2rem}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:absolute;left:var(--gutter-l);top:-60px;z-index:100;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:var(--r-sm);text-decoration:none;font-weight:600}
+.skip:focus{top:calc(8px + env(safe-area-inset-top,0px))}
+.wrap{max-width:var(--max);margin:0 auto;padding-left:var(--gutter-l);padding-right:var(--gutter-r)}
+section{padding-block:clamp(48px,8vw,84px)}
+.band{background:var(--bg2)}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.lede{color:var(--muted);font-size:1.05rem;max-width:62ch;margin-top:12px}
+.stack{display:grid;gap:14px}
+.muted{color:var(--muted)} .small{font-size:.85rem} .tiny{font-size:.76rem}
+.mono{font-family:var(--mono)}
+.num{font-variant-numeric:tabular-nums}
+
+/* buttons & fields */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 20px;border-radius:var(--r-btn);border:1px solid var(--ink);background:var(--ink);color:var(--bg);font:600 .95rem var(--font-b);text-decoration:none;cursor:pointer;transition:transform .15s,background .2s;white-space:nowrap}
+.btn:hover{transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.accent{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.sm{min-height:40px;padding:8px 14px;font-size:.85rem}
+.btn.icon{width:44px;padding:0}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.field{display:grid;gap:6px;min-width:0}
+.field label,.lbl{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.field input,.field select,.field textarea{width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--line-strong);border-radius:var(--r-sm);background:var(--bg);color:var(--ink);font:inherit;font-size:1rem}
+.field textarea{min-height:88px;resize:vertical}
+.field input[aria-invalid="true"],.field select[aria-invalid="true"]{border-color:var(--err);box-shadow:0 0 0 3px var(--err-soft)}
+.err{color:var(--err);font-size:.85rem;font-weight:500}
+.ok{color:var(--ok)}
+.note{background:var(--accent-soft);border-radius:8px;padding:12px 14px;font-size:.9rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;min-width:0}
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))}
+.chip{display:inline-flex;align-items:center;min-height:32px;background:var(--accent-soft);color:var(--ink);border:0;border-radius:var(--r-btn);padding:5px 12px;font:inherit;font-size:.82rem}
+button.chip{cursor:pointer;min-height:40px}
+button.chip:hover{background:var(--line)}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;min-height:var(--header-h);gap:12px}
+.brand{font-family:var(--font-d);font-size:1.2rem;font-weight:600;text-decoration:none;line-height:1.1}
+.brand small{display:block;font:.6rem var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.top nav ul{display:flex;gap:4px;list-style:none;margin:0;padding:0;font-size:.9rem}
+.top nav a{display:inline-flex;align-items:center;min-height:40px;padding:0 10px;border-radius:var(--r-btn);text-decoration:none;color:var(--muted)}
+.top nav a:hover,.top nav a[aria-current="true"]{color:var(--ink);background:var(--accent-soft)}
+.tools{display:flex;align-items:center;gap:8px}
+.tools select{min-height:40px;border:1px solid var(--line-strong);background:var(--card);color:var(--ink);border-radius:var(--r-btn);padding:0 10px;font:inherit;font-size:.85rem}
+.theme{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border:1px solid var(--line-strong);background:var(--card);color:var(--ink);border-radius:var(--r-btn);font:500 .8rem var(--font-b);cursor:pointer}
+.theme svg{width:16px;height:16px}
+@media (max-width:899px){.top nav,.tools .cta,.tools .theme span{display:none}}
+@media (min-width:900px){.menu-btn{display:none}}
+
+/* mobile tab bar */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:55;display:grid;grid-template-columns:repeat(5,1fr);background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:4px var(--gutter-r) calc(4px + env(safe-area-inset-bottom,0px)) var(--gutter-l)}
+.tabbar a{display:grid;justify-items:center;gap:2px;min-height:56px;padding:6px 4px;text-decoration:none;color:var(--muted);font-size:.68rem;font-weight:500;border-radius:8px}
+.tabbar a svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tabbar a[aria-current="true"]{color:var(--accent)}
+@media (min-width:900px){.tabbar{display:none}}
+
+/* hero */
+.hero{position:relative;color:#fff;overflow:hidden;isolation:isolate}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 42%;z-index:-2}
+.hero::after{content:"";position:absolute;inset:0;background:var(--hero-grad);z-index:-1}
+.hero .slides{position:absolute;inset:0;z-index:-2;background:#1c1814}
+.hero .slides img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 55%;opacity:0;transition:opacity 1.6s ease}
+.hero .slides img.on{opacity:1}
+.hero-ctl{position:absolute;right:var(--gutter-r);bottom:16px;z-index:3;display:flex;align-items:center;gap:2px;background:rgba(0,0,0,.3);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);border-radius:var(--r-btn);padding:3px}
+.hero-ctl button{width:36px;height:36px;border-radius:var(--r-btn);border:0;background:transparent;color:#fff;cursor:pointer;display:grid;place-items:center;padding:0}
+.hero-ctl button svg{width:16px;height:16px;fill:currentColor}
+.hero-ctl .dot{width:26px}
+.hero-ctl .dot i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);display:block;transition:.3s}
+.hero-ctl .dot[aria-current="true"] i{background:#fff;width:18px;border-radius:3px}
+.hero-ctl button:focus-visible{outline:2px solid #fff;outline-offset:0}
+.hero .wrap{padding-block:clamp(120px,22vw,210px) 84px}
+.hero h1{font-size:clamp(2.3rem,6.6vw,5rem);font-weight:300;max-width:15ch;color:#fff}
+.hero h1 em{font-style:italic;font-weight:300}
+.hero .sub{font-size:clamp(1rem,1.6vw,1.15rem);opacity:.92;max-width:52ch;margin:18px 0 24px;color:#fff}
+.hero .actions{display:flex;flex-wrap:wrap;gap:10px}
+.hero .btn{border-color:#fff;background:#fff;color:#1c1814}
+.hero .btn.ghost{background:transparent;color:#fff}
+.live{display:inline-flex;align-items:center;gap:8px;font:.74rem var(--mono);background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);padding:7px 12px;border-radius:var(--r-btn);margin-bottom:18px;backdrop-filter:blur(6px);color:#fff;max-width:100%}
+.live i{flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:#7fdc8a;animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(127,220,138,.7)}70%{box-shadow:0 0 0 8px rgba(127,220,138,0)}100%{box-shadow:0 0 0 0 rgba(127,220,138,0)}}
+.stats{display:flex;gap:26px;margin-top:30px;flex-wrap:wrap}
+.stats b{display:block;font:500 1.6rem var(--font-d);color:#fff} .stats span{font-size:.78rem;opacity:.85;color:#fff}
+
+/* quick book */
+.qb{position:relative;z-index:3;margin-top:-44px}
+.qb form{display:grid;grid-template-columns:1fr 1fr 1.2fr auto;gap:12px;align-items:end;box-shadow:var(--shadow)}
+.qb .btn{min-height:44px}
+.qb .err{grid-column:1/-1}
+@media (max-width:760px){.qb form{grid-template-columns:1fr 1fr}.qb .guests,.qb .btn{grid-column:1/-1}}
+
+/* perks strip: three direct-booking reasons before anyone scrolls */
+.perks{margin-top:28px}
+.perks .card{display:grid;grid-template-columns:repeat(3,1fr) auto;gap:20px;align-items:center;padding:18px 22px}
+.perk{display:flex;gap:12px;align-items:flex-start;min-width:0}
+.perk svg{width:28px;height:28px;flex:0 0 auto;fill:none;stroke:var(--accent);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;margin-top:2px}
+.perk b{display:block;font-family:var(--font-d);font-size:1.05rem;font-weight:500;line-height:1.2}
+.perk span{display:block;font-size:.85rem;color:var(--muted);margin-top:3px}
+@media (max-width:900px){.perks .card{grid-template-columns:1fr 1fr}.perks .btn{grid-column:1/-1;justify-self:start}}
+@media (max-width:600px){.perks .card{grid-template-columns:1fr}}
+
+/* problem / solution */
+.ps{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-top:28px}
+.ps>div{padding:26px;min-width:0} .ps .bad{background:var(--bg2)} .ps .good{background:var(--card)}
+.ps ul{list-style:none;padding:0;margin:14px 0 0} .ps li{padding:10px 0;border-bottom:1px dashed var(--line);display:flex;gap:10px;align-items:flex-start;font-size:.93rem}
+.ps li:last-child{border:0}
+.ps .bad li::before{content:"✕" / "";color:var(--err);font-weight:700;flex:0 0 auto}
+.ps .good li::before{content:"✓" / "";color:var(--ok);font-weight:700;flex:0 0 auto}
+@media (max-width:760px){.ps{grid-template-columns:1fr}}
+
+/* tabs (rooms, seasons) */
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:thin;margin-top:18px}
+.tabs [role="tab"]{flex:0 0 auto;min-height:44px;border:1px solid var(--line-strong);background:var(--card);color:var(--ink);padding:8px 16px;border-radius:var(--r-btn);cursor:pointer;font:inherit;font-size:.9rem}
+.tabs [role="tab"][aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* tour: floor plan + zoomable stage + story card */
+.tour-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.plan{display:grid;gap:6px;margin-top:22px}
+.floor{display:grid;grid-template-columns:auto repeat(var(--n),1fr);gap:6px}
+.floor-long{grid-template-columns:1fr}
+.floor-l{writing-mode:vertical-rl;transform:rotate(180deg);font:.58rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:center;padding:6px 0;align-self:stretch}
+.plan .found .shr{display:none}
+.plan .star{font-style:normal;color:var(--brass);margin-left:4px}
+.plan [role="tab"],.plan .room{position:relative;min-height:64px;border:1px solid var(--line-strong);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 10px;font:inherit;font-size:.82rem;text-align:left;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;min-width:0}
+.plan [role="tab"] small{font:.6rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.plan [role="tab"][aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)} .plan [role="tab"][aria-selected="true"] small{color:var(--bg);opacity:.7}
+.plan [role="tab"][aria-selected="true"]::after{content:"";position:absolute;top:8px;right:8px;width:10px;height:10px;border-radius:50%;background:var(--c-direct);box-shadow:0 0 0 3px color-mix(in srgb,var(--c-direct) 30%,transparent)}
+.plan .long{min-height:40px;flex-direction:row;align-items:center;justify-content:space-between}
+.plan .door{position:absolute;left:-1px;top:50%;width:3px;height:22px;background:var(--brass);border-radius:2px;transform:translateY(-50%)}
+.plan .found{font:.62rem var(--mono);color:var(--accent)} .plan [aria-selected="true"] .found{color:var(--bg)}
+.tour{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;align-items:start;margin-top:14px}
+.tour-main{position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:4/3;max-width:100%;background:var(--bg2);touch-action:pan-y}
+.tour-stage{--z:1;--ox:50%;--oy:50%;position:absolute;inset:0;transform:scale(var(--z));transform-origin:var(--ox) var(--oy);transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.tour-stage img{width:100%;height:100%;object-fit:cover;display:block}
+.hs{position:absolute;width:44px;height:44px;padding:0;border:0;background:transparent;transform:translate(-50%,-50%) scale(calc(1/var(--z)));cursor:pointer;display:grid;place-items:center;border-radius:50%;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.hs span{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.94);border:2px solid var(--c-direct);display:grid;place-items:center;font:700 .8rem var(--font-b);color:#1c1814;box-shadow:0 2px 10px rgba(0,0,0,.35);position:relative}
+.hs:not(.seen) span::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:2px solid rgba(255,255,255,.6);animation:pulse 2.2s infinite}
+.hs.seen span{background:rgba(255,255,255,.7);border-color:rgba(255,255,255,.9)}
+.hs[aria-current="true"] span{background:var(--c-direct);color:#fff;border-color:#fff}
+.hs:focus-visible{outline:3px solid #fff;outline-offset:0}
+.reset{position:absolute;right:12px;bottom:12px;background:rgba(28,24,20,.7);color:#fff;border-color:transparent;backdrop-filter:blur(6px)}
+.tour-cap{position:absolute;left:12px;bottom:12px;font:.7rem var(--mono);color:#fff;background:rgba(28,24,20,.6);padding:5px 9px;border-radius:var(--r-btn);backdrop-filter:blur(6px);pointer-events:none}
+.tour-side .card{min-height:300px;display:flex;flex-direction:column;gap:10px}
+.story-meta{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:var(--bg2);font-size:.82rem}
+.story-meta svg{width:42px;height:42px;flex:0 0 auto}
+.story-meta b{display:block;font-family:var(--font-d);font-weight:500;font-size:1rem}
+.story-try{border-left:3px solid var(--brass);padding:4px 0 4px 12px;font-size:.88rem;color:var(--muted)}
+.story-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+.hslist{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:6px}
+.hslist button{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;text-align:left;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:var(--r-sm);padding:8px 10px;font:inherit;cursor:pointer}
+.hslist button[aria-current="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.hslist b{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--c-direct);color:#fff;font-size:.72rem;flex:0 0 auto}
+.hslist button.seen b{background:var(--line-strong)}
+.hslist .tick{margin-left:auto;color:var(--ok);font-size:.8rem}
+.tour-progress{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;margin-top:16px}
+.tour-progress .bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.tour-progress .bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .6s}
+.bonus{margin-top:14px;padding:16px 18px;border-radius:var(--radius);background:var(--ink);color:var(--bg);display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+.bonus .eyebrow{color:var(--bg);opacity:.75} .bonus h3{color:var(--bg)}
+.bonus svg{width:36px;height:36px;fill:none;stroke:var(--brass);stroke-width:1.6}
+@media (max-width:860px){.tour{grid-template-columns:1fr}.tour-side .card{min-height:0}.tour-progress{grid-template-columns:1fr}.plan [role="tab"]{font-size:.74rem;padding:6px 8px;min-height:58px}.plan [role="tab"] small{display:none}.plan .long small{display:inline}.plan .found .lng{display:none}.plan .found .shr{display:inline}}
+
+/* photo carousels: one photo per view, swipe or arrows, dots + counter */
+.car{position:relative;margin-top:24px;min-width:0}
+.car-track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;border-radius:var(--radius);outline-offset:4px;overscroll-behavior-x:contain}
+.car-track::-webkit-scrollbar{display:none}
+.car-slide{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always;margin:0;position:relative;border-radius:var(--radius);overflow:hidden;background:var(--bg2);aspect-ratio:16/9;max-width:100%}
+.car.mini .car-slide{aspect-ratio:4/3}
+.car-slide img{width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none}
+.car-slide .zoom{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;cursor:zoom-in;padding:0;border-radius:0}
+.car-slide .zoom:focus-visible{outline-offset:-4px;outline-color:#fff}
+.car-slide figcaption{position:absolute;left:0;right:0;bottom:0;padding:48px 20px 18px;background:linear-gradient(transparent,rgba(0,0,0,.62));color:#fff;font-family:var(--font-d);font-size:clamp(1rem,1.6vw,1.25rem);pointer-events:none}
+.car-ctl{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
+.car-dots{display:flex;gap:2px;flex-wrap:wrap;justify-content:center;flex:1;min-width:0}
+.car-dots button{width:26px;height:32px;border:0;background:transparent;padding:0;cursor:pointer;display:grid;place-items:center;border-radius:6px}
+.car-dots button i{display:block;width:7px;height:7px;border-radius:50%;background:var(--line-strong);transition:.3s}
+.car-dots button[aria-current="true"] i{background:var(--accent);width:20px;border-radius:4px}
+.car-count{font:.75rem var(--mono);color:var(--muted);min-width:4.5ch;text-align:center}
+@media (max-width:760px){.car-slide{aspect-ratio:4/3}.car-slide figcaption{padding:36px 14px 12px}}
+
+/* seasons */
+.season{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center;margin-top:12px}
+.season .car{margin-top:0}
+.season h3{font-size:1.7rem}
+.season .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+@media (max-width:760px){.season{grid-template-columns:1fr}}
+
+/* offers + voucher */
+.offers{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:24px}
+.offer{display:flex;flex-direction:column;gap:8px;padding:20px}
+.offer h3{font-size:1.25rem}
+.offer .price{margin-top:auto;padding-top:10px;font-variant-numeric:tabular-nums}
+.offer .price b{font:500 1.3rem var(--font-d)} .offer .price span{display:block;font-size:.78rem;color:var(--muted)}
+.voucher{display:grid;grid-template-columns:1.2fr 1fr;gap:22px;align-items:center;margin-top:14px}
+.vform{display:grid;gap:14px}
+.amounts{border:0;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.amounts legend{padding:0;margin-bottom:8px;float:left;width:100%}
+.amounts label.amt{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1px solid var(--line-strong);border-radius:var(--r-btn);cursor:pointer;font-weight:600;background:var(--bg);position:relative}
+.amounts label.amt.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.amounts label.amt:focus-within{outline:3px solid var(--accent);outline-offset:3px}
+.amounts input[type=radio]{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.amounts .other{width:130px;min-height:44px;padding:0 12px;border:1px solid var(--line-strong);border-radius:var(--r-btn);background:var(--bg);color:var(--ink);font:600 1rem var(--font-b)}
+@media (max-width:1000px){.offers{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:860px){.voucher{grid-template-columns:1fr}}
+@media (max-width:560px){.offers{grid-template-columns:1fr}}
+
+/* calendar */
+.cal-wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;margin-top:24px;align-items:start}
+.cal-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.cal-head b{font:500 1.15rem var(--font-d)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .h{font:.65rem var(--mono);text-align:center;color:var(--muted);padding:4px 0}
+.cal .d{aspect-ratio:1;max-width:100%;min-width:0;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font:inherit;font-size:.82rem;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;position:relative;padding:0;font-variant-numeric:tabular-nums}
+.cal .d small{font-size:.58rem;color:var(--muted);line-height:1}
+.cal .d.off{background:transparent;border-color:transparent;color:var(--muted);cursor:not-allowed;text-decoration:line-through}
+.cal .d.booked{background:var(--bg2);color:var(--muted);text-decoration:line-through;cursor:not-allowed}
+.cal .d.in{background:var(--accent-soft);border-color:var(--accent-soft)}
+.cal .d.edge{background:var(--accent);color:var(--on-accent);border-color:var(--accent)} .cal .d.edge small{color:var(--on-accent)}
+.cal .d.gap::after{content:"deal";position:absolute;top:2px;right:3px;font:.5rem var(--mono);color:var(--accent)}
+.cal .d.edge.gap::after{color:var(--on-accent)}
+.cal-legend{display:flex;flex-wrap:wrap;gap:12px;font-size:.76rem;color:var(--muted);margin-top:10px}
+.cal-legend i{display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid var(--line);vertical-align:-2px;margin-right:4px}
+.cal-status{margin-top:10px;font-size:.88rem;min-height:1.4em}
+.quote .row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:.93rem}
+.quote .row span:first-child{color:var(--muted)}
+.quote .tot{font-weight:700;font-size:1.1rem;border:0;padding-top:12px}
+.quote .tot span:first-child{color:var(--ink)}
+.save{background:var(--accent-soft);border-radius:8px;padding:12px 14px;font-size:.88rem;margin-top:12px}
+.xtra{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.xtra:last-child{border:0} .xtra .ico{font-size:1.4rem;width:40px;flex:0 0 auto} .xtra b{display:block} .xtra small{color:var(--muted)}
+.xtra input{margin-left:auto;width:22px;height:22px;flex:0 0 auto;accent-color:var(--accent)}
+@media (max-width:860px){.cal-wrap{grid-template-columns:1fr}}
+
+/* guide */
+.ask{display:flex;gap:8px;margin-top:18px} .ask .field{flex:1}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.ans{margin-top:14px;padding:16px;border-radius:8px;background:var(--bg2);font-size:.95rem;min-height:60px}
+.band .ans{background:var(--card)}
+.faq details{border-bottom:1px solid var(--line);padding:4px 0}
+.faq summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center;list-style:none;gap:10px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:"+";font-family:var(--mono);color:var(--accent);width:16px}
+.faq details[open] summary::before{content:"–"}
+.faq p{padding:0 0 12px 26px;color:var(--muted);font-size:.92rem}
+
+/* local, reviews */
+.where{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:22px;align-items:center;margin-top:18px;padding:18px}
+.where img{border-radius:8px;width:100%;max-height:460px;object-fit:cover}
+@media (max-width:700px){.where{grid-template-columns:1fr}.where img{max-height:380px}}
+.loc{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px;margin-top:24px}
+.loc .card{padding:16px}
+.loc .e{font-size:1.6rem}
+.rev{position:relative;padding-top:44px} .rev .stars{color:var(--brass);letter-spacing:2px} .rev .who{font-size:.8rem;color:var(--muted);margin-top:10px}
+.rev .v{font:.6rem var(--mono);position:absolute;top:14px;right:14px;color:var(--accent);border:1px solid var(--accent);padding:3px 8px;border-radius:var(--r-btn)}
+.rr{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;margin-top:18px}
+@media (max-width:640px){.rr{grid-template-columns:1fr}}
+
+/* follow: instagram grid + newsletter */
+.follow{display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:start;margin-top:24px}
+.ig-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.ig{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ig a{position:relative;display:block;aspect-ratio:1;max-width:100%;border-radius:8px;overflow:hidden;background:var(--bg2);color:#fff;text-decoration:none}
+.ig img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.ig a:hover img{transform:scale(1.04)}
+.ig a span{position:absolute;left:0;right:0;bottom:0;padding:28px 10px 8px;background:linear-gradient(transparent,rgba(0,0,0,.62));font-size:.72rem;line-height:1.3}
+.ig a:focus-visible{outline-offset:-3px;outline-color:#fff}
+@media (max-width:860px){.follow{grid-template-columns:1fr}}
+@media (max-width:480px){.ig{grid-template-columns:repeat(2,1fr)}}
+
+/* owner */
+.owner{background:var(--bg2);border-radius:var(--radius);padding:clamp(18px,3vw,28px);margin-top:24px}
+.kpi b{font:500 clamp(1.6rem,3vw,2rem) var(--font-d);display:block;font-variant-numeric:tabular-nums} .kpi span{font-size:.78rem;color:var(--muted)}
+.chart{position:relative;margin-top:12px;overflow-x:auto}
+.chart svg{display:block;width:100%;min-width:520px;height:auto;font-family:var(--font-b)}
+.chart .grid-l{stroke:var(--line);stroke-width:1}
+.chart .base{stroke:var(--line-strong);stroke-width:1}
+.chart text{fill:var(--muted);font-size:13px}
+.chart .lab{fill:var(--ink);font-weight:600;font-size:12px}
+.chart .hit{fill:transparent}
+.chart g.mg:hover .hit,.chart g.mg:focus .hit{fill:color-mix(in srgb,var(--ink) 6%,transparent)}
+.chart g.mg:focus{outline:none}
+.chart g.mg:focus-visible .hit{stroke:var(--accent);stroke-width:2}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:6px}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);padding:8px 10px;border-radius:8px;font-size:.78rem;white-space:nowrap;transform:translate(-50%,-110%);z-index:5}
+.tip[hidden]{display:none}
+table{border-collapse:collapse;width:100%;font-size:.85rem;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:6px 8px;border-bottom:1px solid var(--line)} th:first-child,td:first-child{text-align:left}
+.engine{font-size:.9rem;padding-left:18px;margin:14px 0 0;line-height:1.8}
+ul.plain{padding-left:18px;margin:14px 0 0;font-size:.9rem;line-height:1.75}
+
+/* footer */
+footer{padding:50px 0 40px;border-top:1px solid var(--line);color:var(--muted);font-size:.88rem}
+footer .brandline{font-family:var(--font-d);color:var(--ink);font-size:1.15rem;margin-bottom:6px}
+.contact{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.contact code{font-family:var(--mono);background:var(--card);border:1px solid var(--line);padding:4px 8px;border-radius:6px;color:var(--ink);user-select:all}
+
+/* dialogs */
+dialog{border:0;padding:0;background:transparent;color:var(--ink);max-width:100vw;max-height:100vh}
+dialog::backdrop{background:rgba(20,16,12,.72);backdrop-filter:blur(4px)}
+.sheet{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);width:min(560px,calc(100vw - 32px));max-height:calc(100vh - 32px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));overflow:auto;padding:24px;box-shadow:var(--shadow)}
+.sheet-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.lb-box{position:relative;display:grid;gap:10px;width:min(96vw,1100px);justify-items:center}
+.lb-box img{max-width:96vw;max-height:80vh;width:auto;border-radius:8px}
+.lb-cap{color:#fff;font-size:.9rem;text-align:center;display:flex;gap:16px;align-items:center}
+.lb-ctl{display:flex;gap:10px}
+.lb-ctl .btn{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.4);color:#fff}
+.menu{width:min(360px,calc(100vw - 32px))}
+.menu ul{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:4px}
+.menu a{display:flex;align-items:center;min-height:48px;padding:0 12px;border-radius:var(--r-sm);text-decoration:none;font-size:1.05rem}
+.menu a:hover{background:var(--accent-soft)}
+.menu .theme{width:100%;justify-content:center;margin-top:12px}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:calc(var(--tabbar-h) + 14px + env(safe-area-inset-bottom,0px));transform:translate(-50%,8px);background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:8px;z-index:99;opacity:0;transition:.3s;font-size:.9rem;max-width:min(360px,calc(100vw - 32px));text-align:center;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (min-width:900px){.toast{bottom:24px}}
+
+/* assistant */
+.fab{position:fixed;right:var(--gutter-r);bottom:calc(var(--tabbar-h) + 14px + env(safe-area-inset-bottom,0px));z-index:56;display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 16px 0 12px;border-radius:var(--r-btn);border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);font:600 .9rem var(--font-b);box-shadow:var(--shadow);cursor:pointer;transition:transform .15s}
+.fab:hover{transform:translateY(-1px)}
+.fab svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media (min-width:900px){.fab{bottom:24px;right:24px}}
+.ai{position:fixed;inset:auto 0 0 0;margin:0;width:100vw;max-width:100vw;height:calc(100dvh - env(safe-area-inset-top,0px) - 28px);max-height:none;border-radius:var(--radius) var(--radius) 0 0;background:var(--card);border:1px solid var(--line);padding:0;display:none;flex-direction:column;box-shadow:var(--shadow);color:var(--ink)}
+.ai[open]{display:flex}
+.ai::backdrop{background:rgba(20,16,12,.45)}
+@media (min-width:900px){.ai{inset:auto 24px 24px auto;width:400px;height:min(660px,calc(100vh - 48px));border-radius:var(--radius)}.ai::backdrop{background:transparent}}
+.ai-head{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.ai-head .av{width:38px;height:38px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;flex:0 0 auto}
+.ai-head .av svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ai-head .t{flex:1;min-width:0} .ai-head b{display:block;font-family:var(--font-d);font-size:1.1rem;font-weight:500} .ai-head small{color:var(--muted);font-size:.75rem;display:block}
+.ai-log{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;overscroll-behavior:contain}
+.msg{max-width:88%;padding:10px 14px;border-radius:10px;font-size:.93rem;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.me{align-self:flex-end;background:var(--ink);color:var(--bg);border-bottom-right-radius:4px}
+.msg.ai{align-self:flex-start;background:var(--bg2);border-bottom-left-radius:4px}
+.msg.ai a{color:var(--accent);font-weight:600}
+.msg.sys{align-self:center;font-size:.75rem;color:var(--muted);background:transparent;padding:2px 8px;text-align:center}
+.msg.typing::after{content:"";display:inline-block;width:1.4em;text-align:left;animation:dots 1.2s steps(4,end) infinite}
+@keyframes dots{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+.ai-chips{display:flex;gap:6px;overflow-x:auto;padding:4px 16px 10px;scrollbar-width:none;flex:0 0 auto}
+.ai-chips::-webkit-scrollbar{display:none}
+.ai-chips button{flex:0 0 auto;min-height:36px;font-size:.8rem}
+.ai-form{display:flex;gap:8px;align-items:flex-end;padding:10px 16px 10px;border-top:1px solid var(--line)}
+.ai-form textarea{flex:1;min-height:44px;max-height:120px;resize:none;padding:10px 12px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit;font-size:1rem;line-height:1.4}
+.ai-form .btn.icon{width:44px;height:44px;flex:0 0 auto}
+.ai-form .btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ai-foot{font-size:.68rem;color:var(--muted);text-align:center;padding:0 16px calc(10px + env(safe-area-inset-bottom,0px))}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+<style>
+[hidden]{display:none!important}
+.gate{min-height:70vh;display:grid;place-items:center;padding:24px}
+.gate form{max-width:420px;width:100%;display:grid;gap:12px}
+.gate input{font:inherit;padding:12px 14px;border-radius:var(--r-sm,6px);border:1px solid var(--line,#c9bda9);background:var(--card,#fff);color:inherit;width:100%}
+.ownerbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line,#c9bda9);margin-bottom:8px}
+.ownerbar .small{opacity:.8}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><div class="wrap">
+  <a class="brand" href="index.html">The Beam House<small>Owner view · not for guests</small></a>
+  <nav aria-label="Sections"><ul><li><a href="#why">Why direct</a></li><li><a href="#reach">Reach</a></li><li><a href="#owner">Dashboard</a></li><li><a href="index.html">Guest site →</a></li></ul></nav>
+</div></header>
+<main id="main">
+<div class="gate" id="gate">
+  <form id="gateForm" novalidate>
+    <p class="eyebrow">Owner view</p>
+    <h1 style="font-size:clamp(1.8rem,4vw,2.6rem);margin:0">This page is for the house, not its guests.</h1>
+    <p class="small muted">Figures, channel strategy and the pricing engine's rules live here. Enter the owner code to continue. The guest site is at <a href="index.html">index.html</a>.</p>
+    <label class="lbl" for="gateCode">Owner code</label>
+    <input id="gateCode" type="password" autocomplete="current-password" placeholder="••••">
+    <p class="err" id="gateErr" role="alert"></p>
+    <button class="btn accent" type="submit">Open the owner view</button>
+    <p class="tiny muted">Demo gate only: it hides the page from casual visitors and search engines. A real owner login belongs behind the host, not in the page.</p>
+  </form>
+</div>
+<div id="ownerContent" hidden>
+<div class="wrap ownerbar"><span class="small">Signed in as owner · <button class="btn ghost sm" type="button" id="gateOut">Sign out</button></span><span class="small">Guest site: <a href="index.html">the-beam-house</a> · Figures below are demo values until the booking data is connected.</span></div>
+
+
+<section id="why" aria-labelledby="whyH">
+  <div class="wrap">
+    <p class="eyebrow">The case for direct</p>
+    <h2 id="whyH">Everything the big platforms get wrong, fixed in one small house.</h2>
+    <p class="lede">We stayed in enough rentals to know the pain points on both sides of the door. Here is what we changed.</p>
+    <div class="ps">
+      <div class="bad">
+        <h3>The usual short-let experience</h3>
+        <ul>
+          <li>15–20% in platform fees, split between you and the owner</li>
+          <li>A "cleaning fee" that appears at checkout and doubles the price</li>
+          <li>Twelve messages to find the Wi-Fi code and how the stove works</li>
+          <li>Generic listing, no idea what the street or the season is really like</li>
+          <li>Empty house all winter; sky-high rates for two summer weeks</li>
+          <li>No reason to come back, every booking is a stranger again</li>
+          <li>Owners juggling three calendars and praying for no double booking</li>
+        </ul>
+      </div>
+      <div class="good">
+        <h3>What you get here</h3>
+        <ul>
+          <li><span><b>One all-in price.</b> Linen, cleaning, heating, Wi-Fi, logs, and the hot tub heated for you. Nothing added at checkout.</span></li>
+          <li><span><b>Best-price promise.</b> Always below the platform rate, with the comparison shown live.</span></li>
+          <li><span><b>A guest guide that answers itself.</b> Search "stove", "bins" or "best swim" and get the answer.</span></li>
+          <li><span><b>Seasonal pricing that rewards quiet weeks.</b> Gap nights, midweek fireside deals, work-from-the-nook rates.</span></li>
+          <li><span><b>Hotspot house tour.</b> The story behind every object before you arrive.</span></li>
+          <li><span><b>Returning-guest club.</b> 10% off direct, first dibs on Christmas and summer.</span></li>
+          <li><span><b>Owner dashboard.</b> One calendar synced to every channel, direct share tracked.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="reach" aria-labelledby="reachH">
+  <div class="wrap">
+    <p class="eyebrow">The acquisition engine</p>
+    <h2 id="reachH">Use the platforms for discovery. Own the relationship.</h2>
+    <p class="lede">Airbnb and Booking.com are the shop window: millions of searches we cannot buy ourselves. The job of this site is to turn every platform guest into a direct guest the second time, and to be found first by everyone else.</p>
+    <div class="grid g3" style="margin-top:24px">
+      <div class="card"><p class="eyebrow">Platform to direct funnel</p>
+        <ul class="plain">
+          <li>Every platform guest gets a printed <b>welcome card + QR</b> to this guide, so the house itself sends them here</li>
+          <li>The guide shows a personal <b>"next time, direct" code</b> worth 10%</li>
+          <li>Post-stay email at day 2, anniversary email at 10 months, with their code</li>
+          <li>Listing title and photos on the platforms match this site exactly, so a search for the listing name lands here</li>
+          <li>Each channel gets its own code (<span class="mono">BK10</span>, <span class="mono">AB10</span>) so we see which converts</li>
+        </ul></div>
+      <div class="card"><p class="eyebrow">Be found first (SEO)</p>
+        <ul class="plain">
+          <li><b>VacationRental schema</b> in the page head, eligible for rich results and Google's vacation-rental panel</li>
+          <li><b>Google Business Profile</b> as a holiday home with these photos and reviews</li>
+          <li>One landing page per intent: <i>"dog-friendly cottage [town]", "cottage with wood-burner near beach", "workcation [county]"</i></li>
+          <li>Seasonal posts that answer real questions, each linking to the calendar</li>
+          <li>Fast page, real alt text, open-graph images for WhatsApp shares</li>
+          <li>212 verified reviews republished here with schema, indexed on our own domain</li>
+        </ul></div>
+      <div class="card"><p class="eyebrow">Targeting that is actually allowed</p>
+        <ul class="plain">
+          <li><b>Rate Reveal</b> below: anyone comparing on a platform pastes the link and sees the direct saving instantly</li>
+          <li>Search ads on "[town] holiday cottage", UTM-tagged, only in shoulder months</li>
+          <li>Retargeting (with consent) for visitors who opened the calendar but did not book</li>
+          <li>Instagram and Pinterest: a reel per room, pinned to the tour</li>
+          <li>Partnerships: station café, yoga teacher, the pub. They hand out the QR, we send them guests</li>
+          <li class="mono tiny muted" style="list-style:none;margin-left:-18px;margin-top:8px">Scraping or messaging other platforms' users breaks their terms and GDPR. Everything above targets intent, not individuals.</li>
+        </ul></div>
+    </div>
+    <div class="card rr">
+      <form id="rrForm" novalidate>
+        <p class="eyebrow">Rate Reveal</p>
+        <h3>Found us on Airbnb or Booking.com? Paste the link, see the direct price.</h3>
+        <div class="ask" style="margin-top:12px">
+          <div class="field"><label class="sr-only" for="rr">Listing link</label><input type="url" id="rr" placeholder="https://www.airbnb.co.uk/rooms/… or booking.com/hotel/…" inputmode="url" autocomplete="off"></div>
+          <button class="btn" type="submit">Reveal</button>
+        </div>
+        <div class="ans" id="rrOut" aria-live="polite">Pulls the platform price for your dates and shows ours next to it. Same house, no fee, plus the welcome hamper.</div>
+      </form>
+      <div class="kpi" style="text-align:center;min-width:150px"><b>−15%</b><span>typical direct saving</span></div>
+    </div>
+  </div>
+</section>
+
+
+<section id="owner" class="band" aria-labelledby="ownerH">
+  <div class="wrap">
+    <p class="eyebrow">Dashboard · trailing 12 months · demo figures</p>
+    <h2 id="ownerH">One calendar. Every channel. Direct share rising.</h2>
+    <p class="lede">The guest site and the owner dashboard are the same product. Bookings from Airbnb and Booking.com flow in, direct bookings cost nothing in commission, and the pricing engine fills the gaps.</p>
+    <div class="owner">
+      <div class="grid g4">
+        <div class="kpi"><b>78%</b><span>occupancy · trailing 12 months</span></div>
+        <div class="kpi"><b>41%</b><span>of nights booked direct (up from 9%)</span></div>
+        <div class="kpi"><b>£46,800</b><span>net revenue · 12 months</span></div>
+        <div class="kpi"><b>£6,210</b><span>commission saved by direct bookings</span></div>
+      </div>
+      <div class="grid g2" style="margin-top:28px">
+        <div class="card">
+          <p class="eyebrow">Monthly nights · direct vs platforms</p>
+          <p class="legend"><span><i style="background:var(--c-direct)"></i>Direct</span><span><i style="background:var(--c-ota)"></i>Platforms (Airbnb, Booking.com)</span></p>
+          <div class="chart" id="chart"><div class="tip" id="tip" hidden></div></div>
+          <details style="margin-top:10px"><summary class="small" style="cursor:pointer">View as table</summary><div style="overflow-x:auto;margin-top:8px"><table id="chartTable"><caption class="sr-only">Nights per month, direct and via platforms</caption></table></div></details>
+        </div>
+        <div class="card">
+          <p class="eyebrow">What the engine does automatically</p>
+          <ul class="engine">
+            <li>Discounts orphan gap nights 20% so they sell instead of sitting empty</li>
+            <li>Raises weekend rates when local events or school holidays land</li>
+            <li>Offers midweek "fireside" and "workcation" rates November to March</li>
+            <li>Emails past guests 8 weeks before their anniversary stay</li>
+            <li>Collects reviews 2 days after checkout, straight to this site</li>
+            <li>Schedules cleaner and log delivery from the calendar</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+</main>
+<footer><div class="wrap"><p class="small muted">The Beam House · owner view · generated from the same design tokens as the guest site. Nothing here is linked from the guest pages except one small footer link.</p></div></footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(function(){
+'use strict';
+const HOUSE={name:'The Beam House',base:{low:135,mid:175,high:245},otaMarkup:1.15,maxGuests:4};
+const FX={GBP:1}; const SYM={GBP:'£'}; let cur='GBP';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=v=>SYM[cur]+Math.round(v*FX[cur]).toLocaleString('en-GB');
+let toastT; function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),3200)}
+
+/* ---------- gate (demo) ---------- */
+const CODE='beam';
+const open=()=>{$('gate').hidden=true;$('ownerContent').hidden=false};
+try{if(sessionStorage.getItem('bh-owner')==='1')open()}catch(e){}
+$('gateForm').addEventListener('submit',e=>{e.preventDefault();if($('gateCode').value.trim().toLowerCase()===CODE){try{sessionStorage.setItem('bh-owner','1')}catch(x){}open();toast('Owner view open')}else{$('gateErr').textContent='That code is not right. The demo code is the house\u2019s first name.';$('gateCode').focus()}});
+$('gateOut').addEventListener('click',()=>{try{sessionStorage.removeItem('bh-owner')}catch(x){}$('ownerContent').hidden=true;$('gate').hidden=false;$('gateCode').value=''});
+/* ---------- rate reveal ---------- */
+$('rrForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const v=$('rr').value.trim(),o=$('rrOut');
+  let host='';try{host=new URL(v.startsWith('http')?v:'https://'+v).hostname}catch(x){host=v.toLowerCase()}
+  const src=/airbnb/.test(host)?'Airbnb':/booking\./.test(host)?'Booking.com':/vrbo/.test(host)?'Vrbo':null;
+  if(!src){o.textContent='Paste a listing link from Airbnb, Booking.com or Vrbo.';$('rr').setAttribute('aria-invalid','true');return}
+  $('rr').removeAttribute('aria-invalid');
+  const p=HOUSE.base.mid,ota=Math.round(p*HOUSE.otaMarkup);
+  o.innerHTML=`<b>${src}</b> shows about <s>${money(ota)}</s> per night for a mid-season stay. <b>Direct: ${money(p)}</b>, and the welcome hamper is on us with code <span class="mono">${src==='Airbnb'?'AB10':src==='Vrbo'?'VR10':'BK10'}</span>. <a href="#book">Pick your dates</a>`;
+  toast('Direct saving revealed');
+});
+
+
+/* ---------- owner chart ---------- */
+const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const M=[[6,14],[8,12],[11,10],[12,9],[14,8],[15,10],[17,11],[18,10],[14,8],[12,7],[10,6],[13,9]];
+(function(){
+  const W=640,H=270,L=34,R=8,T=18,B=30,pw=W-L-R,ph=H-T-B,max=20,gw=pw/12,bw=18;
+  const y=v=>T+ph-(v/max)*ph;
+  const bar=(x,v,c)=>{const h=(v/max)*ph,yy=y(v),r=Math.min(4,h);return `<path fill="${c}" d="M${x} ${T+ph}V${yy+r}a${r} ${r} 0 0 1 ${r}-${r}h${bw-2*r}a${r} ${r} 0 0 1 ${r} ${r}V${T+ph}z"/>`};
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Grouped bar chart of nights per month, direct versus platforms. Direct nights rise from 6 in January to 18 in August; platform nights fall from 14 to 10.">`;
+  [0,5,10,15,20].forEach(v=>{s+=`<line class="${v?'grid-l':'base'}" x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end">${v}</text>`});
+  const maxD=Math.max(...M.map(m=>m[0])),maxO=Math.max(...M.map(m=>m[1]));
+  M.forEach((m,i)=>{
+    const gx=L+i*gw,x1=gx+gw/2-bw-1,x2=gx+gw/2+1;
+    s+=`<g class="mg" tabindex="0" role="img" aria-label="${MONTHS[i]}: ${m[0]} direct, ${m[1]} platform" data-i="${i}"><rect class="hit" x="${gx}" y="${T}" width="${gw}" height="${ph}" rx="4"/>`;
+    s+=bar(x1,m[0],'var(--c-direct)')+bar(x2,m[1],'var(--c-ota)');
+    if(m[0]===maxD)s+=`<text class="lab" x="${x1+bw/2}" y="${y(m[0])-5}" text-anchor="middle">${m[0]}</text>`;
+    if(m[1]===maxO)s+=`<text class="lab" x="${x2+bw/2}" y="${y(m[1])-5}" text-anchor="middle">${m[1]}</text>`;
+    s+=`<text x="${gx+gw/2}" y="${H-10}" text-anchor="middle">${MONTHS[i]}</text></g>`;
+  });
+  s+='</svg>';
+  $('chart').insertAdjacentHTML('afterbegin',s);
+  const tip=$('tip'),chart=$('chart');
+  chart.querySelectorAll('g.mg').forEach(g=>{
+    const show=()=>{const i=+g.dataset.i,r=g.querySelector('.hit').getBoundingClientRect(),c=chart.getBoundingClientRect();tip.innerHTML=`<b>${MONTHS[i]}</b> · direct ${M[i][0]} · platforms ${M[i][1]} · ${Math.round(100*M[i][0]/(M[i][0]+M[i][1]))}% direct`;tip.hidden=false;tip.style.left=(r.left-c.left+r.width/2+chart.scrollLeft)+'px';tip.style.top=(r.top-c.top+6)+'px'};
+    const hide=()=>{tip.hidden=true};
+    g.addEventListener('mouseenter',show);g.addEventListener('mouseleave',hide);g.addEventListener('focus',show);g.addEventListener('blur',hide);
+  });
+  $('chartTable').insertAdjacentHTML('beforeend','<thead><tr><th scope="col">Month</th><th scope="col">Direct</th><th scope="col">Platforms</th><th scope="col">Direct share</th></tr></thead><tbody>'+M.map((m,i)=>`<tr><th scope="row">${MONTHS[i]}</th><td>${m[0]}</td><td>${m[1]}</td><td>${Math.round(100*m[0]/(m[0]+m[1]))}%</td></tr>`).join('')+'</tbody>');
+})();
+
+
+})();
+</script>
+</body>
+</html>

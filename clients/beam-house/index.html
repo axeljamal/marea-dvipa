@@ -1,0 +1,1636 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+</head>
+<body>
+<title>The Beam House</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta property="og:title" content="The Beam House"><meta property="og:description" content="A 400-year-old beam house with a cedar hot tub under the palms, four minutes from the sea. Book direct: live calendar, best-price promise, no platform fee."><meta property="og:image" content="img/hottub-night.jpg"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,300&family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one long scroll on desktop with a sticky header; on phones a fixed bottom tab bar turns the same sections into app screens.
+   Colours are sampled from the house itself: lime plaster, oak beam, kilim rust, brass, dusk-blue window. */
+:root{
+  --bg:#f3ece0; --bg2:#e9dfcf; --card:#fbf7f0; --ink:#1c1814; --muted:#5f5347;
+  --accent:#a3452b; --accent-soft:#f1dccf; --on-accent:#ffffff; --brass:#8a6426; --line:#d5c7b1; --line-strong:#b8a689;
+  --ok:#2f6b3a; --ok-soft:#dfead9; --err:#9a2f1f; --err-soft:#f4dcd6;
+  --c-direct:#b5553a; --c-ota:#2f7fb0;
+  --hero-grad:linear-gradient(180deg,rgba(28,24,20,.12) 0%,rgba(28,24,20,.42) 55%,rgba(28,24,20,.82) 100%);
+  --shadow:0 18px 44px rgba(28,24,20,.16);
+  --font-d:'Fraunces',Georgia,'Times New Roman',serif; --font-b:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif; --mono:'DM Mono',ui-monospace,Menlo,monospace;
+  --radius:10px; --r-sm:6px; --r-btn:6px; --max:1120px; --gutter-l:max(16px,env(safe-area-inset-left,0px)); --gutter-r:max(16px,env(safe-area-inset-right,0px));
+  --header-h:64px; --tabbar-h:64px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17140f; --bg2:#1f1b15; --card:#262019; --ink:#f1e8d8; --muted:#b5a690;
+    --accent:#e0a35a; --accent-soft:#3a2d1c; --on-accent:#1c1814; --brass:#d8b06a; --line:#3a3328; --line-strong:#5a4f3d;
+    --ok:#8fcf9a; --ok-soft:#1f2e22; --err:#f0a08f; --err-soft:#3a1f1a;
+    --c-direct:#d4783e; --c-ota:#4b9cd3;
+    --hero-grad:linear-gradient(180deg,rgba(23,20,15,.1) 0%,rgba(23,20,15,.5) 55%,rgba(23,20,15,.92) 100%);
+    --shadow:0 18px 44px rgba(0,0,0,.45);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17140f; --bg2:#1f1b15; --card:#262019; --ink:#f1e8d8; --muted:#b5a690;
+  --accent:#e0a35a; --accent-soft:#3a2d1c; --on-accent:#1c1814; --brass:#d8b06a; --line:#3a3328; --line-strong:#5a4f3d;
+  --ok:#8fcf9a; --ok-soft:#1f2e22; --err:#f0a08f; --err-soft:#3a1f1a;
+  --c-direct:#d4783e; --c-ota:#4b9cd3;
+  --hero-grad:linear-gradient(180deg,rgba(23,20,15,.1) 0%,rgba(23,20,15,.5) 55%,rgba(23,20,15,.92) 100%);
+  --shadow:0 18px 44px rgba(0,0,0,.45);
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--font-b);font-size:1rem;background:var(--bg);color:var(--ink);line-height:1.55;padding-bottom:calc(var(--tabbar-h) + env(safe-area-inset-bottom,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+@media (min-width:900px){body{padding-bottom:0}}
+img{display:block;max-width:100%;height:auto}
+h1,h2,h3,.serif{font-family:var(--font-d);font-weight:500;letter-spacing:-.01em;line-height:1.12;margin:0;text-wrap:balance}
+h2{font-size:clamp(1.7rem,3.4vw,2.5rem)} h3{font-size:1.2rem}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:absolute;left:var(--gutter-l);top:-60px;z-index:100;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:var(--r-sm);text-decoration:none;font-weight:600}
+.skip:focus{top:calc(8px + env(safe-area-inset-top,0px))}
+.wrap{max-width:var(--max);margin:0 auto;padding-left:var(--gutter-l);padding-right:var(--gutter-r)}
+section{padding-block:clamp(48px,8vw,84px)}
+.band{background:var(--bg2)}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.lede{color:var(--muted);font-size:1.05rem;max-width:62ch;margin-top:12px}
+.stack{display:grid;gap:14px}
+.muted{color:var(--muted)} .small{font-size:.85rem} .tiny{font-size:.76rem}
+.mono{font-family:var(--mono)}
+.num{font-variant-numeric:tabular-nums}
+
+/* buttons & fields */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 20px;border-radius:var(--r-btn);border:1px solid var(--ink);background:var(--ink);color:var(--bg);font:600 .95rem var(--font-b);text-decoration:none;cursor:pointer;transition:transform .15s,background .2s;white-space:nowrap}
+.btn:hover{transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.accent{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.sm{min-height:40px;padding:8px 14px;font-size:.85rem}
+.btn.icon{width:44px;padding:0}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.field{display:grid;gap:6px;min-width:0}
+.field label,.lbl{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.field input,.field select,.field textarea{width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--line-strong);border-radius:var(--r-sm);background:var(--bg);color:var(--ink);font:inherit;font-size:1rem}
+.field textarea{min-height:88px;resize:vertical}
+.field input[aria-invalid="true"],.field select[aria-invalid="true"]{border-color:var(--err);box-shadow:0 0 0 3px var(--err-soft)}
+.err{color:var(--err);font-size:.85rem;font-weight:500}
+.ok{color:var(--ok)}
+.note{background:var(--accent-soft);border-radius:8px;padding:12px 14px;font-size:.9rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;min-width:0}
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))}
+.chip{display:inline-flex;align-items:center;min-height:32px;background:var(--accent-soft);color:var(--ink);border:0;border-radius:var(--r-btn);padding:5px 12px;font:inherit;font-size:.82rem}
+button.chip{cursor:pointer;min-height:40px}
+button.chip:hover{background:var(--line)}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;min-height:var(--header-h);gap:12px}
+.brand{font-family:var(--font-d);font-size:1.2rem;font-weight:600;text-decoration:none;line-height:1.1}
+.brand small{display:block;font:.6rem var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.top nav ul{display:flex;gap:4px;list-style:none;margin:0;padding:0;font-size:.9rem}
+.top nav a{display:inline-flex;align-items:center;min-height:40px;padding:0 10px;border-radius:var(--r-btn);text-decoration:none;color:var(--muted)}
+.top nav a:hover,.top nav a[aria-current="true"]{color:var(--ink);background:var(--accent-soft)}
+.tools{display:flex;align-items:center;gap:8px}
+.tools select{min-height:40px;border:1px solid var(--line-strong);background:var(--card);color:var(--ink);border-radius:var(--r-btn);padding:0 10px;font:inherit;font-size:.85rem}
+.theme{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border:1px solid var(--line-strong);background:var(--card);color:var(--ink);border-radius:var(--r-btn);font:500 .8rem var(--font-b);cursor:pointer}
+.theme svg{width:16px;height:16px}
+@media (max-width:899px){.top nav,.tools .cta,.tools .theme span{display:none}}
+@media (min-width:900px){.menu-btn{display:none}}
+
+/* mobile tab bar */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:55;display:grid;grid-template-columns:repeat(5,1fr);background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:4px var(--gutter-r) calc(4px + env(safe-area-inset-bottom,0px)) var(--gutter-l)}
+.tabbar a{display:grid;justify-items:center;gap:2px;min-height:56px;padding:6px 4px;text-decoration:none;color:var(--muted);font-size:.68rem;font-weight:500;border-radius:8px}
+.tabbar a svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tabbar a[aria-current="true"]{color:var(--accent)}
+@media (min-width:900px){.tabbar{display:none}}
+
+/* hero */
+.hero{position:relative;color:#fff;overflow:hidden;isolation:isolate}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 42%;z-index:-2}
+.hero::after{content:"";position:absolute;inset:0;background:var(--hero-grad);z-index:-1}
+.hero .slides{position:absolute;inset:0;z-index:-2;background:#1c1814}
+.hero .slides img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 55%;opacity:0;transition:opacity 1.6s ease}
+.hero .slides img.on{opacity:1}
+.hero-ctl{position:absolute;right:var(--gutter-r);bottom:16px;z-index:3;display:flex;align-items:center;gap:2px;background:rgba(0,0,0,.3);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18);border-radius:var(--r-btn);padding:3px}
+.hero-ctl button{width:36px;height:36px;border-radius:var(--r-btn);border:0;background:transparent;color:#fff;cursor:pointer;display:grid;place-items:center;padding:0}
+.hero-ctl button svg{width:16px;height:16px;fill:currentColor}
+.hero-ctl .dot{width:26px}
+.hero-ctl .dot i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);display:block;transition:.3s}
+.hero-ctl .dot[aria-current="true"] i{background:#fff;width:18px;border-radius:3px}
+.hero-ctl button:focus-visible{outline:2px solid #fff;outline-offset:0}
+.hero .wrap{padding-block:clamp(120px,22vw,210px) 84px}
+.hero h1{font-size:clamp(2.3rem,6.6vw,5rem);font-weight:300;max-width:15ch;color:#fff}
+.hero h1 em{font-style:italic;font-weight:300}
+.hero .sub{font-size:clamp(1rem,1.6vw,1.15rem);opacity:.92;max-width:52ch;margin:18px 0 24px;color:#fff}
+.hero .actions{display:flex;flex-wrap:wrap;gap:10px}
+.hero .btn{border-color:#fff;background:#fff;color:#1c1814}
+.hero .btn.ghost{background:transparent;color:#fff}
+.live{display:inline-flex;align-items:center;gap:8px;font:.74rem var(--mono);background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);padding:7px 12px;border-radius:var(--r-btn);margin-bottom:18px;backdrop-filter:blur(6px);color:#fff;max-width:100%}
+.live i{flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:#7fdc8a;animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(127,220,138,.7)}70%{box-shadow:0 0 0 8px rgba(127,220,138,0)}100%{box-shadow:0 0 0 0 rgba(127,220,138,0)}}
+.stats{display:flex;gap:26px;margin-top:30px;flex-wrap:wrap}
+.stats b{display:block;font:500 1.6rem var(--font-d);color:#fff} .stats span{font-size:.78rem;opacity:.85;color:#fff}
+
+/* quick book */
+.qb{position:relative;z-index:3;margin-top:-44px}
+.qb form{display:grid;grid-template-columns:1fr 1fr 1.2fr auto;gap:12px;align-items:end;box-shadow:var(--shadow)}
+.qb .btn{min-height:44px}
+.qb .err{grid-column:1/-1}
+@media (max-width:760px){.qb form{grid-template-columns:1fr 1fr}.qb .guests,.qb .btn{grid-column:1/-1}}
+
+/* perks strip: three direct-booking reasons before anyone scrolls */
+.perks{margin-top:28px}
+.perks .card{display:grid;grid-template-columns:repeat(3,1fr) auto;gap:20px;align-items:center;padding:18px 22px}
+.perk{display:flex;gap:12px;align-items:flex-start;min-width:0}
+.perk svg{width:28px;height:28px;flex:0 0 auto;fill:none;stroke:var(--accent);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;margin-top:2px}
+.perk b{display:block;font-family:var(--font-d);font-size:1.05rem;font-weight:500;line-height:1.2}
+.perk span{display:block;font-size:.85rem;color:var(--muted);margin-top:3px}
+@media (max-width:900px){.perks .card{grid-template-columns:1fr 1fr}.perks .btn{grid-column:1/-1;justify-self:start}}
+@media (max-width:600px){.perks .card{grid-template-columns:1fr}}
+
+/* problem / solution */
+.ps{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-top:28px}
+.ps>div{padding:26px;min-width:0} .ps .bad{background:var(--bg2)} .ps .good{background:var(--card)}
+.ps ul{list-style:none;padding:0;margin:14px 0 0} .ps li{padding:10px 0;border-bottom:1px dashed var(--line);display:flex;gap:10px;align-items:flex-start;font-size:.93rem}
+.ps li:last-child{border:0}
+.ps .bad li::before{content:"✕" / "";color:var(--err);font-weight:700;flex:0 0 auto}
+.ps .good li::before{content:"✓" / "";color:var(--ok);font-weight:700;flex:0 0 auto}
+@media (max-width:760px){.ps{grid-template-columns:1fr}}
+
+/* tabs (rooms, seasons) */
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:thin;margin-top:18px}
+.tabs [role="tab"]{flex:0 0 auto;min-height:44px;border:1px solid var(--line-strong);background:var(--card);color:var(--ink);padding:8px 16px;border-radius:var(--r-btn);cursor:pointer;font:inherit;font-size:.9rem}
+.tabs [role="tab"][aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* tour: floor plan + zoomable stage + story card */
+.tour-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.plan{display:grid;gap:6px;margin-top:22px}
+.floor{display:grid;grid-template-columns:auto repeat(var(--n),1fr);gap:6px}
+.floor-long{grid-template-columns:1fr}
+.floor-l{writing-mode:vertical-rl;transform:rotate(180deg);font:.58rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:center;padding:6px 0;align-self:stretch}
+.plan .found .shr{display:none}
+.plan .star{font-style:normal;color:var(--brass);margin-left:4px}
+.plan [role="tab"],.plan .room{position:relative;min-height:64px;border:1px solid var(--line-strong);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 10px;font:inherit;font-size:.82rem;text-align:left;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;min-width:0}
+.plan [role="tab"] small{font:.6rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.plan [role="tab"][aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)} .plan [role="tab"][aria-selected="true"] small{color:var(--bg);opacity:.7}
+.plan [role="tab"][aria-selected="true"]::after{content:"";position:absolute;top:8px;right:8px;width:10px;height:10px;border-radius:50%;background:var(--c-direct);box-shadow:0 0 0 3px color-mix(in srgb,var(--c-direct) 30%,transparent)}
+.plan .long{min-height:40px;flex-direction:row;align-items:center;justify-content:space-between}
+.plan .door{position:absolute;left:-1px;top:50%;width:3px;height:22px;background:var(--brass);border-radius:2px;transform:translateY(-50%)}
+.plan .found{font:.62rem var(--mono);color:var(--accent)} .plan [aria-selected="true"] .found{color:var(--bg)}
+.tour{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;align-items:start;margin-top:14px}
+.tour-main{position:relative;border-radius:var(--radius);overflow:hidden;aspect-ratio:4/3;max-width:100%;background:var(--bg2);touch-action:pan-y}
+.tour-stage{--z:1;--ox:50%;--oy:50%;position:absolute;inset:0;transform:scale(var(--z));transform-origin:var(--ox) var(--oy);transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.tour-stage img{width:100%;height:100%;object-fit:cover;display:block}
+.hs{position:absolute;width:44px;height:44px;padding:0;border:0;background:transparent;transform:translate(-50%,-50%) scale(calc(1/var(--z)));cursor:pointer;display:grid;place-items:center;border-radius:50%;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.hs span{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.94);border:2px solid var(--c-direct);display:grid;place-items:center;font:700 .8rem var(--font-b);color:#1c1814;box-shadow:0 2px 10px rgba(0,0,0,.35);position:relative}
+.hs:not(.seen) span::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:2px solid rgba(255,255,255,.6);animation:pulse 2.2s infinite}
+.hs.seen span{background:rgba(255,255,255,.7);border-color:rgba(255,255,255,.9)}
+.hs[aria-current="true"] span{background:var(--c-direct);color:#fff;border-color:#fff}
+.hs:focus-visible{outline:3px solid #fff;outline-offset:0}
+.reset{position:absolute;right:12px;bottom:12px;background:rgba(28,24,20,.7);color:#fff;border-color:transparent;backdrop-filter:blur(6px)}
+.tour-cap{position:absolute;left:12px;bottom:12px;font:.7rem var(--mono);color:#fff;background:rgba(28,24,20,.6);padding:5px 9px;border-radius:var(--r-btn);backdrop-filter:blur(6px);pointer-events:none}
+.tour-side .card{min-height:300px;display:flex;flex-direction:column;gap:10px}
+.story-meta{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:var(--bg2);font-size:.82rem}
+.story-meta svg{width:42px;height:42px;flex:0 0 auto}
+.story-meta b{display:block;font-family:var(--font-d);font-weight:500;font-size:1rem}
+.story-try{border-left:3px solid var(--brass);padding:4px 0 4px 12px;font-size:.88rem;color:var(--muted)}
+.story-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+.hslist{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:6px}
+.hslist button{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;text-align:left;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:var(--r-sm);padding:8px 10px;font:inherit;cursor:pointer}
+.hslist button[aria-current="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.hslist b{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--c-direct);color:#fff;font-size:.72rem;flex:0 0 auto}
+.hslist button.seen b{background:var(--line-strong)}
+.hslist .tick{margin-left:auto;color:var(--ok);font-size:.8rem}
+.tour-progress{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;margin-top:16px}
+.tour-progress .bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.tour-progress .bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .6s}
+.bonus{margin-top:14px;padding:16px 18px;border-radius:var(--radius);background:var(--ink);color:var(--bg);display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+.bonus .eyebrow{color:var(--bg);opacity:.75} .bonus h3{color:var(--bg)}
+.bonus svg{width:36px;height:36px;fill:none;stroke:var(--brass);stroke-width:1.6}
+@media (max-width:860px){.tour{grid-template-columns:1fr}.tour-side .card{min-height:0}.tour-progress{grid-template-columns:1fr}.plan [role="tab"]{font-size:.74rem;padding:6px 8px;min-height:58px}.plan [role="tab"] small{display:none}.plan .long small{display:inline}.plan .found .lng{display:none}.plan .found .shr{display:inline}}
+
+/* photo carousels: one photo per view, swipe or arrows, dots + counter */
+.car{position:relative;margin-top:24px;min-width:0}
+.car-track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;border-radius:var(--radius);outline-offset:4px;overscroll-behavior-x:contain}
+.car-track::-webkit-scrollbar{display:none}
+.car-slide{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always;margin:0;position:relative;border-radius:var(--radius);overflow:hidden;background:var(--bg2);aspect-ratio:16/9;max-width:100%}
+.car.mini .car-slide{aspect-ratio:4/3}
+.car-slide img{width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none}
+.car-slide .zoom{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;cursor:zoom-in;padding:0;border-radius:0}
+.car-slide .zoom:focus-visible{outline-offset:-4px;outline-color:#fff}
+.car-slide figcaption{position:absolute;left:0;right:0;bottom:0;padding:48px 20px 18px;background:linear-gradient(transparent,rgba(0,0,0,.62));color:#fff;font-family:var(--font-d);font-size:clamp(1rem,1.6vw,1.25rem);pointer-events:none}
+.car-ctl{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
+.car-dots{display:flex;gap:2px;flex-wrap:wrap;justify-content:center;flex:1;min-width:0}
+.car-dots button{width:26px;height:32px;border:0;background:transparent;padding:0;cursor:pointer;display:grid;place-items:center;border-radius:6px}
+.car-dots button i{display:block;width:7px;height:7px;border-radius:50%;background:var(--line-strong);transition:.3s}
+.car-dots button[aria-current="true"] i{background:var(--accent);width:20px;border-radius:4px}
+.car-count{font:.75rem var(--mono);color:var(--muted);min-width:4.5ch;text-align:center}
+@media (max-width:760px){.car-slide{aspect-ratio:4/3}.car-slide figcaption{padding:36px 14px 12px}}
+
+/* seasons */
+.season{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center;margin-top:12px}
+.season .car{margin-top:0}
+.season h3{font-size:1.7rem}
+.season .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+@media (max-width:760px){.season{grid-template-columns:1fr}}
+
+/* offers + voucher */
+.offers{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:24px}
+.offer{display:flex;flex-direction:column;gap:8px;padding:20px}
+.offer h3{font-size:1.25rem}
+.offer .price{margin-top:auto;padding-top:10px;font-variant-numeric:tabular-nums}
+.offer .price b{font:500 1.3rem var(--font-d)} .offer .price span{display:block;font-size:.78rem;color:var(--muted)}
+.voucher{display:grid;grid-template-columns:1.2fr 1fr;gap:22px;align-items:center;margin-top:14px}
+.vform{display:grid;gap:14px}
+.amounts{border:0;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.amounts legend{padding:0;margin-bottom:8px;float:left;width:100%}
+.amounts label.amt{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1px solid var(--line-strong);border-radius:var(--r-btn);cursor:pointer;font-weight:600;background:var(--bg);position:relative}
+.amounts label.amt.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.amounts label.amt:focus-within{outline:3px solid var(--accent);outline-offset:3px}
+.amounts input[type=radio]{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.amounts .other{width:130px;min-height:44px;padding:0 12px;border:1px solid var(--line-strong);border-radius:var(--r-btn);background:var(--bg);color:var(--ink);font:600 1rem var(--font-b)}
+@media (max-width:1000px){.offers{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:860px){.voucher{grid-template-columns:1fr}}
+@media (max-width:560px){.offers{grid-template-columns:1fr}}
+
+/* calendar */
+.cal-wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;margin-top:24px;align-items:start}
+.cal-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.cal-head b{font:500 1.15rem var(--font-d)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .h{font:.65rem var(--mono);text-align:center;color:var(--muted);padding:4px 0}
+.cal .d{aspect-ratio:1;max-width:100%;min-width:0;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font:inherit;font-size:.82rem;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;position:relative;padding:0;font-variant-numeric:tabular-nums}
+.cal .d small{font-size:.58rem;color:var(--muted);line-height:1}
+.cal .d.off{background:transparent;border-color:transparent;color:var(--muted);cursor:not-allowed;text-decoration:line-through}
+.cal .d.booked{background:var(--bg2);color:var(--muted);text-decoration:line-through;cursor:not-allowed}
+.cal .d.in{background:var(--accent-soft);border-color:var(--accent-soft)}
+.cal .d.edge{background:var(--accent);color:var(--on-accent);border-color:var(--accent)} .cal .d.edge small{color:var(--on-accent)}
+.cal .d.gap::after{content:"deal";position:absolute;top:2px;right:3px;font:.5rem var(--mono);color:var(--accent)}
+.cal .d.edge.gap::after{color:var(--on-accent)}
+.cal-legend{display:flex;flex-wrap:wrap;gap:12px;font-size:.76rem;color:var(--muted);margin-top:10px}
+.cal-legend i{display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid var(--line);vertical-align:-2px;margin-right:4px}
+.cal-status{margin-top:10px;font-size:.88rem;min-height:1.4em}
+.quote .row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:.93rem}
+.quote .row span:first-child{color:var(--muted)}
+.quote .tot{font-weight:700;font-size:1.1rem;border:0;padding-top:12px}
+.quote .tot span:first-child{color:var(--ink)}
+.save{background:var(--accent-soft);border-radius:8px;padding:12px 14px;font-size:.88rem;margin-top:12px}
+.xtra{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.xtra:last-child{border:0} .xtra .ico{font-size:1.4rem;width:40px;flex:0 0 auto} .xtra b{display:block} .xtra small{color:var(--muted)}
+.xtra input{margin-left:auto;width:22px;height:22px;flex:0 0 auto;accent-color:var(--accent)}
+@media (max-width:860px){.cal-wrap{grid-template-columns:1fr}}
+
+/* guide */
+.ask{display:flex;gap:8px;margin-top:18px} .ask .field{flex:1}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.ans{margin-top:14px;padding:16px;border-radius:8px;background:var(--bg2);font-size:.95rem;min-height:60px}
+.band .ans{background:var(--card)}
+.faq details{border-bottom:1px solid var(--line);padding:4px 0}
+.faq summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center;list-style:none;gap:10px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::before{content:"+";font-family:var(--mono);color:var(--accent);width:16px}
+.faq details[open] summary::before{content:"–"}
+.faq p{padding:0 0 12px 26px;color:var(--muted);font-size:.92rem}
+
+/* local, reviews */
+.where{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:22px;align-items:center;margin-top:18px;padding:18px}
+.where img{border-radius:8px;width:100%;max-height:460px;object-fit:cover}
+@media (max-width:700px){.where{grid-template-columns:1fr}.where img{max-height:380px}}
+.loc{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px;margin-top:24px}
+.loc .card{padding:16px}
+.loc .e{font-size:1.6rem}
+.rev{position:relative;padding-top:44px} .rev .stars{color:var(--brass);letter-spacing:2px} .rev .who{font-size:.8rem;color:var(--muted);margin-top:10px}
+.rev .v{font:.6rem var(--mono);position:absolute;top:14px;right:14px;color:var(--accent);border:1px solid var(--accent);padding:3px 8px;border-radius:var(--r-btn)}
+.rr{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;margin-top:18px}
+@media (max-width:640px){.rr{grid-template-columns:1fr}}
+
+/* follow: instagram grid + newsletter */
+.follow{display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:start;margin-top:24px}
+.ig-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.ig{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ig a{position:relative;display:block;aspect-ratio:1;max-width:100%;border-radius:8px;overflow:hidden;background:var(--bg2);color:#fff;text-decoration:none}
+.ig img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.ig a:hover img{transform:scale(1.04)}
+.ig a span{position:absolute;left:0;right:0;bottom:0;padding:28px 10px 8px;background:linear-gradient(transparent,rgba(0,0,0,.62));font-size:.72rem;line-height:1.3}
+.ig a:focus-visible{outline-offset:-3px;outline-color:#fff}
+@media (max-width:860px){.follow{grid-template-columns:1fr}}
+@media (max-width:480px){.ig{grid-template-columns:repeat(2,1fr)}}
+
+/* owner */
+.owner{background:var(--bg2);border-radius:var(--radius);padding:clamp(18px,3vw,28px);margin-top:24px}
+.kpi b{font:500 clamp(1.6rem,3vw,2rem) var(--font-d);display:block;font-variant-numeric:tabular-nums} .kpi span{font-size:.78rem;color:var(--muted)}
+.chart{position:relative;margin-top:12px;overflow-x:auto}
+.chart svg{display:block;width:100%;min-width:520px;height:auto;font-family:var(--font-b)}
+.chart .grid-l{stroke:var(--line);stroke-width:1}
+.chart .base{stroke:var(--line-strong);stroke-width:1}
+.chart text{fill:var(--muted);font-size:13px}
+.chart .lab{fill:var(--ink);font-weight:600;font-size:12px}
+.chart .hit{fill:transparent}
+.chart g.mg:hover .hit,.chart g.mg:focus .hit{fill:color-mix(in srgb,var(--ink) 6%,transparent)}
+.chart g.mg:focus{outline:none}
+.chart g.mg:focus-visible .hit{stroke:var(--accent);stroke-width:2}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:6px}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);padding:8px 10px;border-radius:8px;font-size:.78rem;white-space:nowrap;transform:translate(-50%,-110%);z-index:5}
+.tip[hidden]{display:none}
+table{border-collapse:collapse;width:100%;font-size:.85rem;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:6px 8px;border-bottom:1px solid var(--line)} th:first-child,td:first-child{text-align:left}
+.engine{font-size:.9rem;padding-left:18px;margin:14px 0 0;line-height:1.8}
+ul.plain{padding-left:18px;margin:14px 0 0;font-size:.9rem;line-height:1.75}
+
+/* footer */
+footer{padding:50px 0 40px;border-top:1px solid var(--line);color:var(--muted);font-size:.88rem}
+footer .brandline{font-family:var(--font-d);color:var(--ink);font-size:1.15rem;margin-bottom:6px}
+.contact{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.contact code{font-family:var(--mono);background:var(--card);border:1px solid var(--line);padding:4px 8px;border-radius:6px;color:var(--ink);user-select:all}
+
+/* dialogs */
+dialog{border:0;padding:0;background:transparent;color:var(--ink);max-width:100vw;max-height:100vh}
+dialog::backdrop{background:rgba(20,16,12,.72);backdrop-filter:blur(4px)}
+.sheet{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);width:min(560px,calc(100vw - 32px));max-height:calc(100vh - 32px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));overflow:auto;padding:24px;box-shadow:var(--shadow)}
+.sheet-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.lb-box{position:relative;display:grid;gap:10px;width:min(96vw,1100px);justify-items:center}
+.lb-box img{max-width:96vw;max-height:80vh;width:auto;border-radius:8px}
+.lb-cap{color:#fff;font-size:.9rem;text-align:center;display:flex;gap:16px;align-items:center}
+.lb-ctl{display:flex;gap:10px}
+.lb-ctl .btn{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.4);color:#fff}
+.menu{width:min(360px,calc(100vw - 32px))}
+.menu ul{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:4px}
+.menu a{display:flex;align-items:center;min-height:48px;padding:0 12px;border-radius:var(--r-sm);text-decoration:none;font-size:1.05rem}
+.menu a:hover{background:var(--accent-soft)}
+.menu .theme{width:100%;justify-content:center;margin-top:12px}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:calc(var(--tabbar-h) + 14px + env(safe-area-inset-bottom,0px));transform:translate(-50%,8px);background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:8px;z-index:99;opacity:0;transition:.3s;font-size:.9rem;max-width:min(360px,calc(100vw - 32px));text-align:center;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (min-width:900px){.toast{bottom:24px}}
+
+/* assistant */
+.fab{position:fixed;right:var(--gutter-r);bottom:calc(var(--tabbar-h) + 14px + env(safe-area-inset-bottom,0px));z-index:56;display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 16px 0 12px;border-radius:var(--r-btn);border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);font:600 .9rem var(--font-b);box-shadow:var(--shadow);cursor:pointer;transition:transform .15s}
+.fab:hover{transform:translateY(-1px)}
+.fab svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media (min-width:900px){.fab{bottom:24px;right:24px}}
+.ai{position:fixed;inset:auto 0 0 0;margin:0;width:100vw;max-width:100vw;height:calc(100dvh - env(safe-area-inset-top,0px) - 28px);max-height:none;border-radius:var(--radius) var(--radius) 0 0;background:var(--card);border:1px solid var(--line);padding:0;display:none;flex-direction:column;box-shadow:var(--shadow);color:var(--ink)}
+.ai[open]{display:flex}
+.ai::backdrop{background:rgba(20,16,12,.45)}
+@media (min-width:900px){.ai{inset:auto 24px 24px auto;width:400px;height:min(660px,calc(100vh - 48px));border-radius:var(--radius)}.ai::backdrop{background:transparent}}
+.ai-head{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.ai-head .av{width:38px;height:38px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;flex:0 0 auto}
+.ai-head .av svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ai-head .t{flex:1;min-width:0} .ai-head b{display:block;font-family:var(--font-d);font-size:1.1rem;font-weight:500} .ai-head small{color:var(--muted);font-size:.75rem;display:block}
+.ai-log{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;overscroll-behavior:contain}
+.msg{max-width:88%;padding:10px 14px;border-radius:10px;font-size:.93rem;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.msg.me{align-self:flex-end;background:var(--ink);color:var(--bg);border-bottom-right-radius:4px}
+.msg.ai{align-self:flex-start;background:var(--bg2);border-bottom-left-radius:4px}
+.msg.ai a{color:var(--accent);font-weight:600}
+.msg.sys{align-self:center;font-size:.75rem;color:var(--muted);background:transparent;padding:2px 8px;text-align:center}
+.msg.typing::after{content:"";display:inline-block;width:1.4em;text-align:left;animation:dots 1.2s steps(4,end) infinite}
+@keyframes dots{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+.ai-chips{display:flex;gap:6px;overflow-x:auto;padding:4px 16px 10px;scrollbar-width:none;flex:0 0 auto}
+.ai-chips::-webkit-scrollbar{display:none}
+.ai-chips button{flex:0 0 auto;min-height:36px;font-size:.8rem}
+.ai-form{display:flex;gap:8px;align-items:flex-end;padding:10px 16px 10px;border-top:1px solid var(--line)}
+.ai-form textarea{flex:1;min-height:44px;max-height:120px;resize:none;padding:10px 12px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit;font-size:1rem;line-height:1.4}
+.ai-form .btn.icon{width:44px;height:44px;flex:0 0 auto}
+.ai-form .btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ai-foot{font-size:.68rem;color:var(--muted);text-align:center;padding:0 16px calc(10px + env(safe-area-inset-bottom,0px))}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+/* your stay, walked */
+.walk{margin:18px 0 22px;display:grid;gap:14px}
+.walk .wq{display:grid;gap:8px}
+.walk .lbl{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.wchips{display:flex;flex-wrap:wrap;gap:8px}
+.wchips button{border:1px solid var(--line-strong,var(--line));background:var(--bg,#fff);color:inherit;border-radius:var(--r-btn,6px);padding:8px 14px;font:inherit;cursor:pointer}
+.wchips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.walk .row2{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:end}
+.walk-route{display:grid;gap:14px;border-top:1px solid var(--line);padding-top:14px}
+.walk-route h4{margin:0;font-size:1.25rem}
+.walk-stops{list-style:none;margin:0;padding:0;display:grid;gap:6px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.walk-stops button{width:100%;text-align:left;border:1px solid var(--line);background:var(--bg,#fff);border-radius:var(--r-sm,6px);padding:8px 10px;font:inherit;font-size:.86rem;color:inherit;cursor:pointer;display:grid;gap:2px}
+.walk-stops button[aria-current="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.walk-stops small{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.walk-nav{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.walk-dates{display:grid;gap:8px;background:var(--bg2,var(--bg));border-radius:var(--r,10px);padding:14px}
+.walk-dates b.big{font-family:var(--display,inherit);font-size:1.6rem}
+@media (max-width:720px){.walk-stops{grid-template-columns:1fr 1fr}}
+</style>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">The Beam House<small>Est. 1600s · 4 min to the sea</small></a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#house">The house</a></li>
+        <li><a href="#seasons">Seasons</a></li>
+        <li><a href="#book">Book</a></li>
+        <li><a href="#guide">Guest guide</a></li>
+        <li><a href="#local">Local</a></li>
+        
+        
+      </ul>
+    </nav>
+    <div class="tools">
+      <label class="sr-only" for="cur">Currency</label>
+      <select id="cur"><option value="GBP">£ GBP</option><option value="EUR">€ EUR</option><option value="USD">$ USD</option></select>
+      <button class="theme" id="themeBtn" type="button" aria-label="Theme: follows your system. Switch to light"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path id="themeIcon" d="M12 3a9 9 0 1 0 9 9c0-.5 0-1-.1-1.4A5.5 5.5 0 0 1 13.4 3.1C13 3 12.5 3 12 3z"/></svg><span id="themeLbl">Auto</span></button>
+      <a class="btn sm cta" href="#book">Check dates</a>
+      <button class="btn sm ghost icon menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-haspopup="dialog"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<section class="hero" id="top" aria-labelledby="h1" style="padding:0" data-highlight="hot tub">
+  <div class="slides" id="heroSlides"></div>
+  <div class="wrap">
+    <p class="live"><i aria-hidden="true"></i> <span id="livemsg">Checking the calendar…</span></p>
+    <h1 id="h1">A 400-year-old <em>beam house</em> with a hot tub under the palms, four minutes from the sea.</h1>
+    <p class="sub">The cedar tub is heated to 38° before you arrive. Inside: oak beams, a wood-burner, a brass tray table from Marrakech. Book direct and keep the 15% the platforms would take.</p>
+    <div class="actions">
+      <a class="btn" href="#book">Book direct, best-price promise</a>
+      <a class="btn ghost" href="#house">Walk through the house</a>
+    </div>
+    <dl class="stats">
+      <div><dt class="sr-only">Rating</dt><dd style="margin:0"><b>4.96</b><span>★ from 212 verified stays</span></dd></div>
+      <div><dt class="sr-only">Direct saving</dt><dd style="margin:0"><b>−15%</b><span>vs. the same dates on Airbnb</span></dd></div>
+      <div><dt class="sr-only">Hot tub</dt><dd style="margin:0"><b>38°</b><span>cedar hot tub, hot on arrival</span></dd></div>
+      <div><dt class="sr-only">Returning guests</dt><dd style="margin:0"><b>38%</b><span>of guests come back</span></dd></div>
+      <div><dt class="sr-only">Capacity</dt><dd style="margin:0"><b>Sleeps 4</b><span>2 bedrooms · hot tub · wood-burner</span></dd></div>
+    </dl>
+  </div>
+  <div class="hero-ctl" id="heroCtl" role="group" aria-label="Hero slideshow"></div>
+</section>
+
+<div class="qb wrap">
+  <form class="card" id="qbForm" novalidate aria-label="Quick date check">
+    <div class="field"><label for="qin">Arrive</label><input type="date" id="qin" name="in" required></div>
+    <div class="field"><label for="qout">Leave</label><input type="date" id="qout" name="out" required></div>
+    <div class="field guests"><label for="qg">Guests</label><select id="qg"><option value="2">2 adults</option><option value="3">2 adults + 1 child</option><option value="4">4 adults</option><option value="2dog">2 adults + dog</option></select></div>
+    <button class="btn accent" type="submit">See live price</button>
+    <p class="err" id="qbErr" role="alert"></p>
+  </form>
+</div>
+
+<div class="perks wrap">
+  <div class="card" role="region" aria-label="Why book direct">
+    <div class="perk"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 2l2.4 5.2 5.6.7-4.1 3.9 1.1 5.6L12 14.7l-5 2.7 1.1-5.6L4 7.9l5.6-.7z"/></svg><div><b>Best-price promise</b><span>Always at least 15% under Airbnb and Booking.com for the same nights.</span></div></div>
+    <div class="perk"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 12.5V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7"/><path d="M4 10h16M9 15h3"/><path d="M16 19l2 2 4-4"/></svg><div><b>One all-in price</b><span>Linen, cleaning, heating, Wi-Fi and logs included. Nothing appears at checkout.</span></div></div>
+    <div class="perk"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/></svg><div><b>Come back for less</b><span>10% off every return and first pick of Christmas and August.</span></div></div>
+    <a class="btn accent" href="#book">Book direct</a>
+  </div>
+</div>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"VacationRental","@id":"#house","name":"The Beam House","description":"400-year-old beamed cottage with a cedar hot tub in a palm courtyard, four minutes from the beach. Sleeps 4 in a brass double bedroom and an attic twin with its own bathroom. Wood-burner, fibre Wi-Fi, dogs welcome. Book direct for all-in pricing about 15% below the platforms.","image":["img/ext-dusk.jpg","img/hero.jpg","img/hottub-night.jpg","img/bedroom.jpg","img/kitchen.jpg","img/dining-table.jpg"],"numberOfBedrooms":2,"numberOfBathroomsTotal":1,"occupancy":{"@type":"QuantitativeValue","maxValue":4},"petsAllowed":true,"checkinTime":"15:00","checkoutTime":"10:30","amenityFeature":[{"@type":"LocationFeatureSpecification","name":"Wood-burning stove","value":true},{"@type":"LocationFeatureSpecification","name":"Fibre Wi-Fi","value":true},{"@type":"LocationFeatureSpecification","name":"Beach 4 minutes on foot","value":true},{"@type":"LocationFeatureSpecification","name":"Free bikes","value":true},{"@type":"LocationFeatureSpecification","name":"Parking permit","value":true},{"@type":"LocationFeatureSpecification","name":"Cedar hot tub in the courtyard","value":true},{"@type":"LocationFeatureSpecification","name":"Attic bathroom with the twin room","value":true}],"address":{"@type":"PostalAddress","streetAddress":"78 High Street","addressLocality":"[Town]","addressRegion":"[County]","addressCountry":"GB"},"priceRange":"£135–£245 per night, all-in","aggregateRating":{"@type":"AggregateRating","ratingValue":"4.96","reviewCount":"212","bestRating":"5"},"review":[{"@type":"Review","author":{"@type":"Person","name":"Hannah & Tom"},"datePublished":"2026-02-20","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},"reviewBody":"We came for a rainy February week and barely left the house. The stove, the books, the lamp. It is built for weather."},{"@type":"Review","author":{"@type":"Person","name":"Lena"},"datePublished":"2026-07-14","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},"reviewBody":"Four minutes to the sea is true. Swam before breakfast every day, then coffee in the nook with the palms."},{"@type":"Review","author":{"@type":"Person","name":"Marcus"},"datePublished":"2026-10-05","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"},"reviewBody":"Worked from the window seat all week on fibre Wi-Fi. The midweek rate made it cheaper than my coworking space."}]},
+ {"@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"What time is check-in and check-out?","acceptedAnswer":{"@type":"Answer","text":"Self check-in from 3pm. The key safe is behind the slate plaque and the code arrives by SMS on the morning of arrival. Check-out is 10:30, with late check-out to 1pm available when the next guests are not due."}},
+  {"@type":"Question","name":"Is the price really all-in?","acceptedAnswer":{"@type":"Answer","text":"Yes. Linen, cleaning, heating, Wi-Fi and logs are included and nothing is added at checkout. Direct prices are at least 15% below the same dates on Airbnb and Booking.com."}},
+  {"@type":"Question","name":"Are dogs welcome?","acceptedAnswer":{"@type":"Answer","text":"Yes, £25 per stay with a bed, bowl and towel provided. The beach is dog-friendly all year except the main stretch from May to September."}},
+  {"@type":"Question","name":"What is the minimum stay?","acceptedAnswer":{"@type":"Answer","text":"Two nights, or three nights for arrivals in June, July and August. Stays of seven nights or more get 15% off."}},
+  {"@type":"Question","name":"What is the cancellation policy?","acceptedAnswer":{"@type":"Answer","text":"Full refund up to 14 days before arrival. A 30% deposit is taken at booking and the balance four weeks before. A £200 damage deposit is pre-authorised and never charged for honest accidents."}},
+  {"@type":"Question","name":"How far is the beach?","acceptedAnswer":{"@type":"Answer","text":"Four minutes on foot. Turn left out of the door and down the lane. The best swim is the cove past the groynes at mid-to-high tide."}}
+ ]}
+]}
+</script>
+
+<section id="house" class="band" aria-labelledby="houseH">
+  <div class="wrap">
+    <div class="tour-head">
+      <div><p class="eyebrow">Interactive tour</p><h2 id="houseH">Start in the hot tub. Then walk the whole house.</h2></div>
+      <button class="btn sm" type="button" id="walkBtn" aria-pressed="false">Start the guided walk, tub first</button>
+    </div>
+ <div class="card walk" id="walk"> <div><p class="eyebrow">Your stay, walked before you book</p><h3 style="margin:4px 0 0">Tell the house who is coming. It walks you round in the right order, then finds your dates.</h3></div> <div class="row2"> <div class="wq"><span class="lbl" id="wqWho">Who is coming</span><div class="wchips" role="group" aria-labelledby="wqWho" data-q="who"><button type="button" data-v="couple" aria-pressed="true">A couple</button><button type="button" data-v="family" aria-pressed="false">Family with children</button><button type="button" data-v="friends" aria-pressed="false">Friends</button><button type="button" data-v="solo" aria-pressed="false">Just me</button></div></div> <label class="small" style="display:flex;gap:8px;align-items:center;padding-bottom:6px"><input type="checkbox" id="walkDog"> With a dog</label> </div> <div class="row2"> <div class="wq"><span class="lbl" id="wqPace">Your pace</span><div class="wchips" role="group" aria-labelledby="wqPace" data-q="pace"><button type="button" data-v="slow" aria-pressed="false">Slow, a week of it</button><button type="button" data-v="balanced" aria-pressed="true">Balanced, four nights</button><button type="button" data-v="full" aria-pressed="false">Full, a long weekend</button></div></div> <div class="wq"><span class="lbl" id="wqFor">Here for</span><div class="wchips" role="group" aria-labelledby="wqFor" data-q="for"><button type="button" data-v="tub" aria-pressed="true">The hot tub and the sea</button><button type="button" data-v="fire" aria-pressed="false">Winter fire and books</button><button type="button" data-v="work" aria-pressed="false">A working week</button><button type="button" data-v="celebrate" aria-pressed="false">A celebration</button></div></div> </div> <div><button class="btn accent" type="button" id="walkGo">Walk it</button></div> <div class="walk-route" id="walkRoute" hidden> <div><p class="eyebrow" id="walkStep"></p><h4 id="walkTitle"></h4><p id="walkText" style="margin:6px 0 0"></p></div> <div class="walk-nav"><button class="btn ghost sm" type="button" id="walkPrev">‹ Previous stop</button><button class="btn sm" type="button" id="walkNext">Next stop ›</button><span class="small muted" id="walkHint">Each stop opens on the photo below. Use the arrows or pick a stop.</span></div> <ol class="walk-stops" id="walkStops"></ol> <div class="walk-dates" id="walkDates" hidden></div> </div> </div>
+
+    <div class="plan" role="tablist" aria-label="Ground floor plan, choose a room" id="roomTabs"></div>
+    <div class="tour">
+      <div class="tour-main" id="tourMain">
+        <div class="tour-stage" id="tourStage"></div>
+        <span class="tour-cap" id="tourCap" aria-hidden="true"></span>
+        <button class="btn sm ghost reset" id="resetView" type="button" hidden>Reset view</button>
+      </div>
+      <div class="tour-side"><div class="card" id="tourCard" aria-live="polite"></div></div>
+    </div>
+    <div class="tour-progress"><div class="bar" role="progressbar" aria-labelledby="tourProg" aria-valuemin="0" aria-valuemax="13" aria-valuenow="0" id="tourBarBox"><i id="tourBar"></i></div><p class="small muted" id="tourProg"></p></div>
+    <div id="bonus"></div>
+  </div>
+</section>
+
+<section id="film" class="film-sec" aria-labelledby="filmH">
+  <div class="wrap">
+    <p class="eyebrow">The house film</p>
+    <h2 id="filmH">Half a minute inside, before you arrive.</h2>
+    <p class="lede">No talking, no music. The tub first, then the rooms at dusk, one after another. Guests get the longer version with their door code.</p>
+    <div class="film" id="filmBox">
+      <video id="vid" poster="img/hottub-night.jpg" preload="metadata" playsinline controls loop muted aria-label="The house film: slow pans across the rooms, no sound">
+        <source src="media/house-film.mp4" type="video/mp4">
+      </video>
+      <button class="film-play" id="filmPlay" type="button" aria-label="Play the house film"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span></button>
+    </div>
+    <p class="film-notes muted" aria-label="Rooms shown, in order"><span>The hot tub</span><span>From the street</span><span>The nook</span><span>Sitting room</span><span>Library and stove</span><span>Dining room</span><span>Kitchen</span><span>Brass bedroom</span><span>Attic twin</span><span>Bathroom</span><span>Courtyard by day</span></p>
+  </div>
+</section>
+
+<section id="gallery" aria-labelledby="galH">
+  <div class="wrap">
+    <p class="eyebrow">Gallery</p>
+    <h2 id="galH">Steam, evening light, oak and plaster.</h2>
+    <p class="lede">Swipe through the house, or open any photo full size.</p>
+    <div id="galCar"></div>
+    <div style="display:flex;justify-content:center;margin-top:16px"><button class="btn ghost" type="button" id="viewAll">View all 22 photos</button></div>
+  </div>
+</section>
+
+<section id="seasons" class="band" aria-labelledby="seaH">
+  <div class="wrap">
+    <p class="eyebrow">All year round</p>
+    <h2 id="seaH">There is no off-season here. Only different reasons.</h2>
+    <div class="tabs" role="tablist" aria-label="Seasons" id="seasonTabs"></div>
+    <div class="season" id="seasonBody" role="tabpanel"></div>
+  </div>
+</section>
+
+<section id="offers" aria-labelledby="offersH" style="background:var(--accent-soft)">
+  <div class="wrap">
+    <p class="eyebrow">Offers</p>
+    <h2 id="offersH">Quiet weeks, rewarded.</h2>
+    <p class="lede">The pricing engine applies these automatically. Press a button and the next matching free dates land in the calendar.</p>
+    <div class="offers" id="offerGrid"></div>
+    <div class="card voucher">
+      <div>
+        <p class="eyebrow">Gift voucher</p>
+        <h3>Give someone the beam house.</h3>
+        <p class="small muted" style="margin-top:8px">Any amount from £25, redeemable against any direct stay or extra, valid 24 months. Sent by email as a printable card, or posted with a sprig of something from the garden.</p>
+      </div>
+      <form class="vform" id="vForm" novalidate>
+        <fieldset class="amounts" id="amounts">
+          <legend class="lbl">Amount</legend>
+          <label class="amt"><input type="radio" name="amt" value="100">£100</label>
+          <label class="amt on"><input type="radio" name="amt" value="250" checked>£250</label>
+          <label class="amt"><input type="radio" name="amt" value="500">£500</label>
+          <label class="amt"><input type="radio" name="amt" value="other">Other</label>
+          <label class="sr-only" for="vOther">Other amount in pounds</label>
+          <input class="other" id="vOther" type="number" inputmode="numeric" min="25" max="2000" step="5" placeholder="£ other" hidden>
+        </fieldset>
+        <p class="err" id="vFormErr" role="alert"></p>
+        <button class="btn accent" type="submit">Buy a voucher</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="book" aria-labelledby="bookH">
+  <div class="wrap">
+    <p class="eyebrow">Live availability &amp; smart pricing</p>
+    <h2 id="bookH">Pick your nights. The price is the price.</h2>
+    <p class="lede">Rates move with the season and the calendar. A gap night between two bookings is cheaper, and a long midweek stay in January is cheapest. What you see includes everything.</p>
+    <div class="cal-wrap">
+      <div class="card">
+        <div class="cal-head">
+          <button class="btn ghost sm icon" type="button" id="prevM" aria-label="Previous month">‹</button>
+          <b id="calTitle" aria-live="polite"></b>
+          <button class="btn ghost sm icon" type="button" id="nextM" aria-label="Next month">›</button>
+        </div>
+        <div class="cal" id="cal" role="grid" aria-labelledby="calTitle"></div>
+        <p class="cal-legend"><span><i style="background:var(--card)"></i>Free</span><span><i style="background:var(--bg2)"></i>Booked</span><span><i style="background:var(--accent)"></i>Your stay</span><span><span class="mono" style="color:var(--accent)">deal</span> = gap night, 20% off, bookable on its own</span></p>
+        <p class="cal-status" id="calStatus" aria-live="polite">Tap your arrival date, then your departure date. Arrow keys move between days.</p>
+        <p class="tiny muted">Calendar syncs with Airbnb and Booking.com every 15 minutes.</p>
+      </div>
+      <div class="stack">
+        <div class="card quote" id="quote" aria-live="polite"></div>
+        <div class="card">
+          <p class="eyebrow">Add to your stay</p>
+          <div id="extras"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="guide" class="band" aria-labelledby="guideH">
+  <div class="wrap">
+    <div class="grid g2">
+      <div>
+        <p class="eyebrow">Guest guide · ask the house</p>
+        <h2 id="guideH">Ask anything. No waiting for a host to wake up.</h2>
+        <p class="lede">Everything we have ever been asked, searchable. Open it on your phone from the QR code by the door.</p>
+        <form class="ask" id="askForm">
+          <div class="field"><label class="sr-only" for="askIn">Your question</label><input type="search" id="askIn" placeholder="How does the stove work? Is the first weekend in December free?" autocomplete="off"></div>
+          <button class="btn" type="submit">Ask</button>
+        </form>
+        <div class="chips" id="askChips"></div>
+        <p class="small muted" style="margin-top:14px">Answers come from the house notes and the live calendar. Anything the house cannot answer goes to the owners, who reply in about 6 minutes.</p>
+      </div>
+      <div class="card">
+        <p class="eyebrow">Your arrival, step by step</p>
+        <div class="faq">
+          <details open><summary>Before you travel</summary><p>We send a short house film and your door code 48 hours out. Tell us your arrival time and we will light the stove and warm the room.</p></details>
+          <details><summary>Getting here</summary><p>Train to the seafront station, then a 9-minute walk along the lane. The parking permit is in the hall drawer for the bay opposite.</p></details>
+          <details><summary>Self check-in from 3pm</summary><p>The key safe is behind the slate plaque. The code arrives by SMS. Lights and heating come on automatically when the door opens.</p></details>
+          <details><summary>During your stay</summary><p>Message us any time in the app. Median reply is 6 minutes. Extra logs are in the lean-to. Tide times are on the kitchen screen.</p></details>
+          <details><summary>Leaving by 10:30</summary><p>Leave the dishes, strip nothing. Late checkout to 1pm can be added if the next guests are not due.</p></details>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="local" aria-labelledby="localH">
+  <div class="wrap">
+    <p class="eyebrow">Out the door</p>
+    <h2 id="localH">The lane, the beach, the pub, the walk.</h2>
+    <div class="loc" id="localList"></div>
+    <div class="card where">
+      <img src="img/aerial-map.jpg" alt="Aerial photo looking over the rooftops to the sea, with the house at 78 High Street marked, the beach two streets ahead, a pub on the seafront and two ice-cream stops on the way" loading="lazy">
+      <div><p class="eyebrow">Where we are</p><h3>78 High Street. Turn left, and the sea is at the end of the road.</h3><p class="small muted" style="margin-top:8px">The pub is on the seafront, there are two ice-cream stops on the way down, and the station is nine minutes in the other direction.</p><a class="btn ghost sm" href="https://maps.google.com" target="_blank" rel="noopener" style="margin-top:12px">Open in Maps ↗</a></div>
+    </div>
+    <div class="grid g3" style="margin-top:18px">
+      <div class="card"><p class="eyebrow">Today</p><b class="serif" style="font-size:1.5rem">12° · broken cloud</b><p class="small muted" style="margin-top:6px">High tide 07:42 &amp; 20:05 · Sunset 16:21 · Sea 13°</p><p class="tiny muted" style="margin-top:6px">Sample figures. Live data connects to Met Office and tide APIs in production.</p></div>
+      <div class="card"><p class="eyebrow">Getting around</p><p class="small">Station 9 min walk · Bus stop 2 min · Bikes in the yard (free) · EV charger 150 m</p><a href="https://maps.google.com" class="mono small" style="display:inline-block;margin-top:8px" target="_blank" rel="noopener">Open map ↗</a></div>
+      <form class="card" id="clubForm" novalidate>
+        <p class="eyebrow">Returning guests club</p>
+        <p class="small">Stay once direct and you are in: 10% off every return, first access to Christmas, New Year and August, and we remember how you take your coffee.</p>
+        <div class="field" style="margin-top:12px"><label for="clubEmail">Email</label><input type="email" id="clubEmail" placeholder="you@example.com" autocomplete="email"></div>
+        <p class="err" id="clubErr" role="alert"></p>
+        <button class="btn ghost sm" type="submit" style="margin-top:10px">Join the club</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="reviews" class="band" aria-labelledby="revH">
+  <div class="wrap">
+    <p class="eyebrow">Verified stays only</p>
+    <h2 id="revH">What guests say when they get home.</h2>
+    <div class="grid g3" style="margin-top:24px">
+      <blockquote class="card rev" style="margin:0"><span class="v">verified · Feb</span><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><p>"We came for a rainy February week and barely left the house. The stove, the books, the lamp. It is built for weather."</p><footer class="who">Hannah &amp; Tom · Bristol · 3rd stay</footer></blockquote>
+      <blockquote class="card rev" style="margin:0"><span class="v">verified · Jul</span><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><p>"Four minutes to the sea is true. Swam before breakfast every day, then coffee in the nook with the palms."</p><footer class="who">Lena · Berlin</footer></blockquote>
+      <blockquote class="card rev" style="margin:0"><span class="v">verified · Oct</span><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><p>"Worked from the window seat all week on fibre Wi-Fi. The midweek rate made it cheaper than my coworking space."</p><footer class="who">Marcus · London · workcation</footer></blockquote>
+    </div>
+  </div>
+</section>
+
+<section id="follow" aria-labelledby="followH">
+  <div class="wrap">
+    <p class="eyebrow">Follow the house</p>
+    <h2 id="followH">Letters from the beam house, and the odd photo of the sea.</h2>
+    <div class="follow">
+      <div>
+        <div class="ig-head"><p class="small"><b>@thebeamhouse</b> <span class="muted">on Instagram</span></p><a class="btn ghost sm" href="https://www.instagram.com/" target="_blank" rel="noopener">Follow ↗</a></div>
+        <div class="ig" id="igGrid"></div>
+      </div>
+      <form class="card" id="newsForm" novalidate>
+        <p class="eyebrow">Newsletter</p>
+        <h3>Four letters a year. Never more.</h3>
+        <p class="small muted" style="margin-top:8px">Seasonal dates before they go on the platforms, the midweek deals, a recipe from the kitchen and the best swim of the month.</p>
+        <div class="field" style="margin-top:14px"><label for="nName">First name (optional)</label><input id="nName" autocomplete="given-name"></div>
+        <div class="field" style="margin-top:10px"><label for="nEmail">Email</label><input id="nEmail" type="email" autocomplete="email" required></div>
+        <label class="small" style="display:flex;gap:10px;align-items:flex-start;margin-top:12px;cursor:pointer"><input type="checkbox" id="nAgree" style="width:20px;height:20px;flex:0 0 auto;accent-color:var(--accent)"> Yes, email me the letters. Unsubscribe in one tap, any time.</label>
+        <p class="err" id="newsErr" role="alert"></p>
+        <button class="btn" type="submit" style="margin-top:12px">Sign me up</button>
+        <p class="tiny muted" style="margin-top:10px">Demo: in production this connects to a mailing tool such as Mailchimp or Buttondown, with a double opt-in email.</p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap grid g3">
+    <div><p class="brandline">The Beam House</p><p>A Marea Dvīpa design, built for direct booking.</p></div>
+    <div class="stack" style="gap:8px">
+      <p class="contact"><code id="mail">hello@thebeamhouse.example</code><button class="btn ghost sm" type="button" data-copy="mail">Copy</button></p>
+      <p class="contact"><code id="phone">+44 7000 000000</code><span class="tiny">WhatsApp</span><button class="btn ghost sm" type="button" data-copy="phone">Copy</button></p>
+    </div>
+    <div class="stack" style="gap:10px"><p>Cancellation: full refund to 14 days before arrival. Damage deposit £200, pre-authorised, never charged for honest accidents.</p><p>Replies typically within the hour, 8am to 10pm, by WhatsApp or phone.</p><p><button class="btn ghost sm" type="button" id="privacyBtn">Privacy choices</button> <button class="btn ghost sm" type="button" id="a11yBtn">Accessibility statement</button> <a class="btn ghost sm" href="owner.html">For owners</a></p></div>
+  </div>
+</footer>
+
+<div class="consent" id="consent" role="region" aria-label="Cookie and privacy choices" hidden>
+  <div><b>Cookies and privacy</b><p class="small muted" style="margin-top:4px">This site keeps your theme, currency and booking in progress on your device. Nothing is tracked unless you allow it.</p></div>
+  <details class="consent-more" id="consentMore">
+    <summary>Choose what to allow</summary>
+    <label><input type="checkbox" checked disabled> <span><b style="font-family:inherit;font-size:inherit">Essential</b>, always on. Theme, currency, your dates while you book.</span></label>
+    <label><input type="checkbox" id="cAnalytics"> <span><b style="font-family:inherit;font-size:inherit">Analytics.</b> Privacy-friendly page counts so we know which sections matter.</span></label>
+    <label><input type="checkbox" id="cMarketing"> <span><b style="font-family:inherit;font-size:inherit">Marketing.</b> A reminder about dates you looked at but did not book.</span></label>
+  </details>
+  <div class="consent-btns"><button class="btn sm" type="button" id="cAll">Allow all</button><button class="btn ghost sm" type="button" id="cEss">Essentials only</button><button class="btn ghost sm" type="button" id="cSave" hidden>Save my choices</button></div>
+</div>
+
+<nav class="tabbar" aria-label="Quick navigation">
+  <a href="#top" data-sec="top"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</a>
+  <a href="#house" data-sec="house"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M21 15l-5-5-8 8"/></svg>House</a>
+  <a href="#book" data-sec="book"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Book</a>
+  <a href="#guide" data-sec="guide"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .8-1 1.5M12 17h0"/></svg>Guide</a>
+  <a href="#local" data-sec="local"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Local</a>
+</nav>
+
+<dialog id="menuDlg" aria-label="Menu">
+  <div class="sheet menu">
+    <div class="sheet-head"><b class="serif" style="font-size:1.3rem">The Beam House</b><button class="btn ghost sm icon" type="button" data-close aria-label="Close menu">✕</button></div>
+    <ul>
+      <li><a href="#house">The house</a></li>
+      <li><a href="#film">The house film</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#seasons">Seasons</a></li>
+      <li><a href="#offers">Offers &amp; vouchers</a></li>
+      <li><a href="#book">Book direct</a></li>
+      <li><a href="#guide">Guest guide</a></li>
+      <li><a href="#local">Local</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#follow">Follow the house</a></li>
+      
+      
+    </ul>
+    <button class="theme" id="themeBtn2" type="button"><span id="themeLbl2">Theme: Auto</span></button>
+  </div>
+</dialog>
+
+<dialog id="lb" aria-label="Photo viewer">
+  <div class="lb-box">
+    <img id="lbimg" src="" alt="">
+    <div class="lb-cap"><span id="lbcap"></span><span class="mono tiny" id="lbcount"></span></div>
+    <div class="lb-ctl">
+      <button class="btn sm" type="button" id="lbPrev" aria-label="Previous photo">‹ Prev</button>
+      <button class="btn sm" type="button" data-close>Close</button>
+      <button class="btn sm" type="button" id="lbNext" aria-label="Next photo">Next ›</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="a11yDlg" aria-labelledby="a11yH"> <div class="sheet"> <div class="sheet-head"><div><p class="eyebrow" style="margin-bottom:4px">Accessibility statement · 8 November 2026</p><h3 id="a11yH">Built to be used by everyone who stays here</h3></div><button class="btn ghost sm icon" type="button" data-close aria-label="Close">✕</button></div> <div class="stack" style="gap:12px"> <p>This site aims to meet WCAG 2.2 level AA. It is one page with no page builder, so what you see is what the browser gets.</p> <ul class="plain"> <li>A skip link, landmarks and headings in order, and every photograph described in text.</li> <li>The whole site works with a keyboard: the calendar with the arrow keys and Page Up and Page Down, the dialogs with Escape, the tour and film with buttons that have names.</li> <li>Text can be resized to 200% and the layout reflows on a phone without sideways scrolling.</li> <li>Colours were checked for contrast in both the light and the dark theme, and the theme follows your system setting.</li> <li>Nothing moves if your system asks for reduced motion; slideshows and the film have a pause control.</li> <li>No cookies are set and nothing is tracked until you choose to allow it.</li> </ul> <p><b>Known limits.</b> The house film has captions but no audio description. The interactive tour's floor plan is also offered as a list of rooms and stories for screen readers. The assistant's answers are plain text and can be read aloud by your screen reader.</p> <p>If anything here is hard to use, tell us by WhatsApp, phone or email and we will fix it or help you book another way. We review this statement each time the site changes.</p> </div> </div> </dialog> <dialog id="holdDlg" aria-labelledby="holdH">
+  <form class="sheet" id="holdForm" novalidate>
+    <div class="sheet-head"><div><p class="eyebrow" style="margin-bottom:4px">Hold these dates</p><h3 id="holdH">Your stay</h3></div><button class="btn ghost sm icon" type="button" data-close aria-label="Close">✕</button></div>
+    <p class="small muted" id="holdSummary"></p>
+    <div class="stack" style="margin-top:16px">
+      <div class="field"><label for="hName">Name</label><input id="hName" autocomplete="name" required></div>
+      <div class="field"><label for="hEmail">Email</label><input id="hEmail" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="hPhone">Mobile (for the door code, optional)</label><input id="hPhone" type="tel" autocomplete="tel"></div>
+      <div class="field"><label for="hMsg">Anything we should know? (optional)</label><textarea id="hMsg" placeholder="Arrival time, allergies, a birthday…"></textarea></div>
+      <label class="small" style="display:flex;gap:10px;align-items:flex-start;cursor:pointer"><input type="checkbox" id="hAgree" style="width:20px;height:20px;flex:0 0 auto;accent-color:var(--accent)"> I agree to the cancellation terms: full refund to 14 days before arrival, 30% deposit now, balance 4 weeks out.</label>
+      <p class="err" id="holdErr" role="alert"></p>
+      <button class="btn accent" type="submit">Hold for 15 minutes and continue to payment</button>
+      <p class="tiny muted">Demo: the payment step connects to Stripe in production. No card is taken here.</p>
+    </div>
+  </form>
+  <div class="sheet" id="holdDone" hidden>
+    <div class="sheet-head"><div><p class="eyebrow" style="margin-bottom:4px">Dates held</p><h3>See you at the beam house.</h3></div><button class="btn ghost sm icon" type="button" data-close aria-label="Close">✕</button></div>
+    <div id="holdDoneBody" class="stack" style="gap:8px"></div>
+    <button class="btn" type="button" data-close style="margin-top:16px">Done</button>
+  </div>
+</dialog>
+
+<dialog id="vDlg" aria-labelledby="vH">
+  <form class="sheet" id="vDetails" novalidate>
+    <div class="sheet-head"><div><p class="eyebrow" style="margin-bottom:4px">Gift voucher</p><h3 id="vH">Who is it for?</h3></div><button class="btn ghost sm icon" type="button" data-close aria-label="Close">✕</button></div>
+    <p class="small muted" id="vSummary"></p>
+    <div class="stack" style="margin-top:16px">
+      <div class="field"><label for="vTo">Their name</label><input id="vTo" required></div>
+      <div class="field"><label for="vFrom">From</label><input id="vFrom" required autocomplete="name"></div>
+      <div class="field"><label for="vMsg">Message on the card (optional, 200 characters)</label><textarea id="vMsg" maxlength="200"></textarea></div>
+      <div class="field"><label for="vEmail">Send the voucher to</label><input id="vEmail" type="email" required autocomplete="email" placeholder="their email, or yours to print"></div>
+      <p class="err" id="vErr" role="alert"></p>
+      <button class="btn accent" type="submit">Continue to payment</button>
+      <p class="tiny muted">Demo: payment connects to Stripe in production. No card is taken here.</p>
+    </div>
+  </form>
+  <div class="sheet" id="vDone" hidden>
+    <div class="sheet-head"><div><p class="eyebrow" style="margin-bottom:4px">Gift voucher</p><h3>On its way.</h3></div><button class="btn ghost sm icon" type="button" data-close aria-label="Close">✕</button></div>
+    <div id="vDoneBody" class="stack" style="gap:8px"></div>
+    <button class="btn" type="button" data-close style="margin-top:16px">Done</button>
+  </div>
+</dialog>
+
+<button class="fab" id="fab" type="button" aria-haspopup="dialog" aria-controls="aiDlg"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>Ask the house</button>
+
+<dialog class="ai" id="aiDlg" aria-labelledby="aiTitle">
+  <div class="ai-head">
+    <div class="av" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></div>
+    <div class="t"><b id="aiTitle">Ask the house</b><small id="aiSub">Connecting…</small></div>
+    <button class="btn ghost sm icon" type="button" data-close aria-label="Close assistant">✕</button>
+  </div>
+  <div class="ai-log" id="aiLog" role="log" aria-live="polite" aria-label="Conversation"></div>
+  <div class="ai-chips" id="aiChips"></div>
+  <form class="ai-form" id="aiForm">
+    <label class="sr-only" for="aiIn">Message</label>
+    <textarea id="aiIn" rows="1" placeholder="Ask about dates, prices, the house…" autocomplete="off" enterkeyhint="send"></textarea>
+    <button class="btn accent icon" type="submit" id="aiSend" aria-label="Send"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+  </form>
+  <p class="ai-foot" id="aiFoot">AI assistant. Dates and prices come from the live calendar; everything else from the house notes.</p>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+/* ---------- config ---------- */
+const HOUSE={name:'The Beam House',base:{low:135,mid:175,high:245},otaMarkup:1.15,maxGuests:4};
+const FX={GBP:1,EUR:1.17,USD:1.31}; const SYM={GBP:'£',EUR:'€',USD:'$'};
+let cur='GBP';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=v=>SYM[cur]+Math.round(v*FX[cur]).toLocaleString('en-GB');
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+let toastT; function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),3200)}
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- dates ---------- */
+const pad=n=>String(n).padStart(2,'0');
+const key=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parse=k=>{const p=k.split('-').map(Number);return new Date(p[0],p[1]-1,p[2])};
+const addDays=(d,n)=>{const t=new Date(d);t.setDate(t.getDate()+n);return t};
+const today=()=>{const t=new Date();t.setHours(0,0,0,0);return t};
+const fmt=d=>d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+const fmtShort=d=>d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+const HORIZON=540;
+
+/* ---------- theme ---------- */
+const root=document.documentElement;
+const SUN='M12 4V2M12 22v-2M4.9 4.9L3.5 3.5M20.5 20.5l-1.4-1.4M2 12H4M20 12h2M4.9 19.1l-1.4 1.4M20.5 3.5l-1.4 1.4M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z';
+const MOON='M12 3a9 9 0 1 0 9 9c0-.5 0-1-.1-1.4A5.5 5.5 0 0 1 13.4 3.1C13 3 12.5 3 12 3z';
+const AUTO='M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 2v14a7 7 0 0 1 0-14z';
+const ORDER=['auto','light','dark'];
+function applyTheme(t){
+  if(t==='auto'){root.removeAttribute('data-theme');store.del('bh-theme')}else{root.dataset.theme=t;store.set('bh-theme',t)}
+  const next=ORDER[(ORDER.indexOf(t)+1)%3];
+  const lbl={auto:'Auto',light:'Light',dark:'Dark'};
+  $('themeIcon').setAttribute('d',t==='light'?SUN:t==='dark'?MOON:AUTO);
+  $('themeLbl').textContent=lbl[t]; $('themeLbl2').textContent='Theme: '+lbl[t]+' (tap for '+lbl[next]+')';
+  $('themeBtn').setAttribute('aria-label','Theme: '+lbl[t]+'. Switch to '+lbl[next]);
+}
+let theme=store.get('bh-theme'); if(!ORDER.includes(theme))theme='auto';
+if(root.dataset.theme&&!store.get('bh-theme'))theme='auto';
+applyTheme(theme);
+function cycleTheme(){theme=ORDER[(ORDER.indexOf(theme)+1)%3];applyTheme(theme)}
+$('themeBtn').addEventListener('click',cycleTheme); $('themeBtn2').addEventListener('click',cycleTheme);
+
+/* ---------- currency ---------- */
+const savedCur=store.get('bh-cur'); if(savedCur&&FX[savedCur])cur=savedCur; $('cur').value=cur;
+$('cur').addEventListener('change',e=>{cur=e.target.value;store.set('bh-cur',cur);renderCal();renderQuote();renderExtras();renderOffers()});
+
+/* ---------- dialogs ---------- */
+document.querySelectorAll('dialog').forEach(d=>{
+  d.addEventListener('click',e=>{if(e.target===d)d.close()});
+  d.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>d.close()));
+});
+$('menuBtn').addEventListener('click',()=>$('menuDlg').showModal());
+$('menuDlg').querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>$('menuDlg').close()));
+
+/* ---------- availability ---------- */
+const booked=new Set();
+(function(){const d=today();for(let i=0;i<HORIZON;i++){const t=addDays(d,i);const r=(i*7919)%23;if((r<6&&t.getDay()>=5)||r===11||(i>12&&i<16))booked.add(key(t))}})();
+const isBooked=d=>booked.has(key(d));
+function isGap(d){return !isBooked(d)&&isBooked(addDays(d,-1))&&isBooked(addDays(d,1))}
+function rate(d){const m=d.getMonth(),wk=d.getDay()>=5;let r=(m>=5&&m<=8)?HOUSE.base.high:(m>=3&&m<=9)?HOUSE.base.mid:HOUSE.base.low;if(wk)r*=1.18;if(m===11&&d.getDate()>19)r*=1.5;if(isGap(d))r*=.8;return Math.round(r)}
+const minNights=d=>{const m=d.getMonth();return (m>=5&&m<=7)?3:2};
+function rangeClear(a,b){for(let t=new Date(a);t<b;t=addDays(t,1))if(isBooked(t))return false;return true}
+function nextFreeWeekend(){const t=today();for(let i=0;i<HORIZON;i++){const d=addDays(t,i);if(d.getDay()===5&&!isBooked(d)&&!isBooked(addDays(d,1)))return d}return null}
+
+/* ---------- live line ---------- */
+(function(){const w=nextFreeWeekend();const msgs=[];if(w)msgs.push('Next free weekend: '+fmtShort(w)+' – '+fmtShort(addDays(w,2)));msgs.push('Hot tub heated to 38° for every arrival this winter');msgs.push('Winter fireside rate now live · from £135');msgs.push('38% of guests are returning guests');let i=0;$('livemsg').textContent=msgs[0];if(!reduced&&msgs.length>1)setInterval(()=>{i=(i+1)%msgs.length;$('livemsg').textContent=msgs[i]},5000)})();
+
+/* ---------- hero slideshow ---------- */
+const HERO=[
+ {src:'img/hottub-night.jpg',alt:'The cedar hot tub steaming in the lit courtyard at night, palms around it'},
+ {src:'img/ext-dusk.jpg',alt:'The white cottage from the street at dusk, black-framed windows glowing, olive trees either side of the door'},
+ {src:'img/hero.jpg',alt:'The reading nook at dusk: two chairs around a brass tray table, a star lantern lit, palms outside the window'},
+ {src:'img/bedroom.jpg',alt:'The brass double bed with an aubergine throw, lamps lit either side'},
+ {src:'img/sitting-tv.jpg',alt:'The sitting room with the window seat, the TV on an antique chest and the dining room through the door'}
+];
+const ICO_PAUSE='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>',ICO_PLAY='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+(function(){
+  const box=$('heroSlides'),ctl=$('heroCtl');let i=0,timer=null,playing=!reduced;
+  box.innerHTML=HERO.map((h,j)=>`<img src="${h.src}" alt="${esc(h.alt)}" class="${j?'':'on'}" ${j?'':'fetchpriority="high"'} aria-hidden="${j!==0}">`).join('');
+  ctl.innerHTML=`<button type="button" id="heroPlay" aria-label="${playing?'Pause slideshow':'Play slideshow'}">${playing?ICO_PAUSE:ICO_PLAY}</button>`+HERO.map((h,j)=>`<button type="button" class="dot" data-i="${j}" aria-label="Photo ${j+1} of ${HERO.length}" aria-current="${j===0}"><i></i></button>`).join('');
+  const imgs=[...box.children],dots=[...ctl.querySelectorAll('.dot')];
+  function show(n){i=(n+HERO.length)%HERO.length;imgs.forEach((im,j)=>{im.classList.toggle('on',j===i);im.setAttribute('aria-hidden',j!==i)});dots.forEach((d,j)=>d.setAttribute('aria-current',j===i))}
+  function stop(){clearInterval(timer);timer=null}
+  function start(){stop();if(playing&&!document.hidden)timer=setInterval(()=>show(i+1),6000)}
+  $('heroPlay').addEventListener('click',()=>{playing=!playing;$('heroPlay').innerHTML=playing?ICO_PAUSE:ICO_PLAY;$('heroPlay').setAttribute('aria-label',playing?'Pause slideshow':'Play slideshow');start()});
+  dots.forEach(d=>d.addEventListener('click',()=>{show(+d.dataset.i);start()}));
+  document.addEventListener('visibilitychange',start);
+  start();
+})();
+
+/* ---------- carousel: native scroll-snap, arrows, dots, counter ---------- */
+let carN=0;
+function makeCarousel(host,slides,o){
+  o=o||{};const id='car'+(++carN);
+  host.innerHTML=`<div class="car ${o.mini?'mini':''}" role="region" aria-roledescription="carousel" aria-label="${esc(o.label||'Photos')}">
+    <div class="car-track" id="${id}" tabindex="0">${slides.map((sl,i)=>`<figure class="car-slide" role="group" aria-roledescription="slide" aria-label="${i+1} of ${slides.length}${sl.cap?': '+esc(sl.cap):''}"><img src="${sl.src}" alt="${esc(sl.alt)}" ${i?'loading="lazy"':''} draggable="false">${o.zoom?`<button type="button" class="zoom" data-i="${i}" aria-label="Open photo ${i+1} full size"></button>`:''}${sl.cap?`<figcaption aria-hidden="true">${esc(sl.cap)}</figcaption>`:''}</figure>`).join('')}</div>
+    <div class="car-ctl"><button type="button" class="btn ghost sm icon" data-dir="-1" aria-label="Previous photo">‹</button><div class="car-dots">${slides.map((sl,i)=>`<button type="button" aria-label="Go to photo ${i+1}" aria-current="${i===0}" data-i="${i}"><i></i></button>`).join('')}</div><span class="car-count num" aria-live="polite">1 / ${slides.length}</span><button type="button" class="btn ghost sm icon" data-dir="1" aria-label="Next photo">›</button></div></div>`;
+  const track=host.querySelector('.car-track'),dots=[...host.querySelectorAll('.car-dots button')],count=host.querySelector('.car-count');
+  let idx=0,raf=0;
+  const paint=()=>{dots.forEach((d,j)=>d.setAttribute('aria-current',j===idx));count.textContent=(idx+1)+' / '+slides.length};
+  const go=n=>{idx=(n+slides.length)%slides.length;track.scrollTo({left:track.children[idx].offsetLeft-track.offsetLeft,behavior:reduced?'auto':'smooth'});paint()};
+  track.addEventListener('scroll',()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>{const w=track.clientWidth+12;const n=Math.round(track.scrollLeft/w);if(n!==idx&&n>=0&&n<slides.length){idx=n;paint()}})},{passive:true});
+  host.querySelectorAll('[data-dir]').forEach(b=>b.addEventListener('click',()=>go(idx+ +b.dataset.dir)));
+  dots.forEach(d=>d.addEventListener('click',()=>go(+d.dataset.i)));
+  track.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){e.preventDefault();go(idx+1)}else if(e.key==='ArrowLeft'){e.preventDefault();go(idx-1)}else if(e.key==='Home'){e.preventDefault();go(0)}else if(e.key==='End'){e.preventDefault();go(slides.length-1)}});
+  if(o.onZoom)host.querySelectorAll('.zoom').forEach(b=>b.addEventListener('click',()=>o.onZoom(+b.dataset.i,b)));
+  return {go,get index(){return idx}};
+}
+
+/* ---------- tour ---------- */
+const HOME={lat:50.82,lon:-0.14};
+const ROOMS=[
+ {name:'The courtyard',plan:'Hot tub and palms',floor:'out',img:'img/courtyard-day.jpg',alt:'Courtyard with a cedar hot tub, potted palms, two deck chairs and a blue shuttered panel on the wall',intro:'A cedar hot tub, two deck chairs and more palms than a courtyard needs.',hs:[
+  {x:59,y:62,t:'The hot tub',d:'Western red cedar, wood-fired originally, now electric so it is warm when you arrive. Heated to 38°, seats four with knees touching.',from:{place:'Jutland, Denmark',lat:56.26,lon:9.5},tip:'Lid off, lights on, and the palms do the rest. Quiet after 10pm for the neighbours.'},
+  {x:31,y:58,t:'The palms',d:'Chusan palms from a nursery in Torbay, planted the first winter. They are what turn the nook window blue at dusk.',from:{place:'Torbay, Devon',lat:50.46,lon:-3.53},tip:'They drop a frond or two in a gale. Leave them; we collect.'},
+  {x:50,y:35,t:'The blue shutter',d:'A pair of carved window shutters from a house in Essaouira, hung as a screen. The blue is the colour of the boats there.',from:{place:'Essaouira, Morocco',lat:31.51,lon:-9.77},tip:'The deck chairs fold and go in the lean-to if rain is forecast. Or leave them; they are teak.'}]},
+ {name:'The nook',plan:'Window seat',floor:'ground',img:'img/nook-portrait.jpg',alt:'The reading nook: two chairs, a brass tray table and the palm window',intro:'Two chairs, a brass tray table and the best window in the house.',hs:[
+  {x:52,y:62,t:'Brass tray table',d:'Hammered brass on a folding carved stand, found in the souk in Marrakech and carried home as hand luggage.',from:{place:'Marrakech, Morocco',lat:31.63,lon:-7.99},tip:'Perfect for a pot of coffee or a board game. It folds flat if you want floor space.'},
+  {x:23,y:58,t:'Kilim cushions',d:'Hand-woven wool kilims from Anatolia. The rust and ochre set the palette for the whole house.',from:{place:'Konya, Anatolia',lat:37.87,lon:32.49},tip:'Take one to the window seat. They are meant to be sat on, not arranged.'},
+  {x:50,y:36,t:'The mirror',d:'Carved and gilded Peruvian frame, bought from a workshop in Cusco and shipped home in a crate of wood shavings.',from:{place:'Cusco, Peru',lat:-13.53,lon:-71.97},tip:'Angle yourself to catch the star lantern and the bookshelves behind you.'},
+  {x:86,y:40,t:'The window',d:'Original Georgian sash, 1790s glass with the ripples still in it. Palms in the courtyard outside turn the dusk light blue. The photo is not filtered.',from:null,tip:'Sit here at about 4:30pm in winter. Ten minutes of blue, then the lamps.'}]},
+ {name:'Sitting room',plan:'Stove',floor:'ground',img:'img/sofa.jpg',alt:'Leather sofa in front of the wood-burner with a studded Indian door as a coffee table',intro:'Leather sofa, a wood-burner and an Indian door turned coffee table.',hs:[
+  {x:14,y:48,t:'Wood-burner',d:'Lit for you on arrival in winter. Logs and kindling live in the lean-to; the two-minute lighting method is in the guide.',from:null,tip:'Ask the house "how does the stove work" and it will talk you through it.'},
+  {x:48,y:62,t:'Coffee table',d:'A 19th-century door from Rajasthan, iron studs and all, resting on a welded steel frame made by a blacksmith up the coast.',from:{place:'Jaipur, Rajasthan',lat:26.91,lon:75.79},tip:'Feet up is encouraged. It has survived 150 years of worse.'},
+  {x:84,y:44,t:'Driftwood lamp table',d:'A single block of reclaimed oak beam, found on the beach after a winter storm. The ceramic lamp was thrown by a potter in the lanes.',from:{place:'The beach, 4 minutes away',lat:50.818,lon:-0.14},tip:'Run your hand along the top. You can feel the old nail holes.'}]},
+ {name:'Library corner',plan:'Books',floor:'ground',img:'img/library-stove.jpg',alt:'Bookshelves above a leather armchair, the wood-burner and the kilim-cushioned sofa under the beams',intro:'Three shelves of paperbacks, a mid-century armchair and the stove in the corner.',hs:[
+  {x:22,y:66,t:'The armchair',d:'Distressed leather on an ash frame, Danish, 1960s, re-stuffed twice. Where most guests end up by day two.',from:{place:'Copenhagen, Denmark',lat:55.68,lon:12.57},tip:'The reading lamp has two settings. The lower one is for the last chapter.'},
+  {x:20,y:22,t:'The shelves',d:'Take any book; leave one if you like. The collection started with a box left by the first guests and has never been pruned.',from:null,tip:'Local walking guides are on the bottom shelf, tide tables tucked inside the front one.'},
+  {x:78,y:58,t:'Kilim cushions, again',d:'The sofa cushions match the nook. Same village, bought ten years apart. The weaver recognised her own pattern from a photo.',from:{place:'Konya, Anatolia',lat:37.87,lon:32.49},tip:'The sofa pulls out if a fifth guest needs a night. Ask us first.'}]},
+ {name:'Dining room',plan:'Table',floor:'ground',img:'img/dining-table.jpg',alt:'Farmhouse dining table with cross-back chairs, a flamingo print and a view into the sitting room',intro:'A scrubbed farmhouse table for six, under a flamingo.',hs:[
+  {x:40,y:66,t:'The table',d:'Reclaimed pine boards on a painted base, made by a joiner in the lanes from floorboards out of a chapel. Seats six, eight with the bench.',from:{place:'The lanes, 6 minutes away',lat:50.822,lon:-0.14},tip:'The ring marks are part of it. Hot pans straight on is fine.'},
+  {x:60,y:28,t:'The flamingo',d:'A hand-coloured flamingo plate after Audubon. The pelican and heron next door are from the same set.',from:{place:'New Orleans, Louisiana',lat:29.95,lon:-90.07},tip:'The best seat for the flamingo is the one with its back to the kitchen.'},
+  {x:85,y:52,t:'Through to the sitting room',d:'The doorway was widened in the 1950s; look for the newer brick on the left. The whole ground floor runs in one line from here to the nook.',from:null,tip:'Open both doors and the stove warms this room too.'}]},
+ {name:'Kitchen',plan:'Galley',floor:'ground',img:'img/kitchen.jpg',alt:'Galley kitchen with open shelves, marble worktops and the arch through to the dining room',intro:'A galley kitchen with everything for a Sunday roast, through the arch.',hs:[
+  {x:16,y:40,t:'The open shelves',d:'Scaffold boards, sanded and oiled, holding glasses from a Brighton junk shop and the blue-and-white plates that came with the house.',from:null,tip:'Everyday plates on the lower shelf. The good glasses are at the top for a reason.'},
+  {x:27,y:62,t:'Coffee corner',d:'A proper espresso machine, a grinder, and beans from the roaster by the station. Pastries from Sal\u2019s at 7am.',from:{place:'The roaster by the station',lat:50.829,lon:-0.14},tip:'Two scoops, firm tamp. The guide has a 40-second video if you want it.'},
+  {x:76,y:60,t:'Hob and sink',d:'Induction hob, a full oven, a dishwasher under the sink and the brass tap that took three months to arrive from Italy.',from:{place:'Brescia, Italy',lat:45.54,lon:10.22},tip:'Induction heats fast. Start a notch lower than you think.'}]},
+ {name:'The long view',plan:'Whole ground floor, end to end',floor:'long',img:'img/hall.jpg',alt:'The ground floor seen end to end, beam after beam',intro:'The whole ground floor runs in one line, beam after beam.',long:true,hs:[
+  {x:50,y:30,t:'The beams',d:'Original oak, probably ship timber. This coast reused hulls for houses, and the adze marks are still there under the wax.',from:{place:'A hull, broken up on this coast',lat:50.8,lon:-0.3},tip:'Mind your head on the one by the door: 1.78 m.'},
+  {x:74,y:52,t:'Smart TV',d:'Netflix, iPlayer and Spotify are signed in. Cast from your phone on the house Wi-Fi, 300 Mb fibre.',from:null,tip:'Press the house button on the remote for the film of the rooms at night.'}]},
+ {name:'The brass bedroom',plan:'Double',floor:'up',img:'img/bedroom.jpg',alt:'Victorian brass double bed with an aubergine throw, lamps lit either side, a cane chair and a hamper by the wall',intro:'A Victorian brass bed under the eaves, with six birds watching.',hs:[
+  {x:67,y:36,t:'The brass bed',d:'Victorian, cast iron and brass, from a dealer in Birmingham who had it from a hotel clearance. Re-sprung with a new mattress every three years.',from:{place:'Birmingham',lat:52.49,lon:-1.89},tip:'The brass knobs unscrew. Guests have hidden notes inside for twenty years.'},
+  {x:94,y:31,t:'Six birds',d:'Hand-coloured plates from Morris\u2019s British Birds, 1850s, all waders from this shore: curlew, godwit, plover.',from:{place:'York',lat:53.96,lon:-1.08},tip:'The same birds are on the beach at low tide. The guide has a tide table.'},
+  {x:90,y:87,t:'The hamper',d:'Somerset willow. It holds the spare pillows and blankets, and the hot-water bottles in winter.',from:{place:'Somerset Levels',lat:51.07,lon:-2.93},tip:'Blackout blind cord is on the left of the window. The seagulls start at five.'}]},
+ {name:'The attic twin',plan:'Twin, own bathroom',floor:'up',img:'img/twin.jpg',alt:'Two single beds with striped linen under the sloping attic beams, a small window between them',intro:'Two singles under the roof, painted white, with the bathroom through the door.',hs:[
+  {x:19,y:69,t:'The twin beds',d:'Mahogany singles made by a joiner up the coast to fit under the slope. Striped linen from a Lisbon mill, washed soft.',from:{place:'Lisbon, Portugal',lat:38.72,lon:-9.14},tip:'They push together into a king if you ask before you arrive.'},
+  {x:47,y:25,t:'The roof beams',d:'The roof was raised in the 1800s to make the room; the old purlins stayed and were painted with the rest. The bolts are hand-forged.',from:null,tip:'Tallest guest takes the bed on the right. More headroom.'},
+  {x:37,y:51,t:'The little window',d:'Faces east over the rooftops to the sea. The first light arrives here before anywhere else in the house.',from:null,tip:'Leave the blind up a crack and you will wake with the gulls and the sunrise.'}]},
+ {name:'The bathroom',plan:'Stars',floor:'up',img:'img/bathroom.jpg',alt:'Attic bathroom with a star-patterned tiled floor, an oak-seated loo, a basin and a carved wooden mirror',intro:'Stars underfoot, an oak seat and a carved mirror, tucked under the roof.',hs:[
+  {x:66,y:91,t:'The star tiles',d:'Encaustic cement tiles, pressed by hand in Valencia. Eight-pointed stars, the same pattern as the lantern downstairs.',from:{place:'Valencia, Spain',lat:39.47,lon:-0.38},tip:'They are warm; there is heating under them. Bare feet are the point.'},
+  {x:17,y:29,t:'The carved mirror',d:'Teak, carved with a river of fish, from a workshop in Ubud. It travelled home in a surfboard bag.',from:{place:'Ubud, Bali',lat:-8.51,lon:115.26},tip:'The light above it is on a dimmer. Low for baths, high for shaving.'},
+  {x:55,y:47,t:'The little painting',d:'A fishing village in oils, bought at the Thursday market for less than the frame was worth. Nobody can agree which coast it is.',from:{place:'Thursday market, 5 minutes away',lat:50.823,lon:-0.142},tip:'Towels and the hairdryer are in the basket under the basin.'}]}
+];
+const ORD=n=>{const w=['','first','second','third','fourth','fifth','sixth','seventh','eighth','ninth','tenth','eleventh','twelfth','thirteenth','fourteenth','fifteenth','sixteenth','seventeenth','eighteenth','nineteenth','twentieth'];if(n<=20)return w[n];const tens=['','','twenty','thirty','forty'];const t=Math.floor(n/10),u=n%10;return u?tens[t]+'-'+w[u]:tens[t].replace(/y$/,'ieth')};
+const BONUS={t:'The carved initials',d:'Low on the beam by the door, where the wax has worn thin, someone cut I.H. 1687 with a knife. Nobody knows who. Every guest who finds every story in the house gets told this one.'};
+const TOTAL=ROOMS.reduce((a,r)=>a+r.hs.length,0);
+let room=0,hsIdx=-1,walking=false,walkTimer=null;
+const seen=new Set((()=>{try{return JSON.parse(store.get('bh-tour')||'[]')}catch(e){return []}})());
+const saveSeen=()=>store.set('bh-tour',JSON.stringify([...seen]));
+function geo(from){
+  if(!from)return null;
+  const R=6371,toR=x=>x*Math.PI/180;
+  const dLat=toR(from.lat-HOME.lat),dLon=toR(from.lon-HOME.lon);
+  const a=Math.sin(dLat/2)**2+Math.cos(toR(HOME.lat))*Math.cos(toR(from.lat))*Math.sin(dLon/2)**2;
+  const km=Math.round(2*R*Math.asin(Math.sqrt(a)));
+  const y=Math.sin(dLon)*Math.cos(toR(from.lat)),x=Math.cos(toR(HOME.lat))*Math.sin(toR(from.lat))-Math.sin(toR(HOME.lat))*Math.cos(toR(from.lat))*Math.cos(dLon);
+  const brg=(Math.atan2(y,x)*180/Math.PI+360)%360;
+  const pts=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+  return {km,brg,dir:pts[Math.round(brg/22.5)%16]};
+}
+const compass=b=>`<svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="20" fill="var(--card)" stroke="var(--line-strong)"/><text x="22" y="9" text-anchor="middle" font-size="7" fill="var(--muted)" font-family="var(--mono)">N</text><g transform="rotate(${b.toFixed(1)} 22 22)"><path d="M22 7l4 15-4 3-4-3z" fill="var(--c-direct)"/><path d="M22 37l-4-15 4-3 4 3z" fill="var(--line-strong)"/></g><circle cx="22" cy="22" r="2" fill="var(--ink)"/></svg>`;
+function foundHTML(r,i){const n=r.hs.filter((h,j)=>seen.has(i+':'+j)).length;return `<span class="found">${n}<span class="lng"> of ${r.hs.length} stories</span><span class="shr">/${r.hs.length}</span></span>`}
+function renderRooms(focusTab){
+  const tabs=$('roomTabs');
+  const cell=(r,i)=>`<button role="tab" type="button" id="roomTab${i}" class="${r.long?'long':''}" aria-selected="${i===room}" aria-controls="tourMain" tabindex="${i===room?0:-1}">${r.long?`<span>${esc(r.name)} <small style="margin-left:6px">${esc(r.plan)}</small></span>${foundHTML(r,i)}`:`<small>${esc(r.plan)}</small><span>${esc(r.name)}${r.floor==='out'?' <em class="star" aria-label="highlight">★</em>':''}</span>${foundHTML(r,i)}${r.name==='The nook'?'<i class="door" aria-hidden="true"></i>':''}`}</button>`;
+  const floorOf=f=>ROOMS.map((r,i)=>[r,i]).filter(x=>x[0].floor===f);
+  tabs.innerHTML=[['Upstairs','up'],['','long'],['Ground floor','ground'],['Outside','out']].map(([lbl,f])=>{const list=floorOf(f);return `<div class="floor${lbl?'':' floor-long'}" style="--n:${list.length}">${lbl?`<small class="floor-l" aria-hidden="true">${lbl}</small>`:''}${list.map(([r,i])=>cell(r,i)).join('')}</div>`}).join('');
+  tabs.querySelectorAll('[role=tab]').forEach(b=>b.addEventListener('click',()=>{stopWalk();room=+b.id.replace('roomTab','');hsIdx=-1;renderRooms(true)}));
+  if(focusTab)$('roomTab'+room).focus();
+  const r=ROOMS[room];
+  const st=$('tourStage');
+  st.style.setProperty('--z',1);
+  st.innerHTML=`<img src="${r.img}" alt="${esc(r.alt)}" loading="lazy">`+r.hs.map((h,i)=>`<button type="button" class="hs ${seen.has(room+':'+i)?'seen':''}" style="left:${h.x}%;top:${h.y}%" aria-label="Story ${i+1}: ${esc(h.t)}${seen.has(room+':'+i)?' (found)':''}" aria-current="${i===hsIdx}" data-i="${i}"><span aria-hidden="true">${i+1}</span></button>`).join('');
+  st.querySelectorAll('.hs').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();stopWalk();showHs(+b.dataset.i)}));
+  $('tourCap').textContent=r.name+' · '+r.hs.length+' stories';
+  $('resetView').hidden=true;
+  renderTourCard();renderProgress();
+}
+function renderTourCard(){
+  const r=ROOMS[room];
+  const list=`<ul class="hslist">${r.hs.map((h,i)=>`<li><button type="button" class="${seen.has(room+':'+i)?'seen':''}" aria-current="${i===hsIdx}" data-i="${i}"><b aria-hidden="true">${i+1}</b>${esc(h.t)}${seen.has(room+':'+i)?'<span class="tick" aria-label="found">✓</span>':''}</button></li>`).join('')}</ul>`;
+  let body;
+  if(hsIdx<0){body=`<p class="eyebrow">${esc(r.name)}</p><h3>${esc(r.intro)}</h3><p class="muted small">Tap a numbered dot on the photo, pick a story below, or start the guided walk.</p>`}
+  else{
+    const h=r.hs[hsIdx],g=geo(h.from);
+    const meta=g?`<div class="story-meta">${compass(g.brg)}<div><b>${esc(h.from.place)}</b>${g.km>20?g.km.toLocaleString('en-GB')+' km, '+g.dir+' of here':'From this coast'}</div></div>`:`<div class="story-meta"><svg viewBox="0 0 44 44" aria-hidden="true"><rect x="6" y="10" width="32" height="24" rx="3" fill="var(--card)" stroke="var(--line-strong)"/><path d="M6 20h32M22 10v24" stroke="var(--line-strong)"/></svg><div><b>Part of the house</b>Been here all along.</div></div>`;
+    body=`<p class="eyebrow">${esc(r.name)} · story ${hsIdx+1} of ${r.hs.length}</p><h3>${esc(h.t)}</h3><p>${esc(h.d)}</p>${meta}<p class="story-try"><b style="font-family:inherit">Try this.</b> ${esc(h.tip)}</p><div class="story-nav"><button class="btn ghost sm" type="button" id="prevStory">‹ Previous</button><button class="btn ghost sm" type="button" id="nextStory">Next story ›</button><button class="btn ghost sm" type="button" id="askStory">Ask the house about this</button></div>`;
+  }
+  $('tourCard').innerHTML=body+list;
+  $('tourCard').querySelectorAll('.hslist button').forEach(b=>b.addEventListener('click',()=>{stopWalk();showHs(+b.dataset.i)}));
+  const pv=$('prevStory'),nx=$('nextStory'),ask=$('askStory');
+  if(pv)pv.addEventListener('click',()=>{stopWalk();stepStory(-1)});
+  if(nx)nx.addEventListener('click',()=>{stopWalk();stepStory(1)});
+  if(ask)ask.addEventListener('click',()=>openAssistant('Tell me more about the '+ROOMS[room].hs[hsIdx].t.toLowerCase()));
+}
+function showHs(i){
+  hsIdx=i;const h=ROOMS[room].hs[i];
+  const st=$('tourStage');st.style.setProperty('--ox',h.x+'%');st.style.setProperty('--oy',h.y+'%');st.style.setProperty('--z',1.35);
+  $('resetView').hidden=false;
+  const k=room+':'+i;const fresh=!seen.has(k);seen.add(k);saveSeen();
+  st.querySelectorAll('.hs').forEach(b=>{b.setAttribute('aria-current',+b.dataset.i===i);if(+b.dataset.i===i)b.classList.add('seen')});
+  renderTourCard();renderProgress();
+  const tab=$('roomTab'+room);if(tab){const f=tab.querySelector('.found');if(f)f.outerHTML=foundHTML(ROOMS[room],room)}
+  if(fresh&&seen.size===TOTAL)toast('All '+TOTAL+' stories found. The '+ORD(TOTAL+1)+' is below.');
+}
+function stepStory(d){
+  let r=room,i=hsIdx+d;
+  if(i>=ROOMS[r].hs.length){r=(r+1)%ROOMS.length;i=0}
+  if(i<0){r=(r-1+ROOMS.length)%ROOMS.length;i=ROOMS[r].hs.length-1}
+  if(r!==room){room=r;hsIdx=-1;renderRooms(false)}
+  showHs(i);
+}
+function renderProgress(){
+  const n=seen.size,pct=Math.round(100*n/TOTAL);
+  $('tourBar').style.width=pct+'%';$('tourBarBox').setAttribute('aria-valuenow',n);$('tourBarBox').setAttribute('aria-valuemax',TOTAL);
+  $('tourProg').textContent=n>=TOTAL?'All '+TOTAL+' stories found.':n+' of '+TOTAL+' stories found across ten rooms. '+(n?'Keep going for the '+ORD(TOTAL+1)+'.':'Find them all to unlock a '+ORD(TOTAL+1)+'.');
+  $('bonus').innerHTML=n>=TOTAL?`<div class="bonus"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V6l8-3 8 3v14M4 12h16M9 20v-5h6v5"/></svg><div><p class="eyebrow">The ${ORD(TOTAL+1)} story</p><h3>${esc(BONUS.t)}</h3><p style="margin-top:6px">${esc(BONUS.d)}</p></div></div>`:'';
+}
+$('resetView').addEventListener('click',()=>{$('tourStage').style.setProperty('--z',1);$('resetView').hidden=true});
+$('tourStage').addEventListener('click',()=>{if(+getComputedStyle($('tourStage')).getPropertyValue('--z')>1){$('tourStage').style.setProperty('--z',1);$('resetView').hidden=true}});
+/* swipe between rooms */
+(function(){let x0=null;const m=$('tourMain');m.addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});m.addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>60){stopWalk();room=(room+(dx<0?1:-1)+ROOMS.length)%ROOMS.length;hsIdx=-1;renderRooms(false)}},{passive:true})})();
+/* guided walk */
+function stopWalk(){if(!walking)return;walking=false;clearInterval(walkTimer);$('walkBtn').textContent=seen.size>=TOTAL?'Walk again':'Resume the guided walk';$('walkBtn').setAttribute('aria-pressed','false')}
+function startWalk(){
+  walking=true;$('walkBtn').textContent='Pause the walk';$('walkBtn').setAttribute('aria-pressed','true');
+  if(hsIdx<0)showHs(0);
+  walkTimer=setInterval(()=>{const last=room===ROOMS.length-1&&hsIdx===ROOMS[room].hs.length-1;if(last){stopWalk();$('walkBtn').textContent='Walk again';return}stepStory(1)},reduced?9000:7000);
+}
+$('walkBtn').addEventListener('click',()=>{if(walking)stopWalk();else{if(seen.size>=TOTAL&&room===ROOMS.length-1&&hsIdx===ROOMS[room].hs.length-1){room=0;hsIdx=-1;renderRooms(false)}startWalk()}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopWalk()});
+function tablistKeys(container,count,get,set){
+  container.addEventListener('keydown',e=>{
+    const i=get();let n=null;
+    if(e.key==='ArrowRight')n=(i+1)%count();else if(e.key==='ArrowLeft')n=(i-1+count())%count();else if(e.key==='Home')n=0;else if(e.key==='End')n=count()-1;
+    if(n!==null){e.preventDefault();set(n)}
+  });
+}
+tablistKeys($('roomTabs'),()=>ROOMS.length,()=>room,n=>{stopWalk();room=n;hsIdx=-1;renderRooms(true)});
+renderRooms(false);
+
+/* ---------- your stay, walked ---------- */
+let walkNote='';
+const WALK={who:'couple',pace:'balanced',purpose:'tub',dog:false,route:[],i:0};
+const DAY=p=>p.pace==='slow'?'Saturday':p.pace==='full'?'Friday':'Monday';
+const NEXT=p=>p.pace==='slow'?'Sunday':p.pace==='full'?'Saturday':'Tuesday';
+const WHO={couple:'the two of you',family:'the whole family',friends:'all of you',solo:'you'};
+const ROUTES={
+ tub:[
+  {room:7,h:0,when:p=>DAY(p)+', 9pm',text:p=>`Arrive after dark. The brass bed is turned down, the heating is on, the lamp is lit. Drop the bags and walk straight through to the courtyard.`},
+  {room:0,h:0,when:p=>DAY(p)+', 10pm',text:p=>`First soak. The tub is already at 38° under the palms; lid off, lights on. Quiet after ten for the neighbours, which suits ${WHO[p.who]} anyway.${p.dog?' The dog has the courtyard to itself.':''}`},
+  {room:5,h:1,when:p=>NEXT(p)+', '+(p.pace==='slow'?'9am':'8am'),text:p=>`Coffee corner. Beans are in the tin, the machine is a proper one. Take it to the nook; the sea is four minutes down the lane if you want to swim before breakfast.`},
+  {room:1,h:3,when:p=>NEXT(p)+', 4:30pm',text:p=>`The window. Ten minutes of blue light through the palms, then the lamps come on. Sit here and do nothing on purpose.`},
+  {room:2,h:0,when:p=>NEXT(p)+', 8pm',text:p=>`Wood-burner. Logs are stacked, kindling in the basket, and it is lit in five minutes. Second soak after, or not.`},
+  {room:9,h:0,when:p=>'Last morning, 9am',text:p=>`Star tiles. The attic bathroom catches the morning sun. Checkout is at eleven, so there is time for one more coffee in the courtyard.`}],
+ fire:[
+  {room:3,h:1,when:p=>DAY(p)+', 6pm',text:p=>`The shelves. Arrive, kettle on, and pick the week's books before you unpack. Nobody has ever finished the stack.`},
+  {room:2,h:0,when:p=>DAY(p)+', 7pm',text:p=>`Wood-burner. The log bundle and a bottle of local red are waiting by the stove on fireside stays. Lit in five minutes.`},
+  {room:3,h:0,when:p=>NEXT(p)+', all afternoon',text:p=>`The armchair. Rain on the beams is the house at its best. ${p.who==='family'?'The children have the attic and the long view.':'Phones go in the hall drawer.'}`},
+  {room:0,h:0,when:p=>NEXT(p)+', after dark',text:p=>`The hot tub in winter. Steam, palms, cold air, 38° water. Towels warm on the rail by the back door.`},
+  {room:5,h:2,when:p=>'Midweek, 7pm',text:p=>`Hob and sink. A galley kitchen that cooks properly: induction hob, sharp knives, the heavy pan. The fishmonger is on the way back from the beach.`},
+  {room:1,h:2,when:p=>'Last evening',text:p=>`The mirror. Angle yourself to catch the star lantern. The house is small enough that every corner gets used in a week here.`}],
+ work:[
+  {room:1,h:3,when:p=>'Monday, 9am',text:p=>`The window seat as a desk. Fibre Wi-Fi, a socket under the sill, the palms for company. Calls carry a little; the attic is quieter.`},
+  {room:5,h:1,when:p=>'Every day, 11am',text:p=>`Coffee corner. Proper machine, beans in the tin. The lane to the beach is a four-minute reset between meetings.`},
+  {room:6,h:1,when:p=>'Weeknights, 7pm',text:p=>`The long view. The TV is a smart one, but the beams and the length of the room are the point after a day on screens.`},
+  {room:0,h:0,when:p=>'Wednesday, 9pm',text:p=>`Midweek soak. The tub is the reason workcations here get rebooked. 38°, stars, no notifications.`},
+  {room:4,h:0,when:p=>'Thursday, 8pm',text:p=>`The dining table. Seats six; doubles as a second desk by day and the one proper dinner of the week by night.`},
+  {room:7,h:0,when:p=>'Friday, late',text:p=>`The brass bed. Working weeks here run November to March at 25% off, Monday to Friday. The weekend after is yours if the calendar allows.`}],
+ celebrate:[
+  {room:4,h:0,when:p=>DAY(p)+', 8pm',text:p=>`The dining table. Seats six with elbows; candles are in the dresser drawer. Order the hamper and the first night cooks itself.`},
+  {room:4,h:1,when:p=>DAY(p)+', 8:30pm',text:p=>`The flamingo. Every celebration photo ends up in front of it. We stopped fighting that.`},
+  {room:0,h:0,when:p=>DAY(p)+', 11pm',text:p=>`The hot tub. Four fit with knees touching; the palms do the lighting. Quiet after ten, so this is the whispering part of the evening.`},
+  {room:2,h:1,when:p=>NEXT(p)+', 10am',text:p=>`Coffee table. Late breakfast in the sitting room, fire going if the season asks for it. Nobody has to be anywhere.`},
+  {room:9,h:1,when:p=>NEXT(p)+', 6pm',text:p=>`The carved mirror. Getting ready happens here; the star tiles are the backdrop for the second round of photos.`},
+  {room:7,h:2,when:p=>'Arrival',text:p=>`The hamper. Tell us what the occasion is and it is on the bed when you arrive: local cheese, the bakery's bread, a bottle, and a card in our handwriting.`}]
+};
+function buildRoute(p){
+  const r=ROUTES[p.purpose].map(x=>({...x}));
+  if(p.who==='family'){r[5]={room:8,h:0,when:()=>'Bedtime',text:()=>`The attic twin. The children take the room under the roof beams with the little window; grown-ups get the brass bed and the tub to themselves after.`}}
+  if(p.who==='friends'&&!r.some(x=>x.room===4)){r[4]={room:4,h:0,when:()=>'Every evening',text:()=>`The dining table. Seats six with elbows. Friends' weeks here are mostly this table and the tub, in rotation.`}}
+  if(p.who==='solo'){r[3]={room:3,h:0,when:()=>'Whenever',text:()=>`The armchair. One good chair, one good lamp, one window of weather. The house is kind to one person.`}}
+  if(p.dog&&!r.some(x=>x.room===0&&x.h===1)){r[2]={room:0,h:1,when:()=>'First morning',text:()=>`The palms. The courtyard gate shuts, so the dog has the run of it while the coffee happens. The beach allows dogs all year at the far end.`}}
+  return r;
+}
+function walkDates(p){
+  const nights=p.pace==='slow'?7:p.pace==='full'?3:4;
+  const pred=p.purpose==='work'?(a=>a.getDay()===1&&WINTER(a.getMonth())):p.purpose==='fire'?(a=>WINTER(a.getMonth())&&(p.pace==='full'?a.getDay()===5:p.pace==='slow'?a.getDay()===6:a.getDay()===1)):p.pace==='slow'?(a=>a.getDay()===6):p.pace==='full'?(a=>a.getDay()===5):(a=>a.getDay()===1||a.getDay()===4);
+  return firstStay(nights,pred);
+}
+function renderWalk(){
+  const p=WALK,r=p.route,i=p.i,isDates=i===r.length;
+  $('walkStep').textContent=isDates?'Last stop · your dates':'Stop '+(i+1)+' of '+(r.length+1);
+  if(isDates){
+    $('walkTitle').textContent='Dates that fit this walk';$('walkText').textContent='';
+    const d=walkDates(p);const box=$('walkDates');box.hidden=false;
+    if(!d){box.innerHTML='<p>No free stay matches in the next year. Try a different pace, or pick dates in the calendar below.</p>'}
+    else{const q=quoteRange(d[0],d[1]);box.innerHTML=`<p class="eyebrow">First free stay that fits</p><p><b class="big">${esc(fmtShort(d[0]))} to ${esc(fmtShort(d[1]))}</b><br><span class="small muted">${q.n} night${q.n>1?'s':''}${q.pct?' · '+q.pct+'% off applied':''} · ${money(q.sum)} all-in, about ${money(Math.round(q.sum*HOUSE.otaMarkup))} on Airbnb</span></p><div class="walk-nav"><button class="btn accent sm" type="button" id="walkLoad">Load these dates into the calendar</button><a class="btn ghost sm" href="#book">Choose my own</a></div>`;
+      $('walkLoad').addEventListener('click',()=>{selA=d[0];selB=d[1];focusKey=key(selA);view=new Date(selA.getFullYear(),selA.getMonth(),1);setStatus(q.n+' nights from '+fmtShort(selA)+', loaded from your walk. Change the dates if you like.');renderCal();renderQuote();$('book').scrollIntoView({behavior:reduced?'auto':'smooth'});toast('Dates loaded: '+fmtShort(selA)+' to '+fmtShort(selB))})}
+  }else{
+    const st=r[i];if(!ROOMS[st.room].hs[st.h])st.h=0;$('walkDates').hidden=true;
+    const hsT=ROOMS[st.room].hs[st.h].t,tx=st.text(p);$('walkTitle').textContent=hsT+' · '+st.when(p);$('walkText').textContent=tx.startsWith(hsT+'.')?tx.slice(hsT.length+2):tx;
+    stopWalk();if(room!==st.room){room=st.room;hsIdx=-1;renderRooms(false)}showHs(st.h);
+  }
+  $('walkPrev').disabled=i===0;$('walkNext').textContent=isDates?'Back to the start':(i===r.length-1?'Your dates ›':'Next stop ›');
+  $('walkStops').innerHTML=r.map((st,k)=>`<li><button type="button" data-k="${k}" aria-current="${k===i}"><small>${esc(st.when(p))}</small>${esc(ROOMS[st.room].hs[st.h].t)}</button></li>`).join('')+`<li><button type="button" data-k="${r.length}" aria-current="${isDates}"><small>Then</small>Your dates</button></li>`;
+  walkNote='The guest has planned a walk through the house: '+WHO[p.who]+(p.dog?' with a dog':'')+', '+(p.pace==='slow'?'a slow week':p.pace==='full'?'a long weekend':'four nights')+', here for '+({tub:'the hot tub and the sea',fire:'winter fire and books',work:'a working week',celebrate:'a celebration'})[p.purpose]+'. Their route: '+r.map(st=>ROOMS[st.room].hs[st.h].t+' ('+st.when(p)+')').join('; ')+'. Refer to it when they ask what to do or where things are.';
+}
+document.querySelectorAll('#walk .wchips').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;g.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));WALK[g.dataset.q==='for'?'purpose':g.dataset.q]=b.dataset.v}));
+$('walkGo').addEventListener('click',()=>{WALK.dog=$('walkDog').checked;WALK.route=buildRoute(WALK);WALK.i=0;$('walkRoute').hidden=false;renderWalk();$('walkGo').textContent='Walk it again';$('tourMain').scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'})});
+$('walkPrev').addEventListener('click',()=>{if(WALK.i>0){WALK.i--;renderWalk()}});
+$('walkNext').addEventListener('click',()=>{WALK.i=WALK.i>=WALK.route.length?0:WALK.i+1;renderWalk()});
+$('walkStops').addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(b){WALK.i=+b.dataset.k;renderWalk()}});
+
+
+/* ---------- gallery ---------- */
+const GAL=[
+ {src:'img/hottub-night.jpg',cap:'The hot tub, lights on',alt:'The cedar hot tub steaming in the lit courtyard at night'},
+ {src:'img/courtyard-day.jpg',cap:'The courtyard by day',alt:'Courtyard with a cedar hot tub, palms, deck chairs and a blue shuttered panel'},
+ {src:'img/ext-dusk.jpg',cap:'From the street at dusk',alt:'The white cottage from the street at dusk, windows glowing'},
+ {src:'img/nook-portrait.jpg',cap:'The reading nook',alt:'The reading nook with a brass tray table and the star lantern'},
+ {src:'img/nook-table.jpg',cap:'The nook, looking through the house',alt:'The brass tray table in the nook, with the sitting room beyond'},
+ {src:'img/sofa.jpg',cap:'Wood-burner and the leather sofa',alt:'Leather sofa in front of the lit wood-burner'},
+ {src:'img/library-stove.jpg',cap:'Library corner and the stove',alt:'Bookshelves, the leather armchair and the wood-burner under the beams'},
+ {src:'img/sitting-tv.jpg',cap:'The sitting room',alt:'The sitting room with window seat, TV on an antique chest and a view into the dining room'},
+ {src:'img/dining-table.jpg',cap:'Dining room',alt:'Farmhouse dining table with cross-back chairs and a flamingo print'},
+ {src:'img/kitchen.jpg',cap:'The galley kitchen',alt:'Galley kitchen with open shelves and marble worktops, looking through the arch to the dining room'},
+ {src:'img/kitchen-night.jpg',cap:'Kitchen at night',alt:'The kitchen seen through the arch at night, lamp lit'},
+ {src:'img/bedroom.jpg',cap:'The brass bedroom',alt:'Victorian brass double bed with an aubergine throw'},
+ {src:'img/bedroom-prints.jpg',cap:'Birds over the bed',alt:'Six framed bird prints above the brass bed end, a cane chair beneath'},
+ {src:'img/bedroom-chest.jpg',cap:'Chest and hamper',alt:'Mahogany chest of drawers, a mirror and a wicker hamper in the bedroom'},
+ {src:'img/twin.jpg',cap:'The attic twin',alt:'Two single beds with striped linen under the sloping attic beams'},
+ {src:'img/twin-night.jpg',cap:'Attic twin at night',alt:'The twin room at night, one lamp lit between the beds'},
+ {src:'img/twin-door.jpg',cap:'Through to the bathroom',alt:'The twin room with its door open onto the star-tiled bathroom'},
+ {src:'img/bathroom.jpg',cap:'The star-tiled bathroom',alt:'Attic bathroom with star-patterned floor tiles, an oak seat and a carved mirror'},
+ {src:'img/mirror.jpg',cap:'Star lantern, Carpano print',alt:'A gilded mirror reflecting the star lantern, with a Carpano poster'},
+ {src:'img/hall.jpg',cap:'The long room, end to end',alt:'The ground floor seen end to end along the beams'},
+ {src:'img/cosy.jpg',cap:'Lamp-lit evenings',alt:'A corner of the sitting room lit by a single lamp'},
+ {src:'img/reading.jpg',cap:'Shelves and palms',alt:'Bookshelves with a palm in front of the window'}
+];
+let lbI=0,lbOpener=null;
+function showLb(i){lbI=(i+GAL.length)%GAL.length;const g=GAL[lbI];$('lbimg').src=g.src;$('lbimg').alt=g.alt;$('lbcap').textContent=g.cap;$('lbcount').textContent=(lbI+1)+' / '+GAL.length}
+const galCar=makeCarousel($('galCar'),GAL,{label:'House photos',zoom:true,onZoom:(i,b)=>{lbOpener=b;showLb(i);$('lb').showModal()}});
+$('viewAll').addEventListener('click',()=>{lbOpener=$('viewAll');showLb(galCar.index);$('lb').showModal()});
+$('lbPrev').addEventListener('click',()=>showLb(lbI-1)); $('lbNext').addEventListener('click',()=>showLb(lbI+1));
+$('lb').addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){showLb(lbI-1);e.preventDefault()}if(e.key==='ArrowRight'){showLb(lbI+1);e.preventDefault()}});
+$('lb').addEventListener('close',()=>{if(lbOpener&&lbOpener.isConnected){lbOpener.focus()}galCar.go(lbI)});
+
+/* ---------- seasons ---------- */
+const SEASONS=[
+ {n:'Winter',imgs:[{src:'img/library-stove.jpg',alt:'The wood-burner lit beside the bookshelves and leather armchair'},{src:'img/hottub-night.jpg',alt:'The hot tub steaming in the lit courtyard at night'},{src:'img/bedroom.jpg',alt:'The brass bed with lamps lit either side'}],h:'Fireside weeks, from £135',p:'Storm-watching from the window seat, stove lit, soup on. The midweek 4-night fireside rate includes a log bundle and a bottle of local red. Sea swims for the brave at 9°.',tags:['Wood-burner','Storm walks','Midweek −25%','Workcation rate']},
+ {n:'Spring',imgs:[{src:'img/courtyard-day.jpg',alt:'The courtyard by day with the hot tub, palms and deck chairs'},{src:'img/nook-wide.jpg',alt:'The nook in daylight with palms in the window'},{src:'img/twin.jpg',alt:'The attic twin room with striped linen'}],h:'Long light, empty beaches',p:'The lane fills with blossom, the palms wake up, and the beach is yours before the crowds. Bikes are free; the coast path is at its greenest.',tags:['Bikes','Coast path','Easter availability','Dogs welcome']},
+ {n:'Summer',imgs:[{src:'img/ext-dusk.jpg',alt:'The cottage from the street on a summer evening'},{src:'img/courtyard-day.jpg',alt:'Deck chairs and the hot tub in the palm courtyard'},{src:'img/dining-table.jpg',alt:'The dining table ready for a long dinner'}],h:'Swim before breakfast',p:'Four minutes to the water. Sash windows wide, courtyard dinners, and the house stays cool under thick walls. Direct guests get first pick of August.',tags:['Sea 18°','Courtyard','Festival weeks','Returning-guest priority']},
+ {n:'Autumn',imgs:[{src:'img/armchair.jpg',alt:'The library armchair in golden autumn light'},{src:'img/kitchen-night.jpg',alt:'The kitchen at night, lamp lit'},{src:'img/nook-lantern.jpg',alt:'The nook with the star lantern and kilim cushions'}],h:'Reading season',p:'Golden light, warm sea, quiet town. Book-club weekends and writers’ retreats: the library corner earns its name. Cheapest full-week rates of the year.',tags:['Warmest sea','Book-club weeks','7-night −20%','Half-term']}
+];
+let sea=(()=>{const m=new Date().getMonth();return m<2||m===11?0:m<5?1:m<8?2:3})();
+function renderSeason(focus){
+  const tabs=$('seasonTabs');
+  tabs.innerHTML=SEASONS.map((s,i)=>`<button role="tab" type="button" id="seaTab${i}" aria-selected="${i===sea}" aria-controls="seasonBody" tabindex="${i===sea?0:-1}">${s.n}</button>`).join('');
+  tabs.querySelectorAll('[role=tab]').forEach((b,i)=>b.addEventListener('click',()=>{sea=i;renderSeason(true)}));
+  if(focus)$('seaTab'+sea).focus();
+  const s=SEASONS[sea];
+  $('seasonBody').setAttribute('aria-labelledby','seaTab'+sea);
+  $('seasonBody').innerHTML=`<div id="seaCar"></div><div><h3>${esc(s.h)}</h3><p style="margin-top:12px">${esc(s.p)}</p><div class="chips">${s.tags.map(t=>`<span class="chip">${esc(t)}</span>`).join('')}</div><a class="btn" href="#book" style="margin-top:16px">See ${s.n.toLowerCase()} dates</a></div>`;
+  makeCarousel($('seaCar'),s.imgs,{mini:true,label:s.n+' photos'});
+}
+tablistKeys($('seasonTabs'),()=>SEASONS.length,()=>sea,n=>{sea=n;renderSeason(true)});
+renderSeason(false);
+
+/* ---------- calendar ---------- */
+const T0=today();
+let view=new Date(T0.getFullYear(),T0.getMonth(),1);
+const MAXVIEW=new Date(T0.getFullYear(),T0.getMonth()+17,1);
+let selA=null,selB=null,focusKey=key(T0);
+const sameMonth=(a,b)=>a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth();
+function setStatus(m,isErr){const s=$('calStatus');s.textContent=m;s.classList.toggle('err',!!isErr)}
+function renderCal(){
+  const y=view.getFullYear(),m=view.getMonth();
+  $('calTitle').textContent=view.toLocaleString('en-GB',{month:'long',year:'numeric'});
+  $('prevM').disabled=view<=new Date(T0.getFullYear(),T0.getMonth(),1);
+  $('nextM').disabled=view>=MAXVIEW;
+  const names=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  let h='<div role="row" style="display:contents">'+names.map(n=>`<div class="h" role="columnheader"><abbr title="${n}" style="text-decoration:none">${n[0]}</abbr></div>`).join('')+'</div>';
+  const first=(new Date(y,m,1).getDay()+6)%7;
+  const days=new Date(y,m+1,0).getDate();
+  const fk=parse(focusKey); if(!sameMonth(fk,view))focusKey=key(new Date(y,m,1));
+  let cells='';
+  for(let i=0;i<first;i++)cells+='<div role="gridcell" aria-hidden="true"></div>';
+  for(let d=1;d<=days;d++){
+    const dt=new Date(y,m,d),k=key(dt),past=dt<T0,b=isBooked(dt),off=past;
+    const isA=selA&&k===key(selA),isB=selB&&k===key(selB),inside=selA&&selB&&dt>selA&&dt<selB;
+    const gap=!b&&!past&&isGap(dt);
+    const cls=['d',off?'off':'',b&&!off?'booked':'',inside?'in':'',(isA||isB)?'edge':'',gap?'gap':''].filter(Boolean).join(' ');
+    const label=fmt(dt)+(past?', past':b?', booked':', '+money(rate(dt))+' per night'+(gap?', gap-night deal':''))+(isA?', arrival':isB?', departure':inside?', in your stay':'');
+    cells+=`<button type="button" role="gridcell" class="${cls}" data-k="${k}" aria-label="${label}" aria-selected="${!!(isA||isB||inside)}" aria-disabled="${off||b}" tabindex="${k===focusKey?0:-1}">${d}<small aria-hidden="true">${(b||past)?'':money(rate(dt))}</small></button>`;
+  }
+  const total=first+days,rem=(7-total%7)%7; for(let i=0;i<rem;i++)cells+='<div role="gridcell" aria-hidden="true"></div>';
+  $('cal').innerHTML=h+'<div role="row" style="display:contents">'+cells+'</div>';
+  $('cal').querySelectorAll('button.d').forEach(b=>b.addEventListener('click',()=>pick(b.dataset.k)));
+}
+function pick(k){
+  const d=parse(k);
+  if(d<T0||isBooked(d)){setStatus(isBooked(d)?fmt(d)+' is already booked.':'That date has passed.',true);return}
+  focusKey=k;
+  if(!selA||selB){selA=d;selB=null;setStatus('Arriving '+fmt(d)+'. '+(isGap(d)?'This is a gap-night deal: tap it again to book the single night at 20% off, or pick a departure.':'Now pick your departure date (minimum '+minNights(d)+' nights).'))}
+  else if(d>selA){
+    const n=Math.round((d-selA)/864e5);
+    if(!rangeClear(selA,d)){selA=d;selB=null;setStatus('Those dates cross a booking. Arrival moved to '+fmt(d)+'. Pick a departure date.',true)}
+    else if(!allowsStay(selA,n)){setStatus('Minimum stay from '+fmtShort(selA)+' is '+minNights(selA)+' nights. Pick a later departure.',true)}
+    else{selB=d;setStatus(n+' nights, '+fmtShort(selA)+' to '+fmtShort(selB)+'. Your price is on the right.')}
+  } else if(d<selA){selA=d;setStatus('Arrival moved to '+fmt(d)+'. Now pick your departure date.')}
+  else if(isGap(d)){selB=addDays(d,1);setStatus('Gap-night deal: '+fmt(d)+', one night at 20% off. Your price is on the right.')}
+  else{selA=null;selB=null;setStatus('Selection cleared. Tap your arrival date.')}
+  renderCal();renderQuote();
+}
+function moveMonth(n,keepFocus){const v=new Date(view.getFullYear(),view.getMonth()+n,1);if(v<new Date(T0.getFullYear(),T0.getMonth(),1)||v>MAXVIEW)return false;view=v;renderCal();return true}
+$('prevM').addEventListener('click',()=>moveMonth(-1)); $('nextM').addEventListener('click',()=>moveMonth(1));
+$('cal').addEventListener('keydown',e=>{
+  const map={ArrowLeft:-1,ArrowRight:1,ArrowUp:-7,ArrowDown:7};
+  let d=parse(focusKey);
+  if(e.key in map)d=addDays(d,map[e.key]);
+  else if(e.key==='Home')d=addDays(d,-((d.getDay()+6)%7));
+  else if(e.key==='End')d=addDays(d,6-((d.getDay()+6)%7));
+  else if(e.key==='PageUp'){d=new Date(d.getFullYear(),d.getMonth()-1,Math.min(d.getDate(),28))}
+  else if(e.key==='PageDown'){d=new Date(d.getFullYear(),d.getMonth()+1,Math.min(d.getDate(),28))}
+  else if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(focusKey);focusCell();return}
+  else return;
+  e.preventDefault();
+  const lo=new Date(T0.getFullYear(),T0.getMonth(),1),hi=new Date(MAXVIEW.getFullYear(),MAXVIEW.getMonth()+1,0);
+  if(d<lo||d>hi)return;
+  focusKey=key(d);
+  if(!sameMonth(d,view)){view=new Date(d.getFullYear(),d.getMonth(),1)}
+  renderCal();focusCell();
+});
+function focusCell(){const b=$('cal').querySelector(`[data-k="${focusKey}"]`);if(b)b.focus()}
+
+/* ---------- extras & quote ---------- */
+const EXTRAS=[{i:'🧺',n:'Welcome hamper',d:'Local bread, cheese, eggs, a bottle of something',p:45},{i:'🔥',n:'Stove lit on arrival',d:'Room warm, logs stacked. October to April',p:0},{i:'🕐',n:'Late checkout to 1pm',d:'If the next guests allow',p:35},{i:'🐕',n:'Bring the dog',d:'Bed, bowl, towel and the beach map',p:25},{i:'🚲',n:'E-bike upgrade',d:'Two e-bikes for the week',p:60},{i:'🧘',n:'Private yoga in the long room',d:'90 min with a local teacher',p:70},{i:'🛁',n:'Hot tub ready on arrival',d:'Heated to 38°, lid off, towels out. October to April',p:0}];
+const chosen=new Set([1]);
+function renderExtras(){
+  $('extras').innerHTML=EXTRAS.map((x,i)=>`<label class="xtra" for="x${i}"><span class="ico" aria-hidden="true">${x.i}</span><span><b>${esc(x.n)}</b><small>${esc(x.d)} · ${x.p?money(x.p):'included'}</small></span><input type="checkbox" id="x${i}" ${chosen.has(i)?'checked':''} data-i="${i}"></label>`).join('');
+  $('extras').querySelectorAll('input').forEach(c=>c.addEventListener('change',()=>{c.checked?chosen.add(+c.dataset.i):chosen.delete(+c.dataset.i);renderQuote()}));
+}
+const WINTER=m=>m>=10||m<=2;
+function midweekOffer(a,b){let n=0;for(let t=new Date(a);t<b;t=addDays(t,1)){n++;const d=t.getDay();if(d<1||d>4||!WINTER(t.getMonth()))return false}return n>=4}
+function quoteRange(a,b){let n=0,base=0;for(let t=new Date(a);t<b;t=addDays(t,1)){n++;base+=rate(t)}const midweek=midweekOffer(a,b),long=n>=7;const pct=midweek?25:long?15:0;return {n,base,sum:Math.round(base*(1-pct/100)),long,midweek,pct,label:midweek?'Fireside midweek rate':long?'7+ night stay':''}}
+const allowsStay=(a,n)=>n>=minNights(a)||(n===1&&isGap(a));
+function quoteFor(){
+  const r=quoteRange(selA,selB);
+  const ex=[...chosen].reduce((a,i)=>a+EXTRAS[i].p,0);
+  return {n:r.n,sum:r.sum,long:r.long,pct:r.pct,label:r.label,ex,tot:r.sum+ex,ota:Math.round(r.sum*HOUSE.otaMarkup)+ex};
+}
+function renderQuote(){
+  const q=$('quote');
+  if(!selA||!selB){q.innerHTML=`<p class="eyebrow">Your stay</p><h3>Select arrival and departure</h3><p class="muted small" style="margin-top:8px">Minimum 2 nights (3 in summer). The price shown is the total. Nothing is added later.</p>`;return}
+  const r=quoteFor();
+  q.innerHTML=`<p class="eyebrow">Your stay</p><h3>${fmtShort(selA)} to ${fmtShort(selB)} · ${r.n} night${r.n>1?'s':''}</h3>
+  <div style="margin-top:12px" class="num"><div class="row"><span>Nights, incl. linen, cleaning, heating, Wi-Fi</span><b>${money(r.sum)}</b></div>${r.pct?`<div class="row"><span>${r.label}</span><b>−${r.pct}% applied</b></div>`:''}<div class="row"><span>Extras</span><b>${money(r.ex)}</b></div><div class="row tot"><span>Total, all-in</span><span>${money(r.tot)}</span></div></div>
+  <div class="save">Same dates on Airbnb ≈ <s>${money(r.ota)}</s>. <b>You keep ${money(r.ota-r.tot)}</b> by booking direct, and so do the owners.</div>
+  <button class="btn accent" type="button" id="holdBtn" style="width:100%;margin-top:14px">Hold these dates</button>
+  <p class="tiny muted" style="margin-top:8px">Free cancellation to 14 days before. Pay 30% now (${money(r.tot*.3)}), the rest 4 weeks out.</p>`;
+  $('holdBtn').addEventListener('click',openHold);
+}
+renderExtras();renderCal();renderQuote();
+
+/* ---------- quick book ---------- */
+$('qin').min=key(T0); $('qout').min=key(addDays(T0,2));
+$('qin').addEventListener('change',()=>{const v=$('qin').value;if(v){$('qout').min=key(addDays(parse(v),minNights(parse(v))))}});
+$('qbForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const a=$('qin').value,b=$('qout').value,err=$('qbErr');
+  const bad=(el,m)=>{err.textContent=m;el.setAttribute('aria-invalid','true');el.focus()};
+  $('qin').removeAttribute('aria-invalid');$('qout').removeAttribute('aria-invalid');err.textContent='';
+  if(!a)return bad($('qin'),'Choose an arrival date.');
+  if(!b)return bad($('qout'),'Choose a departure date.');
+  const A=parse(a),B=parse(b);
+  if(A<T0)return bad($('qin'),'Arrival must be today or later.');
+  if(B<=A)return bad($('qout'),'Departure must be after arrival.');
+  const n=Math.round((B-A)/864e5);
+  if(!allowsStay(A,n))return bad($('qout'),'Minimum stay for those dates is '+minNights(A)+' nights.');
+  if(isBooked(A))return bad($('qin'),fmt(A)+' is already booked. Try the calendar for the nearest free dates.');
+  if(!rangeClear(A,B))return bad($('qout'),'Those dates cross an existing booking. Shorten the stay or move it.');
+  const g=$('qg').value; if(g==='2dog'){chosen.add(3);renderExtras()}
+  selA=A;selB=B;focusKey=a;view=new Date(A.getFullYear(),A.getMonth(),1);
+  setStatus(n+' nights, '+fmtShort(A)+' to '+fmtShort(B)+'. Your price is on the right.');
+  renderCal();renderQuote();
+  document.getElementById('book').scrollIntoView({behavior:reduced?'auto':'smooth'});
+  setTimeout(()=>{const st=$('calStatus');st.setAttribute('tabindex','-1');st.focus({preventScroll:true})},0);
+  toast('Live price ready');
+});
+
+/* ---------- hold dialog ---------- */
+function openHold(){
+  const r=quoteFor();
+  $('holdForm').hidden=false;$('holdDone').hidden=true;$('holdErr').textContent='';
+  $('holdSummary').textContent=fmtShort(selA)+' to '+fmtShort(selB)+' · '+r.n+' nights · '+money(r.tot)+' all-in · '+money(r.tot*.3)+' deposit now';
+  $('holdDlg').showModal();
+}
+$('holdForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const name=$('hName'),email=$('hEmail'),agree=$('hAgree'),err=$('holdErr');
+  [name,email].forEach(x=>x.removeAttribute('aria-invalid'));err.textContent='';
+  if(!name.value.trim()){err.textContent='Please tell us your name.';name.setAttribute('aria-invalid','true');name.focus();return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())){err.textContent='That email address does not look right.';email.setAttribute('aria-invalid','true');email.focus();return}
+  if(!agree.checked){err.textContent='Please agree to the cancellation terms to continue.';agree.focus();return}
+  const r=quoteFor();const ref='BH-'+key(selA).replace(/-/g,'').slice(2)+'-'+Math.floor(1000+Math.random()*9000);
+  $('holdDoneBody').innerHTML=`<p>Thanks, <b>${esc(name.value.trim())}</b>. ${fmtShort(selA)} to ${fmtShort(selB)} (${r.n} nights) is held for 15 minutes under reference <span class="mono">${ref}</span>.</p><p>Total ${money(r.tot)} all-in. Deposit due now: ${money(r.tot*.3)}. A confirmation goes to <b>${esc(email.value.trim())}</b>.</p><p class="tiny muted">Demo: in production the payment step opens Stripe and the calendar is blocked on every channel.</p>`;
+  $('holdForm').hidden=true;$('holdDone').hidden=false;$('holdDone').querySelector('button').focus();
+  toast('Dates held · '+ref);
+});
+
+/* ---------- offers ---------- */
+const OFFER_LIST=[
+ {id:'fireside',when:'November to March · Mon to Fri',t:'Fireside midweek',d:'Four midweek nights, 25% off. A log bundle and a bottle of local red are waiting by the stove.',from:()=>HOUSE.base.low*4*.75,unit:'for 4 nights',cta:'Find fireside dates'},
+ {id:'workcation',when:'November to March · Mon to Fri',t:'Workcation',d:'Fibre Wi-Fi, the window seat as a desk and 25% off. Cheaper than most coworking spaces, with a beach at lunch.',from:()=>HOUSE.base.low*4*.75,unit:'for 4 nights',cta:'Find a working week'},
+ {id:'week',when:'Any season',t:'The full week',d:'Seven nights or more, 15% off. Best value in autumn, when the sea is warmest.',from:()=>HOUSE.base.low*7*.85,unit:'for 7 nights',cta:'Find a free week'},
+ {id:'gap',when:'Between bookings',t:'Gap-night deals',d:'A single night between two bookings, 20% off and free of the minimum stay. Marked "deal" in the calendar.',from:()=>HOUSE.base.low*.8,unit:'for 1 night',cta:'Find the next one'}
+];
+function firstStay(nights,pred){for(let i=0;i<400;i++){const a=addDays(T0,i);if(!pred(a))continue;const b=addDays(a,nights);if(!rangeClear(a,b))continue;return [a,b]}return null}
+const OFFER_FIND={
+ fireside:()=>firstStay(4,a=>a.getDay()===1&&WINTER(a.getMonth())),
+ workcation:()=>firstStay(4,a=>a.getDay()===1&&WINTER(a.getMonth())),
+ week:()=>firstStay(7,a=>a.getDay()===6),
+ gap:()=>firstStay(1,a=>isGap(a))
+};
+function renderOffers(){
+  $('offerGrid').innerHTML=OFFER_LIST.map(o=>`<article class="card offer"><p class="eyebrow">${esc(o.when)}</p><h3>${esc(o.t)}</h3><p class="small muted">${esc(o.d)}</p><p class="price"><b>from ${money(Math.round(o.from()))}</b><span>${esc(o.unit)}, all-in</span></p><button class="btn ghost sm" type="button" data-offer="${o.id}">${esc(o.cta)}</button></article>`).join('');
+  $('offerGrid').querySelectorAll('[data-offer]').forEach(b=>b.addEventListener('click',()=>applyOffer(b.dataset.offer)));
+}
+function applyOffer(id){
+  const r=OFFER_FIND[id]();
+  if(!r){toast('No matching free dates in the next year.');return}
+  selA=r[0];selB=r[1];focusKey=key(selA);view=new Date(selA.getFullYear(),selA.getMonth(),1);
+  const q=quoteRange(selA,selB);
+  setStatus(q.n+' night'+(q.n>1?'s':'')+' from '+fmtShort(selA)+', loaded from the offer'+(q.pct?' with '+q.pct+'% off':'')+'. Change the dates if you like.');
+  renderCal();renderQuote();
+  $('book').scrollIntoView({behavior:reduced?'auto':'smooth'});
+  toast('Dates loaded: '+fmtShort(selA)+' to '+fmtShort(selB));
+}
+renderOffers();
+
+/* ---------- gift voucher ---------- */
+let vAmount=250;
+$('amounts').addEventListener('change',e=>{
+  if(e.target.name!=='amt')return;
+  $('amounts').querySelectorAll('label.amt').forEach(l=>l.classList.toggle('on',l.contains(e.target)));
+  const other=e.target.value==='other';$('vOther').hidden=!other;
+  if(other){$('vOther').focus()}else vAmount=+e.target.value;
+});
+$('vOther').addEventListener('input',()=>{vAmount=+$('vOther').value||0});
+$('vForm').addEventListener('submit',e=>{
+  e.preventDefault();const err=$('vFormErr');err.textContent='';
+  if(!(vAmount>=25&&vAmount<=2000)){err.textContent='Choose an amount between £25 and £2,000.';$('vOther').hidden=false;$('vOther').focus();return}
+  $('vDetails').hidden=false;$('vDone').hidden=true;$('vErr').textContent='';
+  $('vSummary').textContent='A £'+vAmount.toLocaleString('en-GB')+' voucher, valid 24 months, for any direct stay or extra.';
+  $('vDlg').showModal();
+});
+$('vDetails').addEventListener('submit',e=>{
+  e.preventDefault();const to=$('vTo'),from=$('vFrom'),em=$('vEmail'),err=$('vErr');
+  [to,from,em].forEach(x=>x.removeAttribute('aria-invalid'));err.textContent='';
+  const bad=(el,m)=>{err.textContent=m;el.setAttribute('aria-invalid','true');el.focus()};
+  if(!to.value.trim())return bad(to,'Tell us who the voucher is for.');
+  if(!from.value.trim())return bad(from,'Tell us who it is from.');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value.trim()))return bad(em,'That email address does not look right.');
+  const code='BHV-'+Math.random().toString(36).slice(2,6).toUpperCase()+'-'+Math.floor(100+Math.random()*900);
+  $('vDoneBody').innerHTML=`<p>A <b>£${vAmount.toLocaleString('en-GB')}</b> voucher for <b>${esc(to.value.trim())}</b>, from ${esc(from.value.trim())}, will be emailed to <b>${esc(em.value.trim())}</b> once payment clears.</p><p>Voucher code <span class="mono">${code}</span>. Valid until ${addDays(T0,730).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}. Redeem it in the "Hold these dates" step or by replying to the voucher email.</p>${$('vMsg').value.trim()?`<p class="small muted">Card message: \u201c${esc($('vMsg').value.trim())}\u201d</p>`:''}<p class="tiny muted">Demo: in production the payment step opens Stripe and the voucher is issued automatically.</p>`;
+  $('vDetails').hidden=true;$('vDone').hidden=false;$('vDone').querySelector('button').focus();
+  toast('Voucher '+code+' ready');
+});
+
+/* ---------- guest guide ---------- */
+const KB=[
+ {t:'wifi',k:['wifi','wi-fi','internet','password','network'],a:'Network <b>BeamHouse</b>, password <b>oak-and-tide-1600</b>. Fibre, 300 Mb. The window seat in the nook has the strongest signal.'},
+ {t:'wood-burner',k:['stove','fire','log','wood','burner'],a:'Open the bottom vent fully, two firelighters under a wigwam of kindling, one log on top, door slightly ajar for 5 minutes, then close and half-shut the vent. Logs are in the lean-to; a 90-second video is on the kitchen screen.'},
+ {t:'check-in',k:['check','arriv','key','code','door'],a:'Self check-in from 3pm. The key safe is behind the slate plaque to the left of the door; the code comes by SMS the morning of arrival. Checkout 10:30.'},
+ {t:'bins',k:['bin','rubbish','recycl'],a:'Black bin Tuesday, green recycling alternate Thursdays. Both live in the yard; just put bags in and we take them out.'},
+ {t:'swimming',k:['swim','beach','sea','tide'],a:'Turn left out of the door, down the lane, 4 minutes. Best swim is the cove past the groynes at mid-to-high tide. Today: high 07:42 and 20:05. Sea 13°.'},
+ {t:'dogs',k:['dog','pet'],a:'Dogs welcome (£25 per stay, bed and towel provided). The beach is dog-friendly all year except the main stretch May to September.'},
+ {t:'parking',k:['park','car'],a:'The permit for the bay opposite is in the hall drawer; display it on the dashboard. EV charger 150 m at the station car park.'},
+ {t:'eating out',k:['eat','pub','restaurant','dinner','food','coffee','bakery'],a:'The Anchor (3 min) for fish and a fire; Sal’s for coffee and pastries at 7am; the Thursday market on the square for cheese and bread.'},
+ {t:'heating',k:['heat','cold','radiator','thermostat','warm'],a:'Heating is on a schedule (6:30 to 9 and 16 to 22). Tap the dial in the hall to boost 2 hours any time. The stove does the rest.'},
+ {t:'tv',k:['tv','netflix','cast','telly'],a:'Samsung TV in the sitting room: Netflix, iPlayer and Spotify are signed in. Cast from your phone on the house Wi-Fi.'},
+ {t:'hot tub',k:['hot tub','hottub','tub','jacuzzi','spa'],a:'The cedar hot tub in the courtyard is heated to 38° for your arrival from October to April; in summer, press the dial by the back door and allow about four hours. Towels are in the lean-to. Lid on when you get out, no glass by the tub, and quiet after 10pm for the neighbours.'},
+ {t:'bedrooms',k:['bedroom','bed ','beds','sleep','twin','double','bathroom','shower','bath'],a:'The brass bedroom has a Victorian double and the chest of drawers; the attic twin has two singles and its own bathroom through the door, with the star-tiled floor. Both have blackout blinds. Extra pillows are in the hamper.'}
+];
+const strip=h=>h.replace(/<[^>]+>/g,'');
+$('askChips').innerHTML=KB.slice(0,7).map(e=>`<button type="button" class="chip" data-q="${esc(e.t)}">${esc(e.t)}</button>`).join('');
+$('askChips').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>openAssistant(b.dataset.q)));
+$('askForm').addEventListener('submit',e=>{e.preventDefault();const q=$('askIn').value.trim();$('askIn').value='';openAssistant(q)});
+
+/* ---------- assistant: Claude via the sample capability, house notes as fallback ---------- */
+const safeParse=k=>/^\d{4}-\d{2}-\d{2}$/.test(k||'')?parse(k):null;
+function availability(aS,dS){
+  const a=safeParse(aS),b=safeParse(dS);
+  if(!a||!b)return {ok:false,reason:'Dates must be ISO YYYY-MM-DD. Today is '+key(T0)+'.'};
+  if(a<T0)return {ok:false,reason:'Arrival is in the past. Today is '+key(T0)+'.'};
+  if(b<=a)return {ok:false,reason:'Departure must be after arrival.'};
+  const n=Math.round((b-a)/864e5);
+  if(!allowsStay(a,n))return {ok:true,available:false,reason:'Minimum stay for that arrival is '+minNights(a)+' nights (a single gap night between bookings is the only exception).'};
+  const blocked=[];for(let t=new Date(a);t<b;t=addDays(t,1))if(isBooked(t))blocked.push(key(t));
+  if(blocked.length)return {ok:true,available:false,booked_nights:blocked.slice(0,10),reason:'Those dates cross an existing booking. Use find_free_dates for alternatives.'};
+  const r=quoteRange(a,b);
+  return {ok:true,available:true,arrive:key(a),depart:key(b),nights:n,total_all_in:money(r.sum),discount:r.pct?r.label+' −'+r.pct+'%':'none',deposit_now:money(r.sum*.3),same_dates_on_platforms_about:money(r.sum*HOUSE.otaMarkup),currency:cur};
+}
+function findFree(i){
+  i=i||{};const n=Math.max(1,Math.min(14,parseInt(i.nights,10)||2));
+  let from=safeParse(i.from)||T0;if(from<T0)from=T0;
+  const to=safeParse(i.to)||addDays(from,365);
+  const out=[];let minReq=null;
+  for(let a=new Date(from);a<=to&&out.length<80;a=addDays(a,1)){
+    if(i.weekend_only&&a.getDay()!==5)continue;
+    if(!allowsStay(a,n)){minReq=minNights(a);continue}
+    const b=addDays(a,n);if(!rangeClear(a,b))continue;
+    const r=quoteRange(a,b);out.push({arrive:key(a),depart:key(b),arrival_day:a.toLocaleDateString('en-GB',{weekday:'long'}),nights:n,total_all_in:money(r.sum),_t:r.sum});
+  }
+  if(i.sort==='cheapest')out.sort((x,y)=>x._t-y._t);
+  return {currency:cur,options:out.slice(0,6).map(o=>{delete o._t;return o}),note:out.length?'':(minReq?'Minimum stay in that period is '+minReq+' nights; try again with nights='+minReq+'.':'Nothing free matching that; try fewer nights or a wider window.')};
+}
+function selectDates(i){
+  const r=availability(i.arrive,i.depart);
+  if(!r.available)return r;
+  selA=parse(i.arrive);selB=parse(i.depart);focusKey=i.arrive;view=new Date(selA.getFullYear(),selA.getMonth(),1);
+  setStatus(r.nights+' nights, '+fmtShort(selA)+' to '+fmtShort(selB)+', chosen with the assistant. Your price is on the right.');
+  renderCal();renderQuote();
+  $('book').scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});
+  return Object.assign({done:true,next_step:'Tell the guest the dates are now in the calendar and they can press "Hold these dates" there.'},r);
+}
+const TOOLS=[
+ {name:'check_availability',description:'Check whether the house is free for a stay and get the all-in price. Dates are ISO YYYY-MM-DD; depart is the checkout day.',inputSchema:{type:'object',properties:{arrive:{type:'string',description:'ISO date'},depart:{type:'string',description:'ISO date, checkout day'}},required:['arrive','depart']},execute:x=>availability(x.arrive,x.depart)},
+ {name:'find_free_dates',description:'Find upcoming free stays with all-in totals. Use for questions like "when is it next free", "next free weekend", "cheapest week in January". Returns up to 6 options.',inputSchema:{type:'object',properties:{nights:{type:'integer',description:'length of stay, default 2'},from:{type:'string',description:'earliest arrival, ISO date'},to:{type:'string',description:'latest arrival, ISO date'},weekend_only:{type:'boolean',description:'only Friday arrivals'},sort:{type:'string',enum:['soonest','cheapest']}}},execute:findFree},
+ {name:'select_dates',description:'Put a stay into the booking calendar on this page so the guest can hold it. Call only after the guest asks to book, hold or choose specific dates.',inputSchema:{type:'object',properties:{arrive:{type:'string'},depart:{type:'string'}},required:['arrive','depart']},execute:selectDates}
+];
+function systemPrompt(){return systemPromptBase()+(walkNote?" "+walkNote:"")}
+function systemPromptBase(){
+  const sel=selA&&selB?'The guest currently has '+key(selA)+' to '+key(selB)+' selected in the calendar.':'No dates are selected in the calendar yet.';
+  return 'You are "the house": the guest assistant for The Beam House, a 400-year-old beamed holiday cottage in a small UK seaside town, four minutes\u2019 walk from the beach. Sleeps 4: a Victorian brass double bedroom, and an attic twin room with its own star-tiled bathroom. Galley kitchen with induction hob and a proper coffee machine. Cedar hot tub in the palm courtyard (heated for arrival October to April). Wood-burner, fibre Wi-Fi, dogs welcome (\u00a325 per stay). The address is 78 High Street; the beach is at the end of the road. This site takes direct bookings only: every price is all-in (linen, cleaning, heating, Wi-Fi, logs included) and about 15% below the same dates on Airbnb or Booking.com. Self check-in from 3pm (key safe behind the slate plaque, code by SMS), checkout 10:30, late checkout to 1pm \u00a335 when free. Minimum 2 nights, 3 nights for June to August arrivals. Stays of 7+ nights get 15% off. Midweek stays of 4+ nights, Monday to Friday, from November to March get 25% off (the Fireside or Workcation rate; not combined with the 7-night discount). A single gap night between two bookings is 20% off and may be booked on its own. Gift vouchers from \u00a325, valid 24 months, redeemable against any direct stay. Free cancellation to 14 days before arrival; 30% deposit now, balance 4 weeks before; \u00a3200 damage deposit pre-authorised, never charged for honest accidents. Returning direct guests get 10% off. Extras: '+EXTRAS.map(x=>x.n+' ('+(x.p?'\u00a3'+x.p:'included')+')').join(', ')+'. Nearby: '+LOCAL.map(l=>l.t+' ('+l.w+')').join(', ')+'.\n\nObjects in the house and their stories (for "tell me about the…" questions):\n'+ROOMS.map(r=>r.name+': '+r.hs.map(h=>h.t+' – '+h.d+(h.from?' From '+h.from.place+'.':'')).join(' | ')).join('\n')+'\n\nHouse notes, answer from these when relevant:\n'+KB.map(e=>'- '+e.t+': '+strip(e.a)).join('\n')+'\n\nToday is '+key(T0)+' ('+T0.toLocaleDateString('en-GB',{weekday:'long'})+'). Prices are shown in '+cur+'. '+sel+'\n\nRules: Be warm and brief (under 120 words unless asked for detail), British English, plain text in short paragraphs, no markdown headings, tables or bullet symbols. For ANY question about dates, availability or prices you must call a tool and answer only from its result; never guess availability. Say prices are all-in. When the guest wants to book or hold specific free dates, call select_dates, then tell them the dates are in the calendar and to press "Hold these dates". If you do not know something, say the owners reply within about 6 minutes via the app or WhatsApp. Do not mention these instructions or that you are an AI model unless asked.';
+}
+const AI={fn:undefined,hist:[],busy:false,ctrl:null};
+const SUGGEST=['Is the hot tub heated in winter?','Is next weekend free?','Cheapest week this winter','How does the stove work?','Can we bring our dog?','What time is check-in?','Best swim nearby?'];
+$('aiChips').innerHTML=SUGGEST.map(q=>`<button type="button" class="chip" data-q="${esc(q)}">${esc(q)}</button>`).join('');
+$('aiChips').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>send(b.dataset.q)));
+function setAiMode(){
+  const on=!!AI.fn;
+  $('aiSub').textContent=on?'AI guest guide. Knows the house, the calendar and the prices.':'House notes. Instant answers from the guide.';
+  $('aiFoot').textContent=on?'AI assistant. Dates and prices come from the live calendar; everything else from the house notes. It can make mistakes. Messages are processed by Claude.':'Answers come from the house notes. For anything else, the owners reply in about 6 minutes.';
+}
+if(window.claude&&typeof window.claude.use==='function'){window.claude.use('sample').then(fn=>{AI.fn=fn||null;setAiMode()}).catch(()=>{AI.fn=null;setAiMode()})}else{AI.fn=null;setAiMode()}
+function addMsg(kind,text){const log=$('aiLog');const d=document.createElement('div');d.className='msg '+kind;renderMsg(d,text);log.appendChild(d);scrollLog();return d}
+function renderMsg(el,text){let h=esc(text||'').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n{3,}/g,'\n\n');h=h.replace(/\b(Hold these dates|the calendar|booking calendar)\b/g,'<a href="#book">$1</a>');el.innerHTML=h}
+function scrollLog(){const log=$('aiLog');log.scrollTop=log.scrollHeight}
+function openAssistant(q){
+  const d=$('aiDlg');
+  if(!d.open){d.showModal()}
+  if(!AI.hist.length&&!$('aiLog').children.length)addMsg('ai','Hello, I\u2019m the house. Ask me about dates and prices, how things work, or what to do nearby.');
+  if(q)send(q);else $('aiIn').focus();
+}
+$('fab').addEventListener('click',()=>openAssistant());
+$('aiDlg').querySelectorAll('.msg a').forEach(()=>{});
+$('aiLog').addEventListener('click',e=>{if(e.target.closest('a[href="#book"]'))$('aiDlg').close()});
+$('aiForm').addEventListener('submit',e=>{e.preventDefault();send($('aiIn').value)});
+$('aiIn').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send($('aiIn').value)}});
+$('aiIn').addEventListener('input',()=>{const t=$('aiIn');t.style.height='auto';t.style.height=Math.min(120,t.scrollHeight)+'px'});
+$('aiDlg').addEventListener('close',()=>{if(AI.ctrl)AI.ctrl.abort()});
+function kbAnswer(q){
+  const l=q.toLowerCase();
+  if(/weekend/.test(l)&&/(free|avail|book|next)/.test(l)){const w=nextFreeWeekend();if(w){const r=quoteRange(w,addDays(w,2));return 'The next free weekend is '+fmt(w)+' to '+fmt(addDays(w,2))+', '+money(r.sum)+' all-in for two nights. Pick it in the booking calendar and press Hold these dates.'}}
+  if(/(price|cost|how much|rate|cheap)/.test(l))return 'Nightly rates run from \u00a3'+HOUSE.base.low+' in winter to \u00a3'+HOUSE.base.high+' in high summer, weekends about 18% more, and gap nights 20% less. Stays of 7+ nights get 15% off. Everything is all-in. Pick dates in the booking calendar to see the exact total.';
+  const hits=KB.filter(e=>e.k.some(k=>l.includes(k))||l.includes(e.t));
+  if(hits.length)return strip(hits[0].a)+(hits.length>1?'\n\nAlso in the notes: '+hits.slice(1).map(h=>h.t).join(', ')+'.':'');
+  return 'That one is not in the house notes yet, so it goes straight to the owners. They usually reply within 6 minutes via the app or WhatsApp.';
+}
+async function send(q){
+  q=(q||'').trim();if(!q||AI.busy)return;
+  if(!$('aiDlg').open)openAssistant();
+  addMsg('me',q);AI.hist.push({role:'user',content:q});
+  $('aiIn').value='';$('aiIn').style.height='auto';
+  const bubble=addMsg('ai','');bubble.classList.add('typing');
+  AI.busy=true;$('aiSend').disabled=true;
+  let text='';
+  if(AI.fn){
+    const msgs=AI.hist.slice(-12);while(msgs.length&&msgs[0].role!=='user')msgs.shift();
+    msgs[0]={role:'user',content:systemPrompt()+'\n\nGuest: '+msgs[0].content};
+    const onText=u=>{bubble.classList.remove('typing');renderMsg(bubble,u.text);scrollLog()};
+    AI.ctrl=new AbortController();
+    try{text=(await AI.fn(msgs,{onText,tools:TOOLS,cache:false,signal:AI.ctrl.signal})).text}
+    catch(e){
+      const code=e&&e.code;
+      if(code==='tools_unavailable'){try{text=(await AI.fn(msgs,{onText,cache:false,signal:AI.ctrl.signal})).text}catch(e2){}}
+      if(!text){
+        if(['not_granted','sampling_disabled','capability_disabled','not_declared','capability_removed','session_expired'].includes(code)){AI.fn=null;setAiMode();addMsg('sys','The AI assistant is not available in this view, so answers come from the house notes.')}
+        else if(code==='rate_limited')addMsg('sys','The assistant is busy right now. Here is the answer from the house notes.');
+        else if(code==='refused')text='I can\u2019t help with that one, but the owners can. Message them from the app.';
+        else if(code==='cancelled'){bubble.remove();AI.busy=false;$('aiSend').disabled=false;return}
+        else addMsg('sys','Could not reach the assistant, so here is the answer from the house notes.');
+        if(!text)text=kbAnswer(q);
+      }
+    }
+  } else text=kbAnswer(q);
+  bubble.classList.remove('typing');renderMsg(bubble,text);AI.hist.push({role:'assistant',content:text});
+  AI.busy=false;$('aiSend').disabled=false;scrollLog();
+}
+
+/* ---------- local ---------- */
+const LOCAL=[{e:'🏖️',t:'The cove',d:'Sheltered, sandy at low tide',w:'4 min'},{e:'🍺',t:'The Anchor',d:'Fish, fire, Sunday roast',w:'3 min'},{e:'🥐',t:'Sal’s bakery',d:'Opens 7am. Go early.',w:'2 min'},{e:'🥾',t:'Cliff path loop',d:'9 km, pub at halfway',w:'from the door'},{e:'🎨',t:'Lanes and galleries',d:'Antiques, prints; the Carpano poster came from here',w:'6 min'},{e:'🚆',t:'Station',d:'London in 1h05',w:'9 min'},{e:'🛒',t:'Thursday market',d:'Cheese, bread, flowers on the square',w:'5 min'},{e:'🌅',t:'Sunset bench',d:'West-facing, bring a blanket',w:'7 min'}];
+$('localList').innerHTML=LOCAL.map(l=>`<div class="card"><div class="e" aria-hidden="true">${l.e}</div><b>${esc(l.t)}</b><p class="small muted" style="margin:4px 0">${esc(l.d)}</p><span class="mono tiny" style="color:var(--accent)">${esc(l.w)} walk</span></div>`).join('');
+
+/* ---------- club ---------- */
+$('clubForm').addEventListener('submit',e=>{
+  e.preventDefault();const el=$('clubEmail'),err=$('clubErr');el.removeAttribute('aria-invalid');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim())){err.textContent='Enter a valid email address to join.';el.setAttribute('aria-invalid','true');el.focus();return}
+  err.textContent='';err.classList.add('ok');err.textContent='You are on the list. Welcome back soon.';toast('Joined the returning guests club');el.value='';
+});
+
+/* ---------- instagram grid + newsletter ---------- */
+const IG=[{src:'img/hottub-night.jpg',cap:'Tub night',alt:'The hot tub steaming at night'},{src:'img/ext-dusk.jpg',cap:'Home, lights on',alt:'The cottage from the street at dusk'},{src:'img/library-stove.jpg',cap:'First fire of the season',alt:'The wood-burner lit beside the bookshelves'},{src:'img/bathroom.jpg',cap:'Stars underfoot',alt:'Star-patterned bathroom floor tiles'},{src:'img/bedroom-prints.jpg',cap:'Six birds, one bed',alt:'Bird prints above the brass bed'},{src:'img/courtyard-day.jpg',cap:'Courtyard, Sunday',alt:'Deck chairs and palms in the courtyard'}];
+$('igGrid').innerHTML=IG.map(g=>`<a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="${esc(g.cap)}, opens Instagram in a new tab"><img src="${g.src}" alt="${esc(g.alt)}" loading="lazy"><span aria-hidden="true">${esc(g.cap)}</span></a>`).join('');
+$('newsForm').addEventListener('submit',e=>{
+  e.preventDefault();const em=$('nEmail'),ag=$('nAgree'),err=$('newsErr');em.removeAttribute('aria-invalid');err.textContent='';
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value.trim())){err.textContent='Enter a valid email address.';em.setAttribute('aria-invalid','true');em.focus();return}
+  if(!ag.checked){err.textContent='Tick the box so we know you want the letters.';ag.focus();return}
+  const name=$('nName').value.trim();
+  $('newsForm').innerHTML=`<p class="eyebrow">Newsletter</p><h3>Thanks${name?', '+esc(name):''}. One more step.</h3><p class="small muted" style="margin-top:8px">We have sent a confirmation to <b>${esc(em.value.trim())}</b>. Tap the link in it and the first letter arrives with the next season.</p><p class="tiny muted" style="margin-top:12px">Demo: no email is sent from this preview.</p>`;
+  $('newsForm').setAttribute('tabindex','-1');$('newsForm').focus();toast('Nearly there. Check your inbox.');
+});
+
+/* ---------- house film ---------- */
+(function(){
+  const v=$('vid'),play=$('filmPlay'),box=$('filmBox');
+  if(!v)return;
+  const CUES=[[0,3,'The hot tub, lights on'],[3,5.5,'From the street at dusk'],[5.5,8,'The nook'],[8,10.5,'The sitting room'],[10.5,13,'Library corner and the stove'],[13,15.5,'Dining room'],[15.5,18,'The galley kitchen'],[18,20.5,'The brass bedroom'],[20.5,23,'The attic twin'],[23,25.5,'The star-tiled bathroom'],[25.5,28.5,'The courtyard by day']];
+  const ts=t=>{const m=Math.floor(t/60),s=(t%60).toFixed(3).padStart(6,'0');return String(m).padStart(2,'0')+':'+s};
+  try{const vtt='WEBVTT\n\n'+CUES.map(c=>ts(c[0])+' --> '+ts(c[1])+'\n'+c[2]).join('\n\n')+'\n';const tr=document.createElement('track');tr.kind='captions';tr.srclang='en';tr.label='Room names';tr.default=true;tr.src=URL.createObjectURL(new Blob([vtt],{type:'text/vtt'}));v.appendChild(tr)}catch(e){}
+  play.addEventListener('click',()=>{v.play().then(()=>{play.hidden=true;v.focus()}).catch(()=>{})});
+  v.addEventListener('play',()=>{play.hidden=true});
+  v.addEventListener('ended',()=>{play.hidden=false});
+  const fail=()=>{if(box.querySelector('.film-fallback'))return;play.hidden=true;const d=document.createElement('div');d.className='film-fallback';d.innerHTML='<p>The film is still rendering. The photos above show every room meanwhile.</p>';box.appendChild(d)};
+  v.querySelector('source').addEventListener('error',fail);v.addEventListener('error',fail);
+})();
+
+/* ---------- consent ---------- */
+const CONSENT_KEY='bh-consent';
+function readConsent(){try{const c=JSON.parse(store.get(CONSENT_KEY)||'null');return c&&typeof c==='object'?c:null}catch(e){return null}}
+function applyConsent(c){
+  window.__bhConsent=c;
+  /* Hook for the live domain: load analytics (e.g. Plausible or GTM) only when c.analytics is true, and the
+     retargeting pixel only when c.marketing is true. Third-party scripts are blocked in this preview, so nothing loads here. */
+}
+function showConsent(prefill){
+  const c=prefill||readConsent()||{};
+  $('cAnalytics').checked=!!c.analytics;$('cMarketing').checked=!!c.marketing;
+  $('consent').hidden=false;
+}
+function saveConsent(c){c.at=new Date().toISOString();store.set(CONSENT_KEY,JSON.stringify(c));applyConsent(c);$('consent').hidden=true;toast(c.analytics||c.marketing?'Privacy choices saved':'Essentials only. Nothing is tracked.')}
+$('cAll').addEventListener('click',()=>saveConsent({analytics:true,marketing:true}));
+$('cEss').addEventListener('click',()=>saveConsent({analytics:false,marketing:false}));
+$('cSave').addEventListener('click',()=>saveConsent({analytics:$('cAnalytics').checked,marketing:$('cMarketing').checked}));
+$('consentMore').addEventListener('toggle',()=>{$('cSave').hidden=!$('consentMore').open});
+$('privacyBtn').addEventListener('click',()=>{showConsent();$('consentMore').open=true;$('cSave').hidden=false;$('cAnalytics').focus()}); $('a11yBtn').addEventListener('click',()=>{$('a11yDlg').showModal()});
+(function(){const c=readConsent();if(c){applyConsent(c)}else setTimeout(()=>showConsent(),900)})();
+
+/* ---------- copy buttons ---------- */
+document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',()=>{
+  const el=$(b.dataset.copy),txt=el.textContent;
+  const fallback=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);toast('Selected. Press copy on your keyboard.')};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(()=>toast('Copied: '+txt)).catch(fallback);else fallback();
+}));
+
+/* ---------- section tracking for the tab bar & nav ---------- */
+const secs=['top','house','film','gallery','seasons','offers','book','guide','local','reviews','follow'].map(id=>$(id)).filter(Boolean);
+const tabFor={top:'top',house:'house',film:'house',gallery:'house',seasons:'house',offers:'book',book:'book',guide:'guide',local:'local',reviews:'local',follow:'local'};
+if('IntersectionObserver' in window){
+  const io=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){const id=en.target.id;document.querySelectorAll('.tabbar a').forEach(a=>a.setAttribute('aria-current',a.dataset.sec===tabFor[id]));document.querySelectorAll('.top nav a').forEach(a=>a.setAttribute('aria-current',a.getAttribute('href')==='#'+id))}})},{rootMargin:'-40% 0px -55% 0px'});
+  secs.forEach(s=>io.observe(s));
+}
+
+/* ---------- keep booking state across live updates ---------- */
+if(window.claude&&window.claude.hot){
+  window.claude.hot.snapshot(()=>({a:selA&&key(selA),b:selB&&key(selB),x:[...chosen]}));
+  const d=window.claude.hot.data;
+  if(d&&d.a){selA=parse(d.a);selB=d.b?parse(d.b):null;if(Array.isArray(d.x)){chosen.clear();d.x.forEach(i=>chosen.add(i))}view=new Date(selA.getFullYear(),selA.getMonth(),1);renderExtras();renderCal();renderQuote()}
+}
+})();
+</script>
+</body>
+</html>
