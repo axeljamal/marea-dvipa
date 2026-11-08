@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Karla:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box}html,body{margin:0;width:1920px;height:1080px;overflow:hidden}
+body{background:#02213D;color:#FAF7F2;font:28px/1.5 "Karla",Arial,sans-serif;position:relative}
+body::after{content:"";position:absolute;inset:0;background:url(isen-cecek.svg) 0 0/240px 240px repeat;opacity:.07;pointer-events:none}
+.wrap{position:relative;z-index:1;padding:110px 160px;height:100%;display:grid;gap:28px;align-content:center}
+.eyebrow{font:500 20px/1 "IBM Plex Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:#C39B65}
+h1{font:600 96px/1.05 "Cormorant Garamond",Georgia,serif;margin:0;max-width:1200px}
+h2{font:600 64px/1.1 "Cormorant Garamond",Georgia,serif;margin:0;max-width:1300px}
+p{margin:0;color:#C9D3DA;max-width:1100px}
+.mark{position:absolute;right:160px;top:50%;transform:translateY(-50%);width:520px;z-index:1}
+.brand{position:absolute;left:160px;top:60px;display:flex;align-items:center;gap:18px;z-index:1}.brand img{width:64px}.brand b{font:600 34px "Cormorant Garamond",serif}.brand span{display:block;font:500 16px "IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:#9FB3C2}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.card{background:#0B2B47;border:1px solid #1E4157;border-radius:12px;padding:28px 32px}
+.card h3{font:600 24px "Karla",sans-serif;margin:0 0 10px;color:#FAF7F2}.card ul{margin:0;padding-left:22px;color:#C9D3DA;font-size:24px;line-height:1.5}.card li+li{margin-top:6px}
+.stat{display:grid;gap:4px}.stat b{font:600 72px/1 "Cormorant Garamond",serif;color:#C39B65}.stat span{font-size:22px;color:#9FB3C2}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+pre{margin:0;background:#06192E;border:1px solid #1E4157;border-radius:12px;padding:26px 30px;font:21px/1.55 "IBM Plex Mono",monospace;color:#C9D3DA;white-space:pre-wrap}
+pre .k{color:#C39B65}pre .g{color:#9FD3B6}pre .r{color:#E8A08A}
+.links{display:grid;gap:14px;font:500 34px "IBM Plex Mono",monospace;color:#D1B285}
+.small{font-size:24px;color:#9FB3C2}

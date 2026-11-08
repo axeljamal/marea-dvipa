@@ -1,0 +1,12 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css"></head><body>
+<div class="brand"><img src="mark-night.png" alt=""><div><b>Marea Dvīpa</b><span>The audit</span></div></div>
+<div class="wrap" style="padding-top:150px"><span class="eyebrow">Facts from the raw HTML, not opinions</span><h2>Fourteen technical checks and eight guest questions, for every site.</h2>
+<div class="cols" style="grid-template-columns:1.1fr .9fr"><pre><span class="k">$</span> curl -sL -A "marea-dvipa-site-audit/1.0" https://the-grove-collection.com/ -o home.html
+<span class="k">$</span> python3 -I site-audit.py home.html
+{"kb": 133, "lang": <span class="g">"en-GB"</span>, "scripts": 16, "stylesheets": 6,
+ "imgs": 8, "imgs_no_alt": <span class="g">0</span>, "skip_link": <span class="g">true</span>,
+ "reduced_motion": <span class="g">true</span>, "dark_mode": <span class="r">false</span>,
+ "jsonld_types": ["Organization", "WebSite"],
+ "gbp_mentions": <span class="r">0</span>, "cookie_consent": <span class="r">false</span>, "has_video": true}</pre>
+<div class="card"><h3>What the checks cover</h3><ul><li>Page weight, alt text, skip link, labelled forms</li><li>Reduced motion, dark theme, accessibility statement</li><li>Language, structured data, consent</li><li>Booking hand-off, on-page pricing, perks, self-service</li><li>Then the eight things a guest from Airbnb expects: rating and count, price and total, live dates, cancellation, map, host, payment, phone</li></ul></div></div></div>
+</body></html>

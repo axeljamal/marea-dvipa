@@ -1,0 +1,248 @@
+
+<title>Marea Dvīpa Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Karla:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--bg:#02213D;--bg2:#0B2B47;--line:#1E4157;--line2:#3F616F;--fg:#FAF7F2;--fg2:#C9D3DA;--muted:#9FB3C2;--gold:#C39B65;--gold2:#D1B285;--good:#9FD3B6;--bad:#E8A08A;--warn:#D1B285;--teal:#4FA8BD;--display:"Cormorant Garamond",Georgia,serif;--body:"Karla",Arial,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:#010f1e;color:var(--fg);font-family:var(--body);overflow:hidden}
+#viewport{position:fixed;inset:0}
+#stage{width:1920px;height:1080px;position:absolute;left:50%;top:50%;overflow:hidden;background:var(--bg);transform-origin:center center;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+body.render #stage{left:0;top:0;transform:none!important}
+body.render #stage{box-shadow:none}
+.layer{position:absolute;inset:0}
+.dots{background:url(isen-cecek.svg) 0 0/240px 240px repeat;opacity:.08}
+.vignette{background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.45) 100%)}
+.t{position:absolute;white-space:nowrap}
+.display{font-family:var(--display);font-weight:600;line-height:1.02;letter-spacing:.005em}
+.eyebrow{font-family:var(--mono);font-size:22px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.body{font-size:30px;line-height:1.45;color:var(--fg2);white-space:normal}
+.mono{font-family:var(--mono)}
+.card{position:absolute;background:rgba(11,43,71,.92);border:1px solid var(--line);border-radius:14px;padding:28px 32px}
+.frame{position:absolute;border-radius:16px;overflow:hidden;border:1px solid var(--line2);box-shadow:0 40px 100px rgba(0,0,0,.55);background:#0B2B47}
+.frame .chrome{height:40px;background:#0E3250;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px;padding:0 14px;font:14px var(--mono);color:var(--muted)}
+.frame .chrome i{width:11px;height:11px;border-radius:50%;background:#3F616F;display:inline-block}.frame .chrome span{margin-left:10px;background:#0B2B47;border-radius:6px;padding:4px 12px;flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.frame .shot{position:absolute;left:0;top:40px;right:0;bottom:0;overflow:hidden}
+.frame .shot img{position:absolute;left:0;top:0;width:100%;display:block}
+.spot{position:absolute;border:3px solid var(--gold);border-radius:12px;box-shadow:0 0 0 2000px rgba(2,33,61,.55);pointer-events:none}
+.callout{position:absolute;background:var(--gold);color:#02213D;font:600 24px var(--body);padding:10px 18px;border-radius:8px;white-space:nowrap}
+.callout::after{display:none}
+.bar{position:absolute;height:34px;border-radius:6px;background:#3F616F}.bar.hi{background:var(--gold)}
+.chip{position:absolute;border-radius:999px;padding:10px 20px;font:500 22px var(--body);border:1px solid var(--line2);background:var(--bg2);color:var(--fg2);white-space:nowrap}
+.chip.pass{border-color:var(--good);color:var(--good)}.chip.part{border-color:var(--warn);color:var(--warn)}.chip.fail{border-color:var(--bad);color:var(--bad)}
+.ring{position:absolute;border-radius:50%;border:1px solid var(--line2)}
+.cap{position:absolute;left:180px;width:1560px;top:950px;text-align:center;font:500 26px/1.35 var(--body);color:var(--fg);background:rgba(2,33,61,.72);padding:12px 26px;border-radius:10px;backdrop-filter:blur(6px);white-space:normal}
+.brandtag{position:absolute;right:56px;top:40px;display:flex;align-items:center;gap:14px;opacity:.9}.brandtag img{width:52px}.brandtag b{font:600 28px var(--display)}.brandtag small{display:block;font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.term{position:absolute;background:#06192E;border:1px solid var(--line);border-radius:14px;padding:26px 30px;font:22px/1.6 var(--mono);color:var(--fg2);white-space:pre-wrap}
+.term .k{color:var(--gold)}.term .g{color:var(--good)}.term .r{color:var(--bad)}.term .cur{display:inline-block;width:11px;height:24px;background:var(--gold);vertical-align:-4px}
+.gauge{position:absolute}
+/* player chrome (hidden in render mode) */
+#ui{position:fixed;left:0;right:0;bottom:0;z-index:10;background:linear-gradient(transparent,rgba(1,15,30,.9) 40%);padding:28px 24px 18px;display:grid;gap:10px;font-family:var(--body);transition:opacity .3s}
+body.render #ui,body.hideui #ui{opacity:0;pointer-events:none}
+#prog{height:6px;background:#1E4157;border-radius:3px;cursor:pointer;position:relative}#prog i{display:block;height:100%;background:var(--gold);border-radius:3px;width:0}
+#prog b{position:absolute;top:-6px;width:2px;height:18px;background:#9FB3C2;opacity:.5}
+#row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+#ui button{font:500 14px var(--body);color:var(--fg);background:#0B2B47;border:1px solid #3F616F;border-radius:20px;padding:7px 14px;cursor:pointer}#ui button.on{background:var(--gold);color:#02213D;border-color:var(--gold)}
+#big{position:absolute;inset:0;display:grid;place-items:center;z-index:5;background:rgba(2,33,61,.35);cursor:pointer}#big div{width:140px;height:140px;border-radius:50%;background:var(--gold);display:grid;place-items:center;box-shadow:0 20px 60px rgba(0,0,0,.5)}#big svg{width:60px;height:60px;fill:#02213D;margin-left:8px}
+#big p{position:absolute;bottom:22%;left:0;right:0;text-align:center;font:500 26px var(--body);color:var(--fg2)}
+body.playing #big,body.render #big{display:none}
+#time{font:13px var(--mono);color:var(--muted);margin-left:auto}
+</style>
+
+<div id="viewport"><div id="stage">
+  <div class="layer dots" id="dots"></div>
+  <div class="layer" id="scene"></div>
+  <div class="layer vignette"></div>
+  <div id="big"><div><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></div><p>Play with sound · space to pause · ← → chapters</p></div>
+</div></div>
+<div id="ui"><div id="prog"><i></i></div><div id="row"></div></div>
+<script>
+(async function(){
+'use strict';
+const q=new URLSearchParams(location.search);const RENDER=q.has('render');if(RENDER)document.body.classList.add('render');
+const VOICE=q.get('voice')||'axelle';
+const stage=document.getElementById('stage'),sceneEl=document.getElementById('scene');
+const SCRIPT=await (await fetch('script.json')).json();
+const DUR=await (await fetch('durations.json')).json(); // {id: seconds of audio}
+const LEAD=0.6,GAP=1.0;
+const CH=SCRIPT.map(c=>({...c,dur:LEAD+(DUR[c.id]||20)+GAP}));let acc=0;CH.forEach(c=>{c.start=acc;acc+=c.dur});const TOTAL=acc;
+window.TOTAL=TOTAL;window.CHAPTERS=CH.map(c=>({id:c.id,start:c.start,dur:c.dur}));
+/* ---------- helpers ---------- */
+const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+const seg=(t,a,b)=>clamp((t-a)/(b-a));
+const eo=p=>1-Math.pow(1-p,3), ei=p=>p*p*p, eio=p=>p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2, back=p=>{const c=1.70158;return 1+(c+1)*Math.pow(p-1,3)+c*Math.pow(p-1,2)};
+const lerp=(a,b,p)=>a+(b-a)*p;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const num=(n,dec=0)=>n.toLocaleString('en-GB',{maximumFractionDigits:dec,minimumFractionDigits:dec});
+const fx=(t,a,b,x0,x1,e=eo)=>lerp(x0,x1,e(seg(t,a,b)));
+function words(text,x,y,size,t,a,per,opts={}){ // kinetic words rising in one by one
+  const ws=text.split(' ');let html='';
+  ws.forEach((w,i)=>{const p=eo(seg(t,a+i*per,a+i*per+.55));html+=`<span style="display:inline-block;opacity:${p};transform:translateY(${(1-p)*40}px) rotate(${(1-p)*-2}deg);margin-right:.26em">${esc(w)}</span>`});
+  return `<div class="t display" style="left:${x}px;top:${y}px;font-size:${size}px;max-width:${opts.w||1300}px;white-space:normal;color:${opts.color||'var(--fg)'}">${html}</div>`;
+}
+function fade(html,p,dy=24){return `<div style="position:absolute;inset:0;opacity:${p};transform:translateY(${(1-p)*dy}px)">${html}</div>`}
+function brand(sub){return `<div class="brandtag"><img src="mark-night.png" alt=""><div><b>Marea Dvīpa</b><small>${esc(sub)}</small></div></div>`}
+function browser(img,x,y,w,h,scrollPx,url,extra=''){return `<div class="frame" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px"><div class="chrome"><i></i><i></i><i></i><span>${esc(url)}</span></div><div class="shot"><img src="shots/${img}" style="transform:translateY(${-scrollPx}px)"></div>${extra}</div>`}
+function spots(cos,scroll,scale,fh){let out='';for(const co of cos){const y=co.pageY*scale-scroll+40;const hh=co.h*scale;const p=Math.min(seg(y,fh-120,fh-260),seg(y,-hh+140,-hh+260));if(p<=0)continue;const top=Math.max(y,52),bot=Math.min(y+hh,fh-16);if(bot-top<80)continue;out+=spot(40,top,1220,bot-top,p)+`<div class="callout" style="right:56px;top:${top+16}px;opacity:${p};transform:translateX(${(1-p)*20}px)">${esc(co.label)}</div>`}return out}
+function spot(x,y,w,h,p){return p<=0?'':`<div class="spot" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;opacity:${p}"></div>`}
+function callout(x,y,text,p){return p<=0?'':`<div class="callout" style="left:${x}px;top:${y}px;opacity:${p};transform:translateX(${(1-p)*-20}px)">${esc(text)}</div>`}
+function markRing(t,a,b,cx,cy,r){const p=seg(t,a,b);const C=2*Math.PI*r;return `<svg style="position:absolute;left:${cx-r-6}px;top:${cy-r-6}px" width="${2*r+12}" height="${2*r+12}" viewBox="0 0 ${2*r+12} ${2*r+12}"><circle cx="${r+6}" cy="${r+6}" r="${r}" fill="none" stroke="#C39B65" stroke-width="2" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-eio(p))}" transform="rotate(-90 ${r+6} ${r+6})" opacity=".9"/></svg>`}
+function gauge(x,y,r,val,max,label,p,color){const ang=eo(p)*val/max*Math.PI*2;const C=2*Math.PI*r;return `<div class="gauge" style="left:${x}px;top:${y}px;width:${2*r+40}px"><svg width="${2*r+20}" height="${2*r+20}" viewBox="0 0 ${2*r+20} ${2*r+20}"><circle cx="${r+10}" cy="${r+10}" r="${r}" fill="none" stroke="#1E4157" stroke-width="14"/><circle cx="${r+10}" cy="${r+10}" r="${r}" fill="none" stroke="${color}" stroke-width="14" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C-C*ang/(Math.PI*2)}" transform="rotate(-90 ${r+10} ${r+10})"/><text x="${r+10}" y="${r+2}" text-anchor="middle" font-family="Cormorant Garamond" font-weight="600" font-size="${r*.9}" fill="#FAF7F2">${Math.round(eo(p)*val)}</text><text x="${r+10}" y="${r+38}" text-anchor="middle" font-family="IBM Plex Mono" font-size="18" fill="#9FB3C2">of ${max}</text></svg><div style="text-align:center;font:500 22px var(--body);color:var(--fg2);margin-top:6px;white-space:normal">${esc(label)}</div></div>`}
+function dotsStyle(gt){return `background-position:${(gt*6)%240}px ${(gt*4)%240}px`}
+/* captions: split narration into sentences, time by length */
+function caption(c,t){const T=c.dur-LEAD-GAP;const tt=t-LEAD;if(tt<0||tt>T)return '';const ss=(c.text.match(/[^.!?]+[.!?]+/g)||[c.text]).flatMap(x=>{x=x.trim();if(x.length<=150)return [x];const i=x.lastIndexOf(', ',Math.floor(x.length*.6));const j=i>40?i:x.indexOf(', ',40);return j>0?[x.slice(0,j+1),x.slice(j+2)]:[x]});const total=ss.reduce((s,x)=>s+x.length,0);let acc=0;for(const s of ss){const d=T*s.length/total;if(tt<acc+d)return `<div class="cap">${esc(s.trim())}</div>`;acc+=d}return ''}
+
+/* ---------- scenes ---------- */
+const S={};
+S['01-title']=(t,T)=>{let h=brand('Website guidance & design');
+  h+=markRing(t,.2,2.4,1400,540,300);
+  const mp=eo(seg(t,.8,2.6));h+=`<img src="mark-night.png" style="position:absolute;left:${1400-260}px;top:${540-260}px;width:520px;opacity:${mp};transform:scale(${lerp(.92,1,mp)});filter:drop-shadow(0 20px 50px rgba(0,0,0,.4))">`;
+  h+=`<div class="t eyebrow" style="left:160px;top:300px;opacity:${seg(t,1.2,1.8)}">A walk through the work · November 2026</div>`;
+  h+=words('From guidance to proposal.',160,350,118,t,1.6,.22,{w:1100});
+  h+=fade(`<div class="t body" style="left:160px;top:640px;width:1000px;font-size:34px">How we help a small hospitality business take its bookings back: the audit, the guide, the quote, and a proposal a client can click through.</div>`,seg(t,3.4,4.4));
+  const lp=seg(t,T-1.2,T);h+=`<div style="position:absolute;left:160px;top:800px;height:2px;width:${eo(lp)*0}px"></div>`;
+  return h};
+S['02-beam']=(t,T)=>{let h=brand('Where it started');
+  h+=`<div class="t eyebrow" style="left:160px;top:140px;opacity:${seg(t,.4,1)}">One house, one benchmark</div>`;
+  h+=words('It started with one house.',160,190,86,t,.8,.18,{w:900});
+  // abstract house drawing
+  const hp=seg(t,2,5);const roof=eo(seg(hp,0,.5)),wall=eo(seg(hp,.3,.8)),tub=eo(seg(hp,.6,1));
+  h+=`<svg style="position:absolute;left:160px;top:330px;transform:scale(.78);transform-origin:left top" width="700" height="420" viewBox="0 0 700 420"><g stroke="#C39B65" stroke-width="3" fill="none"><path d="M60 230 L350 60 L640 230" stroke-dasharray="700" stroke-dashoffset="${700*(1-roof)}"/><path d="M110 210 V380 H590 V210" stroke-dasharray="900" stroke-dashoffset="${900*(1-wall)}"/><rect x="300" y="280" width="100" height="100" rx="6" stroke-dasharray="400" stroke-dashoffset="${400*(1-wall)}"/></g><g opacity="${tub}"><ellipse cx="560" cy="395" rx="80" ry="22" fill="#4FA8BD" opacity=".55"/><ellipse cx="560" cy="385" rx="80" ry="22" fill="none" stroke="#4FA8BD" stroke-width="3"/>${[0,1,2].map(i=>`<path d="M${530+i*30} 360 q 10 -20 0 -40 q -10 -20 0 -40" stroke="#C9D3DA" stroke-width="2" fill="none" opacity="${.4+.3*Math.sin(t*2+i)}" transform="translate(0 ${-((t*18+i*15)%40)})"/>`).join('')}</g><text x="560" y="300" text-anchor="middle" font-family="IBM Plex Mono" font-size="16" fill="#9FB3C2" opacity="${tub}">38° hot tub, first everywhere</text></svg>`;
+  const items=['Live calendar with seasonal, midweek and gap-night prices','Floor-plan tour with thirty object stories','A 28-second film from the owner’s photographs','An assistant that knows the house and picks dates'];
+  items.forEach((it,i)=>{const p=eo(seg(t,5.5+i*.9,6.2+i*.9));h+=`<div class="t body" style="left:160px;top:${690+i*40}px;font-size:25px;opacity:${p};transform:translateX(${(1-p)*-30}px)"><span style="color:var(--gold)">◆</span>&nbsp; ${esc(it)}</div>`});
+  // benchmark counters on the right
+  const bx=1040;const cp=seg(t,12,T-6);
+  h+=`<div class="t eyebrow" style="left:${bx}px;top:400px;opacity:${seg(t,11,12)}">No.124 by GuestHouse, measured</div>`;
+  const stats=[[644,'KB of HTML on one page',644/900],[44,'scripts',44/70],[62,'stylesheets',62/70],[44,'of 69 images without alt',44/69]];
+  stats.forEach((s,i)=>{const p=eo(seg(cp,i*.12,i*.12+.6));h+=`<div class="t display" style="left:${bx}px;top:${430+i*92}px;font-size:66px;color:var(--gold);opacity:${seg(cp,i*.12,i*.12+.2)}">${Math.round(s[0]*p)}</div><div class="t" style="left:${bx+210}px;top:${450+i*92}px;font-size:23px;color:var(--muted)">${esc(s[1])}</div><div class="bar" style="left:${bx+210}px;top:${488+i*92}px;width:${p*s[2]*560}px;height:10px;background:${i===3?'var(--bad)':'#3F616F'}"></div>`});
+  const z=seg(t,T-5.5,T-4.5);h+=`<div class="t display" style="left:${bx}px;top:${430+4*92}px;font-size:66px;color:var(--bad);opacity:${z}">0</div><div class="t" style="left:${bx+210}px;top:${450+4*92}px;font-size:23px;color:var(--muted);opacity:${z}">prices on the page</div>`;
+  return h};
+S['03-audit']=(t,T)=>{let h=brand('The audit');
+  h+=`<div class="t eyebrow" style="left:160px;top:120px;opacity:${seg(t,.3,.9)}">Facts from the raw HTML, not opinions</div>`;
+  h+=words('Fourteen checks. Eight questions. Every site.',160,170,78,t,.6,.14,{w:1500});
+  const code=`$ curl -sL -A "marea-dvipa-site-audit/1.0" https://the-grove-collection.com/ -o home.html\n$ python3 -I site-audit.py home.html\n{"kb": 133, "lang": "en-GB", "scripts": 16, "stylesheets": 6,\n "imgs": 8, "imgs_no_alt": 0, "skip_link": true,\n "reduced_motion": true, "dark_mode": false,\n "jsonld_types": ["Organization", "WebSite"],\n "gbp_mentions": 0, "cookie_consent": false, "has_video": true}`;
+  const n=Math.floor(seg(t,3,13)*code.length);let shown=esc(code.slice(0,n)).replace(/(true)/g,'<span class="g">$1</span>').replace(/(false|: 0,)/g,'<span class="r">$1</span>').replace(/^\$/gm,'<span class="k">$</span>');
+  h+=`<div class="term" style="left:160px;top:330px;width:1000px;min-height:330px;opacity:${seg(t,2.6,3.2)}">${shown}${n<code.length?'<span class="cur"></span>':''}</div>`;
+  const checks=[['Page weight','pass'],['Alt text','pass'],['Skip link','pass'],['Labelled forms','pass'],['Motion & theme','part'],['Accessibility statement','fail'],['Language','part'],['Structured data','fail'],['Booking hand-off','fail'],['On-page pricing','fail'],['Reasons to book direct','part'],['Guest self-service','fail'],['Consent','fail'],['Photography','pass']];
+  checks.forEach((c,i)=>{const p=back(seg(t,14+i*.35,14.6+i*.35));const col=i%2,row=Math.floor(i/2);h+=`<div class="chip ${c[1]}" style="left:${1220+col*340}px;top:${340+row*58}px;opacity:${clamp(p)};transform:scale(${lerp(.6,1,clamp(p))})">${esc(c[0])}</div>`});
+  const qs=['Rating & count','Price & total','Live dates','Cancellation','Map','Host','Payment','Phone'];const qp=seg(t,T-14,T-9);
+  h+=`<div class="t eyebrow" style="left:160px;top:710px;opacity:${seg(t,T-14.5,T-13.8)}">Then the eight things a guest from Airbnb expects</div>`;
+  qs.forEach((qq,i)=>{const p=eo(seg(qp,i*.1,i*.1+.4));h+=`<div class="chip" style="left:${160+i*212}px;top:${760+(1-p)*30}px;opacity:${p};border-color:var(--gold);color:var(--fg);font-size:21px">${esc(qq)}</div>`});
+  h+=`<div style="position:absolute;left:160px;top:830px;height:2px;width:${eo(qp)*1600}px;background:var(--gold);opacity:.6"></div>`;
+  return h};
+function pageScene(c,t,T,opts){ // screenshot pan with spotlights and callouts; opts.shot, opts.h (image height), opts.url, opts.callouts:[{at,until,x,y,w,h,label}], opts.title
+  let h=brand(opts.sub||'');
+  const intro=eo(seg(t,.2,1.4));
+  h+=`<div class="t eyebrow" style="left:120px;top:90px;opacity:${seg(t,.2,.8)}">${esc(opts.eyebrow)}</div>`;
+  h+=words(opts.title,120,130,54,t,.5,.12,{w:1500});
+  const fw=1300,fh=680,fx0=lerp(1920,560,intro),fy0=250;
+  const scrollMax=Math.max(0,(opts.h*(fw/1920))-(fh-40));const sp=seg(t,2.5,T-3);const scroll=scrollMax*eio(sp);
+  const extra=spots(opts.callouts||[],scroll,fw/1920,fh);
+  h+=browser(opts.shot,fx0,fy0,fw,fh,scroll,opts.url,extra);
+  // left column notes
+  (opts.notes||[]).forEach((n,i)=>{const p=eo(seg(t,n.at,n.at+.7));h+=`<div class="t body" style="left:120px;top:${330+i*110}px;width:400px;font-size:25px;opacity:${p};transform:translateX(${(1-p)*-30}px)"><span class="mono" style="color:var(--gold);font-size:16px;letter-spacing:.14em">${String(i+1).padStart(2,'0')}</span><br>${esc(n.text)}</div>`});
+  return h}
+S['04-guide']=(t,T)=>pageScene(null,t,T,{sub:'The guide · marea-dvipa.uk/web',eyebrow:'Published on our own domain',title:'The Business Website Guide',shot:'guide.png',h:11600,url:'marea-dvipa.uk/web/#guide',
+  notes:[{at:3,text:'The offer: audit, guidance, design and build'},{at:T*.27,text:'An audit checklist you can score'},{at:T*.5,text:'The baseline every site gets'},{at:T*.72,text:'Packages, process, go-live, measures'}],
+  callouts:[{pageY:1974,h:1270,label:'Interactive scorer'},{pageY:5663,h:1627,label:'Features menu'},{pageY:8372,h:1281,label:'Packages and process'}]});
+S['05-platforms']=(t,T)=>{let h=brand('Platform analysis · marea-dvipa.uk/web/#platforms');
+  h+=`<div class="t eyebrow" style="left:120px;top:90px;opacity:${seg(t,.2,.8)}">What the platforms take</div>`;
+  h+=words('Of every £1,000, the owner keeps £750 to £1,000.',120,130,54,t,.5,.1,{w:1500});
+  const rows=[['Own website',1000,1000,true],['Airbnb, split fee',970,970],['Plum Guide, shared',970,970],['Vrbo, to Oct 2026',920,920],['Vrbo, from 29 Oct',850,880],['Airbnb, host-only',840,860],['Plum Guide, host-only',835,835],['Booking.com',780,850],['Sykes Cottages',750,800]];
+  const chartP=seg(t,2,T*.45);const cx0=420,cx1=1700,X=v=>cx0+(v-700)/300*(cx1-cx0);
+  const vis=1-eo(seg(t,T*.52,T*.58));
+  if(vis>0){rows.forEach((r,i)=>{const p=eo(seg(chartP,i*.08,i*.08+.5));const y=330+i*56;h+=`<div class="t" style="left:120px;top:${y}px;font-size:24px;color:${r[3]?'var(--fg)':'var(--fg2)'};font-weight:${r[3]?600:400};opacity:${p*vis}">${esc(r[0])}</div>`;const lo=X(r[1]),hi=X(r[2]);if(hi>lo)h+=`<div class="bar" style="left:${lo}px;top:${y+8}px;width:${(hi-lo)*p}px;height:16px;opacity:${.6*vis};background:${r[3]?'var(--gold)':'#3F616F'}"></div>`;const mid=lerp(cx0,(lo+hi)/2,p);h+=`<div style="position:absolute;left:${mid-11}px;top:${y+5}px;width:22px;height:22px;border-radius:50%;background:${r[3]?'var(--gold)':'#9FB3C2'};opacity:${vis}"></div><div class="t mono" style="left:${mid+22}px;top:${y+2}px;font-size:22px;color:var(--fg);opacity:${p*vis}">£${num(Math.round(lerp(0,r[1],p)))}${hi>lo?' to £'+num(Math.round(lerp(0,r[2],p))):''}</div>`});
+    [700,800,900,1000].forEach(v=>{h+=`<div class="t mono" style="left:${X(v)-30}px;top:${330+9*56}px;font-size:18px;color:var(--muted);opacity:${vis*seg(chartP,0,.3)}">£${num(v)}</div>`})}
+  // then the page pan
+  const pp=eo(seg(t,T*.55,T*.6));if(pp>0){const scrollMax=8000*(1300/1920)-640;const sp=seg(t,T*.6,T-2);const sc=scrollMax*eio(sp);h+=`<div style="position:absolute;inset:0;opacity:${pp}">${browser('platforms.png',560,250,1300,680,sc,'marea-dvipa.uk/web/#platforms',spots([{pageY:873,h:873,label:'Fee calculator'},{pageY:3489,h:1132,label:'Technical audit of the listings'},{pageY:4621,h:804,label:'Parity checklist'}],sc,1300/1920,680))}</div>`;
+    [{at:T*.62,text:'Calculator: drag a price, every channel updates'},{at:T*.74,text:'Official figures marked apart from third-party'},{at:T*.86,text:'One Brighton listing per platform, audited'}].forEach((n,i)=>{const p=eo(seg(t,n.at,n.at+.7));h+=`<div class="t body" style="left:120px;top:${320+i*120}px;width:400px;font-size:26px;opacity:${p*pp}">${esc(n.text)}</div>`})}
+  return h};
+S['06-quote']=(t,T)=>{let h=pageScene(null,t,T,{sub:'Quote builder · marea-dvipa.uk/quote',eyebrow:'The form a client fills in',title:'Pick the level. See the price as you go.',shot:'quote.png',h:5200,url:'marea-dvipa.uk/quote/',callouts:[{pageY:993,h:419,label:'Three levels of service'},{pageY:1743,h:1887,label:'Features priced, or included'},{pageY:3752,h:665,label:'Care and payment'}],
+  notes:[{at:3,text:'Who they are and where they are listed'},{at:T*.3,text:'Three levels of service'},{at:T*.55,text:'Features priced, or included'},{at:T*.78,text:'Care, payment, the 60-day audit credit'}]});
+  // running total animation
+  const steps=[[2400,'Direct-booking site'],[2650,'+ Newsletter £250'],[2850,'+ Platform reviews £200'],[3450,'+ Additional house £600']];
+  const tp=seg(t,T*.55,T*.8);const idx=Math.min(steps.length-1,Math.floor(tp*steps.length));const prev=idx?steps[idx-1][0]:0;const within=eo((tp*steps.length)%1);
+  const val=idx===0?steps[0][0]*within:lerp(prev,steps[idx][0],within);
+  if(tp>0&&tp<1.001)h+=`<div class="card" style="left:120px;top:690px;width:400px;opacity:${seg(t,T*.55,T*.57)}"><div class="eyebrow" style="font-size:16px">One-off total</div><div class="display" style="font-size:64px;color:var(--gold)">£${num(Math.round(val))}</div><div style="color:var(--fg2);font-size:20px">${esc(steps[idx][1])}</div></div>`;
+  return h};
+S['07-grove']=(t,T)=>{let h=brand('A real client · The Grove Collection');
+  h+=`<div class="t eyebrow" style="left:120px;top:90px;opacity:${seg(t,.2,.8)}">the-grove-collection.com · audited 7 November 2026</div>`;
+  h+=words('The craft is there. The moment of booking is not.',120,130,54,t,.5,.1,{w:1500});
+  const g=seg(t,2,10);const gv=1-eo(seg(t,T*.3,T*.34));
+  if(gv>0){h+=`<div style="position:absolute;inset:0;opacity:${gv}">${gauge(200,330,150,5,14,'technical checks pass',seg(g,0,.6),'#C39B65')}${gauge(620,330,150,2,8,'guest questions answered',seg(g,.25,.85),'#E8A08A')}`;
+    const finds=['No price anywhere','Booking leaves for Lodgify','Tag Manager, no consent','No map, no FAQ','Plan My Stay on an external site'];finds.forEach((f,i)=>{const p=eo(seg(t,6+i*.8,6.6+i*.8));h+=`<div class="chip fail" style="left:1080px;top:${330+i*58}px;opacity:${p};transform:translateX(${(1-p)*40}px)">${esc(f)}</div>`});
+    const rights=['133 KB, 16 scripts','Skip link, reduced motion','Every image with alt','4.9 from 19 reviews, named and dated'];rights.forEach((f,i)=>{const p=eo(seg(t,2.5+i*.7,3.1+i*.7));h+=`<div class="chip pass" style="left:1080px;top:${640+i*58}px;opacity:${p};transform:translateX(${(1-p)*40}px)">${esc(f)}</div>`});
+    h+='</div>'}
+  const pp=eo(seg(t,T*.32,T*.37));if(pp>0){const scrollMax=8200*(1300/1920)-640;const sp=seg(t,T*.36,T-2);const sc=scrollMax*eio(sp);
+    h+=`<div style="position:absolute;inset:0;opacity:${pp}">${browser('proposal-b.png',560,250,1300,680,sc,'marea-dvipa.uk/proposals/grove-collection/',spots([{pageY:1232,h:1270,label:'Two audit tables'},{pageY:3219,h:2046,label:'Three options as clickable mock-ups'},{pageY:6482,h:549,label:'Payback slider'}],sc,1300/1920,680))}</div>`;
+    [{at:T*.38,text:'What is already right, then the two audit tables'},{at:T*.55,text:'Three options as clickable mock-ups in their own colours'},{at:T*.72,text:'Option B recommended: £3,450 + £35 a month'},{at:T*.86,text:'Compare, payback slider, next steps'}].forEach((n,i)=>{const p=eo(seg(t,n.at,n.at+.7));h+=`<div class="t body" style="left:120px;top:${320+i*130}px;width:400px;font-size:26px;opacity:${p*pp}">${esc(n.text)}</div>`})}
+  return h};
+function optScene(t,T,letter,name,price,mo,shot,notes){let h=brand('The Grove Collection · option '+letter);
+  const p0=back(seg(t,.2,1));h+=`<div class="t display" style="left:120px;top:110px;font-size:220px;color:var(--gold);opacity:${clamp(p0)};transform:scale(${lerp(.7,1,clamp(p0))});transform-origin:left top">${letter}</div>`;
+  h+=words(name,120,360,64,t,.8,.12,{w:420});
+  const pp=eo(seg(t,1.6,3));h+=`<div class="t display" style="left:120px;top:560px;font-size:80px;color:var(--fg);opacity:${pp}">£${num(Math.round(price*pp))}</div><div class="t mono" style="left:120px;top:660px;font-size:22px;color:var(--muted);opacity:${pp}">${mo?'+ £'+mo+' a month':'no monthly plan'}</div>`;
+  notes.forEach((n,i)=>{const p=eo(seg(t,3.5+i*1.1,4.2+i*1.1));h+=`<div class="t body" style="left:120px;top:${700+i*44}px;width:420px;font-size:23px;opacity:${p}">◆ ${esc(n)}</div>`});
+  const fp=eo(seg(t,.4,1.6));const sc0=3219*(1300/1920)-80,sc1=(3219+2046)*(1300/1920)-640;const sp=seg(t,2.5,T-1.5);
+  h+=`<div style="position:absolute;inset:0;opacity:${fp};transform:translateX(${(1-fp)*200}px)">${browser(shot,560,250,1300,680,lerp(sc0,sc1,eio(sp)),'marea-dvipa.uk/proposals/grove-collection/ · option '+letter)}</div>`;
+  return h}
+S['08-opt-a']=(t,T)=>optScene(t,T,'A','Tune what you have',1450,0,'proposal-a.png',['Review count beside the name','Price card and cancellation line','Perks, map, FAQ, consent, schema','Booking still completes off-site']);
+S['09-opt-c']=(t,T)=>optScene(t,T,'C','Signature collection',6000,95,'proposal-c.png',['Ask the house, from Plan My Stay','Interactive tour with room stories','A film for each live house','Offers, vouchers, two polish rounds']);
+S['10-studio']=(t,T)=>{let h=brand('Proposal Studio · internal');
+  h+=`<div class="t eyebrow" style="left:120px;top:90px;opacity:${seg(t,.2,.8)}">On our side</div>`;
+  h+=words('An audit becomes a proposal in an afternoon.',120,130,54,t,.5,.1,{w:1500});
+  const fp=eo(seg(t,1,2.2));h+=`<div style="position:absolute;inset:0;opacity:${fp};transform:translateY(${(1-fp)*60}px)">${browser('studio.png',240,360,1440,560,0,'Proposal Studio')}</div>`;
+  const flow=['Paste the audit JSON','Nine checks fill themselves','Set brand, houses, options','Preview is the proposal','Save file · drop into /proposals/'];
+  flow.forEach((f,i)=>{const p=eo(seg(t,T*.25+i*(T*.11),T*.25+i*(T*.11)+.6));h+=`<div class="callout" style="left:${160+i*330}px;top:${(i%2?292:236)}px;opacity:${p};transform:translateY(${(1-p)*-16}px)">${esc(f)}</div>`});
+  return h};
+S['11-close']=(t,T)=>{let h=brand('Website guidance & design');
+  h+=markRing(t,.2,2.2,1420,540,300);const mp=eo(seg(t,.6,2));h+=`<img src="mark-night.png" style="position:absolute;left:${1420-260}px;top:${540-260}px;width:520px;opacity:${mp}">`;
+  h+=`<div class="t eyebrow" style="left:160px;top:250px;opacity:${seg(t,.6,1.2)}">Everything is live</div>`;
+  h+=words('Read the guide. Build a quote. Send us a site to audit.',160,300,80,t,1,.12,{w:1000});
+  const links=['marea-dvipa.uk/web','marea-dvipa.uk/quote','marea-dvipa.uk/proposals/grove-collection'];
+  links.forEach((l,i)=>{const n=Math.floor(seg(t,5+i*2.2,6.6+i*2.2)*l.length);h+=`<div class="t mono" style="left:160px;top:${600+i*56}px;font-size:34px;color:var(--gold2)">${esc(l.slice(0,n))}${n<l.length&&n>0?'<span class="cur" style="display:inline-block;width:12px;height:34px;background:var(--gold);vertical-align:-6px"></span>':''}</div>`});
+  h+=fade(`<div class="t body" style="left:160px;top:790px;width:900px;font-size:25px">The audit is £450, credited in full against a build started within 60 days.</div>`,seg(t,T-9,T-8));
+  h+=fade(`<div class="t display" style="left:160px;top:850px;font-size:38px;font-style:italic;color:var(--fg2)">Distinctive places deserve a website that books them.</div>`,seg(t,T-5,T-4));
+  return h};
+
+/* ---------- render at global time ---------- */
+let last='';
+function renderAt(gt){const c=CH.find(x=>gt<x.start+x.dur)||CH.at(-1);const t=gt-c.start;const T=c.dur;
+  let html=(S[c.id]||(()=>''))(t,T);
+  // chapter cross-fade: fade in first .5s, fade out last .5s
+  const a=Math.min(seg(t,0,.5),1-seg(t,T-.5,T));
+  html=`<div style="position:absolute;inset:0;opacity:${a}">${html}</div>`+caption(c,t);
+  if(html!==last){sceneEl.innerHTML=html;last=html}
+  document.getElementById('dots').style.cssText=dotsStyle(gt);
+  const pr=document.querySelector('#prog i');if(pr)pr.style.width=(gt/TOTAL*100)+'%';
+  const tm=document.getElementById('time');if(tm)tm.textContent=fmt(gt)+' / '+fmt(TOTAL)+' · '+c.id.slice(3);
+  document.querySelectorAll('#row button[data-ch]').forEach(b=>b.classList.toggle('on',b.dataset.ch===c.id));
+}
+const fmt=s=>Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
+window.seek=async function(gt){renderAt(gt);await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))};
+/* fit stage */
+function fit(){if(RENDER)return;const s=Math.min(innerWidth/1920,(innerHeight-96)/1080);stage.style.transform=`translate(-50%,-50%) translateY(-44px) scale(${s})`}
+addEventListener('resize',fit);fit();
+if(RENDER){document.body.style.background='#02213D';renderAt(+(q.get('t')||0));window.READY=true;return}
+
+/* ---------- interactive player ---------- */
+const audios=CH.map(c=>{const a=new Audio(`vo/${VOICE}/${c.id}.${VOICE==='say'?'m4a':'mp3'}`);a.preload='auto';return a});
+let playing=false,gt=0,raf=0,cur=-1,t0=0,base=0;
+function stopAudio(){audios.forEach(a=>{a.pause()})}
+function tick(){if(!playing)return;const now=performance.now()/1000;gt=base+(now-t0);if(gt>=TOTAL){pause();gt=TOTAL-.01;renderAt(gt);return}
+  const i=CH.findIndex(c=>gt<c.start+c.dur);if(i!==cur){cur=i;stopAudio();const c=CH[i];const off=gt-c.start-LEAD;const a=audios[i];a.currentTime=Math.max(0,off);if(off>=0)a.play().catch(()=>{});else setTimeout(()=>{if(playing&&cur===i)a.play().catch(()=>{})},-off*1000)}
+  renderAt(gt);raf=requestAnimationFrame(tick)}
+function play(){playing=true;document.body.classList.add('playing');t0=performance.now()/1000;base=gt;cur=-1;tick()}
+function pause(){playing=false;document.body.classList.remove('playing');stopAudio();cancelAnimationFrame(raf)}
+function jump(to){gt=clamp(to,0,TOTAL-.01);base=gt;t0=performance.now()/1000;cur=-1;renderAt(gt);if(!playing)return;tick()}
+document.getElementById('big').addEventListener('click',()=>play());
+const row=document.getElementById('row');row.innerHTML=`<button id="pp">Play</button>`+CH.map(c=>`<button data-ch="${c.id}">${esc(c.id.slice(3).replace(/-/g,' '))}</button>`).join('')+`<button id="cc">Captions</button><span id="time"></span>`;
+document.getElementById('pp').addEventListener('click',()=>{playing?pause():play();document.getElementById('pp').textContent=playing?'Pause':'Play'});
+row.addEventListener('click',e=>{const b=e.target.closest('[data-ch]');if(b){jump(CH.find(c=>c.id===b.dataset.ch).start);if(!playing)play()}});
+let caps=true;document.getElementById('cc').addEventListener('click',e=>{caps=!caps;e.target.classList.toggle('on',caps);document.documentElement.style.setProperty('--capvis',caps?'1':'0');document.querySelectorAll('.cap').forEach(x=>x.style.display=caps?'':'none')});document.getElementById('cc').classList.add('on');
+const prog=document.getElementById('prog');CH.forEach(c=>{const b=document.createElement('b');b.style.left=(c.start/TOTAL*100)+'%';prog.appendChild(b)});
+prog.addEventListener('click',e=>{const r=prog.getBoundingClientRect();jump((e.clientX-r.left)/r.width*TOTAL)});
+addEventListener('keydown',e=>{if(e.key===' '){e.preventDefault();playing?pause():play();document.getElementById('pp').textContent=playing?'Pause':'Play'}if(e.key==='ArrowRight'){const i=CH.findIndex(c=>gt<c.start+c.dur);jump(CH[Math.min(CH.length-1,i+1)].start)}if(e.key==='ArrowLeft'){const i=CH.findIndex(c=>gt<c.start+c.dur);jump(CH[Math.max(0,i-1)].start)}if(e.key==='h')document.body.classList.toggle('hideui')});
+let hid;addEventListener('mousemove',()=>{document.body.classList.remove('hideui');clearTimeout(hid);hid=setTimeout(()=>{if(playing)document.body.classList.add('hideui')},2500)});
+renderAt(0);
+})();
+</script>
