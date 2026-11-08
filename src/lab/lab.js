@@ -3,6 +3,7 @@
 // so its keys, drawing loop and autoplay stay quiet while you are in the Pattern Studio.
 import { createStage } from './stage';
 import { rebungRibbon, rebungToCanvas, REBUNG_INKS } from '../engine/rebung.js';
+import { KETUPAT_R, ketupatPts, ketupatDiamond, ketupatCross, ketupatField } from '../engine/ketupat.js';
 
 export function startLab(hooks) {
   hooks = hooks || {};
@@ -1378,9 +1379,287 @@ export function startLab(hooks) {
   var SCORES_REBUNG = [['off', 'Sound off'], ['rebung', 'Pucuk Rebung · 100 bpm']];
   var STEMS_REBUNG = [['kakula', 'Kakula, top row'], ['kakula2', 'Second kakula, bottom row'], ['gamba', 'Gamba-gamba'], ['gongs', 'Tawa-tawa'], ['drums', 'Gimba'], ['bass', 'Low gongs, the spine'], ['loom', 'Loom, the dots']];
 
+  // =================== Reel 05 · Ketupat lattice, the woven diamond ===================
+  // Score: Anyam Ketupat (weaving the ketupat), an original for the same Kaili kakula ensemble. 96 bpm, 52 bars, one section
+  // per scene. The rules it keeps so that music and drawing arrive together:
+  //  1. One diamond is one bar: two kakula start on the same kettle and open apart in contrary motion, one rising and one
+  //     falling, to the widest point on beat 3, then close back together. Drawn as pitch against time, the bar is a diamond.
+  //  2. The rings nest: the gamba-gamba plays a narrower diamond inside it (root, then third and fifth together, then root),
+  //     and the low gong is the dark heart on beat 3.
+  //  3. The lattice is a centred grid, so the next diamond starts half a tile on: a canon half a bar later, two kettles away.
+  //  4. A cecek cross sits where four diamonds meet, so the loom ticks just before and after each bar line, round a beater on 1.
+  //  5. It ends where it started: every voice on A.
+  var BPM_K = 96, BEAT_K = 60 / BPM_K, BAR_K = BEAT_K * 4; function barsK(n) { return n * BAR_K; }
+  var LK = (function () {
+    var PITCH = [220.00, 261.63, 293.66, 329.63, 392.00, 440.00, 493.88, 523.25, 587.33, 659.26, 783.99, 880.00, 987.77];
+    var CHP = { Am: [9, 0, 4], C: [0, 4, 7], G: [7, 11, 2] };
+    var ROOT = { Am: 110, C: 130.81, G: 98 };
+    var CENTRE = { Am: 5, C: 7, G: 6 }; // the kettle each diamond opens from, chosen so its widest point sits in the chord
+    function pcF(pc, oct) { return 261.63 * Math.pow(2, pc / 12) * Math.pow(2, oct - 4); }
+    function compose(opt) {
+      var lilt = opt && opt.feel === 'lilt' ? BEAT_K * .08 : 0, E = [];
+      function T(bar, beat) { var f = beat % 1; if (Math.abs(f - .5) < 1e-6) beat += lilt; return bar * BAR_K + beat * BEAT_K; }
+      function F(p) { return PITCH[Math.max(0, Math.min(PITCH.length - 1, p))]; }
+      function K(time, p, v, beats, soft, stem) { E.push({ t: time, k: 'kettle', n: ((p % 7) + 7) % 7, f: F(p), v: v, soft: !!soft, d: clamp(beats * BEAT_K * (soft ? 2.6 : 2), .3, 2.2), s: stem || 'kakula' }); }
+      // one diamond from kettle c, eighth notes from beat bt: the top line climbs `span` kettles and comes back, the bottom line mirrors it.
+      // o.len cuts it short (the drawing grows it), o.bot false plays only the top line, o.swap trades the two players (over and under)
+      function diamond(bar, bt, c, v, soft, o) {
+        o = o || {}; var span = o.span || 4, len = o.len || span * 2, up = o.swap ? 'kakula2' : 'kakula', dn = o.swap ? 'kakula' : 'kakula2';
+        for (var i = 0; i < len; i++) {
+          var k = i <= span ? i : 2 * span - i, tm = T(bar, bt + i * (2 / span)), vv = v * (i === 0 ? 1.1 : i === span ? 1.05 : .85), hold = 2 / span;
+          K(tm, c + k, vv, hold, soft, up); if (o.bot !== false && k > 0) K(tm, c - k, vv * .85, hold, soft, dn);
+        }
+      }
+      function ring(bar, ch, v) { var p = CHP[ch]; function kol(bt, pc) { var f = pcF(pc, 4); if (f > 400) f /= 2; E.push({ t: T(bar, bt), k: 'kolintang', n: pc % 7, f: f, v: v, s: 'gamba' }); } kol(1, p[0]); kol(2, p[1]); kol(2, p[2]); kol(3, p[0]); }
+      function heart(bar, ch, v) { E.push({ t: T(bar, 0), k: 'bassgong', f: ROOT[ch], v: .3 * v, s: 'bass' }); E.push({ t: T(bar, 2), k: 'bassgong', f: ROOT[ch], v: .42 * v, s: 'bass' }); }
+      function cross(at, n, v) { for (var i = 0; i < n; i++) { [.25, .5, 3.5, 3.75].forEach(function (bt) { E.push({ t: T(at + i, bt), k: 'shuttle', v: .13 * v, s: 'loom' }); }); E.push({ t: T(at + i, 0), k: 'beater', v: .3 * v, s: 'loom' }); } }
+      function gongs(at, n, level) { for (var i = 0; i < n; i++) { if (i % 2 === 0) E.push({ t: T(at + i, 0), k: 'gong', n: 0, f: 110, v: .3 * level, s: 'gongs' }); else E.push({ t: T(at + i, 2), k: 'gong', n: 1, f: 164.81, v: .18 * level, s: 'gongs' }); } }
+      function drums(at, n, level, full) { for (var i = 0; i < n; i++) { E.push({ t: T(at + i, 0), k: 'drum', n: 'dum', v: .42 * level, s: 'drums' }); E.push({ t: T(at + i, 2), k: 'drum', n: 'dum', v: .3 * level, s: 'drums' }); E.push({ t: T(at + i, 1), k: 'drum', n: 'tak', v: .28 * level, s: 'drums' }); E.push({ t: T(at + i, 3), k: 'drum', n: 'tak', v: .28 * level, s: 'drums' }); if (full) E.push({ t: T(at + i, 1.5), k: 'drum', n: 'tak', v: .16 * level, s: 'drums' }); } }
+      // the canon voice: half a bar on, two kettles up (or down, near the top of the set)
+      function canon(bar, ch, v) { var c = CENTRE[ch] + 2 <= 8 ? CENTRE[ch] + 2 : CENTRE[ch] - 2; diamond(bar, 2, c, v, true); }
+      // the fuller ensemble. Angklung: a tremolo bed of the chord, the ground the lattice sits on
+      function bed(at, prog, level) { prog.forEach(function (ch, i) { CHP[ch].forEach(function (pc, j) { var f = pcF(pc, 4); if (f > 400) f /= 2; E.push({ t: T(at + i, 0) + j * .012, k: 'angklung', f: f * 2, v: .2 * level, d: BEAT_K * 3.2, s: 'angklung' }); }); }); }
+      // dio, the plucked bass: root, fifth off the beat, the octave, the fifth again
+      function dio(at, prog, level, sparse) { prog.forEach(function (ch, i) { var r = ROOT[ch] / 2 < 60 ? ROOT[ch] : ROOT[ch] / 2, b = at + i;
+        E.push({ t: T(b, 0), k: 'dio', f: r, v: .5 * level, s: 'dio' }); if (sparse) return;
+        E.push({ t: T(b, 1.5), k: 'dio', f: r * 1.5, v: .34 * level, s: 'dio' }); E.push({ t: T(b, 2.5), k: 'dio', f: r * 2, v: .3 * level, s: 'dio' }); E.push({ t: T(b, 3), k: 'dio', f: r * 1.5, v: .3 * level, s: 'dio' }); }); }
+      // the tatali flute draws one big diamond across four bars: up to A5 and back down (phrase A), then an answer (phrase B).
+      // Each note is [bar, beat, kettle index, beats]; written over Am C Am G so every long note sits in its chord
+      var FL = { A: [[0, 0, 5, 2], [0, 2, 7, 1], [0, 3, 8, 1], [1, 0, 9, 3], [1, 3, 10, 1], [2, 0, 11, 2], [2, 2, 10, 1], [2, 3, 9, 1], [3, 0, 8, 3], [3, 3, 6, 1]],
+                 B: [[0, 0, 9, 2], [0, 2, 8, 1], [0, 3, 7, 1], [1, 0, 4, 2], [1, 2, 7, 2], [2, 0, 9, 3], [2, 3, 8, 1], [3, 0, 6, 2], [3, 2, 4, 1], [3, 3, 6, 1]] };
+      function flute(at, ph, v) { FL[ph].forEach(function (n) { E.push({ t: T(at + n[0], n[1]), k: 'tatali', f: F(n[2]), v: v, d: n[3] * BEAT_K * .94, s: 'tatali' }); }); }
+      // the gamba-gamba fills the off-beats with the chord, so the middle ring is never silent
+      function imbal(at, prog, level) { prog.forEach(function (ch, i) { var p = CHP[ch]; [.5, 1.5, 2.5, 3.5].forEach(function (bt, k) { var f = pcF(p[(k + 1) % 3], 4); if (f > 400) f /= 2; E.push({ t: T(at + i, bt), k: 'kolintang', n: p[(k + 1) % 3] % 7, f: f * 2, v: .1 * level, s: 'gamba' }); }); }); }
+      function shaker(at, n, level) { for (var b = 0; b < n * 8; b++) E.push({ t: T(at + Math.floor(b / 8), (b % 8) / 2), k: 'shaker', v: (b % 2 ? .05 : .08) * level, s: 'shaker' }); }
+      function full(at, prog, o) {
+        prog.forEach(function (ch, i) { var b = at + i; diamond(b, 0, CENTRE[ch], o.v || .52, false, { swap: o.swap && i % 2 === 1 }); ring(b, ch, .16 * (o.lv || 1)); heart(b, ch, o.lv || 1); if (o.canon && b + 1 < o.canonEnd) canon(b, ch, .32); });
+        drums(at, prog.length, .85 * (o.lv || 1), o.fullDrums); gongs(at, prog.length, 1); cross(at, prog.length, .6);
+      }
+      // G only ever lands on odd bars: the tawa-tawa sounds A2 on even bars, which would grind against a G2 root
+      var P4 = ['Am', 'C', 'Am', 'G'], P8 = ['Am', 'C', 'Am', 'G', 'Am', 'C', 'Am', 'G'];
+      // Title 0-3: one soft diamond every other bar, the first gong
+      E.push({ t: T(0, 0), k: 'gong', n: 0, f: 110, v: .34, s: 'gongs' }); diamond(0, 0, 5, .36, true); diamond(2, 0, 5, .36, true);
+      // Listen 4-11: the cloth: the loom's crosses round every bar line, a soft diamond on the even bars
+      cross(4, 8, .7); for (var b = 4; b < 12; b += 2) diamond(b, 0, 5, .34, true); gongs(4, 8, .7);
+      // Brief 12-15: a soft diamond each bar, the middle ring arrives
+      P4.forEach(function (ch, i) { diamond(12 + i, 0, CENTRE[ch], .36, true); ring(12 + i, ch, .13); }); gongs(12, 4, .8);
+      // Draw one diamond 16-23: the top line climbs, then the whole top, the bottom line joins, the rings, the heart, the crosses
+      diamond(16, 0, 5, .5, false, { bot: false, len: 5 }); diamond(17, 0, 5, .5, false, { bot: false });
+      for (var d = 18; d < 24; d++) { diamond(d, 0, 5, .5, false); if (d >= 19) ring(d, 'Am', .15); if (d >= 21) heart(d, 'Am', .8); }
+      cross(22, 2, .6); gongs(16, 8, .8);
+      // Lattice 24-31: the full diamond each bar; the canon joins half a bar on from 26, the drums from 26
+      P8.forEach(function (ch, i) { var b2 = 24 + i; diamond(b2, 0, CENTRE[ch], .52, false); ring(b2, ch, .16); heart(b2, ch, 1); if (i >= 2) canon(b2, ch, .3); });
+      drums(26, 6, .8, false); gongs(24, 8, 1); cross(24, 8, .6);
+      // Weave 32-39: over and under: the two kakula trade lines each bar; full ensemble
+      full(32, P8, { swap: true, canon: true, canonEnd: 40, fullDrums: true });
+      // Misread 40-43: the diamond at three sizes, soft and sparse
+      [1, 2, 4, 4].forEach(function (sp, i) { diamond(40 + i, 0, 5, .34, true, { span: sp }); }); cross(40, 4, .4); gongs(40, 4, .6);
+      // System 44-47: the lattice in use: everything back, bright
+      full(44, P4, { canon: true, canonEnd: 48, fullDrums: true });
+      // Keep 48-51: three last diamonds, then every voice on A with the gong
+      ['C', 'G', 'Am'].forEach(function (ch, i) { diamond(48 + i, 0, CENTRE[ch], .5, false); ring(48 + i, ch, .15); heart(48 + i, ch, .8); }); cross(48, 3, .5); gongs(48, 3, .9);
+      K(T(51, 0), 5, .6, 3, false); K(T(51, 0), 11, .34, 3, true, 'kakula2'); K(T(51, 0), 0, .3, 3, true, 'kakula2');
+      [9, 0, 4].forEach(function (pc) { E.push({ t: T(51, 0), k: 'kolintang', n: pc % 7, f: pcF(pc, 4), v: .22, s: 'gamba' }); });
+      E.push({ t: T(51, 0), k: 'gong', n: 0, f: 110, v: .55, s: 'gongs' }); E.push({ t: T(51, 0), k: 'bassgong', f: 110, v: .45, s: 'bass' }); E.push({ t: T(51, 0), k: 'drum', n: 'dum', v: .45, s: 'drums' });
+      // the fuller ensemble, section by section: the bed from the first bar, the flute from the cloth, the bass and fills as the lattice spreads
+      var AM4 = ['Am', 'Am', 'Am', 'Am'];
+      bed(0, AM4, .55); E.push({ t: T(2, 0), k: 'tatali', f: F(9), v: .22, d: BAR_K * 1.9, s: 'tatali' });            // title
+      bed(4, P8, .55); dio(8, P4, .6, true); flute(8, 'A', .2);                                                            // listen
+      bed(12, P4, .65); dio(12, P4, .7); flute(12, 'B', .22);                                                              // brief
+      bed(16, AM4.concat(AM4), .55); dio(19, ['Am', 'Am', 'Am', 'Am', 'Am'], .7, true); shaker(21, 3, .6);                 // draw one diamond (all A minor, as it grows)
+      bed(24, P8, .7); dio(24, P8, .8); shaker(24, 8, .8); flute(24, 'A', .24); flute(28, 'B', .24); imbal(28, P4, .9);    // lattice
+      bed(32, P8, .75); dio(32, P8, .9); shaker(32, 8, 1); flute(32, 'A', .26); flute(36, 'B', .26); imbal(32, P8, 1);      // weave
+      bed(40, AM4, .5); E.push({ t: T(40, 0), k: 'tatali', f: F(9), v: .18, d: BAR_K * 1.9, s: 'tatali' }); E.push({ t: T(42, 0), k: 'tatali', f: F(7), v: .18, d: BAR_K * 1.9, s: 'tatali' }); // misread
+      bed(44, P4, .75); dio(44, P4, .9); shaker(44, 4, 1); flute(44, 'A', .26); imbal(44, P4, 1);                          // system
+      bed(48, ['C', 'G', 'Am'], .65); dio(48, ['C', 'G', 'Am'], .8); shaker(48, 3, .7);                                     // keep
+      [[48, 0, 7, 3], [48, 3, 9, 1], [49, 0, 8, 2], [49, 2, 6, 2], [50, 0, 9, 2], [50, 2, 7, 1], [50, 3, 6, 1]].forEach(function (n) { E.push({ t: T(n[0], n[1]), k: 'tatali', f: F(n[2]), v: .24, d: n[3] * BEAT_K * .94, s: 'tatali' }); });
+      E.push({ t: T(51, 0), k: 'tatali', f: F(11), v: .26, d: BAR_K * 1.2, s: 'tatali' }); E.push({ t: T(51, 0), k: 'dio', f: 110, v: .5, s: 'dio' });
+      [9, 0, 4].forEach(function (pc, j) { E.push({ t: T(51, 0) + j * .012, k: 'angklung', f: pcF(pc, 4) * (pc === 9 ? 1 : 2), v: .16, d: BAR_K * .9, s: 'angklung' }); });
+      return E;
+    }
+    return { compose: compose, BAR: BAR_K, BPM: BPM_K };
+  })();
+
+  // ---------- drawing the lattice (the studio's own ketupat engine) ----------
+  // per-diamond swell [outer, middle, inner]: a slow ripple out from (o.x, o.y), lifted by the score (the ensemble on the
+  // outer ring, the drums on the middle, the gong on the heart)
+  function kBreath(x, y, o) {
+    if (reduce) return [0, 0, 0]; var w = Math.sin(t * 2.2 - Math.hypot(x - o.x, y - o.y) / 70) * (o.amp == null ? .03 : o.amp), lv = liveLevel();
+    return [w + lv * .05, w * .6 + lvD(t) * .05, w * .3 + lvG(0, t) * .1];
+  }
+  // offsets that put a diamond exactly on (cx, cy) for a field drawn from (x0, y0) with tile P
+  function kAlign(x0, y0, cx, cy, P) { return { ox: ((cx - x0) % P + P) % P, oy: ((cy - y0) % P + P) % P }; }
+  // the sarong's head panel, sketched: a dashed cloth with a panel of dashed diamonds between two lines
+  function headSketch(x, y, w, h, alpha) {
+    g.save(); g.globalAlpha *= alpha; g.strokeStyle = C.gold; g.lineWidth = 1.4; g.setLineDash([6, 6]); g.strokeRect(x, y, w, h);
+    var px = x + w * .4, pw = w * .2, q = pw / 4; g.setLineDash([]); g.strokeStyle = C.gold2; g.lineWidth = 1.8;
+    g.beginPath(); g.moveTo(px, y); g.lineTo(px, y + h); g.moveTo(px + pw, y); g.lineTo(px + pw, y + h); g.stroke();
+    g.beginPath(); g.rect(px, y, pw, h); g.clip(); g.setLineDash([4, 4]); g.strokeStyle = C.gold; g.lineWidth = 1.4;
+    for (var r = 0; r * q < h + q; r++) (r % 2 ? [2] : [0, 4]).forEach(function (c) { var cx = px + c * q, cy = y + r * q, s = q * .86; g.beginPath(); g.moveTo(cx, cy - s); g.lineTo(cx + s, cy); g.lineTo(cx, cy + s); g.lineTo(cx - s, cy); g.closePath(); g.stroke(); });
+    g.restore();
+  }
+  // a plain weave turned 45°: rows slide in, then columns, over and under; every crossing shows as a diamond
+  function weave(x0, y0, w, h, lt, alpha) {
+    var sw = 40, N = 10, L = N * sw, A = '#C9A35A', B = '#8F6E38';
+    g.save(); g.globalAlpha *= alpha; g.beginPath(); g.rect(x0, y0, w, h); g.clip(); g.translate(x0 + w / 2, y0 + h / 2); g.rotate(Math.PI / 4);
+    g.lineWidth = 2; g.strokeStyle = C.ink;
+    for (var j = -N; j < N; j++) for (var i = -N; i < N; i++) {
+      var x = i * sw, y = j * sw;
+      var ra = eo(ramp(lt, .3 + (j + N) * .12, 1.6 + (j + N) * .12)), rb = eo(ramp(lt, 2.2 + (i + N) * .12, 3.5 + (i + N) * .12));
+      var hasA = -L + 2 * L * ra >= x + sw, hasB = -L + 2 * L * rb >= y + sw; if (!hasA && !hasB) continue;
+      var aTop = hasA && (!hasB || ((i + j) % 2 + 2) % 2 === 0);
+      g.fillStyle = aTop ? A : B; g.fillRect(x, y, sw, sw); g.beginPath();
+      if (aTop) { g.moveTo(x, y); g.lineTo(x + sw, y); g.moveTo(x, y + sw); g.lineTo(x + sw, y + sw); } else { g.moveTo(x, y); g.lineTo(x, y + sw); g.moveTo(x + sw, y); g.lineTo(x + sw, y + sw); }
+      g.stroke();
+    }
+    g.restore();
+  }
+  var SCENES_KETUPAT = [
+    { id: 'k-title', dur: barsK(4), step: null,
+      draw: function (lt, d) {
+        var out = 1 - ramp(lt, d - .5, d), cx = W / 2, cy = 210, P = 200, al = kAlign(0, 50, cx, cy, P), dr = reduce ? 0 : lt * 6;
+        ketupatField(g, 0, 50, W, 320, P, 'buya-bomba', { ox: al.ox + dr, oy: al.oy,
+          each: function (i, j, x, y) { var dd = Math.hypot(x - cx, y - cy), ap = eo(ramp(lt, .2 + dd / 700 * 2.2, .9 + dd / 700 * 2.2)); return ap > 0 ? { rings: 3 * ap, heart: ramp(ap, .8, 1), alpha: out * clamp(1.3 - dd / 560, 0, 1), swell: kBreath(x, y, { x: cx, y: cy, amp: .025 }) } : null; },
+          cross: function (i, j, x, y) { var dd = Math.hypot(x - cx, y - cy); return { alpha: eo(ramp(lt, 1 + dd / 700 * 2.2, 1.6 + dd / 700 * 2.2)) * out * clamp(1.3 - dd / 560, 0, 1) }; } });
+        var a = eo(ramp(lt, 1.6, 2.6)) * out;
+        text('BATIK MEDIA LAB · REEL 05', W / 2, 410, '500 13px ' + F.mono, C.gold2, a, 'center');
+        text('Ketupat lattice', W / 2, 490, '600 84px ' + F.display, C.paper, a, 'center');
+        text('Three tones and one heart, woven on the diagonal', W / 2, 536, 'italic 500 24px ' + F.display, C.mist, eo(ramp(lt, 2.2, 3.4)) * out, 'center');
+      } },
+    { id: 'k-listen', dur: barsK(8), step: 'Listen to the cloth', phase: 'Thinking',
+      eyebrow: 'Step 1 · Listen to the cloth', head: 'Diamonds in the head panel.',
+      body: 'On the buya bomba of Donggala the head panel of the sarong carries belah ketupat, the split diamond, named after the woven palm-leaf case that rice is cooked in. The Bugis call the motif cobo’. In the cloth’s own iconography it speaks of courage in proposing marriage and the wisdom of elders.',
+      teach: 'Read the motif as grammar before you draw: where it sits (the head panel), how it repeats (diamond on diamond, corner to corner), what fills it (nested tones, a dot), and what it means to the people who weave it.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), a = eo(ramp(lt, 1, 2.4)) * out, b = eo(ramp(lt, 5, 6.2)) * out, c = eo(ramp(lt, 9.5, 10.7)) * out;
+        ikatField(660, 110, 540, 150, lt, a); text('ikat · gold on black (an abstract weave, not a copy)', 660, 282, '500 12px ' + F.mono, C.mist, a);
+        headSketch(660, 330, 540, 120, b); text('the head panel · diamond on diamond, corner to corner', 930, 480, '500 12px ' + F.mono, C.mist, b, 'center');
+        g.save(); g.globalAlpha = c; g.strokeStyle = C.gold2; g.lineWidth = 1.5; rr(900, 520, 300, 110, 6); g.stroke(); g.restore();
+        text('RULE', 920, 550, '500 12px ' + F.mono, C.gold2, c); para('Learn the grammar. Redraw everything else.', 920, 582, 270, 'italic 500 22px ' + F.display, 26, C.paper, c);
+      } },
+    { id: 'k-brief', dur: barsK(4), step: 'Set the brief', phase: 'Thinking',
+      eyebrow: 'Step 2 · Set the brief', head: 'A ground that never shows its seam.',
+      body: 'The ketupat lattice belongs to the Dua Pulau signature. It must work as a quiet all-over ground for shirts, cushions and linings, carry Bomba rosettes on every other diamond, and print in one gold-on-black ink.',
+      teach: 'The brief: our own drawing, credited origins, seamless both ways, three tones and a heart, and room for a rosette to bloom inside it.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d);
+        ['Our own drawing, never a copy of the cloth', 'Three nested tones and one dark heart', 'Seamless both ways, crosses where four meet', 'Credit the weavers of Donggala'].forEach(function (r, i) {
+          var a = eo(ramp(lt, .6 + i * 1.1, 1.4 + i * 1.1)) * out; g.save(); g.globalAlpha = a; g.fillStyle = C.gold; g.beginPath(); g.arc(680, 170 + i * 80, 5, 0, 7); g.fill(); g.restore();
+          text(r, 704, 176 + i * 80, '500 24px ' + F.display, C.paper, a);
+        });
+        var p = ramp(lt, 4.5, 7.5), P = 120, al = kAlign(680, 520, 940, 580, P);
+        ketupatField(g, 680, 520, 520, 120, P, 'buya-bomba', { ox: al.ox, oy: al.oy,
+          each: function (i, j, x, y) { if (Math.abs(y - 580) > 1) return null; var ap = eo(clamp((p * 1.25 - (x - 680) / 520) * 4, 0, 1)); return ap > 0 ? { rings: 3 * ap, alpha: out, swell: kBreath(x, y, { x: 940, y: 580, amp: .03 }) } : null; },
+          cross: function (i, j, x, y) { if (Math.abs(y - 580) > 1) return null; return { alpha: out * clamp((p * 1.25 - (x - 680) / 520) * 4 - 1, 0, 1) }; } });
+      } },
+    { id: 'k-diamond', dur: barsK(8), step: 'Draw one diamond', phase: 'Ideation',
+      eyebrow: 'Step 3 · Draw one diamond', head: 'Four sides, three tones, one heart.',
+      body: 'The diamond is four nearly straight sides that pinch in a little at the corners, so it looks cut by hand rather than ruled. Inside it nest three tones, gold, dark and light gold, at full, two-thirds and one-third size, around one dark heart. Every edge is a flat shape, so it stamps, prints and embroiders the same.',
+      teach: 'Reduce to flat shapes that survive small. Three rings at fixed ratios (1, 0.65, 0.33) keep the depth of the woven original without a single gradient.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), p = ramp(lt, .4, d - 3), a = eo(ramp(lt, .3, 1)) * out, cx = 940, cy = 370, r = 200, P = r / KETUPAT_R;
+        g.save(); g.globalAlpha = a * .5; g.strokeStyle = C.line2; g.lineWidth = 1; for (var gx = 700; gx <= 1180; gx += 40) { g.beginPath(); g.moveTo(gx, 130); g.lineTo(gx, 610); g.stroke(); } for (var gy = 130; gy <= 610; gy += 40) { g.beginPath(); g.moveTo(700, gy); g.lineTo(1180, gy); g.stroke(); } g.restore();
+        var shown = 3 * ramp(p, .4, .79);
+        if (shown > 0) ketupatDiamond(g, cx, cy, r, 'buya-bomba', { rings: shown, heart: eo(ramp(p, .8, .88)), alpha: out, swell: p >= 1 ? kBreath(cx, cy, { x: cx, y: cy + 60, amp: .015 }) : null });
+        var tp = ramp(p, 0, .4), ta = out * (1 - ramp(p, .45, .6));
+        if (tp > 0 && ta > 0) { var pts = ketupatPts(cx, cy, r, 40), k = Math.floor(tp * pts.length); g.save(); g.globalAlpha = ta; g.strokeStyle = C.gold2; g.lineWidth = 3; g.lineJoin = 'round'; g.beginPath(); for (var i = 0; i <= Math.min(k, pts.length - 1); i++) { if (i) g.lineTo(pts[i][0], pts[i][1]); else g.moveTo(pts[i][0], pts[i][1]); } if (tp >= 1) g.closePath(); g.stroke();
+          if (tp < 1) { var q = pts[Math.min(k, pts.length - 1)]; g.fillStyle = C.gold; g.beginPath(); g.arc(q[0], q[1], 5, 0, 7); g.fill(); } g.restore(); }
+        var ca = eo(ramp(p, .9, 1)) * out; [[-1, 0], [1, 0], [0, -1], [0, 1]].forEach(function (v) { ketupatCross(g, cx + v[0] * P / 2, cy + v[1] * P / 2, P, 'buya-bomba', { alpha: ca, swell: liveLevel() * .6 }); });
+        var lab = p < .4 ? 'outline · four sides, pinched at the corners' : p < .53 ? 'outer ring · gold' : p < .66 ? 'middle ring · dark, two-thirds' : p < .8 ? 'inner ring · light gold, one-third' : p < .9 ? 'the heart' : 'cecek crosses, where four diamonds meet';
+        text(lab, cx, 690, '500 12px ' + F.mono, C.gold2, out * .9, 'center');
+      } },
+    { id: 'k-lattice', dur: barsK(8), step: 'Tile the lattice', phase: 'Synthesis', explore: 'lattice',
+      eyebrow: 'Step 4 · Tile the lattice', head: 'A diamond in the middle, quarters at the corners.',
+      body: 'One square tile holds a whole diamond at its centre and a quarter of one at each corner, with a cecek cross halfway along each side. Lay the tiles edge to edge and the quarters close into whole diamonds, so the lattice runs on the diagonal with no seam either way.',
+      teach: 'Design the tile, not the cloth. When everything that crosses an edge is cut in matching halves or quarters, the repeat is seamless by construction.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), ex = EX && EX.scene === 'k-lattice';
+        var P = ex ? EX.P : 200, ink = ex ? EX.ink : 'buya-bomba', fill = ex ? EX.fill : 'plain', ground = ex ? EX.ground : '#0E0C09';
+        var x0 = 680, y0 = 110, w = 520, h = 480, cx = 940, cy = 350, p = ex ? 1 : ramp(lt, .5, d - 2.5), half = P / 2, maxd = Math.hypot(w, h) / 2;
+        // while only the one tile shows, the field is cut to it, so its corners are quarters; then the cut opens and they close into diamonds
+        var one = !ex && p < .3; if (one) { x0 = cx - half; y0 = cy - half; w = h = P; } var al = kAlign(x0, y0, cx, cy, P);
+        if (ground !== '#0E0C09') { g.save(); g.globalAlpha = out; g.fillStyle = ground; g.fillRect(680, 110, 520, 480); g.restore(); }
+        function inTile(x, y) { return Math.abs(x - cx) <= half + 1 && Math.abs(y - cy) <= half + 1; }
+        function appear(x, y) { if (ex) return 1; var dd = Math.hypot(x - cx, y - cy); return dd < 1 ? eo(ramp(p, .02, .1)) : inTile(x, y) ? eo(ramp(p, .1, .2)) : eo(ramp(p, .3 + dd / maxd * .55, .36 + dd / maxd * .55)); }
+        ketupatField(g, x0, y0, w, h, P, ink, { ox: al.ox, oy: al.oy,
+          each: function (i, j, x, y) { var ap = appear(x, y); return ap > 0 ? { rings: 3 * ap, heart: ramp(ap, .7, 1), alpha: out, swell: kBreath(x, y, { x: cx, y: cy, amp: .03 }) } : null; },
+          after: function (i, j, x, y) { if (fill === 'rosette' && i % 2 === 0 && j % 2 === 0) putImg('motifs/bomba-rosette--buya.png', x, y, P * .4, out * appear(x, y), reduce ? 0 : t * .15); },
+          cross: function (i, j, x, y) { if (one) return null; var dd = Math.hypot(x - cx, y - cy); return { alpha: out * (ex ? 1 : inTile(x, y) ? 1 : eo(ramp(p, .36 + dd / maxd * .55, .42 + dd / maxd * .55))), swell: liveLevel() * .6 }; } });
+        // the tile's own four crosses sit on its edges, so they are drawn outside the cut
+        if (one) [[0, -1], [1, 0], [0, 1], [-1, 0]].forEach(function (v) { ketupatCross(g, cx + v[0] * half, cy + v[1] * half, P, ink, { alpha: out * eo(ramp(p, .2, .28)) }); });
+        var fa = out * (ex ? 0 : ramp(p, .02, .08) * (1 - ramp(p, .5, .62)));
+        if (fa > 0) { g.save(); g.globalAlpha = fa; g.strokeStyle = C.paper; g.lineWidth = 1.5; g.setLineDash([7, 6]); g.strokeRect(cx - half, cy - half, P, P); g.restore(); }
+        if (!ex) { var k = p < .2 ? 'one tile: a diamond in the middle, quarters at the corners' : p < .3 ? 'a cecek cross halfway along each side' : 'tile edge to edge: the quarters close into diamonds'; text(k, 940, 630, '500 12px ' + F.mono, C.gold2, out * .9, 'center'); }
+      } },
+    { id: 'k-weave', dur: barsK(8), step: 'Weave it, then let it breathe', phase: 'Synthesis',
+      eyebrow: 'Step 5 · Weave it, then let it breathe', head: 'Every crossing is a diamond.',
+      body: 'A ketupat case is woven from two strips of young coconut leaf, over and under. Turn any plain weave forty-five degrees and every crossing shows as a diamond, so the lattice is the shape of weaving itself. Then the lattice comes alive: a slow ripple runs out from the centre, and the rings swell with the score.',
+      teach: 'Find the making behind the motif. The lattice is not an ornament laid on the cloth; it is the weave turned on its corner, which is why it tiles without a seam.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), x0 = 680, y0 = 110, w = 520, h = 480, cx = 940, cy = 350, split = d * .55;
+        var wa = (1 - ramp(lt, split, split + 1.4)) * out, la = eo(ramp(lt, split, split + 1.4)) * out;
+        if (wa > 0) weave(x0, y0, w, h, lt, wa);
+        if (la > 0) { var P = 150, al = kAlign(x0, y0, cx, cy, P), dr = reduce ? 0 : (lt - split) * 6;
+          ketupatField(g, x0, y0, w, h, P, 'buya-bomba', { ox: al.ox + dr, oy: al.oy + dr,
+            each: function (i, j, x, y) { return { alpha: la, swell: kBreath(x, y, { x: cx, y: cy, amp: .07 }) }; },
+            cross: function (i, j, x, y) { return { alpha: la, swell: reduce ? 0 : liveLevel() * .8 + .4 * Math.max(0, Math.sin(t * 2.2 - Math.hypot(x - cx, y - cy) / 70)) }; } }); }
+        text(lt < split ? 'two strips · over and under · turned 45°' : 'a ripple from the centre · the rings swell with the score', 940, 630, '500 12px ' + F.mono, C.gold2, out * .9, 'center');
+      } },
+    { id: 'k-misread', dur: barsK(4), step: 'Check misreadings', phase: 'Test',
+      eyebrow: 'Step 6 · Check misreadings', head: 'Argyle, eyes, or ketupat?',
+      body: 'At an eighteen-pixel tile the rings merge and the lattice reads as argyle or a checkerboard. Around sixty, each light ring with its dark heart can read as a row of eyes staring back. From about a hundred and twenty the tones, the heart and the crosses read as the cloth. So the small master drops the heart and the crosses and keeps the three tones.',
+      teach: 'Test at the smallest size it will print. Decide what it may lose (the heart, the crosses) and what it must keep (the three tones, the diagonal).',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), dr = reduce ? 0 : lt * 4;
+        [[18, 700, 'argyle · checkerboard'], [60, 885, 'rows of eyes'], [140, 1070, 'the full grammar']].forEach(function (R, i) {
+          var a = eo(ramp(lt, .4 + i * 1.2, 1.2 + i * 1.2)) * out, al = kAlign(R[1], 150, R[1] + 75, 225, R[0]);
+          ketupatField(g, R[1], 150, 150, 150, R[0], 'buya-bomba', { ox: al.ox + dr, oy: al.oy, each: function () { return { alpha: a }; }, cross: function () { return { alpha: a }; } });
+          g.save(); g.globalAlpha = a; g.strokeStyle = C.line2; g.lineWidth = 1; g.strokeRect(R[1], 150, 150, 150); g.restore();
+          text(R[0] + ' px tile', R[1], 330, '500 12px ' + F.mono, C.gold2, a); text(R[2], R[1], 350, '500 12px ' + F.mono, C.mist, a);
+        });
+        var b = eo(ramp(lt, 5.2, 6.2)) * out, al2 = kAlign(700, 420, 700, 470, 60);
+        ketupatField(g, 700, 420, 520, 100, 60, 'buya-bomba', { ox: al2.ox + dr, oy: al2.oy, each: function () { return { alpha: b, heart: 0 }; }, cross: function () { return null; } });
+        text('small master · no heart, no crosses, the three tones kept', 700, 552, '500 12px ' + F.mono, C.gold2, b);
+      } },
+    { id: 'k-system', dur: barsK(4), step: 'Where the lattice lives', phase: 'System',
+      eyebrow: 'Step 7 · Where the lattice lives', head: 'Grounds, panels and hems.',
+      body: 'The lattice is the ground of Ketupat Night, with a Bomba rosette blooming on every other diamond. It fills the head panel of the Dua Pulau sarong and runs small along a hem. One drawing, three jobs.',
+      teach: 'A ground motif earns its place by staying quiet: it holds a hero, fills a panel and edges a hem without competing. Keep the master in one place and let every use read from it.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), a = eo(ramp(lt, .4, 1.4)) * out, b = eo(ramp(lt, 2, 3)) * out, dr = reduce ? 0 : lt * 5;
+        var al = kAlign(700, 140, 810, 250, 110);
+        ketupatField(g, 700, 140, 220, 220, 110, 'buya-bomba', { ox: al.ox, oy: al.oy, each: function (i, j, x, y) { return { alpha: a, swell: kBreath(x, y, { x: 810, y: 250, amp: .03 }) }; }, cross: function () { return { alpha: a }; },
+          after: function (i, j, x, y) { if (i % 2 === 0 && j % 2 === 0) putImg('motifs/bomba-rosette--buya.png', x, y, 44, a, reduce ? 0 : t * .15); } });
+        g.save(); g.globalAlpha = a; g.strokeStyle = C.gold2; g.lineWidth = 1.5; g.strokeRect(700, 140, 220, 220); g.restore();
+        text('cushion · Ketupat Night', 810, 390, '500 12px ' + F.mono, C.mist, a, 'center');
+        var al3 = kAlign(700, 450, 700, 485, 70);
+        ketupatField(g, 700, 450, 220, 70, 70, 'buya-bomba', { ox: al3.ox + dr, oy: al3.oy, each: function (i, j, x, y) { return Math.abs(y - 485) < 1 ? { alpha: a } : null; }, cross: function (i, j, x, y) { return Math.abs(y - 485) < 1 ? { alpha: a } : null; } });
+        text('hem band', 810, 556, '500 12px ' + F.mono, C.mist, a, 'center');
+        g.save(); g.globalAlpha = b; g.fillStyle = C.ink2; g.fillRect(980, 120, 200, 470); g.strokeStyle = C.gold2; g.lineWidth = 1.5; g.strokeRect(980, 120, 200, 470); g.restore();
+        var al4 = kAlign(1050, 120, 1080, 120, 60);
+        ketupatField(g, 1050, 120, 60, 470, 60, 'buya-bomba', { ox: al4.ox, oy: al4.oy - dr, each: function (i, j, x, y) { return { alpha: b }; }, cross: function () { return { alpha: b }; } });
+        g.save(); g.globalAlpha = b; g.strokeStyle = C.gold2; g.beginPath(); g.moveTo(1050, 120); g.lineTo(1050, 590); g.moveTo(1110, 120); g.lineTo(1110, 590); g.stroke(); g.restore();
+        text('sarong · head panel', 1080, 620, '500 12px ' + F.mono, C.mist, b, 'center');
+      } },
+    { id: 'k-keep', dur: barsK(4), step: 'Credit and keep', phase: 'Archive',
+      eyebrow: 'Step 8 · Credit and keep', head: 'Credit the cloth. Keep the drawing.',
+      body: 'Ketupat lattice: our own drawing, inspired by the belah ketupat diamonds of the buya bomba head panel of Donggala, Central Sulawesi, with gratitude to the women who weave it. The master lives in the engine; every ground, panel and hem reads from it.',
+      teach: 'Credit is part of the design. Keep the source, the rule, the drawing and the credit line together, so the next person can continue rather than restart.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), a = eo(ramp(lt, .3, 1.5)) * out, r = 120, P = r / KETUPAT_R;
+        ketupatDiamond(g, 940, 250, r, 'buya-bomba', { alpha: a, swell: kBreath(940, 250, { x: 940, y: 310, amp: .03 }) });
+        [-1, 1].forEach(function (s) { ketupatCross(g, 940 + s * P / 2, 250, P, 'buya-bomba', { alpha: a, swell: liveLevel() * .6 }); });
+        text('REEL 05 · SAVED TO THE LAB', 940, 450, '500 13px ' + F.mono, C.gold2, eo(ramp(lt, 2, 3)) * out, 'center');
+        text('Next: Cengkeh sprig', 940, 486, 'italic 500 22px ' + F.display, C.mist, eo(ramp(lt, 3.2, 4.2)) * out, 'center');
+      } }
+  ];
+  var SCORES_KETUPAT = [['off', 'Sound off'], ['ketupat', 'Anyam Ketupat · 96 bpm']];
+  var STEMS_KETUPAT = [['kakula', 'Kakula, the rising side'], ['kakula2', 'Second kakula, the falling side'], ['gamba', 'Gamba-gamba, the middle ring'], ['tatali', 'Tatali, the big diamond'], ['angklung', 'Angklung, the ground'], ['dio', 'Dio, plucked bass'], ['gongs', 'Tawa-tawa'], ['drums', 'Gimba'], ['shaker', 'Shaker'], ['bass', 'Low gong, the heart'], ['loom', 'Loom, the cecek crosses']];
+
   var SCORES = SCORES_NTINA, SCORES_BOMBA = [['off', 'Sound off'], ['bomba', 'Bunga Kaili · 138 bpm']];
   var SCORES_LOGO = [['off', 'Sound off'], ['marea', 'Marea · gong kebyar for the mark · 112 bpm']], SCORES_IMAGE = [['off', 'Sound off'], ['image', 'Your picture · kakula ensemble']];
   var SCORE_NOTE = {
+    ketupat: 'Anyam Ketupat (weaving the ketupat), our own piece for the lattice, on the same Kaili kakula ensemble: each bar is one diamond, two kakula starting on one kettle and opening apart in contrary motion, one rising and one falling, to the widest point on beat 3, then closing back together; the gamba-gamba plays a narrower diamond inside it and the low gong is the dark heart; because the lattice is a centred grid, a canon enters half a bar later; the loom ticks either side of every bar line, a cecek cross where four diamonds meet. Around them the tatali flute draws one big diamond across every four bars, up to A5 and back, an angklung tremolo lays the ground, the dio plucks the bass and a shaker fills the weave. A minor, 96 bpm, 52 bars, one section per scene, ending with every voice on A. No traditional piece is quoted.',
     rebung: 'Pucuk Rebung, our own piece for the border, on the same Kaili kakula ensemble as Bunga Kaili: the shoot is a rising run of five kettle notes inside one bar, and it grows one note per bar while the shoot is drawn; a second kakula plays the same run two beats later a third above, the way the second row sits half a step on; the low gongs alternate each chord’s root and fifth on beats 1 and 3 for the zigzag spine; the loom’s off-beat ticks are the cecek dots. 100 bpm, 52 bars, one section per scene. No traditional piece is quoted.',
     marea: 'Marea, our own piece for the mark in the manner of Balinese gong kebyar: pelog selisir over two octaves with the paired ombak tuning that shimmers; kotekan, two interlocking kettle parts making one fast line, doubled by the reyong; jegogan holding the core melody on long low tones; kempli on the beat; the gong cycle of gong ageng, kempur and klentong; kendang; ceng-ceng; a suling flute; the sea’s wash. Forty bars at 112 bpm, one section per layer: it opens with a kebyar burst, breaks on an angsel before the close. All synthesized; no traditional piece is quoted.',
     image: 'Composed from your picture: 128 columns over 16 bars at 106.7 bpm. The brightest row of each column picks one of the seven kettles (high in the picture, high in pitch), dark columns ring the low gong on the bar, edges drive the drum, a change of colour scrapes. Nothing leaves this browser.',
@@ -1645,6 +1924,7 @@ export function startLab(hooks) {
   function sceneStart(id) { for (var i = 0; i < SCENES.length; i++) if (SCENES[i].id === id) return starts[i]; return 0; }
   function buildScore(kind) {
     if (kind === 'marea') return LM.compose({ feel: SND.feel }).sort(function (a, b) { return a.t - b.t; });
+    if (kind === 'ketupat') return LK.compose({ feel: SND.feel }).sort(function (a, b) { return a.t - b.t; });
     if (kind === 'rebung') return LR.compose({ feel: SND.feel }).sort(function (a, b) { return a.t - b.t; });
     if (kind === 'image') return IMG && IMG.score ? IMG.score.slice() : [];
     if (kind === 'bomba') return LB.compose({ feel: SND.feel }).sort(function (a, b) { return a.t - b.t; });
@@ -1793,8 +2073,8 @@ export function startLab(hooks) {
   function newBus() {
     var c = SND.ctx; if (!c) return;
     if (SND.bus) { var old = SND.bus; old.gain.cancelScheduledValues(c.currentTime); old.gain.setTargetAtTime(0, c.currentTime, .08); setTimeout(function () { try { old.disconnect(); } catch (e) {} }, 900); }
-    SND.bus = c.createGain(); SND.bus.gain.value = ['ntina', 'folk', 'bomba', 'marea', 'rebung', 'image'].indexOf(SND.kind) >= 0 ? .55 : 1; SND.bus.connect(SND.master);
-    SND.stemGain = {}; STEMS.concat(STEMS_FOLK, STEMS_BOMBA, STEMS_MAREA, STEMS_REBUNG).forEach(function (st) { if (SND.stemGain[st[0]]) return; var sg = c.createGain(); sg.gain.value = SND.muted[st[0]] ? 0 : 1; sg.connect(SND.bus); SND.stemGain[st[0]] = sg; });
+    SND.bus = c.createGain(); SND.bus.gain.value = ['ntina', 'folk', 'bomba', 'marea', 'rebung', 'ketupat', 'image'].indexOf(SND.kind) >= 0 ? .55 : 1; SND.bus.connect(SND.master);
+    SND.stemGain = {}; STEMS.concat(STEMS_FOLK, STEMS_BOMBA, STEMS_MAREA, STEMS_REBUNG, STEMS_KETUPAT).forEach(function (st) { if (SND.stemGain[st[0]]) return; var sg = c.createGain(); sg.gain.value = SND.muted[st[0]] ? 0 : 1; sg.connect(SND.bus); SND.stemGain[st[0]] = sg; });
     var send = c.createGain(); send.gain.value = SND.kind === 'gema' ? .5 : .24; SND.bus.connect(send); send.connect(SND.wet);
     SND.anchor = c.currentTime + .06 - t / SND.rate; SND.from = t;
   }
@@ -1910,7 +2190,7 @@ export function startLab(hooks) {
     var dg = glow(SND.byK.drum, now, .12); g.save(); g.fillStyle = C.line2; rr(cx + 150, y - 6, 12, 12, 2); g.fill(); if (dg > .01) { g.globalAlpha = dg; g.fillStyle = C.gold2; rr(cx + 150 - dg * 2, y - 6 - dg * 2, 12 + dg * 4, 12 + dg * 4, 2); g.fill(); } g.restore();
   }
   function setScore(kind) {
-    SND.kind = kind; if (['ntina', 'folk', 'bomba', 'marea', 'rebung'].indexOf(kind) < 0) { SND.rate = 1; } indexScore(); renderScores();
+    SND.kind = kind; if (['ntina', 'folk', 'bomba', 'marea', 'rebung', 'ketupat'].indexOf(kind) < 0) { SND.rate = 1; } indexScore(); renderScores();
     $('scoreNote').textContent = SCORE_NOTE[kind];
     if (kind === 'off') { stopSound(); return; }
     if (!unlockAudio()) { $('scoreNote').textContent = 'This browser has no Web Audio, so the score can’t play here.'; return; }
@@ -1919,8 +2199,8 @@ export function startLab(hooks) {
   function renderScores() {
     var row = $('scores'); row.innerHTML = '';
     SCORES.forEach(function (s) { var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = s[1]; b.setAttribute('aria-pressed', String(SND.kind === s[0])); b.addEventListener('click', function () { setScore(s[0]); }); row.appendChild(b); });
-    var mx = $('mixer'); mx.hidden = ['ntina', 'folk', 'bomba', 'marea', 'rebung'].indexOf(SND.kind) < 0; var ml = $('stems'); ml.innerHTML = '';
-    (SND.kind === 'folk' ? STEMS_FOLK : SND.kind === 'bomba' ? STEMS_BOMBA : SND.kind === 'marea' ? STEMS_MAREA : SND.kind === 'rebung' ? STEMS_REBUNG : STEMS).forEach(function (st) { var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = st[1]; b.setAttribute('aria-pressed', String(!SND.muted[st[0]]));
+    var mx = $('mixer'); mx.hidden = ['ntina', 'folk', 'bomba', 'marea', 'rebung', 'ketupat'].indexOf(SND.kind) < 0; var ml = $('stems'); ml.innerHTML = '';
+    (SND.kind === 'folk' ? STEMS_FOLK : SND.kind === 'bomba' ? STEMS_BOMBA : SND.kind === 'marea' ? STEMS_MAREA : SND.kind === 'rebung' ? STEMS_REBUNG : SND.kind === 'ketupat' ? STEMS_KETUPAT : STEMS).forEach(function (st) { var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = st[1]; b.setAttribute('aria-pressed', String(!SND.muted[st[0]]));
       b.addEventListener('click', function () { SND.muted[st[0]] = !SND.muted[st[0]]; if (SND.stemGain && SND.stemGain[st[0]] && SND.ctx) SND.stemGain[st[0]].gain.setTargetAtTime(SND.muted[st[0]] ? 0 : 1, SND.ctx.currentTime, .03); renderScores(); });
       ml.appendChild(b); });
   }
@@ -2014,6 +2294,7 @@ export function startLab(hooks) {
       if (sc.explore === 'inks') $('benchOut').textContent = (EX.ink === 'buya' ? 'Buya Bomba ink' : 'Dua Pulau ink') + ' on ' + EX.gname + (EX.ink === 'dua' && EX.ground === '#0E0C09' ? ': navy outlines vanish on black, use Buya Bomba ink here' : EX.ink === 'buya' && EX.ground === '#FAF7F2' ? ': black lines read, but the cloth’s gold-on-black mood is lost' : ': reads well');
       if (sc.explore === 'roseSize') { var rs = []; if (!EX.gold && EX.px <= 24) rs.push('the dark heart reads as an eye'); if (!EX.curve) rs.push('round head on a straight stem nears a lollipop'); $('benchOut').textContent = EX.px + ' px head · ' + (rs.length ? rs.join('; ') : 'reads as a flower'); }
       if (sc.explore === 'rows') $('benchOut').textContent = EX.h + ' px band · ' + (EX.ink === 'buya-bomba' ? 'gold on black' : 'gold with navy lines') + ' · ' + (EX.path === 'straight' ? 'rows stay parallel, spacing 1.25 × the half-height' : EX.path === 'wave' ? 'shoots lean with the curve; the half-step offset holds' : 'on the inside of the arc the shoots close up; too tight and the band skips');
+      if (sc.explore === 'lattice') $('benchOut').textContent = EX.P + ' px tile · ' + (EX.fill === 'rosette' ? 'Ketupat Field: a Bomba rosette blooms on every other diamond' : 'plain lattice: diamonds on a centred grid, crosses where four meet') + (EX.ink === 'dua-pulau' && EX.ground === '#0E0C09' ? ' · navy lines and the dark heart sink into black: use Buya Bomba ink here' : EX.ground === '#FAF7F2' ? ' · the pearl cecek go quiet on a pearl ground' + (EX.ink === 'buya-bomba' ? ', and the gold-on-black mood is lost' : '') : ' · reads well');
       if (sc.explore === 'cut') $('benchOut').textContent = EX.cm === 3 ? '3 cm: seeds narrower than 0.6 mm close up when cut. Use the dot-free small mark.' : '8 cm: one stencil. The seed head stays joined to the sheet through the open stem.';
     }
     if (sc.explore === 'angle') {
@@ -2052,6 +2333,12 @@ export function startLab(hooks) {
       chips('Band height', [[24, '24 px'], [34, '34 px'], [48, '48 px']], 'h');
       chips('Ink', [['buya-bomba', 'Buya Bomba'], ['dua-pulau', 'Dua Pulau']], 'ink');
       chips('Path', [['straight', 'Straight hem'], ['wave', 'Wave'], ['arc', 'Arc']], 'path');
+    } else if (sc.explore === 'lattice') {
+      EX = { scene: 'k-lattice', P: 200, ink: 'buya-bomba', fill: 'plain', ground: '#0E0C09' };
+      chips('Tile size', [[120, '120 px'], [200, '200 px'], [300, '300 px']], 'P');
+      chips('Ink', [['buya-bomba', 'Buya Bomba'], ['dua-pulau', 'Dua Pulau']], 'ink');
+      chips('Ground', [['#0E0C09', 'Bomba black'], ['#FAF7F2', 'Pearl']], 'ground');
+      chips('Fill', [['plain', 'Plain lattice'], ['rosette', 'Ketupat Field']], 'fill');
     }
     out();
     if (window.innerWidth <= 1020) $('bench').scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
@@ -2104,8 +2391,11 @@ export function startLab(hooks) {
   REEL_DEFS.rebung = { name: 'Rebung border', scenes: SCENES_REBUNG, scores: SCORES_REBUNG, bpm: function () { return LR.BPM; }, file: 'rebung-border-reel.webm',
     credit: 'Rebung border: our own drawing, inspired by the inward-facing bamboo-shoot borders of the buya bomba of Donggala, Central Sulawesi, with gratitude to the women who weave it. In the cloth’s iconography the rebung stand for power, greatness and triumph.',
     notes: '<p class="note">Score: Pucuk Rebung, an original for the same synthesized Kaili kakula ensemble as Bunga Kaili. The shoot is a rising five-note run that grows a note per bar while it is drawn; the second row is a second kakula two beats on and a third above; the zigzag spine is the low gongs alternating root and fifth; the dots are the loom. 100 bpm, 52 bars, a section per scene. The drawing uses the studio’s own rebung ribbon engine, so the reel and the Pattern Studio draw from one master.</p>' };
+  REEL_DEFS.ketupat = { name: 'Ketupat lattice', scenes: SCENES_KETUPAT, scores: SCORES_KETUPAT, bpm: function () { return LK.BPM; }, file: 'ketupat-lattice-reel.webm',
+    credit: 'Ketupat lattice: our own drawing, inspired by the belah ketupat diamonds (the Bugis cobo’) of the buya bomba head panel of Donggala, Central Sulawesi, with gratitude to the women who weave it. In the cloth’s iconography the motif speaks of courage in proposing marriage and the wisdom of elders.',
+    notes: '<p class="note">Score: Anyam Ketupat, an original for the same synthesized Kaili kakula ensemble as Bunga Kaili. Each bar is one diamond: two kakula open apart from one kettle in contrary motion and close again; the gamba-gamba plays the middle ring, the low gong the heart, a canon half a bar on is the centred grid, and the loom ticks round each bar line are the cecek crosses; the tatali flute draws one big diamond every four bars over an angklung ground, a plucked dio bass and a shaker. 96 bpm, 52 bars, a section per scene, ending on A. The drawing uses the studio’s own ketupat engine (<code>src/engine/ketupat.js</code>), proportioned from the master tile. Read more: <a href="https://ojs.unm.ac.id/societies/article/view/73950" target="_blank" rel="noopener">Inayah &amp; Fatimah 2025, buya bomba iconography</a></p>' };
   var CUR = REEL_DEFS.ntina;
-  var REELS = [['ntina', 'Ntina', true], ['bomba', 'Bomba Rose', true], ['marea', 'Marea Dvīpa', true], ['rebung', 'Rebung border', true], ['ketupat', 'Ketupat lattice', false]];
+  var REELS = [['ntina', 'Ntina', true], ['bomba', 'Bomba Rose', true], ['marea', 'Marea Dvīpa', true], ['rebung', 'Rebung border', true], ['ketupat', 'Ketupat lattice', true], ['cengkeh', 'Cengkeh sprig', false]];
   function renderReels() {
     $('reels').innerHTML = '';
     REELS.forEach(function (r) {
@@ -2168,7 +2458,7 @@ export function startLab(hooks) {
   // ---------- wiring ----------
   $('play').addEventListener('click', function () { if (SND.kind !== 'off') unlockAudio(); setPlaying(!playing); });
   $('testSound').addEventListener('click', testSound);
-  function setMutes(fn) { STEMS.concat(STEMS_FOLK, STEMS_BOMBA, STEMS_MAREA, STEMS_REBUNG).forEach(function (st) { SND.muted[st[0]] = fn(st[0]); if (SND.stemGain && SND.stemGain[st[0]] && SND.ctx) SND.stemGain[st[0]].gain.setTargetAtTime(SND.muted[st[0]] ? 0 : 1, SND.ctx.currentTime, .03); }); renderScores(); }
+  function setMutes(fn) { STEMS.concat(STEMS_FOLK, STEMS_BOMBA, STEMS_MAREA, STEMS_REBUNG, STEMS_KETUPAT).forEach(function (st) { SND.muted[st[0]] = fn(st[0]); if (SND.stemGain && SND.stemGain[st[0]] && SND.ctx) SND.stemGain[st[0]].gain.setTargetAtTime(SND.muted[st[0]] ? 0 : 1, SND.ctx.currentTime, .03); }); renderScores(); }
   var taps = [];
   function setRate(bpm) { bpm = clamp(bpm, 80, 132); var was = playing; SND.rate = bpm / CUR.bpm(); $('bpmOut').textContent = 'Tempo set to ' + bpm.toFixed(1) + ' bpm (the song’s own is ' + CUR.bpm().toFixed(0) + ') · film ' + fmt(TOTAL / SND.rate); if (was && SND.kind !== 'off') newBus(); }
   $('tapTempo').addEventListener('click', function () { var now = performance.now(); taps = taps.filter(function (x) { return now - x < 3000; }); taps.push(now); if (taps.length >= 4) { var iv = (taps[taps.length - 1] - taps[0]) / (taps.length - 1); setRate(60000 / iv); } else $('bpmOut').textContent = 'Tap ' + (4 - taps.length) + ' more time' + (4 - taps.length > 1 ? 's' : '') + ' to set the tempo (' + taps.length + ' of 4 taps)'; });

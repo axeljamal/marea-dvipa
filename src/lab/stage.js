@@ -33,11 +33,13 @@ export const PATTERNS = [
     sub: 'The mark, drawn by its own gamelan', music: 'Marea · gong kebyar · 112 bpm', reelName: 'the Marea Dvīpa reel', eyebrow: 'Media Lab · the Marea Dvīpa reel', head: 'A pavilion by the sea.', hint: '', hear: '' },
   { id: 'rebung', name: 'Rebung border', reelOnly: true, reel: 'rebung', score: 'rebung', thumb: 'motifs/rebung-border--buya.png',
     sub: 'Two rows of shoots, meeting at the spine', music: 'Pucuk Rebung · 100 bpm', reelName: 'the Rebung border reel', eyebrow: 'Media Lab · the Rebung border reel', head: 'A border that points inward.', hint: '', hear: '' },
+  { id: 'ketupat', name: 'Ketupat lattice', reelOnly: true, reel: 'ketupat', score: 'ketupat', thumb: 'motifs/ketupat-lattice--buya.png',
+    sub: 'Three tones and one heart, woven on the diagonal', music: 'Anyam Ketupat · 96 bpm', reelName: 'the Ketupat lattice reel', eyebrow: 'Media Lab · the Ketupat lattice reel', head: 'Diamonds in the head panel.', hint: '', hear: '' },
 ];
 const IMAGE_PATTERN = { id: 'image', name: 'Your picture', reelOnly: true, reel: 'image', score: 'image', thumb: '',
   sub: 'Played left to right by the ensemble', music: 'Kakula ensemble · 106.7 bpm', reelName: 'your picture', eyebrow: 'Media Lab · your picture', head: 'A picture, played left to right.', hint: '', hear: '' };
 const NEXT = [
-  { id: 'ketupat', name: 'Ketupat lattice', sub: 'Reel in the making', img: 'motifs/ketupat-lattice--buya.png' },
+  { id: 'cengkeh', name: 'Cengkeh sprig', sub: 'Reel in the making', img: 'motifs/cengkeh-sprig--buya.png' },
 ];
 const REEL_HINT = 'The whole reel, step by step, with its score. Tap the picture to pause, use the arrows to step, or scrub the bar.';
 
