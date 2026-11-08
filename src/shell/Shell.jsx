@@ -18,7 +18,7 @@ const systemTheme = () => (typeof window !== 'undefined' && window.matchMedia &&
 const initialTheme = () => { try { const t = localStorage.getItem(THEME_KEY); if (t === 'light' || t === 'dark') return t; } catch (e) { /* fine */ } return systemTheme(); };
 const Sun = <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" strokeWidth="2" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>;
 const Moon = <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /></svg>;
-const LAB_HASHES = ['lab', 'ntina', 'bomba', 'marea'];
+const LAB_HASHES = ['lab', 'ntina', 'bomba', 'marea', 'rebung'];
 
 function viewFromHash() {
   const h = (typeof location !== 'undefined' ? location.hash : '').slice(1);
@@ -26,7 +26,7 @@ function viewFromHash() {
   if (LAB_HASHES.indexOf(h) >= 0) return 'lab';
   return null;
 }
-// the app opens on the welcome film; #studio, #lab, #ntina and #bomba open a room directly
+// the app opens on the welcome film; #studio, #lab, #ntina, #bomba, #marea and #rebung open a room directly
 const initialView = () => viewFromHash() || 'welcome';
 
 export default function Shell() {

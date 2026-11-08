@@ -2,6 +2,7 @@
 // startLab() is called once the lab markup is in the page; hooks.isActive() tells it whether the Media Lab view is showing,
 // so its keys, drawing loop and autoplay stay quiet while you are in the Pattern Studio.
 import { createStage } from './stage';
+import { rebungRibbon, rebungToCanvas, REBUNG_INKS } from '../engine/rebung.js';
 
 export function startLab(hooks) {
   hooks = hooks || {};
@@ -1170,9 +1171,217 @@ export function startLab(hooks) {
   var ROOT = 293.66, CENTS = [0, 300, 500, 700, 1000, 1200, 1400], DRIFT = [8, -12, 5, -6, 14, -4, 10]; // kettles drift; our tuning is our own
   function gseq(i) { var a = (i * GA) % (Math.PI * 2); return Math.floor(a / (Math.PI * 2) * 7) % 7; }
   var SCORES_NTINA = [['off', 'Sound off'], ['folk', 'Lingkar Ntina · folk ensemble'], ['ntina', 'Lingkar Ntina · acoustic (v2)'], ['lingkar', 'Sketch: Circle'], ['panen', 'Sketch: Harvest'], ['gema', 'Sketch: Resonance']];
+  // =================== Reel 04 · Rebung border, the bamboo shoot ===================
+  // Score: Pucuk Rebung (bamboo shoot), an original for the same Kaili kakula ensemble as Bunga Kaili. 100 bpm, 52 bars, one
+  // section per scene. The rules it keeps so that music and drawing arrive together:
+  //  1. The shoot is a rising run of five kettle notes inside one bar; it grows one note per bar in the drawing scene.
+  //  2. Two rows, half a step apart: a second kakula plays the same run two beats later, a third above.
+  //  3. The spine is a zigzag: the low gongs alternate two pitches on beats 1 and 3; the cecek dots are the loom's off-beat ticks.
+  //  4. The gong cycle is two bars, as in the other reels; the border bends by moving the run up a step and back.
+  var BPM_R = 100, BEAT_R = 60 / BPM_R, BAR_R = BEAT_R * 4; function barsR(n) { return n * BAR_R; }
+  var LR = (function () {
+    var PITCH = [220.00, 261.63, 293.66, 329.63, 392.00, 440.00, 493.88, 523.25, 587.33, 659.26, 783.99, 880.00, 987.77];
+    var CHP = { Am: [9, 0, 4], F: [5, 9, 0], G: [7, 11, 2], Em: [4, 7, 11], Dm: [2, 5, 9] };
+    function pcF(pc, oct) { return 261.63 * Math.pow(2, pc / 12) * Math.pow(2, oct - 4); }
+    var RUN = [0, 1, 2, 4, 5]; // la do re mi sol: the shoot's five sheaths, rising
+    function compose(opt) {
+      var lilt = opt && opt.feel === 'lilt' ? BEAT_R * .08 : 0, E = [];
+      function T(bar, beat) { var f = beat % 1; if (Math.abs(f - .5) < 1e-6) beat += lilt; return bar * BAR_R + beat * BEAT_R; }
+      function F(p) { return PITCH[Math.max(0, Math.min(PITCH.length - 1, p))]; }
+      function K(time, p, v, beats, soft, stem) { E.push({ t: time, k: 'kettle', n: ((p % 7) + 7) % 7, f: F(p), v: v, soft: !!soft, d: clamp(beats * BEAT_R * (soft ? 2.6 : 2), .3, 2.2), s: stem || 'kakula' }); }
+      // one shoot: n notes of the run from base pitch b, starting at beat bt; the last note holds
+      function shoot(bar, bt, b, n, v, soft, stem) { for (var i = 0; i < n; i++) K(T(bar, bt + i * .5), b + RUN[i], v * (i === n - 1 ? 1.1 : .85), i === n - 1 ? 1.5 : .5, soft, stem); }
+      function rows(at, n, b, v, both, soft) { for (var i = 0; i < n; i++) { shoot(at + i, 0, b, 5, v, soft, 'kakula'); if (both) shoot(at + i, 2, b + 2, 5, v * .8, true, 'kakula2'); } }
+      var ROOT = { Am: [110, 82.41], F: [87.31, 130.81], G: [98, 73.42], Em: [82.41, 123.47], Dm: [73.42, 110] }; // root, fifth
+      function spine(at, n, level, chords) { for (var i = 0; i < n; i++) { var rf = ROOT[chords ? chords[i % chords.length] : 'Am']; E.push({ t: T(at + i, 0), k: 'bassgong', f: rf[0], v: .42 * level, s: 'bass' }); E.push({ t: T(at + i, 2), k: 'bassgong', f: rf[1], v: .34 * level, s: 'bass' }); } }
+      function gongs(at, n, level) { for (var i = 0; i < n; i++) { if (i % 2 === 0) E.push({ t: T(at + i, 0), k: 'gong', n: 0, f: 110, v: .3 * level, s: 'gongs' }); else E.push({ t: T(at + i, 2), k: 'gong', n: 1, f: 164.81, v: .18 * level, s: 'gongs' }); } }
+      function dots(at, n, level) { for (var i = 0; i < n; i++) [.5, 1.5, 2.5, 3.5].forEach(function (bt) { E.push({ t: T(at + i, bt), k: 'shuttle', v: .14 * level, s: 'loom' }); }); }
+      function beaters(at, n, level) { for (var i = 0; i < n; i++) { E.push({ t: T(at + i, 1), k: 'beater', v: .32 * level, s: 'loom' }); E.push({ t: T(at + i, 3), k: 'beater', v: .26 * level, s: 'loom' }); } }
+      function chords(at, names, level) { names.forEach(function (c, i) { CHP[c].forEach(function (pc, k) { var f = pcF(pc, 4); if (f > 400) f /= 2; E.push({ t: T(at + i, k === 0 ? 0 : 2), k: 'kolintang', n: pc % 7, f: f, v: .16 * level, s: 'gamba' }); }); }); }
+      function drums(at, n, level, full) { for (var i = 0; i < n; i++) { E.push({ t: T(at + i, 0), k: 'drum', n: 'dum', v: .42 * level, s: 'drums' }); E.push({ t: T(at + i, 2), k: 'drum', n: 'dum', v: .3 * level, s: 'drums' }); E.push({ t: T(at + i, 1), k: 'drum', n: 'tak', v: .3 * level, s: 'drums' }); E.push({ t: T(at + i, 3), k: 'drum', n: 'tak', v: .3 * level, s: 'drums' }); if (full) E.push({ t: T(at + i, 3.5), k: 'drum', n: 'tak', v: .18 * level, s: 'drums' }); } }
+      // Title 0-3: one soft shoot every other bar, the first gong
+      E.push({ t: T(0, 0), k: 'gong', n: 0, f: 110, v: .34, s: 'gongs' }); shoot(0, 0, 0, 5, .36, true); shoot(2, 0, 0, 5, .36, true);
+      // Listen 4-11: the cloth: loom ticks, a soft shoot on the even bars, low gong on the cycle
+      dots(4, 8, .7); for (var b = 4; b < 12; b += 2) shoot(b, 0, 0, 5, .34, true); gongs(4, 8, .7);
+      // Brief 12-15: chords under a soft shoot per bar
+      rows(12, 4, 0, .36, false, true); chords(12, ['Am', 'F', 'G', 'Am'], .9); gongs(12, 4, .8);
+      // Draw one shoot 16-23: the run grows one note per bar, then plays whole for the last three
+      [1, 2, 3, 4, 5, 5, 5, 5].forEach(function (n, i) { shoot(16 + i, 0, 0, n, .5, false); }); dots(16, 8, .5); gongs(16, 8, .8);
+      // Rows 24-31: the second row joins two beats later, a third below; drums and spine arrive
+      rows(24, 8, 0, .52, true, false); spine(24, 8, .8); drums(24, 8, .8, false); gongs(24, 8, 1); dots(24, 8, .6);
+      // Bend 32-39: the run moves up a step and back as the band bends; full ensemble, chords walk
+      [0, 1, 2, 3, 3, 2, 1, 0].forEach(function (up, i) { shoot(32 + i, 0, up, 5, .56); shoot(32 + i, 2, up + 2, 5, .44, true, 'kakula2'); });
+      chords(32, ['Am', 'F', 'G', 'Em', 'Em', 'G', 'F', 'Am'], 1); spine(32, 8, 1, ['Am', 'F', 'G', 'Em', 'Em', 'G', 'F', 'Am']); drums(32, 8, 1, true); gongs(32, 8, 1); beaters(32, 8, .8); dots(32, 8, .6);
+      // Misread 40-43: the test, soft and sparse
+      for (var m = 40; m < 44; m++) shoot(m, 0, 0, m % 2 ? 3 : 5, .34, true); dots(40, 4, .4); gongs(40, 4, .6);
+      // System 44-47: the border in place: everything back, bright
+      rows(44, 4, 0, .52, true, false); chords(44, ['Am', 'F', 'G', 'Am'], 1); spine(44, 4, 1, ['Am', 'F', 'G', 'Am']); drums(44, 4, .9, true); gongs(44, 4, 1); dots(44, 4, .6);
+      // Keep 48-51: a last shoot that keeps rising to the top, and the gong
+      shoot(48, 0, 0, 5, .5); shoot(49, 0, 2, 5, .5); shoot(50, 0, 3, 5, .52); K(T(51, 0), 11, .6, 3, false); K(T(51, 0), 7, .3, 3, true, 'kakula2');
+      [9, 0, 4].forEach(function (pc) { E.push({ t: T(51, 0), k: 'kolintang', n: pc % 7, f: pcF(pc, 4), v: .22, s: 'gamba' }); });
+      E.push({ t: T(51, 0), k: 'gong', n: 0, f: 110, v: .55, s: 'gongs' }); E.push({ t: T(51, 0), k: 'drum', n: 'dum', v: .45, s: 'drums' }); spine(48, 3, .8); dots(48, 3, .5);
+      return E;
+    }
+    return { compose: compose, BAR: BAR_R, BPM: BPM_R };
+  })();
+
+  // ---------- drawing the border ----------
+  var REBUNG_SHAPE = [[-0.5, 0], [-0.43, 0.2], [-0.36, 0.4], [-0.24, 0.62], [-0.12, 0.82], [0, 1], [0.12, 0.82], [0.24, 0.62], [0.36, 0.4], [0.43, 0.2], [0.5, 0]];
+  function linePts(x0, y0, x1, y1) { var pts = []; for (var i = 0; i <= 60; i++) pts.push([x0 + (x1 - x0) * i / 60, y0 + (y1 - y0) * i / 60]); return pts; }
+  function wavePts(x0, x1, y, amp, waves) { var pts = []; for (var i = 0; i <= 160; i++) { var u = i / 160; pts.push([x0 + (x1 - x0) * u, y + Math.sin(u * Math.PI * 2 * waves) * amp]); } return pts; }
+  function arcPts(cx, cy, r, a0, a1) { var pts = []; for (var i = 0; i <= 120; i++) { var a = a0 + (a1 - a0) * i / 120; pts.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r]); } return pts; }
+  function spiralPts(cx, cy, r0, r1, turns) { var pts = []; for (var i = 0; i <= 240; i++) { var u = i / 240, a = u * Math.PI * 2 * turns, r = r0 + (r1 - r0) * u; pts.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r]); } return pts; }
+  // the band drawn with the studio's own engine (rebungRibbon), revealed from the left to prog (0..1) of its bounding width
+  // how much the ensemble is sounding right now (0 with sound off): the border breathes with it
+  function liveLevel() { if (SND.kind === 'off') return 0; var k = 0; for (var i = 0; i < 7; i++) k = Math.max(k, lvK(i, t)); return clamp(k * .5 + lvD(t) * .3 + lvG(0, t) * .4, 0, 1); }
+  // o.flow: px/s the shoots travel along the path · o.breathe: 0..1 slow swell · o.edge: a gold glow at the reveal edge
+  function band(pts, h, ink, phase, prog, alpha, o) {
+    if (alpha <= 0 || prog <= 0) return; o = o || {};
+    var xs = pts.map(function (p) { return p[0]; }), ys = pts.map(function (p) { return p[1]; });
+    var x0 = Math.min.apply(null, xs) - h * 2, x1 = Math.max.apply(null, xs) + h * 2, y0 = Math.min.apply(null, ys) - h * 2, y1 = Math.max.apply(null, ys) + h * 2;
+    var lv = liveLevel(), br = (o.breathe || 0) * (.5 + .5 * Math.sin(t * 1.9)) * .022 + lv * .035, cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+    g.save(); g.globalAlpha *= alpha;
+    if (!reduce) { g.translate(cx, cy); g.scale(1 + br, 1 + br); g.translate(-cx, -cy); }
+    g.beginPath(); g.rect(x0, y0, (x1 - x0) * clamp(prog, 0, 1), y1 - y0); g.clip();
+    var shapes = rebungRibbon(pts, h, ink, (phase || 0) + (reduce ? 0 : (o.flow || 0) * t));
+    if (lv > .02) shapes.forEach(function (sh) { if (sh.dot) sh.r *= 1 + lv * .9; });
+    rebungToCanvas(g, shapes);
+    if (o.edge && prog > 0 && prog < 1) { var ex = x0 + (x1 - x0) * prog, grd = g.createLinearGradient(ex - 48, 0, ex, 0); grd.addColorStop(0, 'rgba(224,194,126,0)'); grd.addColorStop(1, 'rgba(224,194,126,.55)'); g.fillStyle = grd; g.fillRect(ex - 48, y0, 48, y1 - y0); }
+    if (lv > .05) { g.globalCompositeOperation = 'lighter'; g.globalAlpha *= lv * .22; g.fillStyle = C.gold; g.fillRect(x0, y0, (x1 - x0) * clamp(prog, 0, 1), y1 - y0); }
+    g.restore();
+  }
+  // a reveal that pops one shoot at a time: n steps, each eased, so the border arrives on the beat rather than sliding
+  function popped(p, n) { if (p <= 0) return 0; if (p >= 1) return 1; var q = p * n; return (Math.floor(q) + eo(q % 1)) / n; }
+  // one shoot drawn large, stroke by stroke: outline, sheath, three chevrons, the dot
+  function bigShoot(cx, cy, w, L, prog, alpha, ink) {
+    var C2 = REBUNG_INKS[ink || 'buya-bomba']; g.save(); g.globalAlpha *= alpha; g.lineJoin = 'round'; g.lineCap = 'round';
+    var lv = liveLevel(), sw = prog >= 1 && !reduce ? 1 + Math.sin(t * 2.4) * .012 + lv * .05 : 1; g.translate(cx, cy); g.scale(sw, sw); g.translate(-cx, -cy);
+    if (lv > .05 && prog >= .9) { var gl = g.createRadialGradient(cx, cy - L, 0, cx, cy - L, w * .35); gl.addColorStop(0, 'rgba(224,194,126,' + (lv * .5).toFixed(3) + ')'); gl.addColorStop(1, 'rgba(224,194,126,0)'); g.fillStyle = gl; g.fillRect(cx - w, cy - L - w, w * 2, w * 2); }
+    var n = REBUNG_SHAPE.length, k = Math.floor(clamp(prog, 0, 1) * 1.0 * (n - 1) / .45);
+    g.strokeStyle = C.gold2; g.lineWidth = 3; g.beginPath();
+    for (var i = 0; i <= Math.min(n - 1, k); i++) { var q = REBUNG_SHAPE[i], x = cx + q[0] * w, y = cy - q[1] * L; if (i) g.lineTo(x, y); else g.moveTo(x, y); }
+    if (prog >= .45) { g.closePath(); g.fillStyle = C2.shoot; g.fill(); } g.stroke();
+    if (prog >= .55) { var hp = eo(ramp(prog, .55, .68)); g.globalAlpha *= 1; g.fillStyle = C2.shootLight; g.beginPath(); [[-0.22, 0.18], [0, 0.66], [0.22, 0.18]].forEach(function (q, i) { var x = cx + q[0] * w, y = cy - q[1] * L * hp; if (i) g.lineTo(x, y); else g.moveTo(x, y); }); g.closePath(); g.fill(); }
+    [0.28, 0.5, 0.72].forEach(function (fv, i) { var p = ramp(prog, .7 + i * .07, .76 + i * .07); if (p <= 0) return; var ww = 0.5 * (1 - fv) * 0.92 * w * p; g.strokeStyle = C2.chevron; g.lineWidth = 3.2; g.beginPath(); g.moveTo(cx - ww, cy - (fv * L - 0.06 * L)); g.lineTo(cx, cy - (fv * L + 0.06 * L)); g.lineTo(cx + ww, cy - (fv * L - 0.06 * L)); g.stroke(); });
+    if (prog >= .93) { g.fillStyle = C2.dot; g.beginPath(); g.arc(cx, cy - L * .12, Math.max(2, w * .05) * eo(ramp(prog, .93, 1)), 0, 7); g.fill(); }
+    g.restore();
+  }
+  // a sketched cloth: two rows of dashed triangles facing a zigzag, the way the border sits on a buya bomba
+  function clothSketch(x, y, w, h, alpha) {
+    g.save(); g.globalAlpha *= alpha; g.strokeStyle = C.gold; g.lineWidth = 1.6; g.setLineDash([6, 6]);
+    var n = 7, tw = w / n;
+    for (var i = 0; i < n; i++) { var cx = x + tw * (i + .5); g.beginPath(); g.moveTo(cx - tw * .42, y); g.lineTo(cx, y + h * .42); g.lineTo(cx + tw * .42, y); g.stroke(); var cx2 = cx + tw / 2; if (i < n - 1) { g.beginPath(); g.moveTo(cx2 - tw * .42, y + h); g.lineTo(cx2, y + h * .58); g.lineTo(cx2 + tw * .42, y + h); g.stroke(); } }
+    g.setLineDash([]); g.strokeStyle = C.gold2; g.beginPath(); for (var k = 0; k <= n * 2; k++) { var zx = x + (w / (n * 2)) * k, zy = y + h / 2 + (k % 2 ? -5 : 5); if (k) g.lineTo(zx, zy); else g.moveTo(zx, zy); } g.stroke();
+    g.restore();
+  }
+  var SCENES_REBUNG = [
+    { id: 'r-title', dur: barsR(4), step: null,
+      draw: function (lt, d) {
+        var out = 1 - ramp(lt, d - .5, d), p = eo(ramp(lt, .2, 3.6));
+        band(linePts(200, 262, 1080, 262), 38, 'buya-bomba', 0, popped(p, 24), out, { flow: 14, breathe: 1, edge: true });
+        var a = eo(ramp(lt, 1.6, 2.6)) * out;
+        text('BATIK MEDIA LAB · REEL 04', W / 2, 400, '500 13px ' + F.mono, C.gold2, a, 'center');
+        text('Rebung border', W / 2, 480, '600 84px ' + F.display, C.paper, a, 'center');
+        text('Two rows of bamboo shoots, meeting at the spine', W / 2, 526, 'italic 500 24px ' + F.display, C.mist, eo(ramp(lt, 2.2, 3.4)) * out, 'center');
+      } },
+    { id: 'r-listen', dur: barsR(8), step: 'Listen to the cloth', phase: 'Thinking',
+      eyebrow: 'Step 1 · Listen to the cloth', head: 'A border that points inward.',
+      body: 'On the buya bomba of Donggala, rows of rebung, the bamboo shoot, frame the field, each shoot pointing in toward the centre of the cloth, with zigzag and dotted bands beside them. In the cloth’s own iconography the inward-facing rebung stand for power, greatness and triumph.',
+      teach: 'Read the border as grammar before you draw: the direction (inward), the pairing (two rows facing), the framing (zigzag, dots), and what it means to the people who weave it.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), a = eo(ramp(lt, 1, 2.4)) * out, b = eo(ramp(lt, 5, 6.2)) * out, c = eo(ramp(lt, 9.5, 10.7)) * out;
+        ikatField(660, 110, 540, 150, lt, a); text('ikat · gold on black (an abstract weave, not a copy)', 660, 282, '500 12px ' + F.mono, C.mist, a);
+        clothSketch(660, 330, 540, 120, b); text('two rows · facing in · zigzag between · dots beside', 930, 480, '500 12px ' + F.mono, C.mist, b, 'center');
+        g.save(); g.globalAlpha = c; g.strokeStyle = C.gold2; g.lineWidth = 1.5; rr(900, 520, 300, 110, 6); g.stroke(); g.restore();
+        text('RULE', 920, 550, '500 12px ' + F.mono, C.gold2, c); para('Learn the grammar. Redraw everything else.', 920, 582, 270, 'italic 500 22px ' + F.display, 26, C.paper, c);
+      } },
+    { id: 'r-brief', dur: barsR(4), step: 'Set the brief', phase: 'Thinking',
+      eyebrow: 'Step 2 · Set the brief', head: 'A border that can travel.',
+      body: 'The rebung border belongs to the Dua Pulau signature. It must frame a sarong, run along a hem, and bend along a wave or a spiral without losing its grammar.',
+      teach: 'The brief: our own drawing, credited origins, seamless along the cloth, two rows facing inward, and a ribbon that follows any path.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d);
+        ['Our own drawing, never a copy of the cloth', 'Two rows face inward to a zigzag spine', 'Seamless along the cloth, and bends along any path', 'Credit the weavers of Donggala'].forEach(function (r, i) {
+          var a = eo(ramp(lt, .6 + i * 1.1, 1.4 + i * 1.1)) * out; g.save(); g.globalAlpha = a; g.fillStyle = C.gold; g.beginPath(); g.arc(680, 190 + i * 84, 5, 0, 7); g.fill(); g.restore();
+          text(r, 704, 196 + i * 84, '500 24px ' + F.display, C.paper, a);
+        });
+        band(linePts(680, 560, 1200, 560), 26, 'buya-bomba', 0, popped(ramp(lt, 4.5, 7.5), 16), out, { flow: 10, breathe: 1, edge: true });
+      } },
+    { id: 'r-shoot', dur: barsR(8), step: 'Draw one shoot', phase: 'Ideation',
+      eyebrow: 'Step 3 · Draw one shoot', head: 'Eleven points, one sheath, three chevrons, a dot.',
+      body: 'The shoot is a flat mark: an eleven-point outline that tapers to its tip, a lighter sheath inside, three nested chevrons for the leaf scales, and one pearl dot at the base. Every curve of the source becomes a straight segment, so it cuts, stamps and prints the same.',
+      teach: 'Reduce to flat marks that survive at 16 px. A polygon with eleven points keeps the taper of a real shoot; chevrons stand in for the sheath lines without drawing them.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), p = ramp(lt, .4, d - 3), a = eo(ramp(lt, .3, 1)) * out;
+        g.save(); g.globalAlpha = a * .5; g.strokeStyle = C.line2; g.lineWidth = 1; for (var gx = 700; gx <= 1180; gx += 40) { g.beginPath(); g.moveTo(gx, 120); g.lineTo(gx, 600); g.stroke(); } for (var gy = 120; gy <= 600; gy += 40) { g.beginPath(); g.moveTo(700, gy); g.lineTo(1180, gy); g.stroke(); } g.restore();
+        bigShoot(940, 580, 360, 400, p, out);
+        var labels = [[.45, 'outline · 11 points'], [.68, 'sheath · lighter'], [.9, 'three chevrons'], [1, 'one pearl dot']];
+        labels.forEach(function (L, i) { var la = eo(ramp(p, L[0] - .05, L[0] + .02)) * out; text(L[1], 1200, 180 + i * 34, '500 12px ' + F.mono, C.gold2, la, 'right'); });
+      } },
+    { id: 'r-rows', dur: barsR(8), step: 'Grow the rows', phase: 'Synthesis', explore: 'rows',
+      eyebrow: 'Step 4 · Grow the rows', head: 'Two rows, half a step apart, meeting at the spine.',
+      body: 'The top row sits on the beat; the bottom row starts half a step later, so the shoots interlock instead of standing in pairs. Between them runs the zigzag spine with cecek dots alternating either side, and an edge band closes the border top and bottom.',
+      teach: 'Offset the second row by half a spacing: the eye reads one woven band, not two rows of teeth. The spine is what makes it a border rather than a frieze.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), ex = EX && EX.scene === 'r-rows';
+        var h = ex ? EX.h : 34, ink = ex ? EX.ink : 'buya-bomba', path = ex ? EX.path : 'straight';
+        var pts = path === 'wave' ? wavePts(680, 1200, 400, 46, 1.5) : path === 'arc' ? arcPts(940, 640, 300, Math.PI * 1.15, Math.PI * 1.85) : linePts(680, 400, 1200, 400);
+        var p = ex ? 1 : ramp(lt, .5, d - 2.5);
+        band(pts, h, ink, 0, ex ? 1 : popped(p, 26), out, { flow: ex ? 12 : 0, breathe: 1, edge: !ex });
+        if (!ex) { var k = p < .34 ? 'top row, on the beat' : p < .67 ? 'bottom row, half a step later' : 'spine and dots between'; text(k, 940, 520, '500 12px ' + F.mono, C.gold2, out * .9, 'center'); }
+      } },
+    { id: 'r-bend', dur: barsR(8), step: 'Bend it along a path', phase: 'Synthesis',
+      eyebrow: 'Step 5 · Bend it along a path', head: 'Every shoot leans with the curve.',
+      body: 'The same band is drawn live along any path: a wave, an arc, a golden spiral. Each shoot takes the local tangent, the rows keep their half-step, and where a curve is too tight for the band the engine leaves a gap rather than crumpling the shoots.',
+      teach: 'A border that bends is a system, not a picture. Decide what happens at the limit (skip, never crumple) and the ribbon can go anywhere the pattern goes.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d);
+        var wv = []; for (var i = 0; i <= 160; i++) { var u = i / 160; wv.push([680 + 520 * u, 230 + Math.sin(u * Math.PI * 3 + (reduce ? 0 : lt * 1.1)) * (40 + Math.sin(lt * .7) * 6)]); }
+        band(wv, 26, 'buya-bomba', 0, popped(ramp(lt, .3, 4.5), 20), out, { flow: 22, breathe: 1, edge: true });
+        var rot = reduce ? 0 : lt * .12, sp = []; for (var j = 0; j <= 240; j++) { var v = j / 240, a = v * Math.PI * 2 * 2.2 + rot, r = 36 + 114 * v; sp.push([940 + Math.cos(a) * r, 480 + Math.sin(a) * r]); }
+        band(sp, 20, 'buya-bomba', 0, eo(ramp(lt, 5, 11)), out, { flow: 8, breathe: 1 });
+        text('tight turns at the centre: skipped, not crumpled', 940, 664, '500 12px ' + F.mono, C.mist, eo(ramp(lt, 9, 10)) * out, 'center');
+      } },
+    { id: 'r-misread', dur: barsR(4), step: 'Check misreadings', phase: 'Test',
+      eyebrow: 'Step 6 · Check misreadings', head: 'Teeth, arrows, or shoots?',
+      body: 'At twelve pixels the chevrons vanish and the border reads as a sawtooth or a row of arrowheads. At twenty the sheath returns and it reads as plant. The dots are the last thing to survive, so they carry the rhythm when nothing else can.',
+      teach: 'Test the border at the smallest size it will be printed or shown. Decide what it may lose (chevrons) and what it must keep (direction, the spine).',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d);
+        [[12, 150, 'sawtooth · arrowheads'], [20, 300, 'reads as plant'], [40, 500, 'the full grammar']].forEach(function (R, i) {
+          var a = eo(ramp(lt, .4 + i * 1.6, 1.2 + i * 1.6)) * out; band(linePts(700, R[1], 1200, R[1]), R[0], 'buya-bomba', 0, 1, a, { flow: 6 + i * 6, breathe: .6 });
+          text(R[0] + ' px · ' + R[2], 700, R[1] + R[0] + 34, '500 12px ' + F.mono, C.gold2, a);
+        });
+      } },
+    { id: 'r-system', dur: barsR(4), step: 'Where the border lives', phase: 'System',
+      eyebrow: 'Step 7 · Where the border lives', head: 'Hems, heads, edges and ribbons.',
+      body: 'The border frames the Dua Pulau sarong at head and hem, edges a scarf, and runs as the rebung ribbon through the Ntina garden, tracing its spirals. One drawing, four jobs.',
+      teach: 'A signature motif earns its place by working at several scales and roles. Keep the master drawing in one place and let every use read from it.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), a = eo(ramp(lt, .4, 1.4)) * out, b = eo(ramp(lt, 2.4, 3.6)) * out;
+        g.save(); g.globalAlpha = a; g.fillStyle = '#FAF7F2'; rr(700, 130, 220, 470, 4); g.fill(); g.restore();
+        band(linePts(716, 170, 904, 170), 14, 'dua-pulau', 0, 1, a, { flow: 5 }); band(linePts(716, 560, 904, 560), 14, 'dua-pulau', 0, 1, a, { flow: -5 });
+        text('sarong · head and hem', 810, 630, '500 12px ' + F.mono, C.mist, a, 'center');
+        band(spiralPts(1060, 360, 26, 128, 2), 16, 'buya-bomba', 0, 1, b, { flow: 7, breathe: 1 }); text('Ntina garden · rebung ribbon', 1070, 630, '500 12px ' + F.mono, C.mist, b, 'center');
+      } },
+    { id: 'r-keep', dur: barsR(4), step: 'Credit and keep', phase: 'Archive',
+      eyebrow: 'Step 8 · Credit and keep', head: 'Credit the cloth. Keep the drawing.',
+      body: 'Rebung border: our own drawing, inspired by the inward-facing bamboo-shoot borders of the buya bomba of Donggala, Central Sulawesi, with gratitude to the women who weave it. The master lives in the engine as a ribbon; every sarong, hem and ribbon reads from it.',
+      teach: 'Credit is part of the design. Keep the source, the rule, the drawing and the credit line together, so the next person can continue rather than restart.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d);
+        band(linePts(680, 300, 1200, 300), 34, 'buya-bomba', 0, 1, eo(ramp(lt, .3, 1.5)) * out, { flow: 16, breathe: 1 });
+        text('REEL 04 · SAVED TO THE LAB', 940, 420, '500 13px ' + F.mono, C.gold2, eo(ramp(lt, 2, 3)) * out, 'center');
+        text('Next: Ketupat lattice', 940, 456, 'italic 500 22px ' + F.display, C.mist, eo(ramp(lt, 3.2, 4.2)) * out, 'center');
+      } }
+  ];
+  var SCORES_REBUNG = [['off', 'Sound off'], ['rebung', 'Pucuk Rebung · 100 bpm']];
+  var STEMS_REBUNG = [['kakula', 'Kakula, top row'], ['kakula2', 'Second kakula, bottom row'], ['gamba', 'Gamba-gamba'], ['gongs', 'Tawa-tawa'], ['drums', 'Gimba'], ['bass', 'Low gongs, the spine'], ['loom', 'Loom, the dots']];
+
   var SCORES = SCORES_NTINA, SCORES_BOMBA = [['off', 'Sound off'], ['bomba', 'Bunga Kaili · 138 bpm']];
   var SCORES_LOGO = [['off', 'Sound off'], ['marea', 'Marea · gong kebyar for the mark · 112 bpm']], SCORES_IMAGE = [['off', 'Sound off'], ['image', 'Your picture · kakula ensemble']];
   var SCORE_NOTE = {
+    rebung: 'Pucuk Rebung, our own piece for the border, on the same Kaili kakula ensemble as Bunga Kaili: the shoot is a rising run of five kettle notes inside one bar, and it grows one note per bar while the shoot is drawn; a second kakula plays the same run two beats later a third above, the way the second row sits half a step on; the low gongs alternate each chord’s root and fifth on beats 1 and 3 for the zigzag spine; the loom’s off-beat ticks are the cecek dots. 100 bpm, 52 bars, one section per scene. No traditional piece is quoted.',
     marea: 'Marea, our own piece for the mark in the manner of Balinese gong kebyar: pelog selisir over two octaves with the paired ombak tuning that shimmers; kotekan, two interlocking kettle parts making one fast line, doubled by the reyong; jegogan holding the core melody on long low tones; kempli on the beat; the gong cycle of gong ageng, kempur and klentong; kendang; ceng-ceng; a suling flute; the sea’s wash. Forty bars at 112 bpm, one section per layer: it opens with a kebyar burst, breaks on an angsel before the close. All synthesized; no traditional piece is quoted.',
     image: 'Composed from your picture: 128 columns over 16 bars at 106.7 bpm. The brightest row of each column picks one of the seven kettles (high in the picture, high in pitch), dark columns ring the low gong on the bar, edges drive the drum, a change of colour scrapes. Nothing leaves this browser.',
     off: 'Choose a score to hear it. Sound starts only when you pick one.',
@@ -1436,6 +1645,7 @@ export function startLab(hooks) {
   function sceneStart(id) { for (var i = 0; i < SCENES.length; i++) if (SCENES[i].id === id) return starts[i]; return 0; }
   function buildScore(kind) {
     if (kind === 'marea') return LM.compose({ feel: SND.feel }).sort(function (a, b) { return a.t - b.t; });
+    if (kind === 'rebung') return LR.compose({ feel: SND.feel }).sort(function (a, b) { return a.t - b.t; });
     if (kind === 'image') return IMG && IMG.score ? IMG.score.slice() : [];
     if (kind === 'bomba') return LB.compose({ feel: SND.feel }).sort(function (a, b) { return a.t - b.t; });
     if (kind === 'folk') return LN.composeFolk({ feel: SND.feel }).sort(function (a, b) { return a.t - b.t; });
@@ -1583,8 +1793,8 @@ export function startLab(hooks) {
   function newBus() {
     var c = SND.ctx; if (!c) return;
     if (SND.bus) { var old = SND.bus; old.gain.cancelScheduledValues(c.currentTime); old.gain.setTargetAtTime(0, c.currentTime, .08); setTimeout(function () { try { old.disconnect(); } catch (e) {} }, 900); }
-    SND.bus = c.createGain(); SND.bus.gain.value = ['ntina', 'folk', 'bomba', 'marea', 'image'].indexOf(SND.kind) >= 0 ? .55 : 1; SND.bus.connect(SND.master);
-    SND.stemGain = {}; STEMS.concat(STEMS_FOLK, STEMS_BOMBA, STEMS_MAREA).forEach(function (st) { if (SND.stemGain[st[0]]) return; var sg = c.createGain(); sg.gain.value = SND.muted[st[0]] ? 0 : 1; sg.connect(SND.bus); SND.stemGain[st[0]] = sg; });
+    SND.bus = c.createGain(); SND.bus.gain.value = ['ntina', 'folk', 'bomba', 'marea', 'rebung', 'image'].indexOf(SND.kind) >= 0 ? .55 : 1; SND.bus.connect(SND.master);
+    SND.stemGain = {}; STEMS.concat(STEMS_FOLK, STEMS_BOMBA, STEMS_MAREA, STEMS_REBUNG).forEach(function (st) { if (SND.stemGain[st[0]]) return; var sg = c.createGain(); sg.gain.value = SND.muted[st[0]] ? 0 : 1; sg.connect(SND.bus); SND.stemGain[st[0]] = sg; });
     var send = c.createGain(); send.gain.value = SND.kind === 'gema' ? .5 : .24; SND.bus.connect(send); send.connect(SND.wet);
     SND.anchor = c.currentTime + .06 - t / SND.rate; SND.from = t;
   }
@@ -1700,7 +1910,7 @@ export function startLab(hooks) {
     var dg = glow(SND.byK.drum, now, .12); g.save(); g.fillStyle = C.line2; rr(cx + 150, y - 6, 12, 12, 2); g.fill(); if (dg > .01) { g.globalAlpha = dg; g.fillStyle = C.gold2; rr(cx + 150 - dg * 2, y - 6 - dg * 2, 12 + dg * 4, 12 + dg * 4, 2); g.fill(); } g.restore();
   }
   function setScore(kind) {
-    SND.kind = kind; if (['ntina', 'folk', 'bomba', 'marea'].indexOf(kind) < 0) { SND.rate = 1; } indexScore(); renderScores();
+    SND.kind = kind; if (['ntina', 'folk', 'bomba', 'marea', 'rebung'].indexOf(kind) < 0) { SND.rate = 1; } indexScore(); renderScores();
     $('scoreNote').textContent = SCORE_NOTE[kind];
     if (kind === 'off') { stopSound(); return; }
     if (!unlockAudio()) { $('scoreNote').textContent = 'This browser has no Web Audio, so the score can’t play here.'; return; }
@@ -1709,8 +1919,8 @@ export function startLab(hooks) {
   function renderScores() {
     var row = $('scores'); row.innerHTML = '';
     SCORES.forEach(function (s) { var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = s[1]; b.setAttribute('aria-pressed', String(SND.kind === s[0])); b.addEventListener('click', function () { setScore(s[0]); }); row.appendChild(b); });
-    var mx = $('mixer'); mx.hidden = ['ntina', 'folk', 'bomba', 'marea'].indexOf(SND.kind) < 0; var ml = $('stems'); ml.innerHTML = '';
-    (SND.kind === 'folk' ? STEMS_FOLK : SND.kind === 'bomba' ? STEMS_BOMBA : SND.kind === 'marea' ? STEMS_MAREA : STEMS).forEach(function (st) { var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = st[1]; b.setAttribute('aria-pressed', String(!SND.muted[st[0]]));
+    var mx = $('mixer'); mx.hidden = ['ntina', 'folk', 'bomba', 'marea', 'rebung'].indexOf(SND.kind) < 0; var ml = $('stems'); ml.innerHTML = '';
+    (SND.kind === 'folk' ? STEMS_FOLK : SND.kind === 'bomba' ? STEMS_BOMBA : SND.kind === 'marea' ? STEMS_MAREA : SND.kind === 'rebung' ? STEMS_REBUNG : STEMS).forEach(function (st) { var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = st[1]; b.setAttribute('aria-pressed', String(!SND.muted[st[0]]));
       b.addEventListener('click', function () { SND.muted[st[0]] = !SND.muted[st[0]]; if (SND.stemGain && SND.stemGain[st[0]] && SND.ctx) SND.stemGain[st[0]].gain.setTargetAtTime(SND.muted[st[0]] ? 0 : 1, SND.ctx.currentTime, .03); renderScores(); });
       ml.appendChild(b); });
   }
@@ -1803,6 +2013,7 @@ export function startLab(hooks) {
       if (sc.explore === 'rings') $('benchOut').textContent = EX.rings.join(' · ') + (EX.spin ? ' · golden turn: every petal shows between the petals outside it' : ' · no turn: petals stack behind each other in spokes');
       if (sc.explore === 'inks') $('benchOut').textContent = (EX.ink === 'buya' ? 'Buya Bomba ink' : 'Dua Pulau ink') + ' on ' + EX.gname + (EX.ink === 'dua' && EX.ground === '#0E0C09' ? ': navy outlines vanish on black, use Buya Bomba ink here' : EX.ink === 'buya' && EX.ground === '#FAF7F2' ? ': black lines read, but the cloth’s gold-on-black mood is lost' : ': reads well');
       if (sc.explore === 'roseSize') { var rs = []; if (!EX.gold && EX.px <= 24) rs.push('the dark heart reads as an eye'); if (!EX.curve) rs.push('round head on a straight stem nears a lollipop'); $('benchOut').textContent = EX.px + ' px head · ' + (rs.length ? rs.join('; ') : 'reads as a flower'); }
+      if (sc.explore === 'rows') $('benchOut').textContent = EX.h + ' px band · ' + (EX.ink === 'buya-bomba' ? 'gold on black' : 'gold with navy lines') + ' · ' + (EX.path === 'straight' ? 'rows stay parallel, spacing 1.25 × the half-height' : EX.path === 'wave' ? 'shoots lean with the curve; the half-step offset holds' : 'on the inside of the arc the shoots close up; too tight and the band skips');
       if (sc.explore === 'cut') $('benchOut').textContent = EX.cm === 3 ? '3 cm: seeds narrower than 0.6 mm close up when cut. Use the dot-free small mark.' : '8 cm: one stencil. The seed head stays joined to the sheet through the open stem.';
     }
     if (sc.explore === 'angle') {
@@ -1836,6 +2047,11 @@ export function startLab(hooks) {
       chips('Head size', [[12, '12 px'], [18, '18 px'], [24, '24 px'], [40, '40 px']], 'px');
       chips('Heart', [[false, 'Dark spiral'], [true, 'Gold heart']], 'gold');
       chips('Stem', [[false, 'Straight'], [true, 'Curved']], 'curve');
+    } else if (sc.explore === 'rows') {
+      EX = { scene: 'r-rows', h: 34, ink: 'buya-bomba', path: 'straight' };
+      chips('Band height', [[24, '24 px'], [34, '34 px'], [48, '48 px']], 'h');
+      chips('Ink', [['buya-bomba', 'Buya Bomba'], ['dua-pulau', 'Dua Pulau']], 'ink');
+      chips('Path', [['straight', 'Straight hem'], ['wave', 'Wave'], ['arc', 'Arc']], 'path');
     }
     out();
     if (window.innerWidth <= 1020) $('bench').scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
@@ -1885,8 +2101,11 @@ export function startLab(hooks) {
   REEL_DEFS.marea = { name: 'Marea Dvīpa', scenes: SCENES_LOGO, scores: SCORES_LOGO, bpm: function () { return LM.BPM; }, file: 'marea-dvipa-reel.webm',
     credit: 'Marea Dvīpa: our own mark, a bandstand pavilion between candi bentar gates, with palms, frangipani, the pier, the sea and the mountains, with gratitude to Bali and Central Sulawesi, whose forms it draws on.',
     notes: '<p class="note">Marea is the mark’s own piece, written for it in the manner of Balinese gong kebyar (pelog selisir, kotekan, ombak, the gong cycle): 40 bars at 112 bpm, one section per layer, so the music and the drawing arrive together. The mark is drawn by its music: the waves ride the kendang, the mountains lift with the gong ageng and the gates part on the kempur, the pavilion breathes with the ugal and the kotekan, the palms sway and the flowers pulse with the reyong, the birds bob on the highest kettles. The layers live in <code>public/logo</code>; <code>layout.json</code> places them.</p>' };
+  REEL_DEFS.rebung = { name: 'Rebung border', scenes: SCENES_REBUNG, scores: SCORES_REBUNG, bpm: function () { return LR.BPM; }, file: 'rebung-border-reel.webm',
+    credit: 'Rebung border: our own drawing, inspired by the inward-facing bamboo-shoot borders of the buya bomba of Donggala, Central Sulawesi, with gratitude to the women who weave it. In the cloth’s iconography the rebung stand for power, greatness and triumph.',
+    notes: '<p class="note">Score: Pucuk Rebung, an original for the same synthesized Kaili kakula ensemble as Bunga Kaili. The shoot is a rising five-note run that grows a note per bar while it is drawn; the second row is a second kakula two beats on and a third above; the zigzag spine is the low gongs alternating root and fifth; the dots are the loom. 100 bpm, 52 bars, a section per scene. The drawing uses the studio’s own rebung ribbon engine, so the reel and the Pattern Studio draw from one master.</p>' };
   var CUR = REEL_DEFS.ntina;
-  var REELS = [['ntina', 'Ntina', true], ['bomba', 'Bomba Rose', true], ['marea', 'Marea Dvīpa', true], ['rebung', 'Rebung border', false], ['ketupat', 'Ketupat lattice', false]];
+  var REELS = [['ntina', 'Ntina', true], ['bomba', 'Bomba Rose', true], ['marea', 'Marea Dvīpa', true], ['rebung', 'Rebung border', true], ['ketupat', 'Ketupat lattice', false]];
   function renderReels() {
     $('reels').innerHTML = '';
     REELS.forEach(function (r) {
@@ -1949,7 +2168,7 @@ export function startLab(hooks) {
   // ---------- wiring ----------
   $('play').addEventListener('click', function () { if (SND.kind !== 'off') unlockAudio(); setPlaying(!playing); });
   $('testSound').addEventListener('click', testSound);
-  function setMutes(fn) { STEMS.concat(STEMS_FOLK, STEMS_BOMBA, STEMS_MAREA).forEach(function (st) { SND.muted[st[0]] = fn(st[0]); if (SND.stemGain && SND.stemGain[st[0]] && SND.ctx) SND.stemGain[st[0]].gain.setTargetAtTime(SND.muted[st[0]] ? 0 : 1, SND.ctx.currentTime, .03); }); renderScores(); }
+  function setMutes(fn) { STEMS.concat(STEMS_FOLK, STEMS_BOMBA, STEMS_MAREA, STEMS_REBUNG).forEach(function (st) { SND.muted[st[0]] = fn(st[0]); if (SND.stemGain && SND.stemGain[st[0]] && SND.ctx) SND.stemGain[st[0]].gain.setTargetAtTime(SND.muted[st[0]] ? 0 : 1, SND.ctx.currentTime, .03); }); renderScores(); }
   var taps = [];
   function setRate(bpm) { bpm = clamp(bpm, 80, 132); var was = playing; SND.rate = bpm / CUR.bpm(); $('bpmOut').textContent = 'Tempo set to ' + bpm.toFixed(1) + ' bpm (the song’s own is ' + CUR.bpm().toFixed(0) + ') · film ' + fmt(TOTAL / SND.rate); if (was && SND.kind !== 'off') newBus(); }
   $('tapTempo').addEventListener('click', function () { var now = performance.now(); taps = taps.filter(function (x) { return now - x < 3000; }); taps.push(now); if (taps.length >= 4) { var iv = (taps[taps.length - 1] - taps[0]) / (taps.length - 1); setRate(60000 / iv); } else $('bpmOut').textContent = 'Tap ' + (4 - taps.length) + ' more time' + (4 - taps.length > 1 ? 's' : '') + ' to set the tempo (' + taps.length + ' of 4 taps)'; });

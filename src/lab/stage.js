@@ -31,11 +31,12 @@ export const PATTERNS = [
   // reel-only patterns: the stage plays their reel in full, with the ticker
   { id: 'marea', name: 'Marea Dvīpa', reelOnly: true, reel: 'marea', score: 'marea', thumb: 'logo/mark-night.png',
     sub: 'The mark, drawn by its own gamelan', music: 'Marea · gong kebyar · 112 bpm', reelName: 'the Marea Dvīpa reel', eyebrow: 'Media Lab · the Marea Dvīpa reel', head: 'A pavilion by the sea.', hint: '', hear: '' },
+  { id: 'rebung', name: 'Rebung border', reelOnly: true, reel: 'rebung', score: 'rebung', thumb: 'motifs/rebung-border--buya.png',
+    sub: 'Two rows of shoots, meeting at the spine', music: 'Pucuk Rebung · 100 bpm', reelName: 'the Rebung border reel', eyebrow: 'Media Lab · the Rebung border reel', head: 'A border that points inward.', hint: '', hear: '' },
 ];
 const IMAGE_PATTERN = { id: 'image', name: 'Your picture', reelOnly: true, reel: 'image', score: 'image', thumb: '',
   sub: 'Played left to right by the ensemble', music: 'Kakula ensemble · 106.7 bpm', reelName: 'your picture', eyebrow: 'Media Lab · your picture', head: 'A picture, played left to right.', hint: '', hear: '' };
 const NEXT = [
-  { id: 'rebung', name: 'Rebung border', sub: 'Reel in the making', img: 'motifs/rebung-border--buya.png' },
   { id: 'ketupat', name: 'Ketupat lattice', sub: 'Reel in the making', img: 'motifs/ketupat-lattice--buya.png' },
 ];
 const REEL_HINT = 'The whole reel, step by step, with its score. Tap the picture to pause, use the arrows to step, or scrub the bar.';

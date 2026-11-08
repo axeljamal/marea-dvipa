@@ -22,6 +22,8 @@
 - 2026-10-28: Jianzhi fold-and-cut mode (Chinese paper-cut)
 - 2026-10-28: Motif lexicon cards in the Origins panel (after Toraja pa'ssura' naming)
 
+- 2026-11-08: Media Lab Reel 04, Rebung border, with the score Pucuk Rebung. *Built.* The reel uses the engine's rebung ribbon so the Pattern Studio and the reel share one master; the bench lets you change band height, ink and path. Next in the making: Ketupat lattice.
+
 ## APIs suggested for approval (none connected)
 - Met and V&A open collection APIs (reference board)
 - Vectorizer.AI (sharper vector masters)
