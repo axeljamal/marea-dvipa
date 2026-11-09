@@ -38,7 +38,7 @@ export const PATTERNS = [
   { id: 'cengkeh', name: 'Cengkeh sprig', reelOnly: true, reel: 'cengkeh', score: 'cengkeh', thumb: 'motifs/cengkeh-sprig--buya.png',
     sub: 'Five buds, two leaves, one harvest', music: 'Lima Kuntum · 138 bpm in 3', reelName: 'the Cengkeh sprig reel', eyebrow: 'Media Lab · the Cengkeh sprig reel', head: 'A clove for the harvest.', hint: '', hear: '' },
   { id: 'medallion', name: 'Dua Pulau medallion', reelOnly: true, reel: 'medallion', score: 'medallion', thumb: 'motifs/dua-pulau-medallion--buya.png',
-    sub: 'Two islands in one mark', music: 'Dua Pulau · 128 bpm', reelName: 'the Dua Pulau medallion reel', eyebrow: 'Media Lab · the Dua Pulau medallion reel', head: 'Sulawesi at the heart, Bali round the edge.', hint: '', hear: '' },
+    sub: 'Two islands in one mark', music: 'Dua Pulau · 110 bpm', reelName: 'the Dua Pulau medallion reel', eyebrow: 'Media Lab · the Dua Pulau medallion reel', head: 'Sulawesi at the heart, Bali round the edge.', hint: '', hear: '' },
 ];
 const IMAGE_PATTERN = { id: 'image', name: 'Your picture', reelOnly: true, reel: 'image', score: 'image', thumb: '',
   sub: 'Played left to right by the ensemble', music: 'Kakula ensemble · 106.7 bpm', reelName: 'your picture', eyebrow: 'Media Lab · your picture', head: 'A picture, played left to right.', hint: '', hear: '' };

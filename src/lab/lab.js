@@ -1899,115 +1899,113 @@ export function startLab(hooks) {
   var STEMS_CENGKEH = [['kakula', 'Kakula, the fan'], ['kakula2', 'Second kakula, the buds'], ['gamba', 'Gamba-gamba, the waltz'], ['tatali', 'Tatali'], ['angklung', 'Angklung, the ground'], ['dio', 'Dio, plucked bass'], ['gongs', 'Tawa-tawa'], ['drums', 'Gimba'], ['shaker', 'Dried cloves'], ['claps', 'Claps'], ['bass', 'Low gong']];
 
   // =================== Reel 07 · Dua Pulau medallion, the emblem ===================
-  // Score: Dua Pulau (two islands), an original that learns its shape from Mozart and its sound from the Kaili ensemble of
-  // Central Sulawesi and Balinese gong kebyar. 128 bpm, 52 bars, one section per scene, C major. Under the tune the rings keep
-  // their loops: 13 rays a kakula broken chord on eighths, 21 leaves a reyong shimmer of 8 strokes in 21 sixteenths (ombak
-  // pairs), 55 dots the shaker; 13, 21 and 55 share no factor, so the loops never line up twice, as the rings never make spokes.
-  var BPM_D = 128, BEAT_D = 60 / BPM_D, BAR_D = BEAT_D * 4; function barsD(n) { return n * BAR_D; }
+  // Score: Dua Pulau (two islands), our own song for the emblem, made the way Bunga Kaili is made and kept simple so it can be
+  // felt: one tune, sung by the kakula on the Kaili kettles, answered from Bali by the flute. The call, a verse in A minor, the
+  // answer, the verse again, the rose singing itself at the heart, a chorus that lifts into C major, the flute remembering the
+  // verse alone, the chorus once more, and the call coming home to a bright A major. 110 bpm, 52 bars, a section per scene.
+  // The rings' own loops (13 rays, 21 leaves, 55 dots) sound only softly under the chorus; the drawing still keeps their time.
+  var BPM_D = 110, BEAT_D = 60 / BPM_D, BAR_D = BEAT_D * 4; function barsD(n) { return n * BAR_D; }
   var LD = (function () {
-    // what we took from Mozart, in our own notes: a tune in two halves that ask and answer (the first ends open on G, the
-    // second closes on C), a broken-chord accompaniment under it, a rising "rocket" to open, a second theme that turns to the
-    // relative minor, a development that hands the tune's head from voice to voice, a false close that slips to A minor
-    // before the true one, loud and soft set side by side, and a coda that hammers the home chord
-    var CHP = { C: [0, 4, 7], G: [7, 11, 2], F: [5, 9, 0], Am: [9, 0, 4], Em: [4, 7, 11] }, ROOT = { C: 130.81, G: 98.00, F: 87.31, Am: 110.00, Em: 82.41 };
+    var CHP = { Am: [9, 0, 4], C: [0, 4, 7], G: [7, 11, 2], F: [5, 9, 0], Em: [4, 7, 11], A: [9, 1, 4] }, ROOT = { Am: 110.00, C: 130.81, G: 98.00, F: 87.31, Em: 82.41, A: 110.00 };
     var HARM = [
-      'C', 'C', 'G', 'G',                                   // 0-3 title: the rocket
-      'C', 'G', 'C', 'G', 'C', 'G', 'F|G', 'C',             // 4-11 listen: theme A, question and answer
-      'C', 'G', 'C', 'G',                                   // 12-15 brief: call and response, soft
-      'Am', 'Em', 'F', 'C', 'Am', 'Em', 'F', 'G',           // 16-23 counts: theme B, in the relative minor
-      'Am', 'F', 'C', 'Em', 'F', 'G',                       // 24-29 heart: the development
-      'C', 'G', 'C', 'G', 'C', 'G', 'F|G', 'Am', 'F|G', 'C', // 30-39 time: the return, a false close on Am, then the true one
-      'Am', 'Em', 'Am', 'G',                                // 40-43 misread: theme A misread in minor, softly
-      'C', 'G', 'F|G', 'C',                                 // 44-47 system: the answer, loud
-      'C', 'G', 'C|G', 'C'];                                // 48-51 keep: the cadenza on C over G, the trill on G, the coda
+      'Am', 'F', 'C', 'G',                                  // 0-3 the call
+      'Am', 'F', 'C', 'G', 'Am', 'F', 'G', 'Am',            // 4-11 verse
+      'Am', 'F', 'C', 'G',                                  // 12-15 Bali answers
+      'Am', 'F', 'C', 'G', 'Am', 'F', 'G', 'Am',            // 16-23 verse again, the flute beside it
+      'Am', 'F', 'C', 'G', 'Am', 'G',                       // 24-29 the rose sings itself, then a breath
+      'F', 'G', 'Em', 'Am', 'F', 'G', 'C', 'C', 'Am', 'G',  // 30-39 chorus, and down again
+      'F', 'G', 'Em', 'Am', 'F', 'G', 'C', 'C',             // 40-47 the last chorus, everyone, the flute above
+      'Am', 'F', 'G', 'A'];                                 // 48-51 home
     var NN = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
     function N(s) { var m = /^([A-G])(b|#)?(\d)$/.exec(s); return 261.63 * Math.pow(2, (NN[m[1]] + (m[2] === 'b' ? -1 : m[2] === '#' ? 1 : 0)) / 12 + (+m[3] - 4)); }
     var MEL = {
-      rocket: [['C4 E4 G4 C5 E5 G5', .5, 1], ['C6:2 B5:.5 A5:.5 G5:1'], ['G3 B3 D4 G4 B4 D5', .5, 1], ['D5:2 G4:.5 B4:.5 D5:.5 F5:.5']],
-      A: ['E5:1 G5:1 E5:.5 D5:.5 C5:1', 'D5:1.5 B4:.5 G4:2', 'E5:1 G5:1 C6:1.5 B5:.5', 'A5:.5 G5:.5 F5:.5 E5:.5 D5:2',
-          'E5:1 G5:1 E5:.5 D5:.5 C5:1', 'D5:1 F5:1 B4:1 D5:1', 'A5:1 F5:1 D5:1 B4:1', 'C5:2 G4:.5 C5:.5 E5:.5 G5:.5'],
-      B: ['C6:2 B5:1 A5:1', 'G5:3 E5:1', 'A5:2 G5:1 F5:1', 'E5:3 C5:1', 'A5:1.5 B5:.5 C6:1 A5:1', 'B5:2 G5:2', 'A5:1 C6:1 A5:1 F5:1', 'G5:2 F5:1 D5:1'],
-      minor: ['C5:1 E5:1 C5:.5 B4:.5 A4:1', 'B4:1.5 G4:.5 E4:2', 'C5:1 E5:1 A5:1.5 G5:.5', 'F5:.5 E5:.5 D5:.5 C5:.5 D5:2'],
-      coda: ['G5:1 E5:1 A5:1 F5:1', 'E5:1 G5:1 D5:1 B4:1', 'E5:.5 D5:.5 C5:1 D5:1.5 B4:.5']
+      verse: ['A4:.5 C5:.5 E5:2 D5:.5 C5:.5', 'C5:3 R:1', 'G4:.5 A4:.5 C5:2 D5:.5 E5:.5', 'D5:3 R:1',
+              'A4:.5 C5:.5 E5:2 E5:.5 G5:.5', 'A5:2 G5:.5 E5:.5 C5:1', 'D5:1.5 E5:.5 D5:1 B4:1', 'A4:3 R:1'],
+      answer: ['E5:1.5 G5:.5 A5:2', 'R:1 C6:1 A5:1 F5:1', 'G5:2 E5:1 C5:1', 'D5:3 R:1'],
+      beside: ['C6:4', 'A5:4', 'G5:4', 'B5:4', 'C6:4', 'C6:4', 'B5:2 D6:2', 'C6:3 R:1'],
+      chorus: ['C6:2 B5:1 A5:1', 'B5:2 G5:1 D5:1', 'E5:1 G5:1 B5:2', 'A5:3 R:1', 'A5:1 C6:1 A5:1.5 G5:.5', 'G5:2 D5:1 B4:1', 'C5:1 E5:1 G5:1.5 E5:.5', 'C5:3 R:1'],
+      down: ['E5:1.5 D5:.5 C5:1 A4:1', 'B4:2 D5:2'],
+      home: ['A4:.5 C5:.5 E5:2 D5:.5 C5:.5', 'C5:3 R:1', 'D5:1 E5:1 D5:1 B4:1', 'A4:4']
     };
     var EUC = []; for (var q = 0; q < 21; q++) EUC.push(Math.floor((q + 1) * 8 / 21) - Math.floor(q * 8 / 21)); // 8 strokes spread evenly over 21
     var RAYH = [0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 1, 0], TIP = 4, GA = 137.50776;
-    function chordAt(bar, beat) { var h = HARM[Math.max(0, Math.min(HARM.length - 1, bar))].split('|'); return h.length > 1 && (beat || 0) >= 2 ? h[1] : h[0]; }
-    function tones(ch, lo, n) { var out = [], pcs = CHP[ch]; for (var m = 0; out.length < n; m++) { var f = lo * Math.pow(2, m / 12), pc = ((Math.round(12 * Math.log2(f / 261.63)) % 12) + 12) % 12; if (pcs.indexOf(pc) >= 0) out.push(f); } return out; }
+    // the same Kaili kettles as Bunga Kaili: la do re mi sol la si from A3, each a few cents off true, which is their colour
+    var KAILI = [220.00, 261.63, 293.66, 329.63, 392.00, 440.00, 493.88, 523.25, 587.33, 659.26, 783.99, 880.00, 987.77, 1046.50], KDR = [2, -3, 4, -2, 3, 2, -3, 3, -2, 4, -3, 2, -2, 3];
+    function pcOf(f) { return ((Math.round(12 * Math.log2(f / 261.63)) % 12) + 12) % 12; }
+    function kaili(f) { for (var i = 0; i < KAILI.length; i++) if (Math.abs(1200 * Math.log2(f / KAILI[i])) < 20) return i; return -1; }
+    function ktones(ch, lo, n) { return KAILI.filter(function (f) { return f >= lo * .99 && CHP[ch].indexOf(pcOf(f)) >= 0; }).slice(0, n); }
+    function chordAt(bar) { return HARM[Math.max(0, Math.min(HARM.length - 1, bar))]; }
     function compose(opt) {
-      var lilt = opt && opt.feel === 'lilt' ? BEAT_D * .08 : 0, E = [];
+      var lilt = opt && opt.feel === 'lilt' ? BEAT_D * .08 : 0, E = [], prevK = null;
       function T(bar, beat) { var f = beat % 1; if (Math.abs(f - .5) < 1e-6) beat += lilt; return bar * BAR_D + beat * BEAT_D; }
       function kn(f) { return ((Math.round(12 * Math.log2(f / 220)) % 7) + 7) % 7; }
-      function KF(time, f, v, beats, soft, stem, detune) { E.push({ t: time, k: 'kettle', n: kn(f), f: f * (detune || 1), v: v, soft: !!soft, d: clamp(beats * BEAT_D * (soft ? 2.6 : 2), .3, 2.2), s: stem || 'kakula' }); }
-      function each(a, b, fn) { for (var x = a; x < b; x++) for (var h = 0; h < 2; h++) fn(x, h * 2, chordAt(x, h * 2)); } // per half bar
-      function bars(a, b, fn) { for (var x = a; x < b; x++) fn(x, chordAt(x, 0)); }
-      // a tune line: 'E5:1 G5:.5 …' (beats); flute, doubled on the kakula an octave down when dbl
-      function line(bar, str, v, dbl, stem) { var beat = 0; str.split(' ').forEach(function (tok) { var p = tok.split(':'), d = +(p[1] || .5), f = N(p[0]); E.push({ t: T(bar, beat), k: 'tatali', f: f, v: v, d: d * BEAT_D * .92, s: 'tatali' }); if (dbl) KF(T(bar, beat), f / (f > 700 ? 2 : 1), dbl, d, true, stem || 'kakula2'); beat += d; }); }
-      function tune(at, list, v, dbl) { list.forEach(function (s, i) { line(at + i, s, v, dbl); }); }
-      // the loops of the rings, now drawn from the chord of the moment
-      function rays(a, b, v) { bars(a, b, function (x) { for (var e = 0; e < 8; e++) { var gi = (x * 8 + e) % 13, ch = chordAt(x, e / 2), tn = tones(ch, 261.63, 5); KF(T(x, e / 2), tn[RAYH[gi]], v * (gi === TIP ? 1.2 : e % 2 ? .65 : .85), .5, true, 'kakula'); } }); }
-      function leaves(a, b, v) { bars(a, b, function (x) { for (var s = 0; s < 16; s++) { var gs = x * 16 + s; if (!EUC[gs % 21]) continue; var tn = tones(chordAt(x, s / 4), 783.99, 4), f = tn[Math.floor(((gs * GA) % 360) / 90)]; KF(T(x, s / 4), f, v, .25, true, 'reyong'); KF(T(x, s / 4) + .004, f, v * .6, .25, true, 'reyong', 1.006); } }); }
-      function dots(a, b, v) { bars(a, b, function (x) { for (var s = 0; s < 16; s++) E.push({ t: T(x, s / 4), k: 'shaker', v: (s % 4 === 2 ? .1 : (x * 16 + s) % 5 === 0 ? .08 : .045) * v, s: 'shaker' }); }); }
-      // the Alberti bass on the gamba-gamba: low, high, middle, high in eighths
-      function alberti(a, b, v) { each(a, b, function (x, bt, ch) { var tn = tones(ch, 130.81, 4), r = tn[0], t3 = tn[1], f5 = tn[2]; if (CHP[ch][0] !== Math.round(12 * Math.log2(r / 261.63) + 12) % 12) { var all = tones(ch, 110, 4); r = all.filter(function (f) { return ((Math.round(12 * Math.log2(f / 261.63)) % 12) + 12) % 12 === CHP[ch][0]; })[0] || r; } var c3 = tones(ch, r * 1.01, 2); [r, c3[1], c3[0], c3[1]].forEach(function (f, i) { E.push({ t: T(x, bt + i / 2), k: 'kolintang', n: kn(f), f: f, v: v * (i ? .7 : 1), s: 'gamba' }); }); }); }
-      function bed(a, b, v) { each(a, b, function (x, bt, ch) { CHP[ch].forEach(function (pc, j) { var f = 261.63 * Math.pow(2, pc / 12); E.push({ t: T(x, bt) + j * .012, k: 'angklung', f: f, v: .2 * v, d: BAR_D * .45, s: 'angklung' }); }); }); }
-      function dio(a, b, v, bounce) { each(a, b, function (x, bt, ch) { var r = ROOT[ch] > 100 ? ROOT[ch] : ROOT[ch] * 2; E.push({ t: T(x, bt), k: 'dio', f: r, v: .5 * v, s: 'dio' }); if (bounce) { E.push({ t: T(x, bt + 1), k: 'dio', f: r * 1.5, v: .3 * v, s: 'dio' }); E.push({ t: T(x, bt + 1.5), k: 'dio', f: r, v: .26 * v, s: 'dio' }); } }); }
-      function heart(a, b, v) { bars(a, b, function (x, ch) { E.push({ t: T(x, 0), k: 'bassgong', f: ROOT[ch], v: .4 * v, s: 'bass' }); }); }
-      // the tawa-tawa follows the harmony: C3 under any chord that holds C, G3 under the others
-      function gongs(a, b, v) { bars(a, b, function (x) { var ch = chordAt(x, x % 2 ? 2 : 0), f = CHP[ch].indexOf(0) >= 0 ? 130.81 : 196.00; E.push({ t: T(x, x % 2 ? 2 : 0), k: 'gong', n: x % 2, f: f, v: (x % 2 ? .18 : .32) * v, s: 'gongs' }); }); }
-      function kendang(a, b, v, drive) { bars(a, b, function (x) { [[0, 'dum', .44], [6, 'tak', .3], [8, 'dum', .36], [11, 'tak', .26], [14, 'tak', .3]].concat(drive ? [[3, 'tak', .14], [4, 'dum', .3], [12, 'dum', .3], [15, 'tak', .14]] : []).forEach(function (h) { E.push({ t: T(x, h[0] / 4), k: 'drum', n: h[1], v: h[2] * v, s: 'drums' }); }); }); }
-      function claps(a, b, v) { bars(a, b, function (x) { E.push({ t: T(x, 1), k: 'clap', v: .2 * v, s: 'claps' }); E.push({ t: T(x, 3), k: 'clap', v: .22 * v, s: 'claps' }); }); }
-      function fill(bar, v) { [8, 10, 12, 13, 14, 15].forEach(function (s, i) { E.push({ t: T(bar, s / 4), k: 'drum', n: i % 2 ? 'tak' : 'dum', v: (.24 + i * .03) * v, s: 'drums' }); }); }
-      function hit(bar, beat, ch, v) { tones(ch, 196, 5).forEach(function (f, j) { E.push({ t: T(bar, beat) + j * .004, k: 'kolintang', n: kn(f), f: f, v: v, s: 'gamba' }); }); E.push({ t: T(bar, beat), k: 'drum', n: 'dum', v: .4 * v / .2, s: 'drums' }); }
-      function under(a, b, v, o) { o = o || {}; bed(a, b, .6 * v); gongs(a, b, v); heart(a, b, .9 * v); alberti(a, b, .13 * v); dio(a, b, v, o.bounce); if (o.drums) { kendang(a, b, .8 * v, o.drive); claps(a, b, .8 * v); dots(a, b, v); } }
-      // Title 0-3, forte: chord hits and two rockets, C then G, rising like the rays
-      hit(0, 0, 'C', .22); line(0, MEL.rocket[0][0].split(' ').map(function (n) { return n + ':.5'; }).join(' '), .26, .3, 'kakula'); line(1, MEL.rocket[1][0], .27, .25);
-      hit(2, 0, 'G', .2); line(2, MEL.rocket[2][0].split(' ').map(function (n) { return n + ':.5'; }).join(' '), .26, .3, 'kakula'); line(3, MEL.rocket[3][0], .27, .25);
-      bed(0, 4, .6); gongs(0, 4, 1); heart(0, 4, .9); dio(1, 4, .8, true); dots(1, 4, .6); leaves(1, 4, .18); fill(3, .9);
-      // Listen 4-11: theme A, question (ends open on G) and answer (closes on C), Sulawesi under it
-      under(4, 12, .9, { drums: true, bounce: true }); tune(4, MEL.A, .28, .22); rays(4, 12, .26);
-      // Brief 12-15, piano: call on the kakula (Sulawesi), answer on the reyong (Bali)
-      bed(12, 16, .45); gongs(12, 16, .6); heart(12, 16, .6); dio(12, 16, .6); dots(12, 16, .45);
-      bars(12, 16, function (x, ch) { var up = tones(ch, 261.63, 4); up.forEach(function (f, i) { KF(T(x, i / 2), f, .3, .5, true, 'kakula'); }); var dn = tones(ch, 523.25, 4).reverse(); dn.forEach(function (f, i) { KF(T(x, 2 + i / 2), f, .26, .5, true, 'reyong'); KF(T(x, 2 + i / 2) + .004, f, .16, .5, true, 'reyong', 1.006); }); });
-      // Counts 16-23: theme B in A minor, singing, as the rings are counted in
-      under(16, 24, .85, { drums: true }); tune(16, MEL.B, .27, 0); rays(18, 24, .28); leaves(22, 24, .24); fill(23, .9);
-      // Heart 24-29: the development, the head of theme A passed from flute to kakula round the chords
-      under(24, 29, .8, { drums: true }); dots(24, 29, .5);
-      bars(24, 29, function (x, ch) { var tn = tones(ch, 523.25, 4), r = tn[0], t3 = tn[1], f5 = tn[2], st = r * Math.pow(2, 2 / 12);
-        var who = x % 2 ? 'kakula' : 'tatali', head = [[0, t3, 1], [1, f5, 1], [2, t3, .5], [2.5, CHP[ch].indexOf(((Math.round(12 * Math.log2(st / 261.63)) % 12) + 12) % 12) >= 0 ? st : t3, .5], [3, r, 1]];
-        head.forEach(function (h) { if (who === 'tatali') E.push({ t: T(x, h[0]), k: 'tatali', f: h[1], v: .27, d: h[2] * BEAT_D * .92, s: 'tatali' }); else KF(T(x, h[0]), h[1], .4, h[2], false, 'kakula'); });
-        [[0, t3 / 2], [1, f5 / 2]].forEach(function (h) { if (who === 'tatali') KF(T(x, 2 + h[0]), h[1], .22, 1, true, 'kakula2'); else E.push({ t: T(x, 2 + h[0]), k: 'tatali', f: h[1] * 2, v: .2, d: BEAT_D * .9, s: 'tatali' }); }); });
-      leaves(26, 29, .22);
-      // Bar 29: kebyar, the Balinese outburst: the whole ensemble strikes in unison on an irregular rhythm, then a breath of silence before the return
-      E.push({ t: T(29, 0), k: 'gong', n: 1, f: 196.00, v: .34, s: 'gongs' }); E.push({ t: T(29, 0), k: 'bassgong', f: 98.00, v: .42, s: 'bass' }); E.push({ t: T(29, 0), k: 'dio', f: 196.00, v: .5, s: 'dio' });
-      [0, 2, 3, 6, 7, 9, 12, 13].forEach(function (s16, i) { var bt = s16 / 4, v = i === 0 || i === 7 ? 1 : i % 3 === 0 ? .85 : .7;
-        tones('G', 196, 6).forEach(function (f, j) { E.push({ t: T(29, bt) + j * .003, k: 'kolintang', n: kn(f), f: f, v: .15 * v, s: 'gamba' }); });
-        [392.00, 587.33, 783.99].forEach(function (f) { KF(T(29, bt), f, .36 * v, .5, false, 'kakula'); KF(T(29, bt), f * 2, .2 * v, .25, true, 'reyong'); KF(T(29, bt) + .004, f * 2, .12 * v, .25, true, 'reyong', 1.006); });
-        E.push({ t: T(29, bt), k: 'drum', n: i % 2 ? 'tak' : 'dum', v: .44 * v, s: 'drums' }); E.push({ t: T(29, bt), k: 'clap', v: .17 * v, s: 'claps' }); });
-      // Time 30-39, forte: theme A returns with every ring's loop; bar 37 slips to A minor (the false close), 38-39 close for real
-      under(30, 40, 1, { drums: true, bounce: true, drive: true }); rays(30, 40, .3); leaves(30, 40, .26);
-      tune(30, MEL.A.slice(0, 7), .3, .22); line(37, 'C5:2 E5:1 C5:1', .28, .2); line(38, 'A5:1 F5:1 D5:1 B4:1', .3, .22); line(39, 'C5:2 G4:.5 C5:.5 E5:.5 G5:.5', .3, .22); fill(39, 1.05);
-      // Misread 40-43, piano subito: theme A heard in minor on the kakula alone, as the mark is misread
-      bed(40, 44, .4); gongs(40, 44, .55); heart(40, 44, .55); alberti(40, 44, .08); dots(42, 44, .4);
-      MEL.minor.forEach(function (s, i) { var beat = 0; s.split(' ').forEach(function (tok) { var p = tok.split(':'), d = +p[1]; KF(T(40 + i, beat), N(p[0]), .42, d, false, 'kakula'); beat += d; }); }); fill(43, 1.1);
-      // System 44-47, forte: the answer again, everything in
-      under(44, 48, 1, { drums: true, bounce: true, drive: true }); rays(44, 48, .3); leaves(44, 48, .26); tune(44, MEL.A.slice(4), .3, .22);
-      // Keep 48-51: the coda, I-IV I-V twice, then the home chord three times
-      // Bar 48: the cadenza. The band strikes C over a G bass and holds; the flute climbs the golden spiral alone, its notes
-      // shortening by Fibonacci steps (3 3 2 2 2 1 1 1 1 sixteenths) as it rises, a reyong spark under each
-      hit(48, 0, 'C', .2); E.push({ t: T(48, 0), k: 'dio', f: 98.00, v: .5, s: 'dio' }); E.push({ t: T(48, 0), k: 'bassgong', f: 98.00, v: .44, s: 'bass' }); E.push({ t: T(48, 0), k: 'gong', n: 0, f: 196.00, v: .3, s: 'gongs' });
-      [0, 4, 7].forEach(function (pc, j) { E.push({ t: T(48, 0) + j * .012, k: 'angklung', f: 261.63 * Math.pow(2, pc / 12), v: .14, d: BAR_D * 1.6, s: 'angklung' }); });
-      (function () { var b16 = 0; [['G4', 3], ['C5', 3], ['E5', 2], ['G5', 2], ['C6', 2], ['E6', 1], ['D6', 1], ['C6', 1], ['A5', 1]].forEach(function (n) { var f = N(n[0]); E.push({ t: T(48, b16 / 4), k: 'tatali', f: f, v: .3, d: n[1] / 4 * BEAT_D * .95, s: 'tatali' }); KF(T(48, b16 / 4), f, .14, .25, true, 'reyong'); KF(T(48, b16 / 4) + .004, f, .08, .25, true, 'reyong', 1.006); b16 += n[1]; }); })();
-      // Bar 49: the trill on D over G, starting from the note above as Mozart's do, a turn through C, then the band comes home
-      for (var k8 = 0; k8 < 24; k8++) E.push({ t: T(49, k8 / 8), k: 'tatali', f: N(k8 % 2 ? 'D5' : 'E5'), v: .26, d: BEAT_D / 8 * .95, s: 'tatali' });
-      E.push({ t: T(49, 3), k: 'tatali', f: N('C5'), v: .27, d: BEAT_D * .45, s: 'tatali' }); E.push({ t: T(49, 3.5), k: 'tatali', f: N('D5'), v: .28, d: BEAT_D * .45, s: 'tatali' });
-      bed(49, 50, .5); gongs(49, 50, .8); E.push({ t: T(49, 0), k: 'dio', f: 196.00, v: .45, s: 'dio' }); E.push({ t: T(49, 0), k: 'bassgong', f: 98.00, v: .4, s: 'bass' }); KF(T(49, 0), 392.00, .2, 4, true, 'kakula');
-      [8, 9, 10, 11, 12, 13, 14, 15].forEach(function (s16, i) { E.push({ t: T(49, s16 / 4), k: 'drum', n: 'tak', v: .1 + i * .035, s: 'drums' }); });
-      // Bar 50: everyone back in
-      under(50, 51, 1, { drums: true, bounce: true, drive: true }); rays(50, 51, .3); leaves(50, 51, .26); line(50, 'C5:1 E5:.5 G5:.5 D5:1 B4:1', .3, .22);
-      [0, 1, 2].forEach(function (b, i) { hit(51, b, 'C', i === 2 ? .24 : .18); KF(T(51, b), 523.25, .5, i === 2 ? 4 : 1, i < 2, 'kakula'); E.push({ t: T(51, b), k: 'tatali', f: N(i === 2 ? 'C6' : 'G5'), v: .26, d: (i === 2 ? 3 : .8) * BEAT_D, s: 'tatali' }); });
-      KF(T(51, 2), 1046.5, .3, 4, true, 'reyong'); KF(T(51, 2) + .004, 1046.5, .18, 4, true, 'reyong', 1.006);
-      E.push({ t: T(51, 2), k: 'gong', n: 0, f: 130.81, v: .55, s: 'gongs' }); E.push({ t: T(51, 2), k: 'bassgong', f: 130.81, v: .45, s: 'bass' }); E.push({ t: T(51, 2), k: 'dio', f: 130.81, v: .5, s: 'dio' }); E.push({ t: T(51, 2), k: 'clap', v: .26, s: 'claps' });
+      // a kakula can only strike a Kaili kettle, tuned as in Bunga Kaili
+      function KF(time, f, v, beats, soft, stem, detune) { var isK = (stem || 'kakula').indexOf('kakula') === 0, ki = isK ? kaili(f) : -1; if (isK && ki < 0) return null; if (ki >= 0) f = KAILI[ki] * Math.pow(2, KDR[ki] / 1200); var e = { t: time, k: 'kettle', n: kn(f), f: f * (detune || 1), v: v, soft: !!soft, d: clamp(beats * BEAT_D * (soft ? 2.6 : 2), .3, 2.4), s: stem || 'kakula' }; E.push(e); return e; }
+      function bars(a, b, fn) { for (var x = a; x < b; x++) fn(x, chordAt(x)); }
+      // the kakula sings, as in Bunga Kaili: a grace note from the kettle above on a new long note, a soft roll to keep a long
+      // note sounding, a second kakula a chord tone below; fl doubles it quietly on the flute
+      function kline(bar, str, v, soft, fl) { var beat = 0; str.split(' ').forEach(function (tok) { var p = tok.split(':'), d = +(p[1] || .5); if (p[0] === 'R') { beat += d; prevK = null; return; }
+          var f = N(p[0]), t0 = T(bar, beat), ki = kaili(f);
+          if (d >= 1 && !soft && prevK !== null && Math.abs(prevK - f) > 1 && beat % 2 === 0 && ki >= 0 && ki < KAILI.length - 1) KF(t0 - .07, KAILI[ki + 1], v * .22, .25, false);
+          var e = KF(t0, f, v, d, soft); if (e) { e.lead = 1; e.d = Math.max(e.d, d * BEAT_D); }
+          if (d >= 1.5) for (var q = .75; q < d - .4; q += 1 / 3) KF(t0 + q * BEAT_D, f, v * (soft ? .1 : .13), .3, soft);
+          if (d >= 1) { var ch = chordAt(bar), lo = KAILI.filter(function (k) { var st = 12 * Math.log2(f / k); return st >= 2.5 && st <= 9.5 && CHP[ch].indexOf(pcOf(k)) >= 0; }); if (lo.length) KF(t0, lo[lo.length - 1], v * .4, d, true, 'kakula2'); }
+          if (fl) E.push({ t: t0, k: 'tatali', f: f, v: fl, d: d * BEAT_D * .92, s: 'tatali' });
+          prevK = f; beat += d; }); }
+      function ksing(at, list, v, soft, fl) { list.forEach(function (s, i) { kline(at + i, s, v, soft, fl); }); }
+      // the flute sings alone (lead) or holds long notes beside the kakula
+      function flute(at, list, v, lead) { list.forEach(function (s, i) { var beat = 0; s.split(' ').forEach(function (tok) { var p = tok.split(':'), d = +p[1]; if (p[0] !== 'R') E.push({ t: T(at + i, beat), k: 'tatali', f: N(p[0]), v: v, d: d * BEAT_D * .94, s: 'tatali', lead: lead ? 1 : 0 }); beat += d; }); }); }
+      // the gamba-gamba: soft chords on 1 and 3, or Bunga Kaili's eighth figure when the song opens up
+      function gamba(a, b, v, full) { bars(a, b, function (x, ch) { var pcs = CHP[ch], seq = full ? [[0, 0], [.5, 2], [1, 1], [1.5, 2], [2, 0], [2.5, 2], [3, 1], [3.5, 2]] : [[0, 0], [2, 1]];
+          seq.forEach(function (sq) { var pc = pcs[sq[1]], f = 261.63 * Math.pow(2, pc / 12); if (f > 400) f /= 2; E.push({ t: T(x, sq[0]), k: 'kolintang', n: pc % 7, f: f, v: (sq[0] % 1 ? .15 : .21) * v, s: 'gamba' }); if (!full) CHP[ch].forEach(function (pc2, j) { if (j === sq[1]) return; var f2 = 261.63 * Math.pow(2, pc2 / 12); if (f2 > 400) f2 /= 2; E.push({ t: T(x, sq[0]) + .01 * (j + 1), k: 'kolintang', n: pc2 % 7, f: f2, v: .12 * v, s: 'gamba' }); }); }); }); }
+      function bed(a, b, v) { bars(a, b, function (x, ch) { CHP[ch].forEach(function (pc, j) { var f = 261.63 * Math.pow(2, pc / 12); E.push({ t: T(x, 0) + j * .015, k: 'angklung', f: f, v: .2 * v, d: BAR_D * .95, s: 'angklung' }); }); }); }
+      function low(a, b, v, walk) { bars(a, b, function (x, ch) { E.push({ t: T(x, 0), k: 'bassgong', f: ROOT[ch], v: .42 * v, s: 'bass' }); if (walk) E.push({ t: T(x, 2), k: 'bassgong', f: ROOT[ch] * 1.5, v: .28 * v, s: 'bass' }); }); }
+      function dio(a, b, v) { bars(a, b, function (x, ch) { var r = ROOT[ch] < 100 ? ROOT[ch] * 2 : ROOT[ch]; E.push({ t: T(x, 0), k: 'dio', f: r, v: .45 * v, s: 'dio' }); E.push({ t: T(x, 2), k: 'dio', f: r * 1.5, v: .3 * v, s: 'dio' }); E.push({ t: T(x, 3.5), k: 'dio', f: r, v: .22 * v, s: 'dio' }); }); }
+      // the tawa-tawa sounds a note of the chord: C3 or G3 if the chord holds one, otherwise A2
+      function gongs(a, b, v) { bars(a, b, function (x, ch) { var f = [130.81, 196.00, 110.00, 164.81].filter(function (g0) { return CHP[ch].indexOf(pcOf(g0)) >= 0; })[0]; E.push({ t: T(x, x % 2 ? 2 : 0), k: 'gong', n: x % 2, f: f, v: (x % 2 ? .17 : .3) * v, s: 'gongs' }); }); }
+      function gimba(a, b, v, half) { bars(a, b, function (x) { (half ? [[0, 'dum', .4], [3, 'tak', .3]] : [[0, 'dum', .42], [1, 'tak', .4], [2, 'dum', .3], [3, 'tak', .42], [3.5, 'tak', .14]]).forEach(function (h) { E.push({ t: T(x, h[0]), k: 'drum', n: h[1], v: h[2] * v, s: 'drums' }); }); }); }
+      function loom(a, b, v) { v *= 1.8; bars(a, b, function (x) { E.push({ t: T(x, 0), k: 'beater', v: .4 * v, s: 'loom' }); E.push({ t: T(x, 2), k: 'beater', v: .3 * v, s: 'loom' }); E.push({ t: T(x, 1), k: 'shuttle', v: .16 * v, s: 'loom' }); E.push({ t: T(x, 3), k: 'shuttle', v: .16 * v, s: 'loom' }); }); }
+      // the rings' loops, soft: rays a kakula broken chord on eighths (13 steps), leaves 8 reyong strokes in 21 sixteenths, dots the shaker
+      function rays(a, b, v) { bars(a, b, function (x, ch) { var tn = ktones(ch, 261.63, 5); for (var e = 0; e < 8; e++) { var gi = (x * 8 + e) % 13; KF(T(x, e / 2), tn[RAYH[gi]], v * (gi === TIP ? 1.2 : .8), .5, true, 'kakula'); } }); }
+      function leaves(a, b, v) { bars(a, b, function (x, ch) { var tn = ktones(ch, 783.99, 4); for (var s = 0; s < 16; s++) { var gs = x * 16 + s; if (!EUC[gs % 21]) continue; var f = tn[Math.floor(((gs * GA) % 360) / 90) % tn.length]; KF(T(x, s / 4), f, v, .25, true, 'reyong'); KF(T(x, s / 4) + .004, f, v * .6, .25, true, 'reyong', 1.006); } }); }
+      function dots(a, b, v) { bars(a, b, function (x) { for (var s = 0; s < 16; s++) E.push({ t: T(x, s / 4), k: 'shaker', v: (s % 4 === 2 ? .08 : .035) * v, s: 'shaker' }); }); }
+      // the rose sings itself, Bunga Kaili's ring song from the heart out: 3 notes in a bar, then 5, 8 and 13, each a Kaili
+      // kettle on the chord, chosen by the golden angle, moving by small steps
+      function roseSong(at, counts, v) { var prev = 8, idx = 0; counts.forEach(function (n, k) { var x = at + k, ch = chordAt(x), ct = [];
+          KAILI.forEach(function (f, i) { if (i >= 4 && i <= 12 && CHP[ch].indexOf(pcOf(f)) >= 0) ct.push(i); });
+          for (var j = 0; j < n; j++) { var s16 = Math.floor(j * 16 / n), gi = 4 + Math.floor(((idx++ * GA) % 360) / 360 * 9), best = ct[0], sc = 1e9;
+            ct.forEach(function (i) { var q = Math.abs(i - gi) + .8 * Math.abs(i - prev); if (q < sc) { sc = q; best = i; } });
+            var e = KF(T(x, s16 / 4), KAILI[best], v * (n >= 8 ? .8 : 1), 16 / n / 4, n >= 8, 'kakula'); if (e) e.lead = 1; prev = best; } }); }
+
+      // Progressive: the song grows the way the medallion is drawn, from the heart out. Each section adds a layer and nothing
+      // leaves once it has come in: the heart (the kakula alone), the disc (gongs, low gong, gamba-gamba), Bali (the flute),
+      // the rays (their 13-step loop, the loom, the gimba), the dots (the shaker, the held chords), the leaves (the reyong
+      // shimmer, the dio), and then everyone in the last chorus with the flute above. A slow swell runs under the whole piece.
+      // The heart 0-3: the call, the kakula alone, softly; one gong
+      ksing(0, MEL.verse.slice(0, 4), .4, true); E.push({ t: T(0, 0), k: 'gong', n: 0, f: 110, v: .3, s: 'gongs' });
+      // + the disc 4-11: the verse; the gongs, the low gong and the gamba-gamba come in
+      ksing(4, MEL.verse, .48); gongs(4, 52, .9); low(4, 30, .85); gamba(4, 30, .8);
+      // + Bali 12-15: the flute answers, and stays
+      flute(12, MEL.answer, .3, true); KF(T(12, 0), 440, .16, 4, true, 'kakula'); KF(T(14, 0), 523.25, .16, 4, true, 'kakula');
+      // + the rays 16-23: the verse again, the flute beside it; the 13-step rays loop, the loom and the gimba on the half bar
+      ksing(16, MEL.verse, .5); flute(16, MEL.beside, .16, false); rays(16, 24, .1); loom(16, 48, .35); gimba(16, 24, .7, true);
+      // + the dots 24-29: the rose sings itself; the shaker and the held chords come in, the gimba fills out
+      roseSong(24, [3, 5, 8, 13, 13], .46); flute(24, ['A5:4', 'A5:4', 'G5:4', 'B5:4', 'C6:4'], .12, false); rays(24, 30, .12); dots(24, 52, .55); bed(24, 52, .42); gimba(24, 52, .9);
+      [4, 5, 7, 8, 9, 10, 11].forEach(function (i, j) { KF(T(29, 2 + j * 2 / 7), KAILI[i], .3 + j * .03, .3, false); });
+      for (var r = 0; r < 8; r++) E.push({ t: T(29, 2 + r / 4), k: 'drum', n: r % 4 === 0 ? 'dum' : 'tak', v: .1 + r * .035, s: 'drums' });
+      // + the leaves 30-39: the chorus in C major; the reyong shimmer and the dio come in, the gamba-gamba opens into eighths
+      ksing(30, MEL.chorus, .55, false, .2); gamba(30, 52, 1, true); low(30, 52, 1, true); dio(30, 52, .85); rays(30, 52, .15); leaves(30, 52, .12);
+      ksing(38, MEL.down, .52, false, .2);
+      [8, 10, 12, 13, 14, 15].forEach(function (s16, i) { E.push({ t: T(39, s16 / 4), k: 'drum', n: i % 2 ? 'tak' : 'dum', v: .2 + i * .045, s: 'drums' }); });
+      // Everyone 40-47: the last chorus, the kakula with the flute, and the flute's descant above
+      ksing(40, MEL.chorus, .58, false, .22); flute(40, ['C6:4', 'D6:4', 'B5:4', 'C6:4', 'C6:4', 'D6:4', 'E6:2 D6:2', 'C6:4'], .14, false);
+      // Home 48-51: the call once more over everything, settling; the last chord turns to A major
+      ksing(48, MEL.home, .48, false, .16);
+      [9, 1, 4].forEach(function (pc, j) { var f = 220 * Math.pow(2, ((pc - 9 + 12) % 12) / 12); E.push({ t: T(51, 0) + j * .012, k: 'kolintang', n: pc % 7, f: f, v: .24, s: 'gamba' }); E.push({ t: T(51, 0) + j * .015, k: 'angklung', f: f * 2, v: .16, d: BAR_D * 1.2, s: 'angklung' }); });
+      E.push({ t: T(51, 0), k: 'tatali', f: N('E5'), v: .2, d: BAR_D * 1.1, s: 'tatali' }); E.push({ t: T(51, 0), k: 'gong', n: 0, f: 110, v: .55, s: 'gongs' }); E.push({ t: T(51, 0), k: 'bassgong', f: 110, v: .48, s: 'bass' });
+      // the swell: everything grows from soft to full by the last chorus, and eases a little into the final bar
+      E = E.filter(function (e) { var bar = Math.floor(e.t / BAR_D + 1e-6); return !(bar === 51 && e.t > T(51, 0) + .05 && e.k !== 'kettle' && e.k !== 'tatali'); });
+      E.forEach(function (e) { var x = e.t / BAR_D, u = clamp(x / 44, 0, 1); e.v *= (.62 + .38 * u * u * (3 - 2 * u)) * (x > 48 ? 1 - .12 * clamp(x - 48, 0, 3) / 3 : 1); });
       return E;
     }
     return { compose: compose, BAR: BAR_D, BPM: BPM_D, chordAt: chordAt, EUC: EUC, HARM: HARM };
@@ -2022,10 +2020,18 @@ export function startLab(hooks) {
     return { rays: function (i) { return chase(e8 % 13, i, 13) * k; }, leaves: function (i) { return chase(e16 % 21, i, 21) * k * (LD.EUC[e16 % 21] ? 1 : .5); }, dots: function (i) { return chase(e16 % 55, i, 55) * k; } };
   }
   // the heart is the Bomba rose itself, its rings growing with the heart's progress
-  function mHeart(ink) { return function (c, cx, cy, r, sh) { var p = [0, 1, 2, 3].map(function (k) { return clamp(sh * 5 - k, 0, 1); }); drawRose(c, cx, cy, r / .95, { stem: 0, leaves: [0, 0, 0], ink: ink, prog: p, heart: clamp(sh * 5 - 4, 0, 1) }); }; }
+  // the heart is cut from the master drawing itself (the one on the front panel), so the two can never drift apart; heart
+  // radius 200 in the master's 1024-px units. It opens from the centre out: reveal 0..1 is the radius of the cut.
+  function masterHeart(c, cx, cy, r, reveal, ink) {
+    var im = img(ink === 'dua' ? 'motifs/dua-pulau-medallion.png' : 'motifs/dua-pulau-medallion--buya.png'), k = r / 200, rv = clamp(reveal, 0, 1);
+    if (rv <= 0) return; c.save(); c.beginPath(); c.arc(cx, cy, r * rv, 0, Math.PI * 2); c.clip();
+    if (im.complete && im.naturalWidth) c.drawImage(im, cx - 512 * k, cy - 512 * k, 1024 * k, 1024 * k); else { c.fillStyle = ink === 'dua' ? '#C39B65' : '#C9A35A'; c.fill(); }
+    c.restore();
+  }
+  function mHeart(ink) { return function (c, cx, cy, r, sh) { masterHeart(c, cx, cy, r, eo(clamp(sh, 0, 1)), ink); }; }
   // the score, once, so the drawing can read the tune and the gongs from the clock
   var MD_EV = null;
-  function mdEv() { if (!MD_EV) { var E = LD.compose({}); MD_EV = { mel: E.filter(function (e) { return e.k === 'tatali'; }).sort(function (a, b) { return a.t - b.t; }), gong: E.filter(function (e) { return e.k === 'gong'; }) }; } return MD_EV; }
+  function mdEv() { if (!MD_EV) { var E = LD.compose({}); MD_EV = { mel: E.filter(function (e) { return e.lead; }).sort(function (a, b) { return a.t - b.t; }), gong: E.filter(function (e) { return e.k === 'gong'; }) }; } return MD_EV; }
   // the tune draws its own star: seven points round the mark, one per step of the scale, further out the higher the octave
   function degPos(f, cx, cy, R) { var st = Math.round(12 * Math.log2(f / 261.63)), pc = ((st % 12) + 12) % 12, oct = Math.floor(st / 12), deg = [0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6][pc], a = -Math.PI / 2 + deg * Math.PI * 2 / 7, r = R * clamp(.36 + .17 * (oct + 1), .22, .97); return [cx + Math.cos(a) * r, cy + Math.sin(a) * r]; }
   function tuneStar(cx, cy, R, alpha) {
@@ -2044,7 +2050,7 @@ export function startLab(hooks) {
     G.forEach(function (e) { var age = t - e.t; if (age < 0 || age > L) return; var u = age / L; g.strokeStyle = 'rgba(224,194,126,' + ((1 - u) * clamp(e.v * 2.2, .3, 1) * .55 * alpha).toFixed(3) + ')'; g.lineWidth = .6 + 2.4 * (1 - u); g.beginPath(); g.arc(cx, cy, R * (.46 + .74 * eo(u)), 0, 7); g.stroke(); });
     g.restore();
   }
-  function minorNow() { var bar = Math.floor(t / BAR_D), ch = LD.chordAt(bar, (t - bar * BAR_D) / BEAT_D); return ch === 'Am' || ch === 'Em'; }
+  function minorNow() { var bar = Math.floor(t / BAR_D), ch = LD.chordAt(bar); return ch === 'Am' || ch === 'Em'; }
   // on every beat the mark breathes out a little and a warm halo flashes behind it
   function beatPulse() { return reduce || SND.kind === 'off' ? 0 : Math.exp(-((t / BEAT_D) % 1) * 5) * (Math.floor(t / BEAT_D) % 4 === 0 ? 1 : .6); }
   function med(cx, cy, R, ink, o) {
@@ -2085,7 +2091,7 @@ export function startLab(hooks) {
       teach: 'The brief: our own drawing, both origins named, Fibonacci counts only, and a small master for stamp sizes.',
       draw: function (lt, d) {
         caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d);
-        ['Our own drawing, built from both islands', 'Fibonacci counts only: 3 5 8 13 21 55', 'A seal, a placement, a mark on a screen', 'Credit Donggala, Palu and Bali'].forEach(function (r, i) {
+        ['Our own drawing, built from both islands', 'Fibonacci counts: 13 rays, 21 leaves, 55 dots', 'A seal, a placement, a mark on a screen', 'Credit Donggala, Palu and Bali'].forEach(function (r, i) {
           var a = eo(ramp(lt, .5 + i * 1, 1.2 + i * 1)) * out; g.save(); g.globalAlpha = a; g.fillStyle = C.gold; g.beginPath(); g.arc(680, 160 + i * 76, 5, 0, 7); g.fill(); g.restore();
           text(r, 704, 166 + i * 76, '500 24px ' + F.display, C.paper, a);
         });
@@ -2093,7 +2099,7 @@ export function startLab(hooks) {
       } },
     { id: 'm-counts', dur: barsD(8), step: 'Count the rings', phase: 'Ideation', explore: 'counts',
       eyebrow: 'Step 3 · Count the rings', head: 'Thirteen, fifty-five, twenty-one.',
-      body: 'Ring by ring from the heart: the Bomba rose with petal rings of 13, 8, 5 and 3; a dark disc; 13 rebung rays, each with two chevrons pointing out; 55 cecek dots; 21 leaves, dark and teal in turn. Because neighbouring Fibonacci numbers share no factor, no ray ever lines up with a leaf except at the top, and the eye never finds a spoke to rest on.',
+      body: 'Ring by ring from the heart: the Bomba rose, three blades and two rings of petals turning round a dark heart; a dark disc; 13 rebung rays, each with two chevrons pointing out; 55 cecek dots; 21 leaves, dark and teal in turn. Because neighbouring Fibonacci numbers share no factor, no ray ever lines up with a leaf except at the top, and the eye never finds a spoke to rest on.',
       teach: 'Choose counts that do not divide each other and the rings stay independent. Try 12 rays against 24 leaves on the bench: the spokes appear at once.',
       draw: function (lt, d) {
         caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), ex = EX && EX.scene === 'm-counts', bar = lt / BAR_D;
@@ -2103,21 +2109,21 @@ export function startLab(hooks) {
           var pairs = [[EX.rays, EX.leaves], [EX.rays, EX.dots], [EX.leaves, EX.dots]]; g.save(); g.globalAlpha = out * .55; g.strokeStyle = C.flag; g.lineWidth = 1.4; g.setLineDash([5, 5]);
           pairs.forEach(function (pq) { var k = gcd(pq[0], pq[1]); if (k < 2) return; for (var j = 0; j < k; j++) { var a = j * Math.PI * 2 / k; g.beginPath(); g.moveTo(cx + Math.sin(a) * 120, cy - Math.cos(a) * 120); g.lineTo(cx + Math.sin(a) * 300, cy - Math.cos(a) * 300); g.stroke(); } }); g.restore(); }
         med(cx, cy, R, 'malam', { alpha: out, show: show, counts: counts, light: mLights(ex || bar > 7.4) }); if (!ex) tuneStar(cx, cy, R, out * ramp(bar, 6, 7));
-        if (!ex) { var lab = bar < 2 ? 'the heart: the Bomba rose, petal rings 13 · 8 · 5 · 3' : bar < 4 ? '13 rebung rays' : bar < 6 ? '55 cecek dots' : '21 leaves, dark and teal in turn';
+        if (!ex) { var lab = bar < 2 ? 'the heart: the Bomba rose' : bar < 4 ? '13 rebung rays' : bar < 6 ? '55 cecek dots' : '21 leaves, dark and teal in turn';
           text(lab, cx, 662, '500 12px ' + F.mono, C.gold2, out * .9, 'center');
-          FIB.forEach(function (f, i) { var used = [3, 5, 8, 13, 21, 55].indexOf(f) >= 0 && (f !== 13 || bar > 0) ; text(String(f), 706 + i * 52, 104, '500 15px ' + F.mono, used ? C.gold : C.line2, out * eo(ramp(lt, .5 + i * .15, 1 + i * .15)), 'center'); }); }
+          FIB.forEach(function (f, i) { var used = [3, 13, 21, 55].indexOf(f) >= 0 && (f !== 13 || bar > 0) ; text(String(f), 706 + i * 52, 104, '500 15px ' + F.mono, used ? C.gold : C.line2, out * eo(ramp(lt, .5 + i * .15, 1 + i * .15)), 'center'); }); }
       } },
     { id: 'm-heart', dur: barsD(6), step: 'Set the rose at the heart', phase: 'Synthesis',
-      eyebrow: 'Step 4 · Set the rose at the heart', head: 'The Bomba rose, turned by the golden angle.',
-      body: 'The heart is the Bomba rose from our second reel, unchanged: rings of 13, 8, 5 and 3 petals, each ring turned 137.5° from the one outside it, around a dark heart with a golden spiral. In the music this is the development: the head of the tune is passed round, flute then kakula, each time turned onto a new chord, the way each ring of petals is turned onto the next.',
-      teach: 'Reuse the master, never a copy. Mozart did it with a theme, we do it with a rose: the rose in the medallion is drawn by the same code as the rose on its own, so a change to one is a change to both.',
+      eyebrow: 'Step 4 · Set the rose at the heart', head: 'The Bomba rose, turning round its heart.',
+      body: 'The heart is the Bomba rose as the medallion draws it: a dark three-pointed heart with a golden spiral, three blades turning round it, a ring of broad petals, and an outer ring of scalloped two-tone petals, each with a cecek dot. In the music the rose sings itself, as in Bunga Kaili: from the heart out the kakula plays 3 notes in a bar, then 5, 8 and 13, each a Kaili kettle on the chord chosen by the golden angle, while the loom weaves underneath.',
+      teach: 'Reuse the master, never a copy: the heart on screen is cut from the master itself, so the reel and the front panel can never drift apart.',
       draw: function (lt, d) {
-        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), cx = 940, cy = 350, p = ramp(lt, .3, d - 3), r = 230;
-        var pr = [0, 1, 2, 3].map(function (k) { return ramp(p, k * .2, k * .2 + .2); });
-        drawRose(g, cx, cy, r / .95 * (1 + liveLevel() * .02), { stem: 0, leaves: [0, 0, 0], ink: 'buya', prog: pr, heart: ramp(p, .8, 1) });
-        if (p >= .2 && p < .8) { var k = Math.min(3, Math.floor(p / .2)), a = -Math.PI / 2 + k * 137.508 * Math.PI / 180, rr0 = [.84, .6, .38, .22][k] * r / .95;
-          g.save(); g.globalAlpha = out * .8; g.strokeStyle = C.paper; g.lineWidth = 1.2; g.setLineDash([4, 4]); g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + Math.cos(a) * (rr0 + 40), cy + Math.sin(a) * (rr0 + 40)); g.stroke(); g.restore(); }
-        var lab = p < .2 ? '13 petals' : p < .4 ? '8, turned 137.5° from the 13' : p < .6 ? '5, turned again' : p < .8 ? '3' : 'the dark heart and its golden spiral';
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), cx = 940, cy = 350, p = ramp(lt, .3, d - 2.5), r = 230 * (1 + liveLevel() * .02);
+        // open the master's heart ring by ring, from the centre out (edges measured on the master: 62, 122, 163, 200 of 200)
+        var stops = [0, .31, .61, .815, 1], seg = Math.min(3, Math.floor(p * 4)), rv = stops[seg] + (stops[seg + 1] - stops[seg]) * eo(clamp(p * 4 - seg, 0, 1) * 1.25);
+        g.save(); g.globalAlpha = out; g.fillStyle = '#1B1712'; g.beginPath(); g.arc(cx, cy, r * 1.125, 0, 7); g.fill(); g.strokeStyle = C.gold; g.lineWidth = 1.5; g.stroke(); masterHeart(g, cx, cy, r, rv, 'buya'); g.restore();
+        if (p < 1) { g.save(); g.globalAlpha = out * .7; g.strokeStyle = C.paper; g.lineWidth = 1.2; g.setLineDash([4, 5]); g.beginPath(); g.arc(cx, cy, r * rv + 6, 0, 7); g.stroke(); g.restore(); }
+        var lab = p < .25 ? 'the dark heart and its golden spiral' : p < .5 ? 'three blades turning round it' : p < .75 ? 'a ring of broad petals' : 'the outer ring: scalloped petals, two-tone, each with a cecek dot';
         text(lab, cx, 662, '500 12px ' + F.mono, C.gold2, out * .9, 'center');
       } },
     { id: 'm-time', dur: barsD(10), step: 'Let it keep time', phase: 'Synthesis',
@@ -2174,24 +2180,24 @@ export function startLab(hooks) {
       } }
   ];
   // the form of the score, under the words: where we are in the piece and what the music is doing
-  var FORM_D = [[0, 4, 'open'], [4, 12, 'theme A'], [12, 16, 'call'], [16, 24, 'theme B'], [24, 29, 'develop'], [29, 30, ''], [30, 40, 'A returns'], [40, 44, 'minor'], [44, 48, 'answer'], [48, 50, ''], [50, 52, '']];
-  function formSay(bar) { return bar < 4 ? 'the rocket: up through C, then up through G' : bar < 8 ? 'theme A, the question: it ends open, on G' : bar < 12 ? 'theme A, the answer: home on C' : bar < 16 ? 'call on the kakula, answer on the reyong' : bar < 24 ? 'theme B, the same mood turned to A minor' : bar < 29 ? 'the head of the tune, handed round' : bar < 30 ? 'kebyar: a Balinese outburst, then a breath' : bar < 37 ? 'theme A returns, loud, with every ring' : bar < 38 ? 'a false close: A minor, not home' : bar < 40 ? 'the true close, home on C' : bar < 44 ? 'theme A misread in minor, softly' : bar < 48 ? 'the answer, everyone in' : bar < 49 ? 'cadenza: the flute alone, up the golden spiral' : bar < 50 ? 'the trill, waiting for home' : 'coda: the home chord, three times'; }
+  var FORM_D = [[0, 4, 'heart'], [4, 12, 'disc'], [12, 16, 'Bali'], [16, 24, 'rays'], [24, 30, 'dots'], [30, 40, 'leaves'], [40, 48, 'everyone'], [48, 52, 'home']];
+  function formSay(bar) { return bar < 4 ? 'the heart: the kakula alone, calling' : bar < 12 ? '+ the disc: gongs and gamba-gamba, the verse' : bar < 16 ? '+ Bali: the flute answers, and stays' : bar < 24 ? '+ the rays: their loop, the loom, the gimba' : bar < 29 ? '+ the dots: the shaker; the rose sings itself' : bar < 30 ? 'a breath, and up' : bar < 40 ? '+ the leaves: the reyong shimmer, the chorus' : bar < 48 ? 'everyone: the last chorus, the flute above' : bar < 51 ? 'home: the call again' : 'and it ends in A major'; }
   function formMap(lt, d) {
     if (stageDraw) return; var out = eo(ramp(lt, .8, 1.6)) * (1 - ramp(lt, d - .45, d)), x0 = 72, w = 470, y = 604, pb = w / 52, bar = clamp(t / BAR_D, 0, 51.999), cur = Math.floor(bar);
     g.save(); g.globalAlpha *= out;
     FORM_D.forEach(function (f) { var on = cur >= f[0] && cur < f[1], x = x0 + f[0] * pb + 1, ww = (f[1] - f[0]) * pb - 2; g.fillStyle = on ? C.gold : C.line2; g.fillRect(x, y, ww, on ? 4 : 2); if (f[2]) text(f[2], x, y - 8, '500 10px ' + F.mono, on ? C.gold2 : C.mist, on ? 1 : .55); });
     g.fillStyle = C.paper; g.fillRect(x0 + bar * pb - 1, y - 4, 2, 12);
-    text('BAR ' + String(cur + 1).padStart(2, '0') + ' · ' + LD.chordAt(cur, (t - cur * BAR_D) / BEAT_D) + ' · ' + formSay(cur), x0, y + 28, '500 11px ' + F.mono, C.gold2, .9);
+    text('BAR ' + String(cur + 1).padStart(2, '0') + ' · ' + LD.chordAt(cur) + ' · ' + formSay(cur), x0, y + 28, '500 11px ' + F.mono, C.gold2, .9);
     g.restore();
   }
   SCENES_MEDALLION.forEach(function (sc) { if (sc.id === 'm-title') return; var dr = sc.draw; sc.draw = function (lt, d) { dr.call(this, lt, d); formMap(lt, d); }; });
-  var SCORES_MEDALLION = [['off', 'Sound off'], ['medallion', 'Dua Pulau · 128 bpm']];
-  var STEMS_MEDALLION = [['tatali', 'Flute, the tune'], ['kakula', 'Kakula, the 13 rays'], ['kakula2', 'Kakula, doubling the tune'], ['reyong', 'Reyong, the 21 leaves'], ['gamba', 'Gamba-gamba, the Alberti bass'], ['angklung', 'Angklung'], ['dio', 'Dio'], ['gongs', 'Gongs'], ['drums', 'Kendang and gimba'], ['shaker', 'Shaker, the 55 dots'], ['claps', 'Claps'], ['bass', 'Low gong, the heart']];
+  var SCORES_MEDALLION = [['off', 'Sound off'], ['medallion', 'Dua Pulau · 110 bpm']];
+  var STEMS_MEDALLION = [['kakula', 'Kakula, the song and the rose'], ['kakula2', 'Second kakula, below the song'], ['tatali', 'Flute, Bali'], ['gamba', 'Gamba-gamba'], ['angklung', 'Angklung, held chords'], ['dio', 'Dio'], ['gongs', 'Tawa-tawa'], ['drums', 'Gimba'], ['loom', 'Loom, the cloth being woven'], ['reyong', 'Reyong, the 21 leaves'], ['shaker', 'Shaker, the 55 dots'], ['bass', 'Low gong']];
 
   var SCORES = SCORES_NTINA, SCORES_BOMBA = [['off', 'Sound off'], ['bomba', 'Bunga Kaili · 138 bpm']];
   var SCORES_LOGO = [['off', 'Sound off'], ['marea', 'Marea · gong kebyar for the mark · 112 bpm']], SCORES_IMAGE = [['off', 'Sound off'], ['image', 'Your picture · kakula ensemble']];
   var SCORE_NOTE = {
-    medallion: 'Dua Pulau (two islands), our own piece for the emblem, which takes its shape from Mozart and its sound from the Kaili ensemble of Central Sulawesi and Balinese gong kebyar, as the medallion puts the Bomba rose and rebung inside a Balinese ring of leaves. A rising rocket opens it; theme A asks a question that ends open on G and answers it home on C, over a broken-chord (Alberti) gamba-gamba; a soft call and response sets Sulawesi kakula against Balinese reyong; theme B sings in A minor; the development passes the head of the tune between flute and kakula; the return slips to A minor in a false close before the true one; the Misreadings scene hears theme A in minor, quietly, on the kakula alone; a Balinese kebyar, the whole ensemble striking in unison on an irregular rhythm, bursts in just before the return; and near the end the band stops on C over G for a concerto-style cadenza, the flute climbing the golden spiral alone with notes shortening by Fibonacci steps, then a trill, then the coda hammers the home chord. Under it every ring keeps its loop: 13 rays on eighths, 21 leaves with 8 shimmering strokes, 55 dots on the shaker. The counts share no factor, so the loops never line up twice. 128 bpm, 52 bars, C major. No traditional piece and no Mozart is quoted.',
+    medallion: 'Dua Pulau (two islands), our own song for the emblem, made the way Bunga Kaili is made and built the way the medallion is drawn: from the heart out, a layer at a time, nothing leaving once it has come in. The heart: the kakula calls alone. The disc: the gongs and the gamba-gamba come in under the verse in A minor, sung on the Kaili kettles with Bunga Kaili’s grace notes and rolls and a second kakula below. Bali: the flute answers, and stays. The rays: their 13-step loop, the loom and the gimba. The dots: the shaker and the held chords, while the rose sings itself, 3, 5, 8 and 13 notes a bar by the golden angle. The leaves: the reyong shimmer and the dio, as the chorus lifts into C major. Then everyone, the flute above, and home to a bright A major. A slow swell runs under the whole piece. 110 bpm, 52 bars. No traditional piece is quoted.',
     cengkeh: 'Lima Kuntum (five buds), our own harvest dance for the clove sprig, on the same Kaili ensemble and the lab’s first in 3/4, because a sprig sways: every bar the kakula fan out like the buds, the centre kettle on beat 1, the inner pair together on beat 2, the outer pair on beat 3, and the buds light up in the same order; the second kakula plays a turn, four quick notes round one, for a bud’s four sepals; at the harvest the two kakula interlock in running eighths, many hands at once; the dio and the gamba-gamba make the waltz, claps land on 2 and 3, a tatali flute sings over it, and a shaker rattles like dried cloves. C major, C G F C, 138 bpm, 80 bars, one section per scene, ending with every voice on C. No traditional piece is quoted.',
     ketupat: 'Anyam Ketupat (weaving the ketupat), our own piece for the lattice, on the same Kaili kakula ensemble: each bar is one diamond, two kakula starting on one kettle and opening apart in contrary motion, one rising and one falling, to the widest point on beat 3, then closing back together; the gamba-gamba plays a narrower diamond inside it and the low gong is the dark heart; because the lattice is a centred grid, a canon enters half a bar later; the loom ticks either side of every bar line, a cecek cross where four diamonds meet. Around them the tatali flute draws one big diamond across every four bars, up to A5 and back, an angklung tremolo lays the ground, the dio plucks the bass and a shaker fills the weave. A minor, 96 bpm, 52 bars, one section per scene, ending with every voice on A. No traditional piece is quoted.',
     rebung: 'Pucuk Rebung, our own piece for the border, on the same Kaili kakula ensemble as Bunga Kaili: the shoot is a rising run of five kettle notes inside one bar, and it grows one note per bar while the shoot is drawn; a second kakula plays the same run two beats later a third above, the way the second row sits half a step on; the low gongs alternate each chord’s root and fifth on beats 1 and 3 for the zigzag spine; the loom’s off-beat ticks are the cecek dots. 100 bpm, 52 bars, one section per scene. No traditional piece is quoted.',
@@ -2948,7 +2954,7 @@ export function startLab(hooks) {
     notes: '<p class="note">Score: Lima Kuntum, an original harvest dance in 3/4 for the same synthesized Kaili ensemble. Each bar the kakula fan out like the buds (centre, inner pair, outer pair) and the buds light up in that order; the second kakula turns four notes round one for the sepals; at the harvest the two kakula interlock in running eighths; dio and gamba-gamba make the waltz, with claps on 2 and 3, a tatali flute and a shaker like dried cloves. C major, 138 bpm, 80 bars, a section per scene, ending on C. The drawing uses the studio’s own cengkeh engine (<code>src/engine/cengkeh.js</code>), measured from the master drawing; the night ink is our proposal for black grounds, where the buya ink’s black stem and leaf vanish. Read more: <a href="https://www.detik.com/sulsel/budaya/d-6405331/mengenal-batik-bomba-dari-sulawesi-tengah-yang-dipakai-elon-musk-di-ktt-b20" target="_blank" rel="noopener">Batik Bomba (detik)</a> · <a href="https://www.antaranews.com/berita/277926/batik-bomba-tandamata-dari-palu" target="_blank" rel="noopener">Batik Bomba, a keepsake from Palu (ANTARA)</a></p>' };
   REEL_DEFS.medallion = { name: 'Dua Pulau medallion', scenes: SCENES_MEDALLION, scores: SCORES_MEDALLION, bpm: function () { return LD.BPM; }, file: 'dua-pulau-medallion-reel.webm',
     credit: 'Dua Pulau medallion: our own emblem, built from the Bomba rose and the rebung of the buya bomba of Donggala and the batik of Palu, Central Sulawesi, inside a ring of leaves from Balinese ornament, with gratitude to the weavers, batik makers and carvers of both islands.',
-    notes: '<p class="note">Score: Dua Pulau, an original shaped on Mozart’s habits: a two-part tune that asks and answers, an Alberti bass on the gamba-gamba, an opening rocket, a second theme in the relative minor, a development that passes the tune’s head between voices, a false close, loud and soft side by side, a cadenza and trill, and a coda that hammers the home chord, with a Balinese kebyar outburst before the return. On screen the tune draws a gold star across the mark (one point per step of the scale), every gong sends a ripple through the rings, minor chords cool the light, and a map under the words follows the form. Under it each ring keeps its own loop (13 rays, 21 leaves with 8 strokes and ombak pairs, 55 dots) drawn from the chord of the moment, and the lights on screen follow the loops from the clock. 128 bpm, 52 bars, C major, a section per scene. The drawing uses the studio’s own medallion engine (<code>src/engine/medallion.js</code>) with the Bomba rose drawn by the same code as in its own reel.</p>' };
+    notes: '<p class="note">Score: Dua Pulau, a song made the way Bunga Kaili is made and built progressively, the way the medallion is drawn: the kakula alone (the heart), then the gongs and gamba-gamba (the disc), the flute (Bali), the rays’ loop with the loom and gimba, the shaker and held chords (the dots) under the rose song, the reyong shimmer and dio (the leaves) under a C-major chorus, everyone in the last chorus, and home to A major. Nothing leaves once it has come in, and a slow swell runs under the whole piece. 110 bpm, 52 bars, a section per scene. On screen the tune draws a gold star across the mark, gongs ripple through the rings, and the light cools in the minor verses. The drawing uses the studio’s own medallion engine (<code>src/engine/medallion.js</code>) with its heart cut from the master drawing, so it matches the front panel exactly.</p>' };
   var CUR = REEL_DEFS.ntina;
   var REELS = [['ntina', 'Ntina', true], ['bomba', 'Bomba Rose', true], ['marea', 'Marea Dvīpa', true], ['rebung', 'Rebung border', true], ['ketupat', 'Ketupat lattice', true], ['cengkeh', 'Cengkeh sprig', true], ['medallion', 'Dua Pulau medallion', true]];
   function renderReels() {
