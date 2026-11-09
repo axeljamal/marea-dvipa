@@ -1,7 +1,7 @@
 // Marea Dvīpa service worker. On install it caches the page, its script and styles, the icons, every motif and
 // every isen fill, so both rooms work offline. Google Fonts are cached the first time they load.
 // Bump VERSION whenever you change a file, and add any new motif or logo layer to MEDIA.
-const VERSION = 'marea-dvipa-v8';
+const VERSION = 'marea-dvipa-v10';
 const FONTS = 'marea-dvipa-fonts';
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "icons/apple-touch-icon.png", "icons/favicon-32.png"];
 const MEDIA = [

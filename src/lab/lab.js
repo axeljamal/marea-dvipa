@@ -4,6 +4,8 @@
 import { createStage } from './stage';
 import { rebungRibbon, rebungToCanvas, REBUNG_INKS } from '../engine/rebung.js';
 import { KETUPAT_R, ketupatPts, ketupatDiamond, ketupatCross, ketupatField } from '../engine/ketupat.js';
+import { cengkehSprig, cengkehBud, cengkehBudPos } from '../engine/cengkeh.js';
+import { medallion } from '../engine/medallion.js';
 
 export function startLab(hooks) {
   hooks = hooks || {};
@@ -1656,9 +1658,541 @@ export function startLab(hooks) {
   var SCORES_KETUPAT = [['off', 'Sound off'], ['ketupat', 'Anyam Ketupat · 96 bpm']];
   var STEMS_KETUPAT = [['kakula', 'Kakula, the rising side'], ['kakula2', 'Second kakula, the falling side'], ['gamba', 'Gamba-gamba, the middle ring'], ['tatali', 'Tatali, the big diamond'], ['angklung', 'Angklung, the ground'], ['dio', 'Dio, plucked bass'], ['gongs', 'Tawa-tawa'], ['drums', 'Gimba'], ['shaker', 'Shaker'], ['bass', 'Low gong, the heart'], ['loom', 'Loom, the cecek crosses']];
 
+  // =================== Reel 06 · Cengkeh sprig, the clove ===================
+  // Score: Lima Kuntum (five buds), an original for the same Kaili ensemble, and the lab's first piece in 3/4: a harvest dance.
+  // 138 bpm, 80 bars of three beats, one section per scene, in C major. The rules it keeps so that music and drawing arrive together:
+  //  1. Five buds are a fan of five kettles: the centre on beat 1, the inner pair together on beat 2, the outer pair on beat 3,
+  //     the way the drawing grows its buds from the middle out (and the way the buds light up on screen).
+  //  2. A bud is four sepals round a ball: the second kakula plays a turn, four quick notes round one held note.
+  //  3. Many hands: in the harvest sections the two kakula interlock in running eighths, one on the beat, one off it.
+  //  4. The dance: dio bass on 1, the gamba-gamba chord on 2 and 3, claps on 2 and 3, the drums and the dried-clove shaker throughout.
+  //  5. The chords run C G F C from every section's first bar, so the C3 gong (even bars) meets C or F and the G3 gong (odd bars)
+  //     meets G or C. It ends with every voice on C.
+  var BPM_C = 138, BEAT_C = 60 / BPM_C, BAR_C = BEAT_C * 3; function barsC(n) { return n * BAR_C; }
+  var LC = (function () {
+    var PITCH = [220.00, 261.63, 293.66, 329.63, 392.00, 440.00, 493.88, 523.25, 587.33, 659.26, 783.99, 880.00, 987.77];
+    var CHP = { C: [0, 4, 7], G: [7, 11, 2], F: [5, 9, 0] }, ROOT = { C: 65.41, G: 98, F: 87.31 };
+    var FAN = { C: [9, 7, 10, 3, 11], G: [8, 6, 10, 4, 12], F: [7, 5, 11, 2, 8] }; // centre, inner pair, outer pair (kettle indices)
+    var TONES = { C: [1, 3, 4, 7, 9, 10], G: [2, 4, 6, 8, 10, 12], F: [1, 2, 5, 7, 8, 11] }; // kettles that sit in each chord (F: no F kettle, so D adds a sixth)
+    var PROG = ['C', 'G', 'F', 'C'], SECT = [0, 6, 18, 24, 36, 48, 62, 68, 74, 80];
+    function chordAt(bar) { var s0 = 0; SECT.forEach(function (s) { if (s <= bar) s0 = s; }); return PROG[(bar - s0) % 4]; }
+    function pcF(pc, oct) { return 261.63 * Math.pow(2, pc / 12) * Math.pow(2, oct - 4); }
+    function compose(opt) {
+      var lilt = opt && opt.feel === 'lilt' ? BEAT_C * .08 : 0, E = [];
+      function T(bar, beat) { var f = beat % 1; if (Math.abs(f - .5) < 1e-6) beat += lilt; return bar * BAR_C + beat * BEAT_C; }
+      function F(p) { return PITCH[Math.max(0, Math.min(PITCH.length - 1, p))]; }
+      function K(time, p, v, beats, soft, stem) { E.push({ t: time, k: 'kettle', n: ((p % 7) + 7) % 7, f: F(p), v: v, soft: !!soft, d: clamp(beats * BEAT_C * (soft ? 2.6 : 2), .3, 2.2), s: stem || 'kakula' }); }
+      function range(a, b, fn) { for (var x = a; x < b; x++) fn(x, chordAt(x)); }
+      // the fan: ranks 1..3 (centre only, + inner pair, + outer pair)
+      function fan(a, b, v, soft, ranks) { range(a, b, function (x, ch) { var f = FAN[ch], rk = typeof ranks === 'function' ? ranks(x) : ranks || 3; K(T(x, 0), f[0], v * 1.1, 1, soft); if (rk > 1) { K(T(x, 1), f[1], v * .9, 1, soft); K(T(x, 1), f[2], v * .8, 1, soft, 'kakula2'); } if (rk > 2) { K(T(x, 2), f[3], v * .85, 1, soft); K(T(x, 2), f[4], v * .75, 1, soft, 'kakula2'); } }); }
+      // a bud: four quick notes round the centre kettle (above, on, below, on), then it holds. Over F the step below C is B,
+      // a tritone, so it steps down to A instead
+      function turns(a, b, v) { range(a, b, function (x, ch) { var c = FAN[ch][0], lo = ch === 'F' ? c - 2 : c - 1; [[c + 1, 0], [c, .25], [lo, .5], [c, .75]].forEach(function (q, i) { K(T(x, 1.5 + q[1]), q[0], v * (i === 3 ? 1 : .7), i === 3 ? 1 : .25, true, 'kakula2'); }); }); }
+      // many hands: running eighths shared between the two kakula, chord tones climbing and falling
+      function kotekan(a, b, v) { range(a, b, function (x, ch) { var tn = TONES[ch], up = x % 2 === 0; for (var e = 0; e < 6; e++) { var k = up ? e : 5 - e; K(T(x, e / 2), tn[k], v * (e % 2 ? .75 : 1), .5, true, e % 2 ? 'kakula2' : 'kakula'); } }); }
+      function waltz(a, b, v) { range(a, b, function (x, ch) { [1, 2].forEach(function (bt) { CHP[ch].forEach(function (pc, j) { var f = pcF(pc, 4); if (f > 400) f /= 2; E.push({ t: T(x, bt) + j * .006, k: 'kolintang', n: pc % 7, f: f, v: v * (bt === 1 ? 1 : .8), s: 'gamba' }); }); }); }); }
+      function dio(a, b, v, sparse) { range(a, b, function (x, ch) { var r = ROOT[ch]; E.push({ t: T(x, 0), k: 'dio', f: r, v: .52 * v, s: 'dio' }); if (sparse) return; E.push({ t: T(x, 2), k: 'dio', f: r * 1.5, v: .32 * v, s: 'dio' }); if (x % 2) E.push({ t: T(x, 2.5), k: 'dio', f: r * 2, v: .26 * v, s: 'dio' }); }); }
+      function heart(a, b, v) { range(a, b, function (x, ch) { E.push({ t: T(x, 0), k: 'bassgong', f: ROOT[ch] * 2, v: .34 * v, s: 'bass' }); }); }
+      function bed(a, b, v) { range(a, b, function (x, ch) { CHP[ch].forEach(function (pc, j) { var f = pcF(pc, 4); if (f > 400) f /= 2; E.push({ t: T(x, 0) + j * .012, k: 'angklung', f: f * 2, v: .2 * v, d: BAR_C * .95, s: 'angklung' }); }); }); }
+      function gongs(a, b, v) { range(a, b, function (x) { if (x % 2 === 0) E.push({ t: T(x, 0), k: 'gong', n: 0, f: 130.81, v: .3 * v, s: 'gongs' }); else E.push({ t: T(x, 0), k: 'gong', n: 1, f: 196, v: .16 * v, s: 'gongs' }); }); }
+      function drums(a, b, v, full) { range(a, b, function (x) { E.push({ t: T(x, 0), k: 'drum', n: 'dum', v: .44 * v, s: 'drums' }); E.push({ t: T(x, 1), k: 'drum', n: 'tak', v: .28 * v, s: 'drums' }); E.push({ t: T(x, 2), k: 'drum', n: 'tak', v: .28 * v, s: 'drums' }); if (full) { E.push({ t: T(x, 1.5), k: 'drum', n: 'tak', v: .14 * v, s: 'drums' }); E.push({ t: T(x, 2.5), k: 'drum', n: x % 2 ? 'dum' : 'tak', v: .2 * v, s: 'drums' }); } }); }
+      function claps(a, b, v) { range(a, b, function (x) { E.push({ t: T(x, 1), k: 'clap', v: .22 * v, s: 'claps' }); E.push({ t: T(x, 2), k: 'clap', v: .2 * v, s: 'claps' }); }); }
+      function cloves(a, b, v) { range(a, b, function (x) { for (var e = 0; e < 6; e++) E.push({ t: T(x, e / 2), k: 'shaker', v: (e % 2 ? .05 : .08) * v, s: 'shaker' }); }); }
+      // the tatali sings over C G F C: phrase A, then the answer B. [bar, beat, kettle, beats]
+      var FL = { A: [[0, 0, 9, 2], [0, 2, 10, 1], [1, 0, 8, 1], [1, 1, 6, 1], [1, 2, 8, 1], [2, 0, 7, 2], [2, 2, 5, 1], [3, 0, 9, 1.5], [3, 1.5, 7, 1.5]],
+                 B: [[0, 0, 10, 1], [0, 1, 11, 1], [0, 2, 10, 1], [1, 0, 8, 3], [2, 0, 11, 1], [2, 1, 10, 1], [2, 2, 7, 1], [3, 0, 9, 3]] };
+      function flute(at, ph, v) { FL[ph].forEach(function (n) { E.push({ t: T(at + n[0], n[1]), k: 'tatali', f: F(n[2]), v: v, d: n[3] * BEAT_C * .94, s: 'tatali' }); }); }
+      // Title 0-5: the fan opens rank by rank, the shaker and drums already dancing
+      bed(0, 6, .55); fan(0, 6, .4, false, function (x) { return Math.min(3, x + 1); }); cloves(0, 6, .6); drums(2, 6, .6); dio(2, 6, .6, true); gongs(0, 6, .9);
+      // Listen 6-17: the fans and the waltz, the flute from bar 10
+      bed(6, 18, .55); fan(6, 18, .36); waltz(6, 18, .11); gongs(6, 18, .8); dio(6, 18, .7); drums(6, 18, .6); cloves(6, 18, .55); flute(10, 'A', .22); flute(14, 'B', .22);
+      // Brief 18-23: claps join
+      bed(18, 24, .6); fan(18, 24, .42); waltz(18, 24, .12); dio(18, 24, .8); gongs(18, 24, .9); drums(18, 24, .7); claps(18, 24, .7); cloves(18, 24, .6); flute(18, 'A', .24);
+      // Draw one bud 24-35: the centre kettle alone (the tube), then the turns join (the sepals), then the whole fan
+      bed(24, 36, .6); fan(24, 32, .48, false, 1); turns(28, 36, .36); fan(32, 36, .44); waltz(24, 36, .12); dio(24, 36, .8); gongs(24, 36, .9); drums(24, 36, .6); cloves(24, 36, .5);
+      // Fan the five 36-47: centre, then the inner pair, then the outer, as the branches grow; the dance fills in
+      bed(36, 48, .65); fan(36, 48, .5, false, function (x) { return x < 38 ? 1 : x < 40 ? 2 : 3; }); waltz(36, 48, .14); dio(36, 48, .9); heart(40, 48, .9); drums(36, 48, .85, true); claps(40, 48, .8); gongs(36, 48, 1); cloves(36, 48, .7); kotekan(44, 48, .22); flute(40, 'A', .25); flute(44, 'B', .25);
+      // Ripen, pick and dry 48-61: the harvest: everything, many hands
+      bed(48, 62, .75); fan(48, 62, .5); kotekan(48, 62, .24); turns(52, 62, .26); waltz(48, 62, .15); dio(48, 62, 1); heart(48, 62, 1); drums(48, 62, 1, true); claps(48, 62, 1); gongs(48, 62, 1); cloves(48, 62, 1); flute(48, 'A', .27); flute(52, 'B', .27); flute(56, 'A', .27);
+      // Misread 62-67: a breath: one bud, three, five, over the shaker
+      bed(62, 68, .5); fan(62, 68, .34, true, function (x) { return x < 64 ? 1 : x < 66 ? 2 : 3; }); gongs(62, 68, .6); cloves(62, 68, .5); dio(62, 68, .5, true);
+      // System 68-73: the dance again
+      bed(68, 74, .75); fan(68, 74, .5); kotekan(68, 74, .24); waltz(68, 74, .15); dio(68, 74, 1); heart(68, 74, 1); drums(68, 74, 1, true); claps(68, 74, 1); gongs(68, 74, 1); cloves(68, 74, .8); flute(68, 'A', .27);
+      // Keep 74-79: a last round and a cadence, then every voice on C
+      bed(74, 79, .65); fan(74, 79, .46); waltz(74, 79, .13); dio(74, 79, .8); heart(74, 79, .8); gongs(74, 79, .9); drums(74, 79, .7); claps(74, 78, .7); cloves(74, 79, .6);
+      [[74, 0, 9, 2], [74, 2, 10, 1], [75, 0, 8, 3], [76, 0, 11, 2], [76, 2, 7, 1], [77, 0, 9, 3], [78, 0, 10, 3]].forEach(function (n) { E.push({ t: T(n[0], n[1]), k: 'tatali', f: F(n[2]), v: .25, d: n[3] * BEAT_C * .94, s: 'tatali' }); });
+      K(T(79, 0), 7, .6, 3, false); K(T(79, 0), 9, .34, 3, true, 'kakula2'); K(T(79, 0), 1, .3, 3, true, 'kakula2');
+      [0, 4, 7].forEach(function (pc, j) { E.push({ t: T(79, 0), k: 'kolintang', n: pc % 7, f: pcF(pc, 4), v: .2, s: 'gamba' }); E.push({ t: T(79, 0) + j * .012, k: 'angklung', f: pcF(pc, 5), v: .15, d: BAR_C * 1.4, s: 'angklung' }); });
+      E.push({ t: T(79, 0), k: 'tatali', f: F(7), v: .27, d: BAR_C * 1.6, s: 'tatali' }); E.push({ t: T(79, 0), k: 'dio', f: 65.41, v: .52, s: 'dio' });
+      E.push({ t: T(79, 0), k: 'gong', n: 0, f: 130.81, v: .55, s: 'gongs' }); E.push({ t: T(79, 0), k: 'bassgong', f: 130.81, v: .45, s: 'bass' }); E.push({ t: T(79, 0), k: 'drum', n: 'dum', v: .5, s: 'drums' }); E.push({ t: T(79, 0), k: 'clap', v: .3, s: 'claps' });
+      return E;
+    }
+    return { compose: compose, BAR: BAR_C, BPM: BPM_C, chordAt: chordAt };
+  })();
+
+  // ---------- drawing the sprig (the studio's own cengkeh engine) ----------
+  // a sway for sprig k: a slow lean, lifted by the score, and each branch a little behind the last
+  // the sway is the waltz: one lean and back per bar, lifted by the score; each branch a little behind the last
+  function cSway(k, amp) { if (reduce) return { sway: 0, swayEach: null }; var lv = liveLevel(), a = amp == null ? 1 : amp, ph = t / BAR_C * Math.PI * 2 + k * .9; return { sway: (Math.sin(ph) * .06 + lv * .03 * Math.sin(ph * 3)) * a, swayEach: function (i) { return Math.sin(ph - i * .5) * .035 * a; } }; }
+  // the buds light as the kettles fan out: the centre on beat 1, the inner pair on beat 2, the outer pair on beat 3
+  function budLight(rank) { if (reduce) return 0; var bt = (t % BAR_C) / BEAT_C, bi = Math.floor(bt); return bi === rank ? Math.exp(-(bt - bi) * 3) * (SND.kind === 'off' ? .55 : 1) : 0; }
+  function budRank(i, n) { var mid = (n - 1) / 2; return mid ? Math.min(2, Math.round(Math.abs(i - mid) * 2 / mid)) : 0; }
+  function sprigGlow(x, y, H, o, alpha) {
+    var n = o.n || 5; g.save(); g.globalCompositeOperation = 'lighter';
+    for (var i = 0; i < n; i++) { var I = budLight(budRank(i, n)) * alpha; if (I < .02) continue; var bp = cengkehBudPos(x, y, H, i, o), r = H * .1 * (1 + I * .6);
+      var gr = g.createRadialGradient(bp.x, bp.y, 0, bp.x, bp.y, r); gr.addColorStop(0, 'rgba(255,226,160,' + (I * .55).toFixed(3) + ')'); gr.addColorStop(1, 'rgba(255,226,160,0)'); g.fillStyle = gr; g.fillRect(bp.x - r, bp.y - r, r * 2, r * 2); }
+    g.restore();
+  }
+  // harvest light: a warm sun that swells with the gong, and gold motes drifting up through it
+  function sunGlow(cx, cy, r, alpha) { var I = (.16 + lvG(0, t) * .12) * alpha; if (I <= 0) return; var gr = g.createRadialGradient(cx, cy, 0, cx, cy, r); gr.addColorStop(0, 'rgba(240,190,110,' + I.toFixed(3) + ')'); gr.addColorStop(1, 'rgba(240,190,110,0)'); g.save(); g.fillStyle = gr; g.fillRect(cx - r, cy - r, r * 2, r * 2); g.restore(); }
+  function motes(x0, y0, w, h, alpha, n) {
+    if (alpha <= 0 || reduce) return; g.save(); g.fillStyle = '#F3E3B5';
+    for (var j = 0; j < n; j++) { var sp = 12 + (j * 7) % 18, px = x0 + (j * 962.5) % w + Math.sin(t * 1.3 + j) * 6, py = y0 + h - ((t * sp + j * 53) % h), f = Math.sin(t * 2 + j); g.globalAlpha = alpha * (.25 + .45 * f * f); g.beginPath(); g.arc(px, py, 1.2 + (j % 3) * .6, 0, 7); g.fill(); }
+    g.restore();
+  }
+  // a sprig whose buds light on the beat
+  function liveSprig(x, y, H, ink, o) { var n = o.n || 5; cengkehSprig(g, x, y, H, ink, Object.assign({ budStyle: function (i) { var I = budLight(budRank(i, n)); return I > .02 ? { ball: mixHex('#E0C27E', '#FFF4D0', I * .8) } : {}; } }, o)); if ((o.buds == null ? 1 : o.buds) >= 1) sprigGlow(x, y, H, o, o.alpha == null ? 1 : o.alpha); }
+  function mixHex(a, b, u) { var A = parseInt(a.slice(1), 16), B = parseInt(b.slice(1), 16), c = [16, 8, 0].map(function (sh) { var x = (A >> sh) & 255, y = (B >> sh) & 255; return Math.round(x + (y - x) * u); }); return '#' + c.map(function (v) { return ('0' + v.toString(16)).slice(-2); }).join(''); }
+  // clove colours on the tree and on the mat: green, pink when ready to pick, crimson, then dried brown
+  var RIPE = ['#8FA05A', '#D9978A', '#B5473A'], DRY = '#5A3A24';
+  function ripeHex(u) { return u < .5 ? mixHex(RIPE[0], RIPE[1], u * 2) : mixHex(RIPE[1], RIPE[2], (u - .5) * 2); }
+  function sprigGrow(p) { return { stem: ramp(p, 0, .2), leaves: ramp(p, .15, .4), branches: ramp(p, .35, .75), buds: ramp(p, .55, .9), open: ramp(p, .85, 1) }; }
+  // a woven drying mat (tikar): small checks in two browns
+  function tikar(x0, y0, w, h, alpha) { g.save(); g.globalAlpha *= alpha; var s = 12; for (var y = 0; y < h; y += s) for (var x = 0; x < w; x += s) { g.fillStyle = ((x / s + y / s) % 2) ? '#5E4A2E' : '#4A3A24'; g.fillRect(x0 + x, y0 + y, s, s); } g.strokeStyle = C.gold2; g.lineWidth = 1.2; g.strokeRect(x0, y0, w, h); g.restore(); }
+  var SCENES_CENGKEH = [
+    { id: 'c-title', dur: barsC(6), step: null,
+      draw: function (lt, d) {
+        var out = 1 - ramp(lt, d - .5, d);
+        sunGlow(640, 170, 420, out); motes(160, 40, 960, 340, out * .8, 40);
+        [[400, .6], [640, 0], [880, 1.2]].forEach(function (S, k) { var gr = sprigGrow(ramp(lt, .2 + S[1], 4.6 + S[1])), sw = cSway(k); liveSprig(S[0], 370, 320, 'malam', Object.assign(gr, sw, { alpha: out })); });
+        var a = eo(ramp(lt, 2.4, 3.4)) * out;
+        text('BATIK MEDIA LAB · REEL 06', W / 2, 420, '500 13px ' + F.mono, C.gold2, a, 'center');
+        text('Cengkeh sprig', W / 2, 500, '600 84px ' + F.display, C.paper, a, 'center');
+        text('Five buds, two leaves, one harvest', W / 2, 546, 'italic 500 24px ' + F.display, C.mist, eo(ramp(lt, 3, 4.2)) * out, 'center');
+      } },
+    { id: 'c-listen', dur: barsC(12), step: 'Listen to the cloth', phase: 'Thinking',
+      eyebrow: 'Step 1 · Listen to the cloth', head: 'A clove for the harvest.',
+      body: 'Palu batik carries the clove, cengkeh, in honour of the harvest of Tolitoli, the clove country of Central Sulawesi. On the cloth it is read as a wish for health and healing for whoever wears it.',
+      teach: 'Read the motif as grammar before you draw: what it is (a flower bud, picked before it opens), where it comes from (Tolitoli’s harvest), how it sits on the cloth (scattered sprigs), and what it wishes the wearer.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), a = eo(ramp(lt, 1, 2.4)) * out, b = eo(ramp(lt, 6, 7.2)) * out, c = eo(ramp(lt, 11, 12.2)) * out;
+        g.save(); g.globalAlpha = a; g.strokeStyle = C.gold; g.lineWidth = 1.4; g.setLineDash([6, 6]); g.strokeRect(660, 110, 540, 200); g.setLineDash([]); g.beginPath(); g.rect(660, 110, 540, 200); g.clip();
+        for (var r = 0; r < 3; r++) for (var q = 0; q < 6; q++) { var x = 690 + q * 96 + (r % 2) * 48, y = 190 + r * 66, sw = cSway(q + r * 6, .6); g.save(); g.translate(x, y); g.rotate((q + r) % 2 ? .25 : -.25); cengkehSprig(g, 0, 0, 78, 'malam', Object.assign({ alpha: .7 }, sw)); g.restore(); }
+        g.restore(); text('batik Palu · clove sprigs scattered on the cloth (a sketch, not a copy)', 660, 330, '500 12px ' + F.mono, C.mist, a);
+        text('TOLITOLI', 660, 390, '500 13px ' + F.mono, C.gold2, b); para('Clove country of Central Sulawesi. The buds are picked by hand, then dried in the sun along the road.', 660, 420, 420, 'italic 500 22px ' + F.display, 26, C.paper, b);
+        g.save(); g.globalAlpha = c; g.strokeStyle = C.gold2; g.lineWidth = 1.5; rr(900, 520, 300, 110, 6); g.stroke(); g.restore();
+        text('RULE', 920, 550, '500 12px ' + F.mono, C.gold2, c); para('Learn the grammar. Redraw everything else.', 920, 582, 270, 'italic 500 22px ' + F.display, 26, C.paper, c);
+      } },
+    { id: 'c-brief', dur: barsC(6), step: 'Set the brief', phase: 'Thinking',
+      eyebrow: 'Step 2 · Set the brief', head: 'A sprig that can be scattered.',
+      body: 'The clove sprig belongs to the Dua Pulau signature. It must read alone, scatter as a ground, grow in the Bomba Garden beside the rosettes, and stay legible on pearl and on black.',
+      teach: 'The brief: our own drawing, credited origins, five buds, one dark leaf and one teal leaf, and an ink for every ground it will meet.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d);
+        ['Our own drawing, never a copy of the cloth', 'Five buds: a Fibonacci number', 'One dark leaf, one teal: never symmetric', 'Credit Palu’s batik makers and Tolitoli'].forEach(function (r, i) {
+          var a = eo(ramp(lt, .5 + i * .9, 1.2 + i * .9)) * out; g.save(); g.globalAlpha = a; g.fillStyle = C.gold; g.beginPath(); g.arc(680, 160 + i * 74, 5, 0, 7); g.fill(); g.restore();
+          text(r, 704, 166 + i * 74, '500 24px ' + F.display, C.paper, a);
+        });
+        [760, 940, 1120].forEach(function (x, k) { liveSprig(x, 640, 150, 'malam', Object.assign(sprigGrow(ramp(lt, 3.8 + k * .5, 7.6 + k * .5)), cSway(k), { alpha: out })); });
+      } },
+    { id: 'c-bud', dur: barsC(12), step: 'Draw one bud', phase: 'Ideation',
+      eyebrow: 'Step 3 · Draw one bud', head: 'A tube, four sepals, a round flower.',
+      body: 'A clove is a flower bud picked before it opens. The tube is the calyx, narrow at the stem and widening to the head; four sepals sit round it like a crown; inside them the petals are still a closed ball. We draw it as flat shapes: a tapered tube with one line, four lobes, a ball and a pearl dot.',
+      teach: 'Draw the thing itself before the ornament. Knowing that the ball is unopened petals and the crown is four sepals keeps every bud the same and every count right.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), p = ramp(lt, .4, d - 3), a = eo(ramp(lt, .3, 1)) * out, foot = 630, size = 460;
+        g.save(); g.globalAlpha = a * .5; g.strokeStyle = C.line2; g.lineWidth = 1; for (var gx = 700; gx <= 1180; gx += 40) { g.beginPath(); g.moveTo(gx, 110); g.lineTo(gx, 630); g.stroke(); } for (var gy = 110; gy <= 630; gy += 40) { g.beginPath(); g.moveTo(700, gy); g.lineTo(1180, gy); g.stroke(); } g.restore();
+        var rv = ramp(p, 0, .55), lv = liveLevel(), sw = reduce ? 0 : Math.sin(t * 2.1) * .03;
+        g.save(); g.beginPath(); g.rect(640, foot - (size + 40) * rv, 600, (size + 40) * rv + 10); g.clip();
+        cengkehBud(g, 940, foot, size * (1 + (p >= 1 ? lv * .025 + budLight(0) * .025 : 0)), sw, 'malam', { open: eo(ramp(p, .55, .78)), lw: 1.6 });
+        g.restore();
+        var lab = p < .3 ? 'the tube · the calyx, narrow at the stem' : p < .55 ? 'it widens to the head' : p < .78 ? 'four sepals open into a crown' : 'the closed petals, a ball, and its pearl dot';
+        text(lab, 940, 662, '500 12px ' + F.mono, C.gold2, out * .9, 'center');
+      } },
+    { id: 'c-fan', dur: barsC(12), step: 'Fan the five', phase: 'Synthesis', explore: 'fan',
+      eyebrow: 'Step 4 · Fan the five', head: 'From the middle out: one, then two, then two.',
+      body: 'The stem rises and opens its two leaves; then five branches fan from one joint, the centre bud first, then the inner pair, then the outer pair, each branch elbowing once so the fan reads as grown rather than ruled. Five is a Fibonacci number; the two leaves, one dark and one teal, keep it from becoming a mirror.',
+      teach: 'Grow a motif in the order a plant would, and the count will look natural. Break the symmetry on purpose, low down, so the eye reads a living sprig and not an emblem.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), ex = EX && EX.scene === 'c-fan';
+        var n = ex ? EX.n : 5, spread = ex ? EX.spread : 56, ink = ex ? EX.ink : 'malam', ground = ex ? EX.ground : '#0E0C09', p = ex ? 1 : ramp(lt, .4, d - 2.5);
+        if (ground !== '#0E0C09') { g.save(); g.globalAlpha = out; g.fillStyle = ground; g.fillRect(680, 100, 520, 545); g.restore(); }
+        if (ground === '#0E0C09') { sunGlow(1080, 180, 320, out); motes(690, 110, 500, 520, out * .7, 26); }
+        liveSprig(940, 636, 520, ink, Object.assign({ stem: ramp(p, 0, .12), leaves: ramp(p, .1, .25), branches: ramp(p, .25, .72), buds: ramp(p, .4, .85), open: ramp(p, .85, .95), n: n, spread: spread, alpha: out }, cSway(0, ex ? .6 : 1)));
+        if (!ex) { var k = p < .25 ? 'the stem, and two leaves of two colours' : p < .45 ? 'the centre bud first' : p < .6 ? 'then the inner pair' : 'then the outer pair: five, a Fibonacci number'; text(k, 940, 662, '500 12px ' + F.mono, C.gold2, out * .9, 'center'); }
+      } },
+    { id: 'c-ripen', dur: barsC(14), step: 'Ripen, pick and dry', phase: 'Synthesis',
+      eyebrow: 'Step 5 · Ripen, pick and dry', head: 'Green, then pink, then picked.',
+      body: 'On the tree the buds turn from green to pink, and they are picked by hand before the flowers open. Laid out on mats in the sun they dry to the dark brown clove everyone knows. The sprigs dance to the waltz, ripen bud by bud, drop their cloves to the mat and grow new ones, the way a harvest goes on.',
+      teach: 'Let the motif carry its story in time. The same drawing, recoloured and released, shows the whole harvest without a single new shape.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), base = 540, H = 270, CY = 6.2, PICK = 3.6, GONE = 1;
+        sunGlow(1100, 150, 340, out); motes(690, 100, 500, 470, out * .8, 30);
+        tikar(690, 580, 500, 52, eo(ramp(lt, 2.5, 4)) * out);
+        [760, 940, 1120].forEach(function (x, k) {
+          var sw = cSway(k); function local(i) { return lt - .6 - k * .7 - Math.abs(i - 2) * .45; }
+          cengkehSprig(g, x, base, H, 'malam', Object.assign({ alpha: out, budStyle: function (i) {
+            var L = local(i), I = budLight(budRank(i, 5)); if (L < 0) return { tube: RIPE[0], ball: mixHex('#C8D49A', '#FFF4D0', I * .6) };
+            var ph = L % CY; if (ph >= PICK && ph < PICK + GONE) return { hidden: true };
+            var rp = ph < PICK ? ph / PICK : 0; return { tube: ripeHex(rp), ball: mixHex(mixHex('#C8D49A', '#F0B9A8', rp), '#FFF4D0', I * .6) };
+          } }, sw));
+          sprigGlow(x, base, H, sw, out * .8);
+          for (var i = 0; i < 5; i++) {
+            var L = local(i); if (L < PICK) continue;
+            for (var c = 0; c <= Math.floor((L - PICK) / CY); c++) {
+              var ft = L - PICK - c * CY; if (ft < 0) continue;
+              var bp = cengkehBudPos(x, base, H, i, sw), id = c * 15 + k * 5 + i, gx = (id * .618034) % 1, gy = (id * .754878) % 1, lx = 702 + gx * 436, ly = 594 + gy * 26, u = clamp(ft / .9, 0, 1);
+              var fx = bp.x + (lx - bp.x) * u, fy = bp.y + (ly - bp.y) * u * u, ang = bp.a + ((((id * 53) % 7) - 3) * .22 + Math.PI / 2 - bp.a) * u, dry = ramp(ft, 1, 3.5);
+              cengkehBud(g, fx, fy, 46, ang, 'malam', { open: .2, tube: mixHex(RIPE[2], DRY, dry), ball: mixHex('#F0B9A8', '#3E2818', dry), sepal: mixHex('#2A241B', '#24170E', dry), lw: 1 });
+            }
+          }
+        });
+        text(lt < 6 ? 'green, then pink: picked before the flower opens' : 'and again: the mat fills, the cloves dry brown', 940, 662, '500 12px ' + F.mono, C.gold2, out * .9, 'center');
+      } },
+    { id: 'c-misread', dur: barsC(6), step: 'Check misreadings', phase: 'Test',
+      eyebrow: 'Step 6 · Check misreadings', head: 'A hand, a candlestick, or a clove?',
+      body: 'At sixteen pixels the fan of five reads as a hand or a fork. At forty, with the leaves too small to see, it can read as a candlestick. From about a hundred and twenty the buds, the sepals and the two leaf colours read as a clove sprig. So the small master drops the leaf dots and closes the sepals, but keeps both leaves big and in two colours.',
+      teach: 'Test at the smallest size it will print, and name what it turns into. The cure here is the one asymmetry the drawing already has: the two leaves.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d);
+        [[16, 700, 'a hand · a fork'], [40, 885, 'a candlestick'], [140, 1070, 'a clove sprig']].forEach(function (R, i) {
+          var a = eo(ramp(lt, .4 + i * 1.2, 1.2 + i * 1.2)) * out;
+          g.save(); g.globalAlpha = a; g.strokeStyle = C.line2; g.lineWidth = 1; g.strokeRect(R[1], 150, 150, 150); g.restore();
+          cengkehSprig(g, R[1] + 75, 225 + R[0] / 2, R[0], 'malam', Object.assign({ alpha: a }, cSway(i, .5)));
+          text(R[0] + ' px tall', R[1], 330, '500 12px ' + F.mono, C.gold2, a); text(R[2], R[1], 350, '500 12px ' + F.mono, C.mist, a);
+        });
+        var b = eo(ramp(lt, 4.2, 5.2)) * out;
+        for (var k = 0; k < 8; k++) cengkehSprig(g, 730 + k * 64, 530, 64, 'malam', Object.assign({ alpha: b, dots: false, open: 0 }, cSway(k, .5)));
+        text('small master · no leaf dots, sepals closed, both leaves kept', 700, 572, '500 12px ' + F.mono, C.gold2, b);
+      } },
+    { id: 'c-system', dur: barsC(6), step: 'Where the sprig lives', phase: 'System',
+      eyebrow: 'Step 7 · Where the sprig lives', head: 'Scattered, in the garden, along a hem.',
+      body: 'Tilted left and right on a half-drop it scatters into a quiet ground. In the Bomba Garden it grows round the rosettes, buds pointing outward. Small and upright, it walks along a hem. One drawing, three jobs.',
+      teach: 'A sprig is the most movable of motifs: it takes a tilt, a ring or a row. Keep the master in one place and let every use read from it.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), a = eo(ramp(lt, .3, 1.3)) * out, b = eo(ramp(lt, 1.6, 2.6)) * out, c = eo(ramp(lt, 2.8, 3.8)) * out;
+        sunGlow(1080, 250, 200, b); motes(690, 110, 520, 480, out * .6, 24);
+        g.save(); g.globalAlpha = a; g.beginPath(); g.rect(700, 140, 220, 220); g.clip();
+        for (var r = 0; r < 4; r++) for (var q = 0; q < 4; q++) { g.save(); g.translate(715 + q * 62 + (r % 2) * 31, 200 + r * 58); g.rotate((q + r) % 2 ? .3 : -.3); cengkehSprig(g, 0, 0, 58, 'malam', cSway(q + r * 4, .6)); g.restore(); }
+        g.restore(); g.save(); g.globalAlpha = a; g.strokeStyle = C.gold2; g.lineWidth = 1.5; g.strokeRect(700, 140, 220, 220); g.restore();
+        text('scattered ground · half-drop, tilted', 810, 390, '500 12px ' + F.mono, C.mist, a, 'center');
+        var rot = reduce ? 0 : lt * .12;
+        for (var k = 0; k < 5; k++) { var an = rot + k * Math.PI * 2 / 5; g.save(); g.translate(1080 + Math.sin(an) * 46, 250 - Math.cos(an) * 46); g.rotate(an); cengkehSprig(g, 0, 0, 100, 'malam', Object.assign({ alpha: b }, cSway(k, .5))); g.restore(); }
+        putImg('motifs/bomba-rosette--buya.png', 1080, 250, 84, b, rot * .5); text('Bomba Garden · round the rosette', 1080, 390, '500 12px ' + F.mono, C.mist, b, 'center');
+        g.save(); g.globalAlpha = c; g.strokeStyle = C.gold2; g.lineWidth = 1.5; g.beginPath(); g.moveTo(700, 470); g.lineTo(1200, 470); g.moveTo(700, 560); g.lineTo(1200, 560); g.stroke(); g.restore();
+        for (var h = 0; h < 8; h++) cengkehSprig(g, 730 + h * 63, 550, 72, 'malam', Object.assign({ alpha: c }, cSway(h, .7)));
+        text('hem · small and upright', 950, 592, '500 12px ' + F.mono, C.mist, c, 'center');
+      } },
+    { id: 'c-keep', dur: barsC(6), step: 'Credit and keep', phase: 'Archive',
+      eyebrow: 'Step 8 · Credit and keep', head: 'Credit the cloth. Keep the drawing.',
+      body: 'Cengkeh sprig: our own drawing, inspired by the clove motif of Palu batik, which honours the clove harvest of Tolitoli, Central Sulawesi, with gratitude to the batik makers of Palu and the clove growers of Tolitoli. The master lives in the engine; every ground, garden and hem reads from it.',
+      teach: 'Credit is part of the design. Keep the source, the rule, the drawing and the credit line together, so the next person can continue rather than restart.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), a = eo(ramp(lt, .3, 1.5)) * out;
+        sunGlow(940, 230, 260, a); motes(740, 80, 400, 340, a * .7, 20);
+        liveSprig(940, 400, 300, 'malam', Object.assign({ alpha: a }, cSway(0)));
+        text('REEL 06 · SAVED TO THE LAB', 940, 450, '500 13px ' + F.mono, C.gold2, eo(ramp(lt, 2, 3)) * out, 'center');
+        text('Next: Dua Pulau medallion', 940, 486, 'italic 500 22px ' + F.display, C.mist, eo(ramp(lt, 3.2, 4.2)) * out, 'center');
+      } }
+  ];
+  var SCORES_CENGKEH = [['off', 'Sound off'], ['cengkeh', 'Lima Kuntum · 138 bpm in 3']];
+  var STEMS_CENGKEH = [['kakula', 'Kakula, the fan'], ['kakula2', 'Second kakula, the buds'], ['gamba', 'Gamba-gamba, the waltz'], ['tatali', 'Tatali'], ['angklung', 'Angklung, the ground'], ['dio', 'Dio, plucked bass'], ['gongs', 'Tawa-tawa'], ['drums', 'Gimba'], ['shaker', 'Dried cloves'], ['claps', 'Claps'], ['bass', 'Low gong']];
+
+  // =================== Reel 07 · Dua Pulau medallion, the emblem ===================
+  // Score: Dua Pulau (two islands), an original that learns its shape from Mozart and its sound from the Kaili ensemble of
+  // Central Sulawesi and Balinese gong kebyar. 128 bpm, 52 bars, one section per scene, C major. Under the tune the rings keep
+  // their loops: 13 rays a kakula broken chord on eighths, 21 leaves a reyong shimmer of 8 strokes in 21 sixteenths (ombak
+  // pairs), 55 dots the shaker; 13, 21 and 55 share no factor, so the loops never line up twice, as the rings never make spokes.
+  var BPM_D = 128, BEAT_D = 60 / BPM_D, BAR_D = BEAT_D * 4; function barsD(n) { return n * BAR_D; }
+  var LD = (function () {
+    // what we took from Mozart, in our own notes: a tune in two halves that ask and answer (the first ends open on G, the
+    // second closes on C), a broken-chord accompaniment under it, a rising "rocket" to open, a second theme that turns to the
+    // relative minor, a development that hands the tune's head from voice to voice, a false close that slips to A minor
+    // before the true one, loud and soft set side by side, and a coda that hammers the home chord
+    var CHP = { C: [0, 4, 7], G: [7, 11, 2], F: [5, 9, 0], Am: [9, 0, 4], Em: [4, 7, 11] }, ROOT = { C: 130.81, G: 98.00, F: 87.31, Am: 110.00, Em: 82.41 };
+    var HARM = [
+      'C', 'C', 'G', 'G',                                   // 0-3 title: the rocket
+      'C', 'G', 'C', 'G', 'C', 'G', 'F|G', 'C',             // 4-11 listen: theme A, question and answer
+      'C', 'G', 'C', 'G',                                   // 12-15 brief: call and response, soft
+      'Am', 'Em', 'F', 'C', 'Am', 'Em', 'F', 'G',           // 16-23 counts: theme B, in the relative minor
+      'Am', 'F', 'C', 'Em', 'F', 'G',                       // 24-29 heart: the development
+      'C', 'G', 'C', 'G', 'C', 'G', 'F|G', 'Am', 'F|G', 'C', // 30-39 time: the return, a false close on Am, then the true one
+      'Am', 'Em', 'Am', 'G',                                // 40-43 misread: theme A misread in minor, softly
+      'C', 'G', 'F|G', 'C',                                 // 44-47 system: the answer, loud
+      'C', 'G', 'C|G', 'C'];                                // 48-51 keep: the cadenza on C over G, the trill on G, the coda
+    var NN = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+    function N(s) { var m = /^([A-G])(b|#)?(\d)$/.exec(s); return 261.63 * Math.pow(2, (NN[m[1]] + (m[2] === 'b' ? -1 : m[2] === '#' ? 1 : 0)) / 12 + (+m[3] - 4)); }
+    var MEL = {
+      rocket: [['C4 E4 G4 C5 E5 G5', .5, 1], ['C6:2 B5:.5 A5:.5 G5:1'], ['G3 B3 D4 G4 B4 D5', .5, 1], ['D5:2 G4:.5 B4:.5 D5:.5 F5:.5']],
+      A: ['E5:1 G5:1 E5:.5 D5:.5 C5:1', 'D5:1.5 B4:.5 G4:2', 'E5:1 G5:1 C6:1.5 B5:.5', 'A5:.5 G5:.5 F5:.5 E5:.5 D5:2',
+          'E5:1 G5:1 E5:.5 D5:.5 C5:1', 'D5:1 F5:1 B4:1 D5:1', 'A5:1 F5:1 D5:1 B4:1', 'C5:2 G4:.5 C5:.5 E5:.5 G5:.5'],
+      B: ['C6:2 B5:1 A5:1', 'G5:3 E5:1', 'A5:2 G5:1 F5:1', 'E5:3 C5:1', 'A5:1.5 B5:.5 C6:1 A5:1', 'B5:2 G5:2', 'A5:1 C6:1 A5:1 F5:1', 'G5:2 F5:1 D5:1'],
+      minor: ['C5:1 E5:1 C5:.5 B4:.5 A4:1', 'B4:1.5 G4:.5 E4:2', 'C5:1 E5:1 A5:1.5 G5:.5', 'F5:.5 E5:.5 D5:.5 C5:.5 D5:2'],
+      coda: ['G5:1 E5:1 A5:1 F5:1', 'E5:1 G5:1 D5:1 B4:1', 'E5:.5 D5:.5 C5:1 D5:1.5 B4:.5']
+    };
+    var EUC = []; for (var q = 0; q < 21; q++) EUC.push(Math.floor((q + 1) * 8 / 21) - Math.floor(q * 8 / 21)); // 8 strokes spread evenly over 21
+    var RAYH = [0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 1, 0], TIP = 4, GA = 137.50776;
+    function chordAt(bar, beat) { var h = HARM[Math.max(0, Math.min(HARM.length - 1, bar))].split('|'); return h.length > 1 && (beat || 0) >= 2 ? h[1] : h[0]; }
+    function tones(ch, lo, n) { var out = [], pcs = CHP[ch]; for (var m = 0; out.length < n; m++) { var f = lo * Math.pow(2, m / 12), pc = ((Math.round(12 * Math.log2(f / 261.63)) % 12) + 12) % 12; if (pcs.indexOf(pc) >= 0) out.push(f); } return out; }
+    function compose(opt) {
+      var lilt = opt && opt.feel === 'lilt' ? BEAT_D * .08 : 0, E = [];
+      function T(bar, beat) { var f = beat % 1; if (Math.abs(f - .5) < 1e-6) beat += lilt; return bar * BAR_D + beat * BEAT_D; }
+      function kn(f) { return ((Math.round(12 * Math.log2(f / 220)) % 7) + 7) % 7; }
+      function KF(time, f, v, beats, soft, stem, detune) { E.push({ t: time, k: 'kettle', n: kn(f), f: f * (detune || 1), v: v, soft: !!soft, d: clamp(beats * BEAT_D * (soft ? 2.6 : 2), .3, 2.2), s: stem || 'kakula' }); }
+      function each(a, b, fn) { for (var x = a; x < b; x++) for (var h = 0; h < 2; h++) fn(x, h * 2, chordAt(x, h * 2)); } // per half bar
+      function bars(a, b, fn) { for (var x = a; x < b; x++) fn(x, chordAt(x, 0)); }
+      // a tune line: 'E5:1 G5:.5 …' (beats); flute, doubled on the kakula an octave down when dbl
+      function line(bar, str, v, dbl, stem) { var beat = 0; str.split(' ').forEach(function (tok) { var p = tok.split(':'), d = +(p[1] || .5), f = N(p[0]); E.push({ t: T(bar, beat), k: 'tatali', f: f, v: v, d: d * BEAT_D * .92, s: 'tatali' }); if (dbl) KF(T(bar, beat), f / (f > 700 ? 2 : 1), dbl, d, true, stem || 'kakula2'); beat += d; }); }
+      function tune(at, list, v, dbl) { list.forEach(function (s, i) { line(at + i, s, v, dbl); }); }
+      // the loops of the rings, now drawn from the chord of the moment
+      function rays(a, b, v) { bars(a, b, function (x) { for (var e = 0; e < 8; e++) { var gi = (x * 8 + e) % 13, ch = chordAt(x, e / 2), tn = tones(ch, 261.63, 5); KF(T(x, e / 2), tn[RAYH[gi]], v * (gi === TIP ? 1.2 : e % 2 ? .65 : .85), .5, true, 'kakula'); } }); }
+      function leaves(a, b, v) { bars(a, b, function (x) { for (var s = 0; s < 16; s++) { var gs = x * 16 + s; if (!EUC[gs % 21]) continue; var tn = tones(chordAt(x, s / 4), 783.99, 4), f = tn[Math.floor(((gs * GA) % 360) / 90)]; KF(T(x, s / 4), f, v, .25, true, 'reyong'); KF(T(x, s / 4) + .004, f, v * .6, .25, true, 'reyong', 1.006); } }); }
+      function dots(a, b, v) { bars(a, b, function (x) { for (var s = 0; s < 16; s++) E.push({ t: T(x, s / 4), k: 'shaker', v: (s % 4 === 2 ? .1 : (x * 16 + s) % 5 === 0 ? .08 : .045) * v, s: 'shaker' }); }); }
+      // the Alberti bass on the gamba-gamba: low, high, middle, high in eighths
+      function alberti(a, b, v) { each(a, b, function (x, bt, ch) { var tn = tones(ch, 130.81, 4), r = tn[0], t3 = tn[1], f5 = tn[2]; if (CHP[ch][0] !== Math.round(12 * Math.log2(r / 261.63) + 12) % 12) { var all = tones(ch, 110, 4); r = all.filter(function (f) { return ((Math.round(12 * Math.log2(f / 261.63)) % 12) + 12) % 12 === CHP[ch][0]; })[0] || r; } var c3 = tones(ch, r * 1.01, 2); [r, c3[1], c3[0], c3[1]].forEach(function (f, i) { E.push({ t: T(x, bt + i / 2), k: 'kolintang', n: kn(f), f: f, v: v * (i ? .7 : 1), s: 'gamba' }); }); }); }
+      function bed(a, b, v) { each(a, b, function (x, bt, ch) { CHP[ch].forEach(function (pc, j) { var f = 261.63 * Math.pow(2, pc / 12); E.push({ t: T(x, bt) + j * .012, k: 'angklung', f: f, v: .2 * v, d: BAR_D * .45, s: 'angklung' }); }); }); }
+      function dio(a, b, v, bounce) { each(a, b, function (x, bt, ch) { var r = ROOT[ch] > 100 ? ROOT[ch] : ROOT[ch] * 2; E.push({ t: T(x, bt), k: 'dio', f: r, v: .5 * v, s: 'dio' }); if (bounce) { E.push({ t: T(x, bt + 1), k: 'dio', f: r * 1.5, v: .3 * v, s: 'dio' }); E.push({ t: T(x, bt + 1.5), k: 'dio', f: r, v: .26 * v, s: 'dio' }); } }); }
+      function heart(a, b, v) { bars(a, b, function (x, ch) { E.push({ t: T(x, 0), k: 'bassgong', f: ROOT[ch], v: .4 * v, s: 'bass' }); }); }
+      // the tawa-tawa follows the harmony: C3 under any chord that holds C, G3 under the others
+      function gongs(a, b, v) { bars(a, b, function (x) { var ch = chordAt(x, x % 2 ? 2 : 0), f = CHP[ch].indexOf(0) >= 0 ? 130.81 : 196.00; E.push({ t: T(x, x % 2 ? 2 : 0), k: 'gong', n: x % 2, f: f, v: (x % 2 ? .18 : .32) * v, s: 'gongs' }); }); }
+      function kendang(a, b, v, drive) { bars(a, b, function (x) { [[0, 'dum', .44], [6, 'tak', .3], [8, 'dum', .36], [11, 'tak', .26], [14, 'tak', .3]].concat(drive ? [[3, 'tak', .14], [4, 'dum', .3], [12, 'dum', .3], [15, 'tak', .14]] : []).forEach(function (h) { E.push({ t: T(x, h[0] / 4), k: 'drum', n: h[1], v: h[2] * v, s: 'drums' }); }); }); }
+      function claps(a, b, v) { bars(a, b, function (x) { E.push({ t: T(x, 1), k: 'clap', v: .2 * v, s: 'claps' }); E.push({ t: T(x, 3), k: 'clap', v: .22 * v, s: 'claps' }); }); }
+      function fill(bar, v) { [8, 10, 12, 13, 14, 15].forEach(function (s, i) { E.push({ t: T(bar, s / 4), k: 'drum', n: i % 2 ? 'tak' : 'dum', v: (.24 + i * .03) * v, s: 'drums' }); }); }
+      function hit(bar, beat, ch, v) { tones(ch, 196, 5).forEach(function (f, j) { E.push({ t: T(bar, beat) + j * .004, k: 'kolintang', n: kn(f), f: f, v: v, s: 'gamba' }); }); E.push({ t: T(bar, beat), k: 'drum', n: 'dum', v: .4 * v / .2, s: 'drums' }); }
+      function under(a, b, v, o) { o = o || {}; bed(a, b, .6 * v); gongs(a, b, v); heart(a, b, .9 * v); alberti(a, b, .13 * v); dio(a, b, v, o.bounce); if (o.drums) { kendang(a, b, .8 * v, o.drive); claps(a, b, .8 * v); dots(a, b, v); } }
+      // Title 0-3, forte: chord hits and two rockets, C then G, rising like the rays
+      hit(0, 0, 'C', .22); line(0, MEL.rocket[0][0].split(' ').map(function (n) { return n + ':.5'; }).join(' '), .26, .3, 'kakula'); line(1, MEL.rocket[1][0], .27, .25);
+      hit(2, 0, 'G', .2); line(2, MEL.rocket[2][0].split(' ').map(function (n) { return n + ':.5'; }).join(' '), .26, .3, 'kakula'); line(3, MEL.rocket[3][0], .27, .25);
+      bed(0, 4, .6); gongs(0, 4, 1); heart(0, 4, .9); dio(1, 4, .8, true); dots(1, 4, .6); leaves(1, 4, .18); fill(3, .9);
+      // Listen 4-11: theme A, question (ends open on G) and answer (closes on C), Sulawesi under it
+      under(4, 12, .9, { drums: true, bounce: true }); tune(4, MEL.A, .28, .22); rays(4, 12, .26);
+      // Brief 12-15, piano: call on the kakula (Sulawesi), answer on the reyong (Bali)
+      bed(12, 16, .45); gongs(12, 16, .6); heart(12, 16, .6); dio(12, 16, .6); dots(12, 16, .45);
+      bars(12, 16, function (x, ch) { var up = tones(ch, 261.63, 4); up.forEach(function (f, i) { KF(T(x, i / 2), f, .3, .5, true, 'kakula'); }); var dn = tones(ch, 523.25, 4).reverse(); dn.forEach(function (f, i) { KF(T(x, 2 + i / 2), f, .26, .5, true, 'reyong'); KF(T(x, 2 + i / 2) + .004, f, .16, .5, true, 'reyong', 1.006); }); });
+      // Counts 16-23: theme B in A minor, singing, as the rings are counted in
+      under(16, 24, .85, { drums: true }); tune(16, MEL.B, .27, 0); rays(18, 24, .28); leaves(22, 24, .24); fill(23, .9);
+      // Heart 24-29: the development, the head of theme A passed from flute to kakula round the chords
+      under(24, 29, .8, { drums: true }); dots(24, 29, .5);
+      bars(24, 29, function (x, ch) { var tn = tones(ch, 523.25, 4), r = tn[0], t3 = tn[1], f5 = tn[2], st = r * Math.pow(2, 2 / 12);
+        var who = x % 2 ? 'kakula' : 'tatali', head = [[0, t3, 1], [1, f5, 1], [2, t3, .5], [2.5, CHP[ch].indexOf(((Math.round(12 * Math.log2(st / 261.63)) % 12) + 12) % 12) >= 0 ? st : t3, .5], [3, r, 1]];
+        head.forEach(function (h) { if (who === 'tatali') E.push({ t: T(x, h[0]), k: 'tatali', f: h[1], v: .27, d: h[2] * BEAT_D * .92, s: 'tatali' }); else KF(T(x, h[0]), h[1], .4, h[2], false, 'kakula'); });
+        [[0, t3 / 2], [1, f5 / 2]].forEach(function (h) { if (who === 'tatali') KF(T(x, 2 + h[0]), h[1], .22, 1, true, 'kakula2'); else E.push({ t: T(x, 2 + h[0]), k: 'tatali', f: h[1] * 2, v: .2, d: BEAT_D * .9, s: 'tatali' }); }); });
+      leaves(26, 29, .22);
+      // Bar 29: kebyar, the Balinese outburst: the whole ensemble strikes in unison on an irregular rhythm, then a breath of silence before the return
+      E.push({ t: T(29, 0), k: 'gong', n: 1, f: 196.00, v: .34, s: 'gongs' }); E.push({ t: T(29, 0), k: 'bassgong', f: 98.00, v: .42, s: 'bass' }); E.push({ t: T(29, 0), k: 'dio', f: 196.00, v: .5, s: 'dio' });
+      [0, 2, 3, 6, 7, 9, 12, 13].forEach(function (s16, i) { var bt = s16 / 4, v = i === 0 || i === 7 ? 1 : i % 3 === 0 ? .85 : .7;
+        tones('G', 196, 6).forEach(function (f, j) { E.push({ t: T(29, bt) + j * .003, k: 'kolintang', n: kn(f), f: f, v: .15 * v, s: 'gamba' }); });
+        [392.00, 587.33, 783.99].forEach(function (f) { KF(T(29, bt), f, .36 * v, .5, false, 'kakula'); KF(T(29, bt), f * 2, .2 * v, .25, true, 'reyong'); KF(T(29, bt) + .004, f * 2, .12 * v, .25, true, 'reyong', 1.006); });
+        E.push({ t: T(29, bt), k: 'drum', n: i % 2 ? 'tak' : 'dum', v: .44 * v, s: 'drums' }); E.push({ t: T(29, bt), k: 'clap', v: .17 * v, s: 'claps' }); });
+      // Time 30-39, forte: theme A returns with every ring's loop; bar 37 slips to A minor (the false close), 38-39 close for real
+      under(30, 40, 1, { drums: true, bounce: true, drive: true }); rays(30, 40, .3); leaves(30, 40, .26);
+      tune(30, MEL.A.slice(0, 7), .3, .22); line(37, 'C5:2 E5:1 C5:1', .28, .2); line(38, 'A5:1 F5:1 D5:1 B4:1', .3, .22); line(39, 'C5:2 G4:.5 C5:.5 E5:.5 G5:.5', .3, .22); fill(39, 1.05);
+      // Misread 40-43, piano subito: theme A heard in minor on the kakula alone, as the mark is misread
+      bed(40, 44, .4); gongs(40, 44, .55); heart(40, 44, .55); alberti(40, 44, .08); dots(42, 44, .4);
+      MEL.minor.forEach(function (s, i) { var beat = 0; s.split(' ').forEach(function (tok) { var p = tok.split(':'), d = +p[1]; KF(T(40 + i, beat), N(p[0]), .42, d, false, 'kakula'); beat += d; }); }); fill(43, 1.1);
+      // System 44-47, forte: the answer again, everything in
+      under(44, 48, 1, { drums: true, bounce: true, drive: true }); rays(44, 48, .3); leaves(44, 48, .26); tune(44, MEL.A.slice(4), .3, .22);
+      // Keep 48-51: the coda, I-IV I-V twice, then the home chord three times
+      // Bar 48: the cadenza. The band strikes C over a G bass and holds; the flute climbs the golden spiral alone, its notes
+      // shortening by Fibonacci steps (3 3 2 2 2 1 1 1 1 sixteenths) as it rises, a reyong spark under each
+      hit(48, 0, 'C', .2); E.push({ t: T(48, 0), k: 'dio', f: 98.00, v: .5, s: 'dio' }); E.push({ t: T(48, 0), k: 'bassgong', f: 98.00, v: .44, s: 'bass' }); E.push({ t: T(48, 0), k: 'gong', n: 0, f: 196.00, v: .3, s: 'gongs' });
+      [0, 4, 7].forEach(function (pc, j) { E.push({ t: T(48, 0) + j * .012, k: 'angklung', f: 261.63 * Math.pow(2, pc / 12), v: .14, d: BAR_D * 1.6, s: 'angklung' }); });
+      (function () { var b16 = 0; [['G4', 3], ['C5', 3], ['E5', 2], ['G5', 2], ['C6', 2], ['E6', 1], ['D6', 1], ['C6', 1], ['A5', 1]].forEach(function (n) { var f = N(n[0]); E.push({ t: T(48, b16 / 4), k: 'tatali', f: f, v: .3, d: n[1] / 4 * BEAT_D * .95, s: 'tatali' }); KF(T(48, b16 / 4), f, .14, .25, true, 'reyong'); KF(T(48, b16 / 4) + .004, f, .08, .25, true, 'reyong', 1.006); b16 += n[1]; }); })();
+      // Bar 49: the trill on D over G, starting from the note above as Mozart's do, a turn through C, then the band comes home
+      for (var k8 = 0; k8 < 24; k8++) E.push({ t: T(49, k8 / 8), k: 'tatali', f: N(k8 % 2 ? 'D5' : 'E5'), v: .26, d: BEAT_D / 8 * .95, s: 'tatali' });
+      E.push({ t: T(49, 3), k: 'tatali', f: N('C5'), v: .27, d: BEAT_D * .45, s: 'tatali' }); E.push({ t: T(49, 3.5), k: 'tatali', f: N('D5'), v: .28, d: BEAT_D * .45, s: 'tatali' });
+      bed(49, 50, .5); gongs(49, 50, .8); E.push({ t: T(49, 0), k: 'dio', f: 196.00, v: .45, s: 'dio' }); E.push({ t: T(49, 0), k: 'bassgong', f: 98.00, v: .4, s: 'bass' }); KF(T(49, 0), 392.00, .2, 4, true, 'kakula');
+      [8, 9, 10, 11, 12, 13, 14, 15].forEach(function (s16, i) { E.push({ t: T(49, s16 / 4), k: 'drum', n: 'tak', v: .1 + i * .035, s: 'drums' }); });
+      // Bar 50: everyone back in
+      under(50, 51, 1, { drums: true, bounce: true, drive: true }); rays(50, 51, .3); leaves(50, 51, .26); line(50, 'C5:1 E5:.5 G5:.5 D5:1 B4:1', .3, .22);
+      [0, 1, 2].forEach(function (b, i) { hit(51, b, 'C', i === 2 ? .24 : .18); KF(T(51, b), 523.25, .5, i === 2 ? 4 : 1, i < 2, 'kakula'); E.push({ t: T(51, b), k: 'tatali', f: N(i === 2 ? 'C6' : 'G5'), v: .26, d: (i === 2 ? 3 : .8) * BEAT_D, s: 'tatali' }); });
+      KF(T(51, 2), 1046.5, .3, 4, true, 'reyong'); KF(T(51, 2) + .004, 1046.5, .18, 4, true, 'reyong', 1.006);
+      E.push({ t: T(51, 2), k: 'gong', n: 0, f: 130.81, v: .55, s: 'gongs' }); E.push({ t: T(51, 2), k: 'bassgong', f: 130.81, v: .45, s: 'bass' }); E.push({ t: T(51, 2), k: 'dio', f: 130.81, v: .5, s: 'dio' }); E.push({ t: T(51, 2), k: 'clap', v: .26, s: 'claps' });
+      return E;
+    }
+    return { compose: compose, BAR: BAR_D, BPM: BPM_D, chordAt: chordAt, EUC: EUC, HARM: HARM };
+  })();
+
+  // ---------- drawing the medallion (the studio's own medallion engine, the Bomba rose as its heart) ----------
+  // a light chasing round a ring of n: the element on the current step glows, the ones just behind it fade
+  function chase(cur, i, n) { var d = ((cur - i) % n + n) % n; return d < 4 ? Math.exp(-d * .9) : 0; }
+  // the loops' own steps from the clock: rays on eighths (13), leaves and dots on sixteenths (21 and 55)
+  function mLights(on) {
+    if (reduce || !on) return {}; var e8 = Math.floor(t / (BEAT_D / 2)), e16 = Math.floor(t / (BEAT_D / 4)), k = SND.kind === 'off' ? .6 : 1;
+    return { rays: function (i) { return chase(e8 % 13, i, 13) * k; }, leaves: function (i) { return chase(e16 % 21, i, 21) * k * (LD.EUC[e16 % 21] ? 1 : .5); }, dots: function (i) { return chase(e16 % 55, i, 55) * k; } };
+  }
+  // the heart is the Bomba rose itself, its rings growing with the heart's progress
+  function mHeart(ink) { return function (c, cx, cy, r, sh) { var p = [0, 1, 2, 3].map(function (k) { return clamp(sh * 5 - k, 0, 1); }); drawRose(c, cx, cy, r / .95, { stem: 0, leaves: [0, 0, 0], ink: ink, prog: p, heart: clamp(sh * 5 - 4, 0, 1) }); }; }
+  // the score, once, so the drawing can read the tune and the gongs from the clock
+  var MD_EV = null;
+  function mdEv() { if (!MD_EV) { var E = LD.compose({}); MD_EV = { mel: E.filter(function (e) { return e.k === 'tatali'; }).sort(function (a, b) { return a.t - b.t; }), gong: E.filter(function (e) { return e.k === 'gong'; }) }; } return MD_EV; }
+  // the tune draws its own star: seven points round the mark, one per step of the scale, further out the higher the octave
+  function degPos(f, cx, cy, R) { var st = Math.round(12 * Math.log2(f / 261.63)), pc = ((st % 12) + 12) % 12, oct = Math.floor(st / 12), deg = [0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6][pc], a = -Math.PI / 2 + deg * Math.PI * 2 / 7, r = R * clamp(.36 + .17 * (oct + 1), .22, .97); return [cx + Math.cos(a) * r, cy + Math.sin(a) * r]; }
+  function tuneStar(cx, cy, R, alpha) {
+    if (reduce || !(alpha > .01)) return; var M = mdEv().mel, i = -1, LIFE = 6;
+    for (var k = 0; k < M.length && M[k].t <= t; k++) i = k; var pts = [];
+    for (k = i; k >= 0 && pts.length < 20; k--) { var age = t - M[k].t; if (age > LIFE) break; pts.push({ p: degPos(M[k].f, cx, cy, R), age: age, e: M[k] }); }
+    if (!pts.length) return; g.save(); g.globalCompositeOperation = 'lighter'; g.lineCap = 'round';
+    for (k = 0; k < 7; k++) { var a7 = -Math.PI / 2 + k * Math.PI * 2 / 7; g.fillStyle = 'rgba(224,194,126,' + (.25 * alpha).toFixed(3) + ')'; g.beginPath(); g.arc(cx + Math.cos(a7) * R * 1.02, cy + Math.sin(a7) * R * 1.02, 1.8, 0, 7); g.fill(); }
+    for (k = 0; k < pts.length - 1; k++) { var la = (1 - pts[k].age / LIFE) * alpha; g.strokeStyle = 'rgba(244,220,160,' + (la * .6).toFixed(3) + ')'; g.lineWidth = 1.7; g.beginPath(); g.moveTo(pts[k].p[0], pts[k].p[1]); g.lineTo(pts[k + 1].p[0], pts[k + 1].p[1]); g.stroke(); }
+    pts.forEach(function (q) { var on = q.age < q.e.d, na = (1 - q.age / LIFE) * alpha; g.fillStyle = 'rgba(255,238,196,' + (na * (on ? .95 : .45)).toFixed(3) + ')'; g.beginPath(); g.arc(q.p[0], q.p[1], on ? 4 + 4 * Math.exp(-q.age * 6) : 2.4, 0, 7); g.fill(); });
+    g.restore();
+  }
+  // each gong stroke sends a ring out through the rings
+  function gongRipple(cx, cy, R, alpha) {
+    if (reduce) return; var G = mdEv().gong, L = 1.8; g.save(); g.globalCompositeOperation = 'lighter';
+    G.forEach(function (e) { var age = t - e.t; if (age < 0 || age > L) return; var u = age / L; g.strokeStyle = 'rgba(224,194,126,' + ((1 - u) * clamp(e.v * 2.2, .3, 1) * .55 * alpha).toFixed(3) + ')'; g.lineWidth = .6 + 2.4 * (1 - u); g.beginPath(); g.arc(cx, cy, R * (.46 + .74 * eo(u)), 0, 7); g.stroke(); });
+    g.restore();
+  }
+  function minorNow() { var bar = Math.floor(t / BAR_D), ch = LD.chordAt(bar, (t - bar * BAR_D) / BEAT_D); return ch === 'Am' || ch === 'Em'; }
+  // on every beat the mark breathes out a little and a warm halo flashes behind it
+  function beatPulse() { return reduce || SND.kind === 'off' ? 0 : Math.exp(-((t / BEAT_D) % 1) * 5) * (Math.floor(t / BEAT_D) % 4 === 0 ? 1 : .6); }
+  function med(cx, cy, R, ink, o) {
+    var pz = beatPulse(), a = o && o.alpha != null ? o.alpha : 1;
+    if (R > 60) gongRipple(cx, cy, R, a);
+    if (R > 60 && !reduce && minorNow()) { g.save(); g.globalCompositeOperation = 'lighter'; var mw = g.createRadialGradient(cx, cy, 0, cx, cy, R * 1.2); mw.addColorStop(0, 'rgba(96,160,184,' + (.1 * a).toFixed(3) + ')'); mw.addColorStop(1, 'rgba(96,160,184,0)'); g.fillStyle = mw; g.fillRect(cx - R * 1.2, cy - R * 1.2, R * 2.4, R * 2.4); g.restore(); }
+    if (pz > .02 && R > 60) { g.save(); g.globalCompositeOperation = 'lighter'; var hl = g.createRadialGradient(cx, cy, R * .3, cx, cy, R * 1.15); hl.addColorStop(0, 'rgba(224,194,126,' + (pz * .1 * a).toFixed(3) + ')'); hl.addColorStop(1, 'rgba(224,194,126,0)'); g.fillStyle = hl; g.fillRect(cx - R * 1.2, cy - R * 1.2, R * 2.4, R * 2.4); g.restore(); }
+    medallion(g, cx, cy, R * (1 + pz * .02), ink, Object.assign({ heart: mHeart(ink === 'dua-pulau' ? 'dua' : 'buya') }, o));
+  }
+  function gcd(a, b) { return b ? gcd(b, a % b) : a; }
+  var FIB = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55];
+  var SCENES_MEDALLION = [
+    { id: 'm-title', dur: barsD(4), step: null,
+      draw: function (lt, d) {
+        var out = 1 - ramp(lt, d - .5, d), bar = lt / BAR_D, sw = reduce ? 0 : lt * .04;
+        med(W / 2, 210, 180, 'malam', { alpha: out, show: { heart: ramp(bar, 0, 1), disc: ramp(bar, .3, 1), rays: ramp(bar, 1, 2), dots: ramp(bar, 2, 3), leaves: ramp(bar, 3, 3.8) }, rot: { rays: sw, dots: -sw * .6, leaves: -sw * .38 }, light: mLights(true) }); tuneStar(W / 2, 210, 180, out);
+        var a = eo(ramp(lt, 1.6, 2.6)) * out;
+        text('BATIK MEDIA LAB · REEL 07', W / 2, 440, '500 13px ' + F.mono, C.gold2, a, 'center');
+        text('Dua Pulau medallion', W / 2, 520, '600 84px ' + F.display, C.paper, a, 'center');
+        text('Two islands in one mark, every count a Fibonacci number', W / 2, 566, 'italic 500 24px ' + F.display, C.mist, eo(ramp(lt, 2.2, 3.4)) * out, 'center');
+      } },
+    { id: 'm-listen', dur: barsD(8), step: 'Listen to both islands', phase: 'Thinking',
+      eyebrow: 'Step 1 · Listen to both islands', head: 'Sulawesi at the heart, Bali round the edge.',
+      body: 'The medallion is our emblem, and it is made of what came before it: the Bomba rose and the rebung of the buya bomba of Central Sulawesi at the centre, and the ring of leaves and the keyline of Balinese ornament around them. It recognises both origins in one mark.',
+      teach: 'An emblem is a promise about where you come from. List the sources first, name each one, and let every ring of the mark answer to one of them.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), a = eo(ramp(lt, .8, 2)) * out, b = eo(ramp(lt, 7.5, 8.7)) * out, c = eo(ramp(lt, 12, 13.5)) * out;
+        text('SULAWESI · BUYA BOMBA', 690, 130, '500 12px ' + F.mono, C.gold2, a); putImg('motifs/bomba-rose--buya.png', 735, 205, 90, a); putImg('motifs/rebung-border--buya.png', 865, 205, 120, a);
+        text('the rose · the rebung', 690, 312, '500 12px ' + F.mono, C.mist, a);
+        text('BALI · ORNAMENT', 1200, 130, '500 12px ' + F.mono, C.gold2, b, 'right'); putImg('motifs/lotus-flower.png', 1155, 205, 90, b); putImg('motifs/wave-cloud-ornament.png', 1040, 205, 100, b);
+        text('the leaf ring · the keyline', 1200, 312, '500 12px ' + F.mono, C.mist, b, 'right');
+        var sw = reduce ? 0 : lt * .04; med(945, 500, 110, 'malam', { alpha: c, rot: { rays: sw, dots: -sw * .6, leaves: -sw * .38 }, light: mLights(c > .5) }); tuneStar(945, 500, 110, c);
+        g.save(); g.globalAlpha = c * .7; g.strokeStyle = C.gold2; g.lineWidth = 1.2; g.setLineDash([4, 5]); g.beginPath(); g.moveTo(800, 320); g.lineTo(880, 410); g.moveTo(1090, 320); g.lineTo(1010, 410); g.stroke(); g.restore();
+      } },
+    { id: 'm-brief', dur: barsD(4), step: 'Set the brief', phase: 'Thinking',
+      eyebrow: 'Step 2 · Set the brief', head: 'One mark, read at every size.',
+      body: 'The medallion must work as a seal on a card, a placement on a scarf and a tiny mark on a screen. Every count in it is a Fibonacci number, so the rings never line up into spokes, and it reads in navy and gold, in buya gold on black, and in one colour.',
+      teach: 'The brief: our own drawing, both origins named, Fibonacci counts only, and a small master for stamp sizes.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d);
+        ['Our own drawing, built from both islands', 'Fibonacci counts only: 3 5 8 13 21 55', 'A seal, a placement, a mark on a screen', 'Credit Donggala, Palu and Bali'].forEach(function (r, i) {
+          var a = eo(ramp(lt, .5 + i * 1, 1.2 + i * 1)) * out; g.save(); g.globalAlpha = a; g.fillStyle = C.gold; g.beginPath(); g.arc(680, 160 + i * 76, 5, 0, 7); g.fill(); g.restore();
+          text(r, 704, 166 + i * 76, '500 24px ' + F.display, C.paper, a);
+        });
+        [[760, 26], [880, 44], [1060, 80]].forEach(function (m, k) { med(m[0], 560, m[1], 'malam', { alpha: eo(ramp(lt, 4.5 + k * .6, 5.5 + k * .6)) * out, light: mLights(true) }); });
+      } },
+    { id: 'm-counts', dur: barsD(8), step: 'Count the rings', phase: 'Ideation', explore: 'counts',
+      eyebrow: 'Step 3 · Count the rings', head: 'Thirteen, fifty-five, twenty-one.',
+      body: 'Ring by ring from the heart: the Bomba rose with petal rings of 13, 8, 5 and 3; a dark disc; 13 rebung rays, each with two chevrons pointing out; 55 cecek dots; 21 leaves, dark and teal in turn. Because neighbouring Fibonacci numbers share no factor, no ray ever lines up with a leaf except at the top, and the eye never finds a spoke to rest on.',
+      teach: 'Choose counts that do not divide each other and the rings stay independent. Try 12 rays against 24 leaves on the bench: the spokes appear at once.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), ex = EX && EX.scene === 'm-counts', bar = lt / BAR_D;
+        var counts = ex ? { rays: EX.rays, dots: EX.dots, leaves: EX.leaves } : null, cx = 940, cy = 385, R = 245;
+        var show = ex ? null : { heart: ramp(bar, 0, 2), disc: ramp(bar, 1.5, 2), rays: ramp(bar, 2, 3.6), dots: ramp(bar, 4, 5.6), leaves: ramp(bar, 6, 7.4) };
+        if (ex) { // the spokes: wherever two rings put an element at the same angle
+          var pairs = [[EX.rays, EX.leaves], [EX.rays, EX.dots], [EX.leaves, EX.dots]]; g.save(); g.globalAlpha = out * .55; g.strokeStyle = C.flag; g.lineWidth = 1.4; g.setLineDash([5, 5]);
+          pairs.forEach(function (pq) { var k = gcd(pq[0], pq[1]); if (k < 2) return; for (var j = 0; j < k; j++) { var a = j * Math.PI * 2 / k; g.beginPath(); g.moveTo(cx + Math.sin(a) * 120, cy - Math.cos(a) * 120); g.lineTo(cx + Math.sin(a) * 300, cy - Math.cos(a) * 300); g.stroke(); } }); g.restore(); }
+        med(cx, cy, R, 'malam', { alpha: out, show: show, counts: counts, light: mLights(ex || bar > 7.4) }); if (!ex) tuneStar(cx, cy, R, out * ramp(bar, 6, 7));
+        if (!ex) { var lab = bar < 2 ? 'the heart: the Bomba rose, petal rings 13 · 8 · 5 · 3' : bar < 4 ? '13 rebung rays' : bar < 6 ? '55 cecek dots' : '21 leaves, dark and teal in turn';
+          text(lab, cx, 662, '500 12px ' + F.mono, C.gold2, out * .9, 'center');
+          FIB.forEach(function (f, i) { var used = [3, 5, 8, 13, 21, 55].indexOf(f) >= 0 && (f !== 13 || bar > 0) ; text(String(f), 706 + i * 52, 104, '500 15px ' + F.mono, used ? C.gold : C.line2, out * eo(ramp(lt, .5 + i * .15, 1 + i * .15)), 'center'); }); }
+      } },
+    { id: 'm-heart', dur: barsD(6), step: 'Set the rose at the heart', phase: 'Synthesis',
+      eyebrow: 'Step 4 · Set the rose at the heart', head: 'The Bomba rose, turned by the golden angle.',
+      body: 'The heart is the Bomba rose from our second reel, unchanged: rings of 13, 8, 5 and 3 petals, each ring turned 137.5° from the one outside it, around a dark heart with a golden spiral. In the music this is the development: the head of the tune is passed round, flute then kakula, each time turned onto a new chord, the way each ring of petals is turned onto the next.',
+      teach: 'Reuse the master, never a copy. Mozart did it with a theme, we do it with a rose: the rose in the medallion is drawn by the same code as the rose on its own, so a change to one is a change to both.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), cx = 940, cy = 350, p = ramp(lt, .3, d - 3), r = 230;
+        var pr = [0, 1, 2, 3].map(function (k) { return ramp(p, k * .2, k * .2 + .2); });
+        drawRose(g, cx, cy, r / .95 * (1 + liveLevel() * .02), { stem: 0, leaves: [0, 0, 0], ink: 'buya', prog: pr, heart: ramp(p, .8, 1) });
+        if (p >= .2 && p < .8) { var k = Math.min(3, Math.floor(p / .2)), a = -Math.PI / 2 + k * 137.508 * Math.PI / 180, rr0 = [.84, .6, .38, .22][k] * r / .95;
+          g.save(); g.globalAlpha = out * .8; g.strokeStyle = C.paper; g.lineWidth = 1.2; g.setLineDash([4, 4]); g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + Math.cos(a) * (rr0 + 40), cy + Math.sin(a) * (rr0 + 40)); g.stroke(); g.restore(); }
+        var lab = p < .2 ? '13 petals' : p < .4 ? '8, turned 137.5° from the 13' : p < .6 ? '5, turned again' : p < .8 ? '3' : 'the dark heart and its golden spiral';
+        text(lab, cx, 662, '500 12px ' + F.mono, C.gold2, out * .9, 'center');
+      } },
+    { id: 'm-time', dur: barsD(10), step: 'Let it keep time', phase: 'Synthesis',
+      eyebrow: 'Step 5 · Let it keep time', head: 'Three rings, three clocks.',
+      body: 'Each ring has its own loop in the score: the rays a kakula line of 13 eighth notes, the leaves a shimmering Balinese line of 21 sixteenths, the dots the shaker running round all 55. A light follows each loop round its ring. Because the counts share no factor, the lights never meet in the same place twice. And the gold thread is the tune: each note lands on one of seven points, one per step of the scale, so the melody draws its own star.',
+      teach: 'When the music and the motif share one rule, the motif can perform it. Fibonacci counts make polyrhythms that never settle, and the eye feels the same thing the ear does.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), sw = reduce ? 0 : lt * .05, cx = 940, cy = 360, R = 270;
+        g.save(); g.globalCompositeOperation = 'lighter'; var gl = g.createRadialGradient(cx, cy, 0, cx, cy, R * 1.25); gl.addColorStop(0, 'rgba(224,194,126,' + (.08 + lvG(0, t) * .12).toFixed(3) + ')'); gl.addColorStop(1, 'rgba(224,194,126,0)'); g.fillStyle = gl; g.fillRect(cx - R * 1.3, cy - R * 1.3, R * 2.6, R * 2.6); g.restore();
+        med(cx, cy, R * (1 + liveLevel() * .015), 'malam', { alpha: out, rot: { rays: sw, dots: -sw * .618, leaves: -sw * .382 }, light: mLights(true) }); tuneStar(cx, cy, R, out);
+        var e8 = Math.floor(t / (BEAT_D / 2)), e16 = Math.floor(t / (BEAT_D / 4));
+        [['rays', e8 % 13, 13, 'eighths'], ['leaves', e16 % 21, 21, 'sixteenths'], ['dots', e16 % 55, 55, 'sixteenths']].forEach(function (L, i) { text(L[0] + ' ' + String(L[1] + 1).padStart(2, '0') + ' / ' + L[2], 760 + i * 180, 662, '500 12px ' + F.mono, C.gold2, out * eo(ramp(lt, 1 + i * .8, 1.8 + i * .8))); });
+      } },
+    { id: 'm-misread', dur: barsD(4), step: 'Check misreadings', phase: 'Test',
+      eyebrow: 'Step 6 · Check misreadings', head: 'A sun, an eye, or our mark?',
+      body: 'At sixteen pixels the rays win and it reads as a sun or a gear. At forty-eight the dark heart in its gold petals reads as an eye. From about a hundred and sixty every ring reads. So the small master keeps the rays, the disc and the leaves, drops the dots, and gives the heart a gold centre instead of a dark one.',
+      teach: 'An emblem will be printed smaller than anything else you make. Draw its small master on purpose rather than letting the printer decide what disappears.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d);
+        [[16, 700, 'a sun · a gear'], [48, 885, 'an eye at the heart'], [160, 1070, 'the medallion']].forEach(function (R, i) {
+          var a = eo(ramp(lt, .4 + i * 1.2, 1.2 + i * 1.2)) * out;
+          g.save(); g.globalAlpha = a; g.strokeStyle = C.line2; g.lineWidth = 1; g.strokeRect(R[1], 140, 170, 170); g.restore();
+          med(R[1] + 85, 225, R[0] / 2, 'malam', { alpha: a, lw: Math.max(3.5, 500 / R[0] * .6) });
+          text(R[0] + ' px across', R[1], 330, '500 12px ' + F.mono, C.gold2, a); text(R[2], R[1], 350, '500 12px ' + F.mono, C.mist, a);
+        });
+        var b = eo(ramp(lt, 4.4, 5.4)) * out;
+        [[760, 16], [830, 24], [920, 32], [1040, 48]].forEach(function (m) { medallion(g, m[0], 470, m[1], 'malam', { alpha: b, show: { dots: 0 }, lw: Math.max(3.5, 500 / m[1] * .5), heart: function (c, x, y, r) { c.beginPath(); c.arc(x, y, r, 0, 7); c.fillStyle = '#C9A35A'; c.fill(); c.beginPath(); c.arc(x, y, r * .35, 0, 7); c.fillStyle = '#E0C27E'; c.fill(); } }); });
+        text('small master · rays, disc and leaves, no dots, a gold heart', 700, 552, '500 12px ' + F.mono, C.gold2, b);
+      } },
+    { id: 'm-system', dur: barsD(4), step: 'Where the mark lives', phase: 'System',
+      eyebrow: 'Step 7 · Where the mark lives', head: 'A seal, a scarf, a screen.',
+      body: 'In navy and gold on pearl card it is the seal of the studio. At the centre of a scarf it holds the placement, framed by the rebung border. On a screen it shrinks to its small master. One drawing, three jobs.',
+      teach: 'An emblem earns its place by staying the same everywhere. Keep the master in one place and let every use read from it, down to the favicon.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), a = eo(ramp(lt, .3, 1.3)) * out, b = eo(ramp(lt, 1.6, 2.6)) * out, c = eo(ramp(lt, 2.8, 3.8)) * out, sw = reduce ? 0 : lt * .04;
+        g.save(); g.globalAlpha = a; g.fillStyle = '#FAF7F2'; g.beginPath(); g.arc(810, 250, 112, 0, 7); g.fill(); g.restore();
+        medallion(g, 810, 250, 100, 'dua-pulau', { alpha: a, heart: mHeart('dua'), rot: { rays: sw } }); text('seal · navy and gold on pearl', 810, 392, '500 12px ' + F.mono, C.mist, a, 'center');
+        g.save(); g.globalAlpha = b; g.fillStyle = C.ink2; g.fillRect(960, 130, 240, 240); g.restore();
+        band(linePts(972, 142, 1188, 142), 9, 'buya-bomba', 0, 1, b); band(linePts(972, 358, 1188, 358), 9, 'buya-bomba', 0, 1, b);
+        med(1080, 250, 82, 'malam', { alpha: b, rot: { rays: sw, dots: -sw * .618, leaves: -sw * .382 }, light: mLights(true) }); text('scarf · the placement', 1080, 392, '500 12px ' + F.mono, C.mist, b, 'center');
+        [[760, 16], [810, 32], [880, 64]].forEach(function (m) { g.save(); g.globalAlpha = c; g.fillStyle = '#17140F'; rr(m[0] - m[1] * .6, 520 - m[1] * .6, m[1] * 1.2, m[1] * 1.2, m[1] * .22); g.fill(); g.strokeStyle = C.line2; g.lineWidth = 1; g.stroke(); g.restore();
+          medallion(g, m[0], 520, m[1] / 2, 'malam', { alpha: c, show: { dots: 0 }, lw: Math.max(3.5, 500 / m[1] * .5), heart: function (cc, x, y, r) { cc.beginPath(); cc.arc(x, y, r, 0, 7); cc.fillStyle = '#C9A35A'; cc.fill(); } }); });
+        text('screen · 16, 32 and 64 px', 700, 600, '500 12px ' + F.mono, C.mist, c);
+      } },
+    { id: 'm-keep', dur: barsD(4), step: 'Credit and keep', phase: 'Archive',
+      eyebrow: 'Step 8 · Credit and keep', head: 'Credit both islands. Keep the mark.',
+      body: 'Dua Pulau medallion: our own emblem, built from the Bomba rose and the rebung of the buya bomba of Donggala and the batik of Palu, Central Sulawesi, inside a ring of leaves from Balinese ornament, with gratitude to the weavers, batik makers and carvers of both islands. The master lives in the engine.',
+      teach: 'Credit is part of the design. Keep the source, the rule, the drawing and the credit line together, so the next person can continue rather than restart.',
+      draw: function (lt, d) {
+        caption(this, lt, d); var out = 1 - ramp(lt, d - .45, d), a = eo(ramp(lt, .3, 1.5)) * out, sw = reduce ? 0 : lt * .05;
+        med(940, 250, 160, 'malam', { alpha: a, rot: { rays: sw, dots: -sw * .618, leaves: -sw * .382 }, light: mLights(true) }); tuneStar(940, 250, 160, a);
+        text('REEL 07 · SAVED TO THE LAB', 940, 470, '500 13px ' + F.mono, C.gold2, eo(ramp(lt, 2, 3)) * out, 'center');
+        text('Six motifs, six reels: the signature is complete', 940, 506, 'italic 500 22px ' + F.display, C.mist, eo(ramp(lt, 3.2, 4.2)) * out, 'center');
+      } }
+  ];
+  // the form of the score, under the words: where we are in the piece and what the music is doing
+  var FORM_D = [[0, 4, 'open'], [4, 12, 'theme A'], [12, 16, 'call'], [16, 24, 'theme B'], [24, 29, 'develop'], [29, 30, ''], [30, 40, 'A returns'], [40, 44, 'minor'], [44, 48, 'answer'], [48, 50, ''], [50, 52, '']];
+  function formSay(bar) { return bar < 4 ? 'the rocket: up through C, then up through G' : bar < 8 ? 'theme A, the question: it ends open, on G' : bar < 12 ? 'theme A, the answer: home on C' : bar < 16 ? 'call on the kakula, answer on the reyong' : bar < 24 ? 'theme B, the same mood turned to A minor' : bar < 29 ? 'the head of the tune, handed round' : bar < 30 ? 'kebyar: a Balinese outburst, then a breath' : bar < 37 ? 'theme A returns, loud, with every ring' : bar < 38 ? 'a false close: A minor, not home' : bar < 40 ? 'the true close, home on C' : bar < 44 ? 'theme A misread in minor, softly' : bar < 48 ? 'the answer, everyone in' : bar < 49 ? 'cadenza: the flute alone, up the golden spiral' : bar < 50 ? 'the trill, waiting for home' : 'coda: the home chord, three times'; }
+  function formMap(lt, d) {
+    if (stageDraw) return; var out = eo(ramp(lt, .8, 1.6)) * (1 - ramp(lt, d - .45, d)), x0 = 72, w = 470, y = 604, pb = w / 52, bar = clamp(t / BAR_D, 0, 51.999), cur = Math.floor(bar);
+    g.save(); g.globalAlpha *= out;
+    FORM_D.forEach(function (f) { var on = cur >= f[0] && cur < f[1], x = x0 + f[0] * pb + 1, ww = (f[1] - f[0]) * pb - 2; g.fillStyle = on ? C.gold : C.line2; g.fillRect(x, y, ww, on ? 4 : 2); if (f[2]) text(f[2], x, y - 8, '500 10px ' + F.mono, on ? C.gold2 : C.mist, on ? 1 : .55); });
+    g.fillStyle = C.paper; g.fillRect(x0 + bar * pb - 1, y - 4, 2, 12);
+    text('BAR ' + String(cur + 1).padStart(2, '0') + ' · ' + LD.chordAt(cur, (t - cur * BAR_D) / BEAT_D) + ' · ' + formSay(cur), x0, y + 28, '500 11px ' + F.mono, C.gold2, .9);
+    g.restore();
+  }
+  SCENES_MEDALLION.forEach(function (sc) { if (sc.id === 'm-title') return; var dr = sc.draw; sc.draw = function (lt, d) { dr.call(this, lt, d); formMap(lt, d); }; });
+  var SCORES_MEDALLION = [['off', 'Sound off'], ['medallion', 'Dua Pulau · 128 bpm']];
+  var STEMS_MEDALLION = [['tatali', 'Flute, the tune'], ['kakula', 'Kakula, the 13 rays'], ['kakula2', 'Kakula, doubling the tune'], ['reyong', 'Reyong, the 21 leaves'], ['gamba', 'Gamba-gamba, the Alberti bass'], ['angklung', 'Angklung'], ['dio', 'Dio'], ['gongs', 'Gongs'], ['drums', 'Kendang and gimba'], ['shaker', 'Shaker, the 55 dots'], ['claps', 'Claps'], ['bass', 'Low gong, the heart']];
+
   var SCORES = SCORES_NTINA, SCORES_BOMBA = [['off', 'Sound off'], ['bomba', 'Bunga Kaili · 138 bpm']];
   var SCORES_LOGO = [['off', 'Sound off'], ['marea', 'Marea · gong kebyar for the mark · 112 bpm']], SCORES_IMAGE = [['off', 'Sound off'], ['image', 'Your picture · kakula ensemble']];
   var SCORE_NOTE = {
+    medallion: 'Dua Pulau (two islands), our own piece for the emblem, which takes its shape from Mozart and its sound from the Kaili ensemble of Central Sulawesi and Balinese gong kebyar, as the medallion puts the Bomba rose and rebung inside a Balinese ring of leaves. A rising rocket opens it; theme A asks a question that ends open on G and answers it home on C, over a broken-chord (Alberti) gamba-gamba; a soft call and response sets Sulawesi kakula against Balinese reyong; theme B sings in A minor; the development passes the head of the tune between flute and kakula; the return slips to A minor in a false close before the true one; the Misreadings scene hears theme A in minor, quietly, on the kakula alone; a Balinese kebyar, the whole ensemble striking in unison on an irregular rhythm, bursts in just before the return; and near the end the band stops on C over G for a concerto-style cadenza, the flute climbing the golden spiral alone with notes shortening by Fibonacci steps, then a trill, then the coda hammers the home chord. Under it every ring keeps its loop: 13 rays on eighths, 21 leaves with 8 shimmering strokes, 55 dots on the shaker. The counts share no factor, so the loops never line up twice. 128 bpm, 52 bars, C major. No traditional piece and no Mozart is quoted.',
+    cengkeh: 'Lima Kuntum (five buds), our own harvest dance for the clove sprig, on the same Kaili ensemble and the lab’s first in 3/4, because a sprig sways: every bar the kakula fan out like the buds, the centre kettle on beat 1, the inner pair together on beat 2, the outer pair on beat 3, and the buds light up in the same order; the second kakula plays a turn, four quick notes round one, for a bud’s four sepals; at the harvest the two kakula interlock in running eighths, many hands at once; the dio and the gamba-gamba make the waltz, claps land on 2 and 3, a tatali flute sings over it, and a shaker rattles like dried cloves. C major, C G F C, 138 bpm, 80 bars, one section per scene, ending with every voice on C. No traditional piece is quoted.',
     ketupat: 'Anyam Ketupat (weaving the ketupat), our own piece for the lattice, on the same Kaili kakula ensemble: each bar is one diamond, two kakula starting on one kettle and opening apart in contrary motion, one rising and one falling, to the widest point on beat 3, then closing back together; the gamba-gamba plays a narrower diamond inside it and the low gong is the dark heart; because the lattice is a centred grid, a canon enters half a bar later; the loom ticks either side of every bar line, a cecek cross where four diamonds meet. Around them the tatali flute draws one big diamond across every four bars, up to A5 and back, an angklung tremolo lays the ground, the dio plucks the bass and a shaker fills the weave. A minor, 96 bpm, 52 bars, one section per scene, ending with every voice on A. No traditional piece is quoted.',
     rebung: 'Pucuk Rebung, our own piece for the border, on the same Kaili kakula ensemble as Bunga Kaili: the shoot is a rising run of five kettle notes inside one bar, and it grows one note per bar while the shoot is drawn; a second kakula plays the same run two beats later a third above, the way the second row sits half a step on; the low gongs alternate each chord’s root and fifth on beats 1 and 3 for the zigzag spine; the loom’s off-beat ticks are the cecek dots. 100 bpm, 52 bars, one section per scene. No traditional piece is quoted.',
     marea: 'Marea, our own piece for the mark in the manner of Balinese gong kebyar: pelog selisir over two octaves with the paired ombak tuning that shimmers; kotekan, two interlocking kettle parts making one fast line, doubled by the reyong; jegogan holding the core melody on long low tones; kempli on the beat; the gong cycle of gong ageng, kempur and klentong; kendang; ceng-ceng; a suling flute; the sea’s wash. Forty bars at 112 bpm, one section per layer: it opens with a kebyar burst, breaks on an angsel before the close. All synthesized; no traditional piece is quoted.',
@@ -1924,6 +2458,8 @@ export function startLab(hooks) {
   function sceneStart(id) { for (var i = 0; i < SCENES.length; i++) if (SCENES[i].id === id) return starts[i]; return 0; }
   function buildScore(kind) {
     if (kind === 'marea') return LM.compose({ feel: SND.feel }).sort(function (a, b) { return a.t - b.t; });
+    if (kind === 'medallion') return LD.compose({ feel: SND.feel }).sort(function (a, b) { return a.t - b.t; });
+    if (kind === 'cengkeh') return LC.compose({ feel: SND.feel }).sort(function (a, b) { return a.t - b.t; });
     if (kind === 'ketupat') return LK.compose({ feel: SND.feel }).sort(function (a, b) { return a.t - b.t; });
     if (kind === 'rebung') return LR.compose({ feel: SND.feel }).sort(function (a, b) { return a.t - b.t; });
     if (kind === 'image') return IMG && IMG.score ? IMG.score.slice() : [];
@@ -2073,8 +2609,8 @@ export function startLab(hooks) {
   function newBus() {
     var c = SND.ctx; if (!c) return;
     if (SND.bus) { var old = SND.bus; old.gain.cancelScheduledValues(c.currentTime); old.gain.setTargetAtTime(0, c.currentTime, .08); setTimeout(function () { try { old.disconnect(); } catch (e) {} }, 900); }
-    SND.bus = c.createGain(); SND.bus.gain.value = ['ntina', 'folk', 'bomba', 'marea', 'rebung', 'ketupat', 'image'].indexOf(SND.kind) >= 0 ? .55 : 1; SND.bus.connect(SND.master);
-    SND.stemGain = {}; STEMS.concat(STEMS_FOLK, STEMS_BOMBA, STEMS_MAREA, STEMS_REBUNG, STEMS_KETUPAT).forEach(function (st) { if (SND.stemGain[st[0]]) return; var sg = c.createGain(); sg.gain.value = SND.muted[st[0]] ? 0 : 1; sg.connect(SND.bus); SND.stemGain[st[0]] = sg; });
+    SND.bus = c.createGain(); SND.bus.gain.value = ['ntina', 'folk', 'bomba', 'marea', 'rebung', 'ketupat', 'cengkeh', 'medallion', 'image'].indexOf(SND.kind) >= 0 ? .55 : 1; SND.bus.connect(SND.master);
+    SND.stemGain = {}; STEMS.concat(STEMS_FOLK, STEMS_BOMBA, STEMS_MAREA, STEMS_REBUNG, STEMS_KETUPAT, STEMS_CENGKEH, STEMS_MEDALLION).forEach(function (st) { if (SND.stemGain[st[0]]) return; var sg = c.createGain(); sg.gain.value = SND.muted[st[0]] ? 0 : 1; sg.connect(SND.bus); SND.stemGain[st[0]] = sg; });
     var send = c.createGain(); send.gain.value = SND.kind === 'gema' ? .5 : .24; SND.bus.connect(send); send.connect(SND.wet);
     SND.anchor = c.currentTime + .06 - t / SND.rate; SND.from = t;
   }
@@ -2190,7 +2726,7 @@ export function startLab(hooks) {
     var dg = glow(SND.byK.drum, now, .12); g.save(); g.fillStyle = C.line2; rr(cx + 150, y - 6, 12, 12, 2); g.fill(); if (dg > .01) { g.globalAlpha = dg; g.fillStyle = C.gold2; rr(cx + 150 - dg * 2, y - 6 - dg * 2, 12 + dg * 4, 12 + dg * 4, 2); g.fill(); } g.restore();
   }
   function setScore(kind) {
-    SND.kind = kind; if (['ntina', 'folk', 'bomba', 'marea', 'rebung', 'ketupat'].indexOf(kind) < 0) { SND.rate = 1; } indexScore(); renderScores();
+    SND.kind = kind; if (['ntina', 'folk', 'bomba', 'marea', 'rebung', 'ketupat', 'cengkeh', 'medallion'].indexOf(kind) < 0) { SND.rate = 1; } indexScore(); renderScores();
     $('scoreNote').textContent = SCORE_NOTE[kind];
     if (kind === 'off') { stopSound(); return; }
     if (!unlockAudio()) { $('scoreNote').textContent = 'This browser has no Web Audio, so the score can’t play here.'; return; }
@@ -2199,8 +2735,8 @@ export function startLab(hooks) {
   function renderScores() {
     var row = $('scores'); row.innerHTML = '';
     SCORES.forEach(function (s) { var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = s[1]; b.setAttribute('aria-pressed', String(SND.kind === s[0])); b.addEventListener('click', function () { setScore(s[0]); }); row.appendChild(b); });
-    var mx = $('mixer'); mx.hidden = ['ntina', 'folk', 'bomba', 'marea', 'rebung', 'ketupat'].indexOf(SND.kind) < 0; var ml = $('stems'); ml.innerHTML = '';
-    (SND.kind === 'folk' ? STEMS_FOLK : SND.kind === 'bomba' ? STEMS_BOMBA : SND.kind === 'marea' ? STEMS_MAREA : SND.kind === 'rebung' ? STEMS_REBUNG : SND.kind === 'ketupat' ? STEMS_KETUPAT : STEMS).forEach(function (st) { var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = st[1]; b.setAttribute('aria-pressed', String(!SND.muted[st[0]]));
+    var mx = $('mixer'); mx.hidden = ['ntina', 'folk', 'bomba', 'marea', 'rebung', 'ketupat', 'cengkeh', 'medallion'].indexOf(SND.kind) < 0; var ml = $('stems'); ml.innerHTML = '';
+    (SND.kind === 'folk' ? STEMS_FOLK : SND.kind === 'bomba' ? STEMS_BOMBA : SND.kind === 'marea' ? STEMS_MAREA : SND.kind === 'rebung' ? STEMS_REBUNG : SND.kind === 'ketupat' ? STEMS_KETUPAT : SND.kind === 'cengkeh' ? STEMS_CENGKEH : SND.kind === 'medallion' ? STEMS_MEDALLION : STEMS).forEach(function (st) { var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = st[1]; b.setAttribute('aria-pressed', String(!SND.muted[st[0]]));
       b.addEventListener('click', function () { SND.muted[st[0]] = !SND.muted[st[0]]; if (SND.stemGain && SND.stemGain[st[0]] && SND.ctx) SND.stemGain[st[0]].gain.setTargetAtTime(SND.muted[st[0]] ? 0 : 1, SND.ctx.currentTime, .03); renderScores(); });
       ml.appendChild(b); });
   }
@@ -2295,6 +2831,8 @@ export function startLab(hooks) {
       if (sc.explore === 'roseSize') { var rs = []; if (!EX.gold && EX.px <= 24) rs.push('the dark heart reads as an eye'); if (!EX.curve) rs.push('round head on a straight stem nears a lollipop'); $('benchOut').textContent = EX.px + ' px head · ' + (rs.length ? rs.join('; ') : 'reads as a flower'); }
       if (sc.explore === 'rows') $('benchOut').textContent = EX.h + ' px band · ' + (EX.ink === 'buya-bomba' ? 'gold on black' : 'gold with navy lines') + ' · ' + (EX.path === 'straight' ? 'rows stay parallel, spacing 1.25 × the half-height' : EX.path === 'wave' ? 'shoots lean with the curve; the half-step offset holds' : 'on the inside of the arc the shoots close up; too tight and the band skips');
       if (sc.explore === 'lattice') $('benchOut').textContent = EX.P + ' px tile · ' + (EX.fill === 'rosette' ? 'Ketupat Field: a Bomba rosette blooms on every other diamond' : 'plain lattice: diamonds on a centred grid, crosses where four meet') + (EX.ink === 'dua-pulau' && EX.ground === '#0E0C09' ? ' · navy lines and the dark heart sink into black: use Buya Bomba ink here' : EX.ground === '#FAF7F2' ? ' · the pearl cecek go quiet on a pearl ground' + (EX.ink === 'buya-bomba' ? ', and the gold-on-black mood is lost' : '') : ' · reads well');
+      if (sc.explore === 'fan') $('benchOut').textContent = EX.n + ' buds · ' + (EX.n === 3 ? 'sparse: a trident' : EX.n === 8 ? 'crowded: the heads touch and the fan reads as a ball' : 'five, a Fibonacci number: reads as a hand of buds') + (EX.spread < 50 ? ', narrow: a broom' : EX.spread > 60 ? ', wide: the outer buds droop' : '') + (EX.ground === '#0E0C09' ? (EX.ink === 'buya-bomba' ? ' · the black stem and dark leaf vanish on black: use the night ink' : EX.ink === 'dua-pulau' ? ' · the navy stem and leaf sink into black: use the night ink' : ' · the night ink reads on black') : (EX.ink === 'malam' ? ' · gold outlines go faint on pearl: use Dua Pulau or Buya Bomba ink' : ' · reads well on pearl'));
+      if (sc.explore === 'counts') { var sp = []; [[EX.rays, EX.leaves, 'rays and leaves'], [EX.rays, EX.dots, 'rays and dots'], [EX.leaves, EX.dots, 'leaves and dots']].forEach(function (q) { var k = gcd(q[0], q[1]); if (k > 1) sp.push(q[2] + ' meet ' + k + ' times'); }); $('benchOut').textContent = EX.rays + ' rays · ' + EX.dots + ' dots · ' + EX.leaves + ' leaves · ' + (sp.length ? 'spokes: ' + sp.join(', ') : 'no spokes: only the top lines up, every count shares no factor with the others'); }
       if (sc.explore === 'cut') $('benchOut').textContent = EX.cm === 3 ? '3 cm: seeds narrower than 0.6 mm close up when cut. Use the dot-free small mark.' : '8 cm: one stencil. The seed head stays joined to the sheet through the open stem.';
     }
     if (sc.explore === 'angle') {
@@ -2339,6 +2877,17 @@ export function startLab(hooks) {
       chips('Ink', [['buya-bomba', 'Buya Bomba'], ['dua-pulau', 'Dua Pulau']], 'ink');
       chips('Ground', [['#0E0C09', 'Bomba black'], ['#FAF7F2', 'Pearl']], 'ground');
       chips('Fill', [['plain', 'Plain lattice'], ['rosette', 'Ketupat Field']], 'fill');
+    } else if (sc.explore === 'fan') {
+      EX = { scene: 'c-fan', n: 5, spread: 56, ink: 'malam', ground: '#0E0C09' };
+      chips('Buds', [[3, '3'], [5, '5'], [8, '8']], 'n');
+      chips('Spread', [[40, 'Narrow'], [56, 'As drawn'], [72, 'Wide']], 'spread');
+      chips('Ink', [['malam', 'Night'], ['buya-bomba', 'Buya Bomba'], ['dua-pulau', 'Dua Pulau']], 'ink');
+      chips('Ground', [['#0E0C09', 'Bomba black'], ['#FAF7F2', 'Pearl']], 'ground');
+    } else if (sc.explore === 'counts') {
+      EX = { scene: 'm-counts', rays: 13, dots: 55, leaves: 21 };
+      chips('Rays', [[12, '12'], [13, '13'], [16, '16']], 'rays');
+      chips('Dots', [[48, '48'], [55, '55'], [60, '60']], 'dots');
+      chips('Leaves', [[20, '20'], [21, '21'], [24, '24']], 'leaves');
     }
     out();
     if (window.innerWidth <= 1020) $('bench').scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
@@ -2394,8 +2943,14 @@ export function startLab(hooks) {
   REEL_DEFS.ketupat = { name: 'Ketupat lattice', scenes: SCENES_KETUPAT, scores: SCORES_KETUPAT, bpm: function () { return LK.BPM; }, file: 'ketupat-lattice-reel.webm',
     credit: 'Ketupat lattice: our own drawing, inspired by the belah ketupat diamonds (the Bugis cobo’) of the buya bomba head panel of Donggala, Central Sulawesi, with gratitude to the women who weave it. In the cloth’s iconography the motif speaks of courage in proposing marriage and the wisdom of elders.',
     notes: '<p class="note">Score: Anyam Ketupat, an original for the same synthesized Kaili kakula ensemble as Bunga Kaili. Each bar is one diamond: two kakula open apart from one kettle in contrary motion and close again; the gamba-gamba plays the middle ring, the low gong the heart, a canon half a bar on is the centred grid, and the loom ticks round each bar line are the cecek crosses; the tatali flute draws one big diamond every four bars over an angklung ground, a plucked dio bass and a shaker. 96 bpm, 52 bars, a section per scene, ending on A. The drawing uses the studio’s own ketupat engine (<code>src/engine/ketupat.js</code>), proportioned from the master tile. Read more: <a href="https://ojs.unm.ac.id/societies/article/view/73950" target="_blank" rel="noopener">Inayah &amp; Fatimah 2025, buya bomba iconography</a></p>' };
+  REEL_DEFS.cengkeh = { name: 'Cengkeh sprig', scenes: SCENES_CENGKEH, scores: SCORES_CENGKEH, bpm: function () { return LC.BPM; }, file: 'cengkeh-sprig-reel.webm',
+    credit: 'Cengkeh sprig: our own drawing, inspired by the clove motif of Palu batik, which honours the clove harvest of Tolitoli, Central Sulawesi, with gratitude to the batik makers of Palu and the clove growers of Tolitoli. On the cloth the clove is read as a wish for the wearer’s health.',
+    notes: '<p class="note">Score: Lima Kuntum, an original harvest dance in 3/4 for the same synthesized Kaili ensemble. Each bar the kakula fan out like the buds (centre, inner pair, outer pair) and the buds light up in that order; the second kakula turns four notes round one for the sepals; at the harvest the two kakula interlock in running eighths; dio and gamba-gamba make the waltz, with claps on 2 and 3, a tatali flute and a shaker like dried cloves. C major, 138 bpm, 80 bars, a section per scene, ending on C. The drawing uses the studio’s own cengkeh engine (<code>src/engine/cengkeh.js</code>), measured from the master drawing; the night ink is our proposal for black grounds, where the buya ink’s black stem and leaf vanish. Read more: <a href="https://www.detik.com/sulsel/budaya/d-6405331/mengenal-batik-bomba-dari-sulawesi-tengah-yang-dipakai-elon-musk-di-ktt-b20" target="_blank" rel="noopener">Batik Bomba (detik)</a> · <a href="https://www.antaranews.com/berita/277926/batik-bomba-tandamata-dari-palu" target="_blank" rel="noopener">Batik Bomba, a keepsake from Palu (ANTARA)</a></p>' };
+  REEL_DEFS.medallion = { name: 'Dua Pulau medallion', scenes: SCENES_MEDALLION, scores: SCORES_MEDALLION, bpm: function () { return LD.BPM; }, file: 'dua-pulau-medallion-reel.webm',
+    credit: 'Dua Pulau medallion: our own emblem, built from the Bomba rose and the rebung of the buya bomba of Donggala and the batik of Palu, Central Sulawesi, inside a ring of leaves from Balinese ornament, with gratitude to the weavers, batik makers and carvers of both islands.',
+    notes: '<p class="note">Score: Dua Pulau, an original shaped on Mozart’s habits: a two-part tune that asks and answers, an Alberti bass on the gamba-gamba, an opening rocket, a second theme in the relative minor, a development that passes the tune’s head between voices, a false close, loud and soft side by side, a cadenza and trill, and a coda that hammers the home chord, with a Balinese kebyar outburst before the return. On screen the tune draws a gold star across the mark (one point per step of the scale), every gong sends a ripple through the rings, minor chords cool the light, and a map under the words follows the form. Under it each ring keeps its own loop (13 rays, 21 leaves with 8 strokes and ombak pairs, 55 dots) drawn from the chord of the moment, and the lights on screen follow the loops from the clock. 128 bpm, 52 bars, C major, a section per scene. The drawing uses the studio’s own medallion engine (<code>src/engine/medallion.js</code>) with the Bomba rose drawn by the same code as in its own reel.</p>' };
   var CUR = REEL_DEFS.ntina;
-  var REELS = [['ntina', 'Ntina', true], ['bomba', 'Bomba Rose', true], ['marea', 'Marea Dvīpa', true], ['rebung', 'Rebung border', true], ['ketupat', 'Ketupat lattice', true], ['cengkeh', 'Cengkeh sprig', false]];
+  var REELS = [['ntina', 'Ntina', true], ['bomba', 'Bomba Rose', true], ['marea', 'Marea Dvīpa', true], ['rebung', 'Rebung border', true], ['ketupat', 'Ketupat lattice', true], ['cengkeh', 'Cengkeh sprig', true], ['medallion', 'Dua Pulau medallion', true]];
   function renderReels() {
     $('reels').innerHTML = '';
     REELS.forEach(function (r) {
@@ -2458,7 +3013,7 @@ export function startLab(hooks) {
   // ---------- wiring ----------
   $('play').addEventListener('click', function () { if (SND.kind !== 'off') unlockAudio(); setPlaying(!playing); });
   $('testSound').addEventListener('click', testSound);
-  function setMutes(fn) { STEMS.concat(STEMS_FOLK, STEMS_BOMBA, STEMS_MAREA, STEMS_REBUNG, STEMS_KETUPAT).forEach(function (st) { SND.muted[st[0]] = fn(st[0]); if (SND.stemGain && SND.stemGain[st[0]] && SND.ctx) SND.stemGain[st[0]].gain.setTargetAtTime(SND.muted[st[0]] ? 0 : 1, SND.ctx.currentTime, .03); }); renderScores(); }
+  function setMutes(fn) { STEMS.concat(STEMS_FOLK, STEMS_BOMBA, STEMS_MAREA, STEMS_REBUNG, STEMS_KETUPAT, STEMS_CENGKEH, STEMS_MEDALLION).forEach(function (st) { SND.muted[st[0]] = fn(st[0]); if (SND.stemGain && SND.stemGain[st[0]] && SND.ctx) SND.stemGain[st[0]].gain.setTargetAtTime(SND.muted[st[0]] ? 0 : 1, SND.ctx.currentTime, .03); }); renderScores(); }
   var taps = [];
   function setRate(bpm) { bpm = clamp(bpm, 80, 132); var was = playing; SND.rate = bpm / CUR.bpm(); $('bpmOut').textContent = 'Tempo set to ' + bpm.toFixed(1) + ' bpm (the song’s own is ' + CUR.bpm().toFixed(0) + ') · film ' + fmt(TOTAL / SND.rate); if (was && SND.kind !== 'off') newBus(); }
   $('tapTempo').addEventListener('click', function () { var now = performance.now(); taps = taps.filter(function (x) { return now - x < 3000; }); taps.push(now); if (taps.length >= 4) { var iv = (taps[taps.length - 1] - taps[0]) / (taps.length - 1); setRate(60000 / iv); } else $('bpmOut').textContent = 'Tap ' + (4 - taps.length) + ' more time' + (4 - taps.length > 1 ? 's' : '') + ' to set the tempo (' + taps.length + ' of 4 taps)'; });
